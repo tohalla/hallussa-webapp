@@ -1,11 +1,36 @@
 {
   "name": "hallussa-webapp",
   "description": "",
+  "main": "src/index.tsx",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "serve": "parcel pages/*.html",
+    "build": "parcel build pages/*.html --experimental-scope-hoisting --public-url .",
+    "lint": "tslint -c tslint.json './src/**/*.ts'"
   },
   "repository": {
     "type": "git",
     "url": "git@version.aalto.fi:hallast1/CS-E4400_hallussa-webapp.git"
+  },
+  "dependencies": {
+    "normalize.css": "^8.0.0",
+    "ramda": "^0.25.0",
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0",
+    "redux": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.2",
+    "@types/ramda": "^0.25.38",
+    "@types/react": "^16.4.14",
+    "@types/react-dom": "^16.0.7",
+    "babel-plugin-module-resolver": "^3.1.1",
+    "babel-polyfill": "^6.26.0",
+    "enzyme": "^3.6.0",
+    "enzyme-adapter-react-16": "^1.5.0",
+    "jest": "^23.6.0",
+    "parcel-bundler": "^1.9.7",
+    "tslint": "^5.11.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "typescript": "^3.0.3"
   }
 }

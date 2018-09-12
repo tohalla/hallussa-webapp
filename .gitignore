@@ -14,5 +14,6 @@ Thumbs.db
 *.log
 
 .vscode
-
 .tern-port
+
+.cache
