@@ -1,3 +1,7 @@
-import { combineReducers, createStore } from "redux";
+import { applyMiddleware, combineReducers, createStore } from "redux";
+import thunk from "redux-thunk";
 
-export default createStore(combineReducers({}));
+export default createStore(
+  combineReducers({}),
+  applyMiddleware(thunk)
+);

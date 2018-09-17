@@ -12,12 +12,14 @@
     "url": "git@version.aalto.fi:hallast1/CS-E4400_hallussa-webapp.git"
   },
   "dependencies": {
+    "@types/redux-thunk": "^2.1.0",
     "normalize.css": "^8.0.0",
     "ramda": "^0.25.0",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
     "react-redux": "^5.0.7",
-    "redux": "^4.0.0"
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@types/jest": "^23.3.2",
