@@ -2,7 +2,10 @@
   "presets": ["env"],
   "plugins": [
     ["module-resolver", {
-      "root": ["./src"]
+      "root": ["./src"],
+      "alias": {
+        "emotion-styles": "./src/emotion-styles/src"
+      }
     }]
   ]
 }
