@@ -11,7 +11,10 @@ export const getAndCheckJWT = async (): Promise<string | null | void> => {
     if (typeof expiresAt !== "number" || expiresAt - Date.now() < 0) {
       // should remove token if its expired
       return signOut();
-    } else if (typeof expiresAt === "number" && expiresAt - Date.now() < 10 * 60 * 1000) {
+    } else if (
+      typeof expiresAt === "number" &&
+      expiresAt - Date.now() < 10 * 60 * 1000
+    ) {
       // should refresh token if it expires in next 10 minutes
       await authenticate(token);
     }
@@ -19,19 +22,27 @@ export const getAndCheckJWT = async (): Promise<string | null | void> => {
   return token;
 };
 
-export const authenticate = async (credentials: string | {email: string, password: string}) => {
+export const authenticate = async (
+  credentials: string | { email: string; password: string }
+): Promise<boolean> => {
   try {
     const response = await fetch(
       `${apiUrl}/auth`,
-      typeof credentials === "string" ? // attach authorization header if token provided as credentials
-        {headers: {authorization: `Bearer ${credentials}`}}
-      : {method: "POST", body: JSON.stringify(credentials)} // otherwise should use email and password
+      typeof credentials === "string" // attach authorization header if token provided as credentials
+        ? { headers: { authorization: `Bearer ${credentials}` } }
+        : {
+          body: JSON.stringify(credentials),
+          headers: { ["Content-Type"]: "application/json" },
+          method: "POST",
+        } // otherwise should use email and password
     );
-    const {token, expiresAt} = await response.json();
+    const { token, expiresAt } = await response.json();
     localStorage.setItem("token", token);
     localStorage.setItem("expiresAt", expiresAt);
+    return true;
   } catch (e) {
-    return signOut();
+    signOut();
+    return false;
   }
 };
 

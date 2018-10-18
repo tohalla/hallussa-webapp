@@ -32,9 +32,11 @@ const api: Middleware = () => (next: Dispatch) => (action: Action) => {
       body,
     } = action as ReduxAPICall;
 
-    next({type: requestType}); // dispatch request action
+    next({ type: requestType }); // dispatch request action
 
-    const headers: Record<string, string> = {};
+    const headers: Record<string, string> = {
+      ["content-type"]: "application/json",
+    };
 
     const token = await getAndCheckJWT();
     // set relevant headers
@@ -49,12 +51,12 @@ const api: Middleware = () => (next: Dispatch) => (action: Action) => {
         method,
       });
       if (response.ok) {
-        next({type: successType, payload: await response.json()}); // dispatch success action
-      } else  {
+        next({ type: successType, payload: await response.json() }); // dispatch success action
+      } else {
         throw new Error("failed to fetch");
       }
     } catch (e) {
-      next({type: failureType, payload: e}); // dispatch failure action
+      next({ type: failureType, payload: e }); // dispatch failure action
     }
 
     return next(action);

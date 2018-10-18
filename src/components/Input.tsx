@@ -2,7 +2,7 @@ import input from "emotion-styles/input";
 import React, { ChangeEventHandler, Component } from "react";
 
 export interface InputProps {
-  autocomplete: "off" | "on";
+  autoComplete: "off" | "on";
   disabled?: boolean;
   name?: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
@@ -13,7 +13,7 @@ export interface InputProps {
 
 export default class Input extends Component<InputProps> {
   public static defaultProps = {
-    autocomplete: "on",
+    autoComplete: "on",
     type: "text",
   };
 

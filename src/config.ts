@@ -1,7 +1,5 @@
-const {
-  protocol,
-  host,
-} = window.location;
+const { protocol, hostname } = window.location;
 
+const apiPort = 8080;
 export const apiVersion = 1;
-export const apiUrl = `${protocol}//${host}:8080/api/v${apiVersion}/`;
+export const apiUrl = `${protocol}//${hostname}:${apiPort}/api/v${apiVersion}`;
