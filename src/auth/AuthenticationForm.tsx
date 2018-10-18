@@ -2,7 +2,7 @@ import React, { ChangeEvent, Component, FormEvent } from "react";
 
 import Form from "../components/Form";
 import Input from "../components/Input";
-import { apiUrl } from "../config";
+import { baseUrl } from "../config";
 import { authenticate } from "./auth";
 
 type Inputs = "email" | "password";
@@ -14,7 +14,11 @@ class AuthenticationForm extends Component<{}, { [input in Inputs]?: string }> {
   };
 
   public handleSubmit = async (event: FormEvent) => {
-    authenticate(this.state);
+    if (await authenticate(this.state)) {
+      window.location.href = baseUrl;
+    } else {
+      // TODO: authentication error
+    }
   }
 
   public handleInputChange = (input: Inputs) => (
