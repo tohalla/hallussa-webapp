@@ -12,6 +12,7 @@
     "url": "git@version.aalto.fi:hallast1/CS-E4400_hallussa-webapp.git"
   },
   "dependencies": {
+    "classnames": "^2.2.6",
     "normalize.css": "^8.0.0",
     "ramda": "^0.25.0",
     "react": "^16.5.0",
