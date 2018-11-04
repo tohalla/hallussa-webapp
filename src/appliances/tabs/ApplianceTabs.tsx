@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
-import AddTab from "../reusable/tabs/AddTab";
-import Tab from "../reusable/tabs/Tab";
-import TabContainer from "../reusable/tabs/TabContainer";
+import AddTab from "../../components/tabs/AddTab";
+import Tab from "../../components/tabs/Tab";
+import TabContainer from "../../components/tabs/TabContainer";
 
 /**
  * Change tab and view by identifier.

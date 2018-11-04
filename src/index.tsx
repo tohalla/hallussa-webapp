@@ -5,8 +5,8 @@ import { Provider } from "react-redux";
 
 import store from "./store";
 
+import ApplianceView from "./appliances/view/ApplianceView";
 import { navGroup, navItem, topbar } from "./emotion-styles/src/topbar";
-import ApplianceView from "./views/ApplianceView";
 
 ReactDOM.render(
   <Provider store={store}>
