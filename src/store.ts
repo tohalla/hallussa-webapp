@@ -1,7 +1,8 @@
 import { combineReducers, createStore } from "redux";
 
 // Temporary static redux state.
-const initialState = {
+// TODO: Move to somewhere smart.
+export const initialState = {
   organisation: {
     appliances: [],
     id: 1,
@@ -15,8 +16,8 @@ const initialState = {
       {
         id: 1,
         roles: ["user", "admin"],
-      }
-    ]
+      },
+    ],
   },
   views: {
     appliance: {
@@ -24,20 +25,22 @@ const initialState = {
         listing: {
           activeDrawer: "summary",
           content: "<ApplianceListing drawer={activeDrawer} applianceID={appliance} />",
+          isActive: true,
           label: "Appliance list",
         },
-        1: { // Appliance id
+        "1": { // Appliance id
           activeDrawer: "summary",
           content: "<Appliance id={id} />",
+          isActive: false,
           label: "My first appliance",
-        }
+        },
       },
     },
     maintainer: {
       tabs: {
         listing: "ReactComponent",
-      }
-    }
+      },
+    },
   },
 };
 
