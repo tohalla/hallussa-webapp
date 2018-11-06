@@ -26,7 +26,6 @@ interface CreateAction extends TabAction {
 
 export interface ChangePayload {
   nextTab: string;
-  activeTab: string;
 }
 
 interface ChangeAction extends TabAction {
@@ -55,11 +54,10 @@ const createTab = (state: object, action: CreateAction) =>
   changeTab(
     assoc("new_tab", {
       ...omit(["activeTab"], action.payload),
-      isActive: false,
+      sticky: true,
     }, state), {
       ...action,
       payload: {
-        activeTab: action.payload.activeTab,
         nextTab: "new_tab",
       },
     });
@@ -67,14 +65,9 @@ const createTab = (state: object, action: CreateAction) =>
 /**
  * Changes the active tab.
  */
-const changeTab = (state: TabState = {}, action: ChangeAction) => mergeDeepRight(state, {
-  [action.payload.nextTab]: {
-    isActive: true,
-  },
-  [action.payload.activeTab]: {
-    isActive: false,
-  },
-});
+const changeTab = (state: TabState = {}, action: ChangeAction) => assoc(
+  "activeTab", [action.payload.nextTab],
+  state);
 
 /**
  * Closes an open tab from tabs.

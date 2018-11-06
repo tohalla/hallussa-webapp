@@ -1,57 +1,52 @@
+import { path, map } from "ramda";
 import React, { Component } from "react";
+import { connect } from "react-redux";
+
+import { Dispatch } from "redux";
+import { addTab, changeTab, closeTab } from "../../components/tabs/actions";
 
 import AddTab from "../../components/tabs/AddTab";
 import Tab from "../../components/tabs/Tab";
-import TabContainer from "../../components/tabs/TabContainer";
+import TabComponent from "../../components/tabs/TabComponent";
+import TabContainer, { TabInterface } from "../../components/tabs/TabContainer";
 
-/**
- * Change tab and view by identifier.
- */
-const changeTab = (identifier: number) => {
-  // TODO
-};
+interface TabsProps {
+  activeTab: string;
+  tabs: {
+    [key: string]: TabInterface
+  };
+}
 
-/**
- * Remove tab from list of tabs by identifier.
- */
-const onTabRemove = (from: string, identifier: string | number) => {
-  // TODO
-};
+class Tabs extends Component<TabsProps> {
+  public handleTabCreate = () => {
+    const { addTab } = this.props;
+    return () => addTab();
+  }
 
-/**
- * Add tab to list of tabs.
- */
-const onTabAdd = (to: string) => {
-  // TODO
-};
+  public handleTabChange = (tab: string) => {
+    const { changeTab } = this.props;
+    return () => changeTab(k);
+  }
 
-// TODO: Tabs would be loaded from Redux, this is just a temp method.
-const getTabs = (view: string) => {
-  return [
-    {
-      content: (
-        <Tab onClick={() => { onTabRemove("appliances", 1); }}>Hey</Tab>
-      ),
-      onClick: () => changeTab(1),
-    },
-    {
-      content: (
-        <AddTab visible={true} />
-      ),
-      onClick: () => onTabAdd("appliances"),
-    },
-  ];
-};
+  public handleTabClose = (tab: string) => {
+    const { closeTab } = this.props;
+    return () => closeTab();
+  }
 
-export default class ApplianceTabs extends Component {
   public render() {
-    return (
-      <div>
-        <TabContainer
-          activeTab={0}
-          tabs={getTabs("appliances")}
-        />
-      </div>
-    )
+    const { activeTab, tabs } = this.props;
+   
+    );
   }
 }
+
+const mapStateToProps = (state: any) => ({
+  activeTab: path(["views", "appliance", "activeTab"], state),
+  tabs: path(["views", "appliance", "tabs"], state),
+});
+​
+const ApplianceTabs = connect(
+  mapStateToProps
+)(Tabs);
+
+export default ApplianceTabs;

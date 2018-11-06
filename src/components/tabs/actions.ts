@@ -16,13 +16,13 @@ export const addTab = (payload: CreatePayload, path: string) => ({
   type: CREATE_NEW_TAB,
 });
 
-export const closeTab = (payload: ChangePayload, path: string) => ({
+export const closeTab = (payload: ClosePayload, path: string) => ({
   path,
   payload,
   type: CLOSE_ACTIVE_TAB,
 });
 
-export const changeTab = (payload: ClosePayload, path: string) => ({
+export const changeTab = (payload: ChangePayload, path: string) => ({
   path,
   payload,
   type: CHANGE_TAB_TO,
