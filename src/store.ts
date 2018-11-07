@@ -1,5 +1,6 @@
 import { combineReducers, createStore } from "redux";
-import ApplianceTabs from "./appliances/tabs/ApplianceTabs";
+
+import tabs from "./components/tabs/reducers";
 
 // Temporary static redux state.
 // TODO: Move to somewhere smart.
@@ -28,18 +29,20 @@ export const initialState = {
           activeDrawer: "summary",
           content: "<ApplianceListing drawer={activeDrawer} applianceID={appliance} />",
           label: "Appliance list",
+          onClose: () => true,
           sticky: true,
         },
         "1": { // Appliance id
           activeDrawer: "summary",
           content: "<Appliance id={id} />",
           label: "My first appliance",
+          onClose: () => true,
         },
         new_appliance: {
           activeDrawer: "summary",
           content: "<NewAppliance />",
           label: "New appliance",
-          onClose: () => {},
+          onClose: () => false,
           sticky: true,
         },
       },
@@ -53,6 +56,8 @@ export const initialState = {
 };
 
 export default createStore(
-  combineReducers({}),
+  combineReducers({
+    
+  }),
   initialState,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
