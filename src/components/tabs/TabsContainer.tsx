@@ -27,6 +27,7 @@ class TabsContainer extends Component<TabsContainerProps> {
     if (onSelect && typeof onSelect === "function") {
       onSelect();
     }
+
     this.props.changeTab({ nextTab: key }, this.props.path);
   }
 
@@ -53,7 +54,7 @@ class TabsContainer extends Component<TabsContainerProps> {
               closable={onClose(isActive)}
               onClose={this.handleTabClose(k, tabs[k], isActive)}
               key={`tab_${k}`}
-              active={isActive}>>
+              active={isActive}>
               {label}
             </TabComponent>
           );

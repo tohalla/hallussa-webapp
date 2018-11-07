@@ -9,7 +9,7 @@ import {
   CREATE_NEW_TAB,
 } from "./actionTypes";
 
-interface TabAction extends AnyAction {
+export interface TabAction extends AnyAction {
   path: string;
 }
 
@@ -50,30 +50,27 @@ interface TabState {
  * NOTE: Ramda assoc returns the a state with new tab and
  * this state is passed onwards as the state to changeTab.
  */
-const createTab = (state: object, action: CreateAction) =>
+const createTab = (state: object, payload: CreatePayload) =>
   changeTab(
     assoc("new_tab", {
-      ...omit(["activeTab"], action.payload),
+      ...omit(["activeTab"], payload),
       sticky: true,
-    }, state), {
-      ...action,
-      payload: {
-        nextTab: "new_tab",
-      },
-    });
+    }, state),
+    {
+      nextTab: "new_tab",
+    }
+  );
 
 /**
  * Changes the active tab.
  */
-const changeTab = (state: TabState = {}, action: ChangeAction) => assoc(
-  "activeTab", [action.payload.nextTab],
-  state);
-
+const changeTab = (state: TabState = {}, payload: ChangePayload) =>
+  assoc("activeTab", payload.nextTab, state);
 /**
  * Closes an open tab from tabs.
  */
-const closeTab = (state: TabState = {}, action: CloseAction) =>
-  dissoc(`${action.payload.targetTab}`, state);
+const closeTab = (state: TabState = {}, payload: ClosePayload) =>
+  dissoc(`${payload.targetTab}`, state);
 
 const typeHandler = cond([
   [equals(CREATE_NEW_TAB), (type, state, payload) => createTab(state, payload)],
@@ -82,7 +79,7 @@ const typeHandler = cond([
   [T, (type, state, payload) => state],
 ]);
 
-const reducer = (state = initialState, { type, payload }: TabAction) =>
+const reducer = (path: string[], state: object, {payload, type}: TabAction) =>
   typeHandler(type, state, payload);
 
 export default reducer;

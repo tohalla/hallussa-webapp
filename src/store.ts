@@ -1,6 +1,6 @@
 import { combineReducers, createStore } from "redux";
 
-import tabs from "./components/tabs/reducers";
+import applianceTabs from "./appliances/tabs/reducer";
 
 // Temporary static redux state.
 // TODO: Move to somewhere smart.
@@ -57,7 +57,12 @@ export const initialState = {
 
 export default createStore(
   combineReducers({
-    
+    views: combineReducers({
+      appliance: combineReducers({
+        tabs: applianceTabs,
+      }),
+    }),
   }),
   initialState,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+);
