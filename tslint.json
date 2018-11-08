@@ -1,8 +1,5 @@
 {
-  "extends": [
-    "tslint:latest",
-    "tslint-eslint-rules"
-  ],
+  "extends": ["tslint:latest", "tslint-eslint-rules", "tslint-react"],
   "rules": {
     "semicolon": [true, "always"],
     "indent": [true, "spaces", 2],
@@ -22,6 +19,13 @@
         "esSpecCompliant": true
       }
     ],
-    "whitespace": [true, "check-branch", "check-operator", "check-module", "check-decl", "check-rest-spread"]
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-operator",
+      "check-module",
+      "check-decl",
+      "check-rest-spread"
+    ]
   }
 }

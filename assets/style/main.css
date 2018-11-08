@@ -1,11 +1,13 @@
 @import "normalize.css";
-@import url('../fonts/Roboto-Regular.ttf');
+@import url("../fonts/Roboto-Regular.ttf");
 
 html {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 #app {
+  display: flex;
+
   min-width: 100vw;
   min-height: 100vh;
 }
