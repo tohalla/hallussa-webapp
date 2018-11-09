@@ -9,7 +9,7 @@ const Tabs = (props: any) => (
   />
 );
 
-const path = ["views", "appliance"];
+const path = ["views", "appliances"];
 
 const mapStateToProps = (state: any) => ({
   activeTab: p([...path, "activeTab"], state),
