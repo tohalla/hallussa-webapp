@@ -3,9 +3,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import "whatwg-fetch"; // fetch polyfill, replaces standard fetch
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import { authenticate } from "./auth/auth";
 import store from "./store/store";
+
+import ApplianceView from "./appliances/router";
 
 // TODO: nginx jwt check
 (async () => {
@@ -13,7 +16,13 @@ import store from "./store/store";
   if (token && (await authenticate(token))) {
     ReactDOM.render(
       <Provider store={store}>
-        <div>{"CS-E4400"}</div>
+        <div>
+          <Router>
+            <div>
+              <Route path="/appliances" component={ApplianceView} />
+            </div>
+          </Router>
+        </div>
       </Provider>,
       document.getElementById("app")
     );
