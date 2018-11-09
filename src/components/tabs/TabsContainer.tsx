@@ -20,9 +20,11 @@ interface TabsContainerProps {
 }
 
 class TabsContainer extends Component<TabsContainerProps> {
-  public handleTabChange = (key: string, tab: any) => {
-    this.props.changeTab({ nextTab: key }, this.props.path);
-    // this.props.changeView()
+  public handleTabChange = (key: string, tab: any, isActive: boolean) => () => {
+    if (!isActive) {
+      this.props.changeTab({ nextTab: key }, this.props.path);
+      // this.props.changeView()
+    }
   }
 
   public handleTabClose = (key: string, tab: any, isActive: boolean) => () => {
@@ -30,38 +32,33 @@ class TabsContainer extends Component<TabsContainerProps> {
   }
 
   public getPath = (key: string, tab: any) => {
-    const { path: p } = this.props;
-    const path = [p[p.length - 1], key];
-    if (tab.type === "details") {
-      path.splice(1, 0, "id");
-    }
-    return `/${path.join("/")}`;
+    const { path } = this.props;
+    return `/${path[path.length - 1]}/${key}`;
+  }
+
+  public renderTab = (key: string, tab: { label: string }) => {
+    const { activeTab } = this.props;
+    const { label } = tab;
+    const isActive = activeTab === key;
+    return (
+      <TabComponent
+        onClick={this.handleTabChange(key, tab, isActive)}
+        closable={true}
+        onClose={this.handleTabClose(key, tab, isActive)}
+        key={`tab_${key}`}
+        active={isActive}>
+        <Link to={this.getPath(key, tab)}>
+          {label}
+        </Link>
+      </TabComponent>
+    );
   }
 
   public render() {
-    const { activeTab, tabs } = this.props;
+    const { tabs } = this.props;
     return (
       <div>
-        {Object.keys(tabs).map((k) => {
-          const { label } = tabs[k];
-          const isActive = activeTab === k;
-          return (
-            <TabComponent
-              onClick={() => {
-                if (!isActive) {
-                  this.handleTabChange(k, tabs[k]);
-                }
-              }}
-              closable={true}
-              onClose={this.handleTabClose(k, tabs[k], isActive)}
-              key={`tab_${k}`}
-              active={isActive}>
-              <Link to={this.getPath(k, tabs[k])}>
-                {label}
-              </Link>
-            </TabComponent>
-          );
-        })}
+        {Object.keys(tabs).map((k) => this.renderTab(k, tabs[k]))}
       </div>
     );
   }
