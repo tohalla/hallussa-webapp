@@ -1,7 +1,5 @@
-import { assoc, cond, dissoc, equals, mergeDeepRight, omit, T } from "ramda";
+import { assoc, assocPath, cond, dissocPath, equals, mergeDeepRight, omit, T } from "ramda";
 import { AnyAction } from "redux";
-
-import { initialState } from "../../store";
 
 import {
   CHANGE_TAB_TO,
@@ -52,7 +50,7 @@ interface TabState {
  */
 const createTab = (state: object, payload: CreatePayload) =>
   changeTab(
-    assoc("new_tab", {
+    assocPath(["tabs", "new_tab"], {
       ...omit(["activeTab"], payload),
       sticky: true,
     }, state),
@@ -66,11 +64,12 @@ const createTab = (state: object, payload: CreatePayload) =>
  */
 const changeTab = (state: TabState = {}, payload: ChangePayload) =>
   assoc("activeTab", payload.nextTab, state);
+
 /**
  * Closes an open tab from tabs.
  */
 const closeTab = (state: TabState = {}, payload: ClosePayload) =>
-  dissoc(`${payload.targetTab}`, state);
+  dissocPath(["tabs", payload.targetTab], state);
 
 const typeHandler = cond([
   [equals(CREATE_NEW_TAB), (type, state, payload) => createTab(state, payload)],

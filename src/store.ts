@@ -1,14 +1,27 @@
 import { combineReducers, createStore } from "redux";
 
-import applianceTabs from "./appliances/tabs/reducer";
+import appliancesTabsReducer from "./appliances/tabs/reducer";
 
 // Temporary static redux state.
 // TODO: Move to somewhere smart.
 export const initialState = {
   organisation: {
-    appliances: [],
+    appliances: [
+      {
+        id: 1,
+        name: "My first appliance",
+        maintainers: [1, 2],
+      },
+    ],
     id: 1,
-    maintainer: [],
+    maintainers: [
+      {
+        id: 1,
+        first: "Paavo",
+        last: "Lipponen",
+        appliances: [1],
+      },
+    ],
   },
   user: {
     email: "petri.vuorimaa@aalto.fi",
@@ -22,34 +35,46 @@ export const initialState = {
     ],
   },
   views: {
-    appliance: {
+    appliances: {
       activeTab: "listing",
       tabs: {
         listing: {
           activeDrawer: "summary",
-          content: "<ApplianceListing drawer={activeDrawer} applianceID={appliance} />",
           label: "Appliance list",
-          onClose: () => true,
           sticky: true,
+          type: "list",
+          props: {},
         },
-        "1": { // Appliance id
+        1: { // Appliance id
           activeDrawer: "summary",
-          content: "<Appliance id={id} />",
           label: "My first appliance",
-          onClose: () => true,
+          sticky: false,
+          type: "details",
+          props: {
+            unsaved: true,
+          },
         },
-        new_appliance: {
+        new: {
           activeDrawer: "summary",
-          content: "<NewAppliance />",
           label: "New appliance",
-          onClose: () => false,
           sticky: true,
+          type: "new",
+          props: {
+            unsaved: false,
+          },
         },
       },
     },
-    maintainer: {
+    maintainers: {
+      activeTab: "listing",
       tabs: {
-        listing: "ReactComponent",
+        listing: {
+          activeDrawer: "summary",
+          label: "Maintainer list",
+          sticky: true,
+          type: "list",
+          props: {},
+        },
       },
     },
   },
@@ -57,10 +82,10 @@ export const initialState = {
 
 export default createStore(
   combineReducers({
+    // organisation: organisationReducer,
+    // user: userReducer,
     views: combineReducers({
-      appliance: combineReducers({
-        tabs: applianceTabs,
-      }),
+      appliances: appliancesTabsReducer,
     }),
   }),
   initialState,

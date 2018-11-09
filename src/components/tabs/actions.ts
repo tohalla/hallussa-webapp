@@ -8,7 +8,7 @@ import {
   ChangePayload,
   ClosePayload,
   CreatePayload,
-} from "./reducers";
+} from "./reducer";
 
 export const addTab = (payload: CreatePayload, path: string) => ({
   path,
