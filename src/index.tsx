@@ -2,8 +2,8 @@ import "babel-polyfill";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
+import { HashRouter as Router, Route } from "react-router-dom";
 import "whatwg-fetch"; // fetch polyfill, replaces standard fetch
-import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import { authenticate } from "./auth/auth";
 import store from "./store/store";
