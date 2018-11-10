@@ -1,5 +1,5 @@
 import "babel-polyfill";
-import defaultContainer, { centerContent } from "emotion-styles/container";
+import defaultContainer, { appContainer, centerContent } from "emotion-styles/container";
 import React from "react";
 import ReactDOM from "react-dom";
 import "whatwg-fetch"; // fetch polyfill, replaces standard fetch
@@ -15,6 +15,9 @@ import AuthenticationForm from "./AuthenticationForm";
     window.location.href = baseUrl;
     return;
   }
+
+  (document.getElementById("app") as HTMLElement).className = appContainer;
+
   ReactDOM.render(
     <div className={centerContent}>
       <div className={defaultContainer}>
