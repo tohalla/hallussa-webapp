@@ -3,6 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 
+import { appContainer } from "emotion-styles/container";
 import { authenticate } from "./auth/auth";
 import Router from "./Router";
 import store from "./store/store";
@@ -11,6 +12,8 @@ import store from "./store/store";
 (async () => {
   const token = localStorage.getItem("token");
   if (token && (await authenticate(token))) {
+    (document.getElementById("app") as HTMLElement).className = appContainer;
+
     return ReactDOM.render(
       <Provider store={store}>
         <Router />
