@@ -1,4 +1,5 @@
-import { apiUrl } from "../config";
+import { createContext } from "react";
+import { apiUrl, baseUrl } from "../config";
 
 /**
  * fetches, saves and returns new JWT if current one expiring in 10*60*1000ms = 10 minutes,
@@ -49,5 +50,6 @@ export const authenticate = async (
 export const signOut = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("expiresAt");
-  // TODO: refresh store state or page
+
+  window.location.href = baseUrl;
 };
