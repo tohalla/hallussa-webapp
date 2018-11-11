@@ -9,13 +9,10 @@ export const getAndCheckJWT = async (): Promise<string | null | void> => {
   const token = localStorage.getItem("token");
   if (token) {
     const expiresAt = localStorage.getItem("expiresAt");
-    if (typeof expiresAt !== "number" || expiresAt - Date.now() < 0) {
+    if (Number(expiresAt) - Date.now() / 1000 < 0) {
       // should remove token if its expired
       return signOut();
-    } else if (
-      typeof expiresAt === "number" &&
-      expiresAt - Date.now() < 10 * 60 * 1000
-    ) {
+    } else if (Number(expiresAt) - Date.now() / 1000 < 10 * 60 * 1000) {
       // should refresh token if it expires in next 10 minutes
       await authenticate(token);
     }
