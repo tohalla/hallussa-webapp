@@ -9,9 +9,9 @@ import {
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { signOut } from "../auth/auth";
 import Logo from "../components/Logo";
 import { sm } from "../emotion-styles/src/variables/breakpoints";
+import AccountMenu from "./AccountMenu";
 
 export default class Topbar extends React.Component {
   public state = {
@@ -27,7 +27,6 @@ export default class Topbar extends React.Component {
   public componentWillUnmount = () =>
     window.removeEventListener("resize", this.updateDimensions)
 
-  public handleLogout = () => signOut();
   public handleToggle = () => this.setState({expand: !this.state.expand});
 
   public render() {
@@ -52,11 +51,7 @@ export default class Topbar extends React.Component {
             </div>
           }
         </div>
-        {displayMenu &&
-          <div className={navGroup}>
-            <a className={navItem} onClick={this.handleLogout}>Log out</a>
-          </div>
-        }
+        {displayMenu && <AccountMenu />}
       </div>
     );
   }
