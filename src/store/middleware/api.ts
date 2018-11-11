@@ -31,7 +31,7 @@ const api: Middleware = () => (next: Dispatch) => (action: Action) => {
       types: [requestType, successType, failureType],
       body,
     } = action as ReduxAPICall;
-    next({ type: requestType }); // dispatch request action
+    next({type: requestType, payload: {isFetching: true}}); // dispatch request action
 
     const headers: Record<string, string> = {
       ["content-type"]: "application/json",
@@ -55,7 +55,7 @@ const api: Middleware = () => (next: Dispatch) => (action: Action) => {
         throw new Error("failed to fetch");
       }
     } catch (e) {
-      next({ type: failureType, payload: e }); // dispatch failure action
+      next({type: failureType, payload: e}); // dispatch failure action
     }
 
     return next(action);
