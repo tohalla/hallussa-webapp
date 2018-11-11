@@ -24,14 +24,13 @@ const api: Middleware = () => (next: Dispatch) => (action: Action) => {
     return next(action); // should continue if not api call
   }
 
-  return async () => {
+  return (async () => {
     const {
       endpoint,
       method,
       types: [requestType, successType, failureType],
       body,
     } = action as ReduxAPICall;
-
     next({ type: requestType }); // dispatch request action
 
     const headers: Record<string, string> = {
@@ -60,7 +59,7 @@ const api: Middleware = () => (next: Dispatch) => (action: Action) => {
     }
 
     return next(action);
-  };
+  })();
 };
 
 export default api;
