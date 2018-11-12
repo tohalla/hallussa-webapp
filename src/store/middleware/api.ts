@@ -4,6 +4,8 @@ import { Action, Dispatch, Middleware } from "redux";
 import { getAndCheckJWT } from "../../auth/auth";
 import { apiUrl } from "../../config";
 
+export const CALL_API = Symbol("CALL_API");
+
 export interface ReduxAPICall extends Action {
   endpoint: string;
   method: "POST" | "GET" | "PUT" | "DEL";
@@ -14,14 +16,16 @@ export interface ReduxAPICall extends Action {
 /**
  * returns true if action can be interpreted as API call
  */
-const isApiCall = (action: Action) =>
-  typeof path(["endpoint"], action) === "string" &&
-  Array.isArray(path(["types"], action)) &&
-  typeof path(["method"], action) === "string";
+const isValid = ({endpoint, types, method, type}: {[key: string]: any}) =>
+  typeof endpoint === "string" &&
+  Array.isArray(types) &&
+  typeof method === "string";
 
 const api: Middleware = () => (next: Dispatch) => (action: Action) => {
-  if (!isApiCall(action)) {
+  if (action.type !== CALL_API) {
     return next(action); // should continue if not api call
+  } else if (!isValid(action)) {
+    throw new Error("Invalid api call " + JSON.stringify(action));
   }
 
   return (async () => {
