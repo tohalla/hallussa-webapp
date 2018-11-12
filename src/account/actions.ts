@@ -1,5 +1,5 @@
-import { AnyAction, Dispatch } from "redux";
-import { CALL_API, ReduxAPICall,  } from "../store/middleware/api";
+import { AnyAction } from "redux";
+import { CALL_API, ReduxAPICall } from "../store/middleware/api";
 
 export interface AccountPayload {
   firstName: string;
@@ -12,7 +12,7 @@ export const FETCH_ACCOUNT_SUCCESS = Symbol("FETCH_ACCOUNT_SUCCESS");
 export const FETCH_ACCOUNT_FAILURE = Symbol("FETCH_ACCOUNT_FAILURE");
 
 export interface AccountAction extends AnyAction {
-  type: "FETCH_ACCOUNT";
+  type: symbol;
   payload?: Partial<AccountPayload>;
 }
 
