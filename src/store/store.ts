@@ -1,12 +1,16 @@
-import { applyMiddleware, combineReducers, createStore } from "redux";
+import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 
-import account from "../account/reducer";
 import api from "./middleware/api";
+import reducers from "./reducers";
 
-export default createStore(
-  combineReducers({
-    account,
-  }),
+const store = createStore(
+  reducers,
   applyMiddleware(thunk, api)
 );
+
+if (module.hot) {
+  module.hot.accept("../reducers", () => store.replaceReducer(reducers));
+}
+
+export default store;
