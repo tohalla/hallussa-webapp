@@ -6,15 +6,16 @@ import { path } from "ramda";
 import React from "react";
 import { connect } from "react-redux";
 
-import { fetchAccount } from "../account/actions";
+import { AccountPayload, fetchAccount } from "../account/actions";
 import { signOut } from "../auth/auth";
 import { ReduxAPICall } from "../store/middleware/api";
 import loadable from "../util/hoc/loadable";
 
-interface AccountMenuProps {
-  account: {
-    firstName: string
-  };
+interface AccountStateProps {
+  account: AccountPayload;
+}
+
+interface AccountDispatchProps {
   fetchAccount(): ReduxAPICall;
 }
 
@@ -22,7 +23,7 @@ const mapStateToProps = (state: object) => ({
   account: path(["account"], state),
 });
 
-export class AccountMenu extends React.Component<AccountMenuProps> {
+export class AccountMenu extends React.Component<AccountDispatchProps & AccountStateProps> {
   public componentWillMount = () => {
     this.props.fetchAccount();
   }
@@ -40,9 +41,7 @@ export class AccountMenu extends React.Component<AccountMenuProps> {
   }
 }
 
-export default
-  connect<{}, {}, AccountMenuProps>(
-  mapStateToProps, {
-    fetchAccount,
-  }
+export default connect(
+  mapStateToProps,
+  {fetchAccount}
 )(loadable(AccountMenu));
