@@ -1,38 +1,70 @@
-import { path } from "ramda";
+import { indexBy, path } from "ramda";
 import { Action, Dispatch, Middleware } from "redux";
 
 import { getAndCheckJWT } from "../../auth/auth";
 import { apiUrl } from "../../config";
 
+export const CALL_API = Symbol("CALL_API");
+
 export interface ReduxAPICall extends Action {
   endpoint: string;
   method: "POST" | "GET" | "PUT" | "DEL";
   types: [symbol, symbol, symbol]; // [REQUEST, SUCCESS, FAILURE]
-  body?: object;
+  body?: {[key: string]: any};
+  onSuccess?(payload: any, cached: boolean): any; // get triggered on succesfull response
+  onFailure?(payload: any): any; // gets triggered if the request fails
+  attemptToFetchFromStore?(state: {[key: string]: any}): any;
+  transformResponse?(response: any): any; // writes returned object to the store
 }
 
 /**
  * returns true if action can be interpreted as API call
  */
-const isApiCall = (action: Action) =>
-  typeof path(["endpoint"], action) === "string" &&
-  Array.isArray(path(["types"], action)) &&
-  typeof path(["method"], action) === "string";
+const isValid = ({endpoint, types, method}: {[key: string]: any}) =>
+typeof endpoint === "string" &&
+Array.isArray(types) &&
+typeof method === "string";
 
-const api: Middleware = () => (next: Dispatch) => (action: Action) => {
-  if (!isApiCall(action)) {
+const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => {
+  if (action.type !== CALL_API) {
     return next(action); // should continue if not api call
+  } else if (!isValid(action)) {
+    throw new Error("Invalid api call " + JSON.stringify(action));
   }
 
-  return async () => {
+  return (async () => {
     const {
       endpoint,
       method,
       types: [requestType, successType, failureType],
       body,
-    } = action as ReduxAPICall;
+      onSuccess,
+      onFailure,
+      transformResponse = (response: any): any => {
+        if (Array.isArray(response)) {
+          return indexBy(
+            ((o: {[key: string]: any}) => o.id || o.hash),
+            response
+          );
+        }
+        return response;
+      },
+      attemptToFetchFromStore,
+      } = action as ReduxAPICall;
 
-    next({ type: requestType }); // dispatch request action
+    if (typeof attemptToFetchFromStore === "function") {
+      const cached = attemptToFetchFromStore(getState());
+      if (cached) {
+        // trigger onSuccess if defined
+        if (typeof onSuccess === "function") { onSuccess(cached, true); }
+        return next({
+          payload: cached,
+          type: successType,
+        }); // dispatch success action
+      }
+    }
+
+    next({type: requestType, payload: {isFetching: true}}); // dispatch request action
 
     const headers: Record<string, string> = {
       ["content-type"]: "application/json",
@@ -51,16 +83,18 @@ const api: Middleware = () => (next: Dispatch) => (action: Action) => {
         method,
       });
       if (response.ok) {
-        next({ type: successType, payload: await response.json() }); // dispatch success action
+        // trigger onSuccess if defined
+        const payload = await response.json();
+        if (typeof onSuccess === "function") { onSuccess(payload, false); }
+        return next({payload: transformResponse(payload), type: successType}); // dispatch success action
       } else {
         throw new Error("failed to fetch");
       }
     } catch (e) {
-      next({ type: failureType, payload: e }); // dispatch failure action
+      if (typeof onFailure === "function") { onFailure(e); }
+      return next({type: failureType, payload: e}); // dispatch failure action
     }
-
-    return next(action);
-  };
+  })();
 };
 
 export default api;

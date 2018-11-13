@@ -1,4 +1,4 @@
-import { apiUrl } from "../config";
+import { apiUrl, baseUrl } from "../config";
 
 /**
  * fetches, saves and returns new JWT if current one expiring in 10*60*1000ms = 10 minutes,
@@ -8,13 +8,10 @@ export const getAndCheckJWT = async (): Promise<string | null | void> => {
   const token = localStorage.getItem("token");
   if (token) {
     const expiresAt = localStorage.getItem("expiresAt");
-    if (typeof expiresAt !== "number" || expiresAt - Date.now() < 0) {
+    if (Number(expiresAt) - Date.now() / 1000 < 0) {
       // should remove token if its expired
       return signOut();
-    } else if (
-      typeof expiresAt === "number" &&
-      expiresAt - Date.now() < 10 * 60 * 1000
-    ) {
+    } else if (Number(expiresAt) - Date.now() / 1000 < 10 * 60 * 1000) {
       // should refresh token if it expires in next 10 minutes
       await authenticate(token);
     }
@@ -49,5 +46,6 @@ export const authenticate = async (
 export const signOut = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("expiresAt");
-  // TODO: refresh store state or page
+
+  window.location.href = baseUrl;
 };
