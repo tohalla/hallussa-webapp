@@ -6,16 +6,15 @@ import { apiUrl } from "../../config";
 
 export const CALL_API = Symbol("CALL_API");
 
-export type ResponsePayload<T = string | number> = {[key: string]: T;}
-  | Array<{[key: string]: T;}>;
-
 export interface ReduxAPICall extends Action {
   endpoint: string;
   method: "POST" | "GET" | "PUT" | "DEL";
   types: [symbol, symbol, symbol]; // [REQUEST, SUCCESS, FAILURE]
   body?: {[key: string]: any};
+  onSuccess?(payload: any, cached: boolean): any; // get triggered on succesfull response
+  onFailure?(payload: any): any; // gets triggered if the request fails
   attemptToFetchFromStore?(state: {[key: string]: any}): any;
-  transformResponse?(response: ResponsePayload): ResponsePayload;
+  transformResponse?(response: any): any;
 }
 
 /**
@@ -39,7 +38,9 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       method,
       types: [requestType, successType, failureType],
       body,
-      transformResponse = (response: ResponsePayload) => {
+      onSuccess,
+      onFailure,
+      transformResponse = (response: any): any => {
         if (Array.isArray(response)) {
           return indexBy(
             ((o: {[key: string]: any}) => o.id || o.hash),
@@ -52,10 +53,12 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
     } = action as ReduxAPICall;
 
     if (typeof attemptToFetchFromStore === "function") {
-      const response = attemptToFetchFromStore(getState());
-      if (response) {
+      const cached = attemptToFetchFromStore(getState());
+      if (cached) {
+        // trigger onSuccess if defined
+        if (typeof onSuccess === "function") { onSuccess(cached, true); }
         return next({
-          payload: response,
+          payload: cached,
           type: successType,
         }); // dispatch success action
       }
@@ -80,14 +83,15 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
         method,
       });
       if (response.ok) {
-        return next({
-          payload: transformResponse((await response.json())),
-          type: successType,
-        }); // dispatch success action
+        // trigger onSuccess if defined
+        const payload = transformResponse((await response.json()));
+        if (typeof onSuccess === "function") { onSuccess(payload, false); }
+        return next({payload, type: successType}); // dispatch success action
       } else {
         throw new Error("failed to fetch");
       }
     } catch (e) {
+      if (typeof onFailure === "function") { onFailure(e); }
       return next({type: failureType, payload: e}); // dispatch failure action
     }
   })();
