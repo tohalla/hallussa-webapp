@@ -14,16 +14,16 @@ export interface ReduxAPICall extends Action {
   onSuccess?(payload: any, cached: boolean): any; // get triggered on succesfull response
   onFailure?(payload: any): any; // gets triggered if the request fails
   attemptToFetchFromStore?(state: {[key: string]: any}): any;
-  transformResponse?(response: any): any;
+  transformResponse?(response: any): any; // writes returned object to the store
 }
 
 /**
  * returns true if action can be interpreted as API call
  */
 const isValid = ({endpoint, types, method}: {[key: string]: any}) =>
-  typeof endpoint === "string" &&
-  Array.isArray(types) &&
-  typeof method === "string";
+typeof endpoint === "string" &&
+Array.isArray(types) &&
+typeof method === "string";
 
 const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => {
   if (action.type !== CALL_API) {
@@ -50,7 +50,7 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
         return response;
       },
       attemptToFetchFromStore,
-    } = action as ReduxAPICall;
+      } = action as ReduxAPICall;
 
     if (typeof attemptToFetchFromStore === "function") {
       const cached = attemptToFetchFromStore(getState());
@@ -84,9 +84,9 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       });
       if (response.ok) {
         // trigger onSuccess if defined
-        const payload = transformResponse((await response.json()));
+        const payload = await response.json();
         if (typeof onSuccess === "function") { onSuccess(payload, false); }
-        return next({payload, type: successType}); // dispatch success action
+        return next({payload: transformResponse(payload), type: successType}); // dispatch success action
       } else {
         throw new Error("failed to fetch");
       }
