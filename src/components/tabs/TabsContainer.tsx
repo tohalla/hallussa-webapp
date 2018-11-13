@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { addTab, changeTab, closeTab } from "./actions";
+import { changeTab, closeTab, openTab } from "./actions";
 import TabComponent from "./TabComponent";
 
 interface TabsContainerProps {
@@ -15,21 +15,21 @@ interface TabsContainerProps {
     };
   };
   path: string;
-  addTab(): void;
-  changeTab(path: string, payload: { nextTab: string }): void;
-  closeTab(path: string, payload: { targetTab: string }): void;
+  openTab(): void;
+  changeTab(path: string, payload: string): void;
+  closeTab(path: string, payload: string): void;
 }
 
 class TabsContainer extends Component<TabsContainerProps> {
   public handleTabChange = (key: string, tab: any, isActive: boolean) => () => {
     if (!isActive) {
-      this.props.changeTab(last(this.props.path), { nextTab: key });
+      this.props.changeTab(last(this.props.path), key);
       // this.props.changeView()
     }
   }
 
   public handleTabClose = (key: string, tab: any, isActive: boolean) => () => {
-    this.props.closeTab(last(this.props.path), { targetTab: key });
+    this.props.closeTab(last(this.props.path), key);
   }
 
   public getPath = (key: string, tab: any) => {
@@ -68,8 +68,8 @@ class TabsContainer extends Component<TabsContainerProps> {
 export default connect<{}, {}, TabsContainerProps>(
   undefined,
   {
-    addTab,
     changeTab,
     closeTab,
+    openTab,
   }
 )(TabsContainer);

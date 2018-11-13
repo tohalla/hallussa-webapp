@@ -16,7 +16,7 @@ interface TabComponentProps {
 
 /**
  * TabComponent - Functional React Component
- * Renders a wrapper for the contents of a Tab (Tab or AddTab).
+ * Renders a wrapper for the contents of a Tab.
  * Generic onClick event on a Tab bubbles from this component.
  */
 const TabComponent = (props: TabComponentProps) => {

@@ -10,7 +10,7 @@ import {
   CreatePayload,
 } from "./reducer";
 
-export const addTab = (view: string, payload: CreatePayload) => ({
+export const openTab = (view: string, payload: CreatePayload) => ({
   payload,
   type: CREATE_TAB,
   view,

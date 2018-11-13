@@ -44,7 +44,7 @@ interface TabState {
 }
 
 /**
- * Create new tab and change to it.
+ * Create an editable tab and change to it.
  *
  * NOTE: Ramda assoc returns the a state with new tab and
  * this state is passed onwards as the state to changeTab.
@@ -54,7 +54,7 @@ const createTab = (state: object, view: string, payload: CreatePayload) =>
     assocPath(
       [view, "tabs", payload.tabName],
       omit(["activeTab", "view"], payload)
-      ),
+    ),
     view,
     payload.tabName
   );
