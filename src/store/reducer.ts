@@ -3,6 +3,7 @@ import { AnyAction, combineReducers, Reducer } from "redux";
 
 import { SET_ACTIVE_ACCOUNT } from "../account/actions";
 import accounts from "../account/reducer";
+import appliances from "../appliance/reducer";
 import organisations from "../organisation/reducer";
 
 const typeHandler = cond([
@@ -15,6 +16,7 @@ const session: Reducer = (state = {}, {payload, type}: AnyAction) =>
 
 const entities = combineReducers({
   accounts,
+  appliances,
   organisations,
 });
 
