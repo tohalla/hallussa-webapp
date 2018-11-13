@@ -15,7 +15,7 @@ import AccountMenu from "./AccountMenu";
 
 export default class Topbar extends React.Component {
   public state = {
-    expand: true,
+    expand: false,
     width: window.innerWidth,
   };
 
@@ -46,6 +46,7 @@ export default class Topbar extends React.Component {
           </div>
           {displayMenu &&
             <div className={navGroup}>
+              <Link className={navItem} to="/organisation">Organisation</Link>
               <Link className={navItem} to="/appliances">Appliances</Link>
               <Link className={navItem} to="/maintainers">Maintainers</Link>
             </div>

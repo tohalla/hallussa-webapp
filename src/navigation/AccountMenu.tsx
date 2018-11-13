@@ -1,37 +1,29 @@
-import {
-  navGroup,
-  navItem,
-} from "emotion-styles/topbar";
+import { navGroup, navItem } from "emotion-styles/topbar";
 import { path } from "ramda";
 import React from "react";
+
 import { connect } from "react-redux";
-
-import { AccountPayload, fetchAccount } from "../account/actions";
+import { AccountPayload } from "../account/actions";
 import { signOut } from "../auth/auth";
-import { ReduxAPICall } from "../store/middleware/api";
-import loadable from "../util/hoc/loadable";
+import { ReduxState } from "../store/store";
 
-interface AccountStateProps {
+export interface AccountMenuStateProps {
   account: AccountPayload;
 }
 
-interface AccountDispatchProps {
-  fetchAccount(): ReduxAPICall;
-}
-
-const mapStateToProps = (state: object) => ({
-  account: path(["account"], state),
+const mapStateToProps = (state: ReduxState) => ({
+  account: state.session.activeAccount && path(["entities", "accounts", state.session.activeAccount], state),
+  activeAccount: state.session.activeAccount,
 });
 
-export class AccountMenu extends React.Component<AccountDispatchProps & AccountStateProps> {
-  public componentWillMount = () => {
-    this.props.fetchAccount();
-  }
-
+class AccountMenu extends React.Component<AccountMenuStateProps> {
   public handleLogout = () => signOut();
 
   public render() {
-    const {firstName} = this.props.account;
+    if (typeof this.props.account === "undefined") {
+      return false;
+    }
+    const {firstName} = this.props.account;
     return (
       <div className={navGroup}>
         Hello, {firstName}
@@ -41,7 +33,4 @@ export class AccountMenu extends React.Component<AccountDispatchProps & AccountS
   }
 }
 
-export default connect(
-  mapStateToProps,
-  {fetchAccount}
-)(loadable(AccountMenu));
+export default connect(mapStateToProps)(AccountMenu as any);
