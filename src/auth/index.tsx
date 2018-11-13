@@ -1,4 +1,4 @@
-import "babel-polyfill";
+import "@babel/polyfill";
 import defaultContainer, { appContainer, centerContent } from "emotion-styles/container";
 import React from "react";
 import ReactDOM from "react-dom";
