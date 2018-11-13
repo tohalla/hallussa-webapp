@@ -5,7 +5,7 @@ export const FETCH_ORGANISATIONS_REQUEST = Symbol("FETCH_ORGANISATIONS_REQUEST")
 export const FETCH_ORGANISATIONS_SUCCESS = Symbol("FETCH_ORGANISATIONS_SUCCESS");
 export const FETCH_ORGANISATIONS_FAILURE = Symbol("FETCH_ORGANISATIONS_FAILURE");
 
-export const fetchOrganisations = (bypassCache = false): ReduxAPICall => ({
+export const fetchOrganisations = ({bypassCache = false} = {}): ReduxAPICall => ({
   attemptToFetchFromStore: bypassCache ? undefined : path(["entities", "organisations"]),
   endpoint: "/organisations",
   method: "GET",
