@@ -1,14 +1,14 @@
-import { assoc, assocPath, cond, dissocPath, equals, mergeDeepRight, omit, T } from "ramda";
+import { assoc, assocPath, cond, dissocPath, equals, last, omit, T } from "ramda";
 import { AnyAction } from "redux";
 
 import {
   CHANGE_TAB_TO,
   CLOSE_ACTIVE_TAB,
-  CREATE_NEW_TAB,
+  CREATE_TAB,
 } from "./actionTypes";
 
 export interface TabAction extends AnyAction {
-  path: string;
+  view: string;
 }
 
 export interface CreatePayload {
@@ -16,6 +16,7 @@ export interface CreatePayload {
   createContent: any;
   createDrawer: any;
   createLabel: any;
+  tabName: string;
 }
 
 interface CreateAction extends TabAction {
@@ -48,37 +49,34 @@ interface TabState {
  * NOTE: Ramda assoc returns the a state with new tab and
  * this state is passed onwards as the state to changeTab.
  */
-const createTab = (state: object, payload: CreatePayload) =>
+const createTab = (state: object, view: string, payload: CreatePayload) =>
   changeTab(
-    assocPath(["tabs", "new_tab"], {
-      ...omit(["activeTab"], payload),
-      sticky: true,
-    }, state),
-    {
-      nextTab: "new_tab",
-    }
+    assocPath(
+      [view, "tabs", payload.tabName],
+      omit(["activeTab", "view"], payload)
+      ),
+    view,
+    payload.tabName
   );
 
 /**
  * Changes the active tab.
  */
-const changeTab = (state: TabState = {}, payload: ChangePayload) =>
-  assoc("activeTab", payload.nextTab, state);
+const changeTab = (state: TabState = {}, view: string, payload: string) =>
+  assocPath([view, "activeTab"], payload, state);
 
 /**
  * Closes an open tab from tabs.
  */
-const closeTab = (state: TabState = {}, payload: ClosePayload) =>
-  dissocPath(["tabs", payload.targetTab], state);
+const closeTab = (state: TabState = {}, view: string, payload: string) =>
+  dissocPath([view, "tabs", payload], state);
 
 const typeHandler = cond([
-  [equals(CREATE_NEW_TAB), (type, state, payload) => createTab(state, payload)],
-  [equals(CHANGE_TAB_TO), (type, state, payload) => changeTab(state, payload)],
-  [equals(CLOSE_ACTIVE_TAB), (type, state, payload) => closeTab(state, payload)],
-  [T, (type, state, payload) => state],
+  [equals(CREATE_TAB), (type, state, view, payload) => createTab(state, view, payload)],
+  [equals(CHANGE_TAB_TO), (type, state, view, payload) => changeTab(state, view, payload)],
+  [equals(CLOSE_ACTIVE_TAB), (type, state, view, payload) => closeTab(state, view, payload)],
+  [T, (type, state, view, payload) => state],
 ]);
 
-const reducer = (path: string[], state: object, {payload, type}: TabAction) =>
-  typeHandler(type, state, payload);
-
-export default reducer;
+export default (state = {}, { view, payload, type }: TabAction) =>
+  typeHandler(type, state, view, payload);

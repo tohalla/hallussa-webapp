@@ -1,3 +1,4 @@
+import { last } from "ramda";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -15,25 +16,25 @@ interface TabsContainerProps {
   };
   path: string;
   addTab(): void;
-  changeTab(payload: { nextTab: string }, path: string): void;
-  closeTab(payload: { targetTab: string }, path: string): void;
+  changeTab(path: string, payload: { nextTab: string }): void;
+  closeTab(path: string, payload: { targetTab: string }): void;
 }
 
 class TabsContainer extends Component<TabsContainerProps> {
   public handleTabChange = (key: string, tab: any, isActive: boolean) => () => {
     if (!isActive) {
-      this.props.changeTab({ nextTab: key }, this.props.path);
+      this.props.changeTab(last(this.props.path), { nextTab: key });
       // this.props.changeView()
     }
   }
 
   public handleTabClose = (key: string, tab: any, isActive: boolean) => () => {
-    this.props.closeTab({ targetTab: key }, this.props.path);
+    this.props.closeTab(last(this.props.path), { targetTab: key });
   }
 
   public getPath = (key: string, tab: any) => {
     const { path } = this.props;
-    return `/${path[path.length - 1]}/${key}`;
+    return `/${last(path)}/${key}`;
   }
 
   public renderTab = (key: string, tab: { label: string }) => {

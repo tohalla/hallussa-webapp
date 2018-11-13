@@ -4,14 +4,13 @@ import thunk from "redux-thunk";
 import initialState from "./initialState";
 import api from "./middleware/api";
 
-import appliances from "../appliances/tabs/reducer";
+import views from "../components/tabs/reducer";
 
 export default createStore(
   combineReducers({
-    views: combineReducers({
-      appliances,
-    }),
+    views,
   }),
   initialState,
-  applyMiddleware(thunk, api)
+  applyMiddleware(thunk, api),
+  // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );

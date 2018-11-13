@@ -1,7 +1,7 @@
 import {
   CHANGE_TAB_TO,
   CLOSE_ACTIVE_TAB,
-  CREATE_NEW_TAB,
+  CREATE_TAB,
 } from "./actionTypes";
 
 import {
@@ -10,20 +10,20 @@ import {
   CreatePayload,
 } from "./reducer";
 
-export const addTab = (payload: CreatePayload, path: string) => ({
-  path,
+export const addTab = (view: string, payload: CreatePayload) => ({
   payload,
-  type: CREATE_NEW_TAB,
+  type: CREATE_TAB,
+  view,
 });
 
-export const closeTab = (payload: ClosePayload, path: string) => ({
-  path,
+export const closeTab = (view: string, payload: ClosePayload) => ({
   payload,
   type: CLOSE_ACTIVE_TAB,
+  view,
 });
 
-export const changeTab = (payload: ChangePayload, path: string) => ({
-  path,
+export const changeTab = (view: string, payload: ChangePayload) => ({
   payload,
   type: CHANGE_TAB_TO,
+  view,
 });
