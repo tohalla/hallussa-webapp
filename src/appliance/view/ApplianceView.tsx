@@ -7,8 +7,9 @@ export default class ApplianceView extends Component {
   public render() {
     return (
       <div>
-        <ApplianceTabs />
-        <ApplianceList />
+        {/* <ApplianceTabs />
+        <ApplianceList /> */}
+        Hello world!
       </div>
     )
   }

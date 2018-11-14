@@ -23,13 +23,9 @@ interface Props extends ViewDispatchProps {
 class DetailsView extends Component<ViewDispatchProps> {
   public constructor(props: Props) {
     super(props);
-    // console.log(props);
     const {
       activeTab,
       tab: tabName,
-      // tab: {
-      //   key: tabName,
-      // },
     } = props;
     this.props.openTab(
       "appliances",
@@ -57,12 +53,6 @@ class DetailsView extends Component<ViewDispatchProps> {
 const mapStateToProps = (state: object, ownProps: any) => ({
   activeTab: path(["views", "appliances", "activeTab"], state),
   tab: last(path(["location", "pathname"], ownProps) as string),
-  // tab: {
-  //   details: (
-  //     path(["views", "appliances", "tabs", last(path(["location", "pathname"], ownProps) as string) as string], state)
-  //   ),
-  //   key: last(path(["location", "pathname"], ownProps) as string),
-  // },
 });
 
 export default connect(
