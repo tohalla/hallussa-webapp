@@ -7,24 +7,22 @@ import { changeTab, closeTab, createTab, TabPayload } from "./actions";
 import TabComponent from "./TabComponent";
 
 interface Props {
-  tabs: {
-    [key: string]: TabPayload
-  };
+  tabs: {[key: string]: TabPayload};
   view: string;
 }
 
 interface DispatchProps {
-  closeTab(view: string, payload: TabPayload): any;
-  changeTab(view: string, payload: TabPayload): void;
+  closeTab(view: string, payload: string): any;
+  changeTab(view: string, payload: string): void;
 }
 
 class TabsContainer extends Component<Props & DispatchProps> {
   public handleTabChange = (tab: TabPayload) => () => {
-    this.props.changeTab(this.props.view, tab);
+    this.props.changeTab(this.props.view, tab.key);
   }
 
   public handleTabClose = (tab: TabPayload) => () => {
-    this.props.closeTab(this.props.view, tab);
+    this.props.closeTab(this.props.view, tab.key);
   }
 
   public getPath = (tab: TabPayload) => {
@@ -57,7 +55,7 @@ class TabsContainer extends Component<Props & DispatchProps> {
   }
 }
 
-export default connect<{}, {}, Props>(
+export default connect(
   undefined,
   {
     changeTab,
