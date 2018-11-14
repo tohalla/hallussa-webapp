@@ -1,9 +1,12 @@
 import { applyMiddleware, compose, createStore } from "redux";
 import thunk from "redux-thunk";
 
-import { fetchAccount } from "../account/actions";
+import { AccountPayload, fetchAccount } from "../account/actions";
+import { AppliancePayload } from "../appliance/actions";
+import { MaintainerPayload } from "../maintainer/actions";
+import { OrganisationPayload } from "../organisation/actions";
 import api from "./middleware/api";
-import reducer from "./reducer";
+import reducer, { EntityGroup } from "./reducer";
 
 const composeEnhancers =  process.env.NODE_ENV === "development"
   && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
@@ -12,10 +15,10 @@ const composeEnhancers =  process.env.NODE_ENV === "development"
 
 export interface ReduxState {
   entities: {
-    accounts?: {},
-    appliances?: {},
-    maintainers?: {},
-    organisations?: {}
+    accounts?: EntityGroup<AccountPayload>,
+    appliances?: EntityGroup<AppliancePayload>,
+    maintainers?: EntityGroup<MaintainerPayload>,
+    organisations?: EntityGroup<OrganisationPayload>
   };
   session: {
     activeAccount?: number;

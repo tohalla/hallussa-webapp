@@ -6,6 +6,7 @@ import {
   FETCH_ORGANISATIONS_FAILURE,
   FETCH_ORGANISATIONS_REQUEST,
   FETCH_ORGANISATIONS_SUCCESS,
+  OrganisationAction,
 } from "./actions";
 
 const typeHandler = cond([
@@ -17,7 +18,10 @@ const typeHandler = cond([
   [T, (type, state, payload) => state],
 ]);
 
-const reducer: Reducer = (state = null, {payload, type}: AnyAction) =>
+const reducer: Reducer<object, OrganisationAction> = (
+  state = {},
+  {payload, type}: OrganisationAction
+) =>
   typeHandler(type, state, payload);
 
 export default reducer;

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { changeTab, closeTab, openTab, TabPayload } from "./actions";
+import { changeTab, closeTab, createTab, TabPayload } from "./actions";
 import TabComponent from "./TabComponent";
 
 interface Props {
@@ -14,7 +14,6 @@ interface Props {
 }
 
 interface DispatchProps {
-  openTab(): void;
   closeTab(view: string, payload: TabPayload): any;
   changeTab(view: string, payload: TabPayload): void;
 }
@@ -63,6 +62,6 @@ export default connect<{}, {}, Props>(
   {
     changeTab,
     closeTab,
-    openTab,
+    createTab,
   }
 )(TabsContainer);

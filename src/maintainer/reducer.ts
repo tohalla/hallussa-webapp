@@ -6,6 +6,7 @@ import {
   FETCH_MAINTAINERS_FAILURE,
   FETCH_MAINTAINERS_REQUEST,
   FETCH_MAINTAINERS_SUCCESS,
+  MaintainerAction,
 } from "./actions";
 
 const typeHandler = cond([
@@ -17,7 +18,10 @@ const typeHandler = cond([
   [T, (type, state, payload) => state],
 ]);
 
-const reducer: Reducer = (state = null, {payload, type}: AnyAction) =>
+const reducer: Reducer<object, MaintainerAction> = (
+  state = {},
+  {payload, type}: MaintainerAction
+) =>
   typeHandler(type, state, payload);
 
 export default reducer;

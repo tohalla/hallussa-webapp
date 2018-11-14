@@ -5,6 +5,22 @@ export const FETCH_ORGANISATIONS_REQUEST = "FETCH_ORGANISATIONS_REQUEST";
 export const FETCH_ORGANISATIONS_SUCCESS = "FETCH_ORGANISATIONS_SUCCESS";
 export const FETCH_ORGANISATIONS_FAILURE = "FETCH_ORGANISATIONS_FAILURE";
 
+export interface OrganisationPayload {
+  id: string;
+  name: string;
+  organisationIdentifier: string;
+  createdAt: string;
+  updatedAt: string;
+  maintainers: [number];
+  appliances: [number];
+  accounts: [number];
+}
+
+export interface OrganisationAction {
+  type: string;
+  payload: OrganisationPayload;
+}
+
 export const fetchOrganisations = ({bypassCache = false} = {}): ReduxAPICall => ({
   attemptToFetchFromStore: bypassCache ? undefined : path(["entities", "organisations"]),
   endpoint: "/organisations",

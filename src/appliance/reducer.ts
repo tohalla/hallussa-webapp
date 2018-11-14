@@ -1,8 +1,9 @@
 import { cond, merge, T } from "ramda";
-import { AnyAction, Reducer } from "redux";
+import { Reducer } from "redux";
 
 import { anyEquals } from "../util/utilityFunctions";
 import {
+  ApplianceAction,
   FETCH_APPLIANCES_FAILURE,
   FETCH_APPLIANCES_REQUEST,
   FETCH_APPLIANCES_SUCCESS,
@@ -17,7 +18,10 @@ const typeHandler = cond([
   [T, (type, state, payload) => state],
 ]);
 
-const reducer: Reducer = (state = null, {payload, type}: AnyAction) =>
+const reducer: Reducer<object, ApplianceAction> = (
+  state = {},
+  {payload, type}: ApplianceAction
+) =>
   typeHandler(type, state, payload);
 
 export default reducer;

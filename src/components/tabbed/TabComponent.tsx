@@ -5,7 +5,7 @@ import { TabPayload } from "./actions";
 // TODO: Import from styles repository
 const styledTabComponent = "";
 
-interface TabComponentProps extends TabPayload {
+interface Props extends TabPayload {
   children: ReactChild[] | ReactChild;
   handleOpen(): any;
   handleClose(): any;
@@ -16,7 +16,7 @@ interface TabComponentProps extends TabPayload {
  * Renders a wrapper for the contents of a Tab.
  * Generic onClick event on a Tab bubbles from this component.
  */
-const TabComponent = (props: TabComponentProps) => {
+const TabComponent = (props: Props) => {
   const { children, sticky, handleClose, handleOpen } = props;
   const className = classnames({
     // TODO: [activeTabStyle]:

@@ -9,25 +9,25 @@ export interface TabAction extends AnyAction {
 }
 
 export interface TabPayload {
-  key: string;
+  key: string | number;
   label: string;
   path?: string;
   sticky?: boolean;
 }
 
-export const openTab = (view: string, payload: TabPayload) => ({
+export const createTab = (view: string, payload: TabPayload) => ({
   payload,
   type: OPEN_TAB,
   view,
 });
 
-export const closeTab = (view: string, payload: string) => ({
+export const closeTab = (view: string, payload: string | number) => ({
   payload,
   type: CLOSE_TAB,
   view,
 });
 
-export const changeTab = (view: string, payload: string) => ({
+export const changeTab = (view: string, payload: string | number) => ({
   payload,
   type: CHANGE_TAB,
   view,
