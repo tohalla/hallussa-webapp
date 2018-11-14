@@ -2,8 +2,7 @@ import { head, last, path } from "ramda";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { openTab } from "../../components/tabs/actions";
-import { CreatePayload } from "../../components/tabs/reducer";
+import { CreatePayload, openTab } from "../../components/tabs/actions";
 
 interface ViewDispatchProps {
   activeTab: string;
@@ -50,7 +49,7 @@ class DetailsView extends Component<ViewDispatchProps> {
         <div>Details of an appliance</div>
         <button onClick={this.handleClick}>Click to edit</button>
       </>
-    )
+    );
   }
 }
 
@@ -59,7 +58,7 @@ const mapStateToProps = (state: object, ownProps: any) => ({
   tab: last(path(["location", "pathname"], ownProps) as string),
   // tab: {
   //   details: (
-  //     path(["views", "appliances", "tabs", last(path(["location", "pathname"], ownProps) as string) as string], state)
+//     path(["views", "appliances", "tabs", last(path(["location", "pathname"], ownProps) as string) as string], state)
   //   ),
   //   key: last(path(["location", "pathname"], ownProps) as string),
   // },

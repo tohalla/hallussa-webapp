@@ -1,14 +1,25 @@
-import {
-  CHANGE_TAB_TO,
-  CLOSE_ACTIVE_TAB,
-  CREATE_TAB,
-} from "./actionTypes";
+import { AnyAction } from "redux";
 
-import {
-  ChangePayload,
-  ClosePayload,
-  CreatePayload,
-} from "./reducer";
+export const CREATE_TAB = Symbol("CREATE_TAB");
+export const CLOSE_ACTIVE_TAB = Symbol("CLOSE_ACTIVE_TAB");
+export const CHANGE_TAB_TO = Symbol("CHANGE_TAB_TO");
+
+export interface TabAction extends AnyAction {
+  view: string;
+}
+
+export interface CreatePayload {
+  activeTab: string;
+  tabName: string;
+}
+
+export interface ChangePayload {
+  nextTab: string;
+}
+
+export interface ClosePayload {
+  targetTab: string;
+}
 
 export const openTab = (view: string, payload: CreatePayload) => ({
   payload,
