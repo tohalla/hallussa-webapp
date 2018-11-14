@@ -39,15 +39,15 @@ export default {
           type: "list",
           props: {},
         },
-        1: { // Appliance id
-          activeDrawer: "summary",
-          label: "My first appliance",
-          sticky: false,
-          type: "details",
-          props: {
-            unsaved: true,
-          },
-        },
+        // 1: { // Appliance id
+        //   activeDrawer: "summary",
+        //   label: "My first appliance",
+        //   sticky: false,
+        //   type: "details",
+        //   props: {
+        //     unsaved: true,
+        //   },
+        // },
         new: {
           activeDrawer: "summary",
           label: "New appliance",
