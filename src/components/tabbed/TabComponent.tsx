@@ -4,12 +4,11 @@ import React, { ReactChild } from "react";
 // TODO: Import from styles repository
 const styledTabComponent = "";
 const activeTabStyle = "";
-const closeClassName = "";
 
 interface TabComponentProps {
-  active?: boolean;
+  active: boolean;
   children: ReactChild[] | ReactChild;
-  closable: boolean;
+  sticky?: boolean;
   onClick(): void;
   onClose(): void;
 }
@@ -20,17 +19,19 @@ interface TabComponentProps {
  * Generic onClick event on a Tab bubbles from this component.
  */
 const TabComponent = (props: TabComponentProps) => {
-  const { active, children, closable, onClose, onClick } = props;
+  const { active, children, sticky, onClose, onClick } = props;
   const className = classnames({
-    activeTabStyle: active,
+    [activeTabStyle]: active,
     styledTabComponent,
   });
 
   return (
     <div className={className} onClick={onClick}>
       {children}
-      {closable &&
-        <span className={closeClassName} onClick={onClose} />
+      {!sticky &&
+        <span className="material-icons" onClick={onClose}>
+          close
+        </span>
       }
     </div>
   );

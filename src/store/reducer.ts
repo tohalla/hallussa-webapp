@@ -4,7 +4,7 @@ import { AnyAction, combineReducers, Reducer } from "redux";
 import { SET_ACTIVE_ACCOUNT } from "../account/actions";
 import accounts from "../account/reducer";
 import appliances from "../appliance/reducer";
-import views from "../components/tabs/reducer";
+import views from "../components/tabbed/reducer";
 import maintainers from "../maintainer/reducer";
 import organisations from "../organisation/reducer";
 

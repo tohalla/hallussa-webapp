@@ -1,7 +1,7 @@
 import { path as p } from "ramda";
 import React from "react";
 import { connect } from "react-redux";
-import TabsContainer from "../../components/tabs/TabsContainer";
+import TabsContainer from "../../components/tabbed/TabsContainer";
 
 const Tabs = (props: any) => <TabsContainer {...props} />;
 
@@ -13,8 +13,6 @@ const mapStateToProps = (state: any) => ({
   tabs: p([...path, "tabs"], state),
 });
 ​
-const ApplianceTabs = connect(
+export default connect(
   mapStateToProps
 )(Tabs);
-
-export default ApplianceTabs;

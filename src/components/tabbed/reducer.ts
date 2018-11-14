@@ -3,23 +3,9 @@ import { assocPath, cond, dissocPath, equals, T } from "ramda";
 import {
   CHANGE_TAB_TO,
   CLOSE_ACTIVE_TAB,
-  CREATE_TAB,
-  CreatePayload,
+  OPEN_TAB,
   TabAction
 } from "./actions";
-
-/**
- * Create an editable tab and change to it.
- *
- * NOTE: Ramda assoc returns the a state with new tab and
- * this state is passed onwards as the state to changeTab.
- */
-const createTab = (state: object, view: string, payload: CreatePayload) =>
-  changeTab(
-    assocPath([view, "tabs", payload.tabName], state),
-    view,
-    payload.tabName
-  );
 
 // Changes the active tab.
 const changeTab = (state = {}, view: string, payload: string) =>
@@ -30,7 +16,7 @@ const closeTab = (state = {}, view: string, payload: string) =>
   dissocPath([view, "tabs", payload], state);
 
 const typeHandler = cond([
-  [equals(CREATE_TAB), (type, state, view, payload) => createTab(state, view, payload)],
+  [equals(OPEN_TAB), (type, state, view, payload) => assocPath([view, "tabs", payload.key], payload, state)] ,
   [equals(CHANGE_TAB_TO), (type, state, view, payload) => changeTab(state, view, payload)],
   [equals(CLOSE_ACTIVE_TAB), (type, state, view, payload) => closeTab(state, view, payload)],
   [T, (type, state, view, payload) => state],

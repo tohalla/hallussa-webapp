@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Prompt } from "react-router";
 
-interface ViewProps {
+interface NewApplianceViewProps {
   props: {
     unsaved: boolean;
   };
@@ -14,7 +14,7 @@ const setUnsaved = () => {
   // TODO:  toggle unsaved state;
 };
 
-class NewView extends Component<ViewProps> {
+class NewApplianceView extends Component<NewApplianceViewProps> {
   public handleClick = () => {
     this.props.setUnsaved();
   }
@@ -38,9 +38,9 @@ const mapStateToProps = (state: object) => ({
   props: path(["views", "appliances", "tabs", "new", "props"], state),
 });
 
-export default connect<{}, {}, ViewProps>(
+export default connect(
   mapStateToProps,
   {
     setUnsaved,
   }
-)(NewView);
+)(NewApplianceView as any);

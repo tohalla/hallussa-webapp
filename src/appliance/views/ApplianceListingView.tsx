@@ -2,12 +2,12 @@ import { path } from "ramda";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-interface ListingProps {
+interface ApplianceListingProps {
   appliances: any;
   maintainers: any;
 }
 
-class ListingView extends Component<ListingProps> {
+class ApplianceListingView extends Component<ApplianceListingProps> {
   public render() {
     return (
       <div>List of Appliances</div>
@@ -22,4 +22,4 @@ const mapStateToProps = (state = {}) => ({
 
 export default connect(
   mapStateToProps
-)(ListingView);
+)(ApplianceListingView);

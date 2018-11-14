@@ -3,16 +3,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { changeTab, closeTab, openTab } from "./actions";
+import { changeTab, closeTab, openTab, TabPayload } from "./actions";
 import TabComponent from "./TabComponent";
 
 interface TabsContainerProps {
   activeTab: string;
   tabs: {
-    [key: string]: {
-      label: string;
-      sticky?: boolean;
-    };
+    [key: string]: TabPayload
   };
   path: string;
   openTab(): void;
@@ -31,24 +28,23 @@ class TabsContainer extends Component<TabsContainerProps> {
     this.props.closeTab(last(this.props.path), key);
   }
 
-  public getPath = (key: string, tab: any) => {
+  public getPath = (tab: TabPayload) => {
     const { path } = this.props;
-    return `/${last(path)}/${key}`;
+    return `/${last(path)}/${tab.path || tab.key}`;
   }
 
-  public renderTab = (key: string, tab: { label: string }) => {
+  public renderTab = (key: string, tab: TabPayload) => {
     const { activeTab } = this.props;
     const { label } = tab;
     const isActive = activeTab === key;
     return (
       <TabComponent
+        {...tab}
         onClick={this.handleTabChange(key, tab, isActive)}
-        closable={true}
         onClose={this.handleTabClose(key, tab, isActive)}
-        key={key}
         active={isActive}
       >
-        <Link to={this.getPath(key, tab)}>
+        <Link to={this.getPath(tab)}>
           {label}
         </Link>
       </TabComponent>
@@ -57,7 +53,6 @@ class TabsContainer extends Component<TabsContainerProps> {
 
   public render() {
     const { tabs } = this.props;
-    console.log(tabs);
     return (
       <div>
         {Object.keys(tabs).map((k) => this.renderTab(k, tabs[k]))}
