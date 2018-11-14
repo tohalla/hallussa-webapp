@@ -21,7 +21,6 @@ class ApplianceViewProps extends Component<ApplianceViewProps> {
   }
 
   public render() {
-    console.log(this.props);
     return (
       <>
         <div>Details of an appliance</div>
@@ -32,7 +31,6 @@ class ApplianceViewProps extends Component<ApplianceViewProps> {
 }
 
 const mapStateToProps = (state: object, ownProps: any) => ({
-  activeTab: path(["views", "appliances", "activeTab"], state),
   tab: last(path(["location", "pathname"], ownProps) as string),
 });
 

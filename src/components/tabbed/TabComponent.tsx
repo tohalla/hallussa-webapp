@@ -1,16 +1,14 @@
 import classnames from "classnames";
 import React, { ReactChild } from "react";
+import { TabPayload } from "./actions";
 
 // TODO: Import from styles repository
 const styledTabComponent = "";
-const activeTabStyle = "";
 
-interface TabComponentProps {
-  active: boolean;
+interface TabComponentProps extends TabPayload {
   children: ReactChild[] | ReactChild;
-  sticky?: boolean;
-  onClick(): void;
-  onClose(): void;
+  handleOpen(): any;
+  handleClose(): any;
 }
 
 /**
@@ -19,17 +17,17 @@ interface TabComponentProps {
  * Generic onClick event on a Tab bubbles from this component.
  */
 const TabComponent = (props: TabComponentProps) => {
-  const { active, children, sticky, onClose, onClick } = props;
+  const { children, sticky, handleClose, handleOpen } = props;
   const className = classnames({
-    [activeTabStyle]: active,
+    // TODO: [activeTabStyle]:
     styledTabComponent,
   });
 
   return (
-    <div className={className} onClick={onClick}>
+    <div className={className} onClick={handleOpen}>
       {children}
       {!sticky &&
-        <span className="material-icons" onClick={onClose}>
+        <span className="material-icons" onClick={handleClose}>
           close
         </span>
       }

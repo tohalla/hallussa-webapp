@@ -1,4 +1,4 @@
-import { last } from "ramda";
+import { map, values } from "ramda";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -6,43 +6,40 @@ import { Link } from "react-router-dom";
 import { changeTab, closeTab, openTab, TabPayload } from "./actions";
 import TabComponent from "./TabComponent";
 
-interface TabsContainerProps {
-  activeTab: string;
+interface Props {
   tabs: {
     [key: string]: TabPayload
   };
-  path: string;
-  openTab(): void;
-  changeTab(path: string, payload: string): void;
-  closeTab(path: string, payload: string): void;
+  view: string;
 }
 
-class TabsContainer extends Component<TabsContainerProps> {
-  public handleTabChange = (key: string, tab: any, isActive: boolean) => () => {
-    if (!isActive) {
-      this.props.changeTab(last(this.props.path), key);
-    }
+interface DispatchProps {
+  openTab(): void;
+  closeTab(view: string, payload: TabPayload): any;
+  changeTab(view: string, payload: TabPayload): void;
+}
+
+class TabsContainer extends Component<Props & DispatchProps> {
+  public handleTabChange = (tab: TabPayload) => () => {
+    this.props.changeTab(this.props.view, tab);
   }
 
-  public handleTabClose = (key: string, tab: any, isActive: boolean) => () => {
-    this.props.closeTab(last(this.props.path), key);
+  public handleTabClose = (tab: TabPayload) => () => {
+    this.props.closeTab(this.props.view, tab);
   }
 
   public getPath = (tab: TabPayload) => {
-    const { path } = this.props;
-    return `/${last(path)}/${tab.path || tab.key}`;
+    const { view } = this.props;
+    return view === tab.key ? "/" : `/${tab.key}`;
   }
 
-  public renderTab = (key: string, tab: TabPayload) => {
-    const { activeTab } = this.props;
+  public renderTab = (tab: TabPayload) => {
     const { label } = tab;
-    const isActive = activeTab === key;
     return (
       <TabComponent
         {...tab}
-        onClick={this.handleTabChange(key, tab, isActive)}
-        onClose={this.handleTabClose(key, tab, isActive)}
-        active={isActive}
+        handleOpen={this.handleTabChange(tab)}
+        handleClose={this.handleTabClose(tab)}
       >
         <Link to={this.getPath(tab)}>
           {label}
@@ -55,13 +52,13 @@ class TabsContainer extends Component<TabsContainerProps> {
     const { tabs } = this.props;
     return (
       <div>
-        {Object.keys(tabs).map((k) => this.renderTab(k, tabs[k]))}
+        {map<TabPayload, JSX.Element>(this.renderTab, values(tabs))}
       </div>
     );
   }
 }
 
-export default connect<{}, {}, TabsContainerProps>(
+export default connect<{}, {}, Props>(
   undefined,
   {
     changeTab,
