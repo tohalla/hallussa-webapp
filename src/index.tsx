@@ -8,7 +8,7 @@ import "whatwg-fetch"; // fetch polyfill, replaces standard fetch
 import { authenticate } from "./auth/auth";
 import store from "./store/store";
 
-import ApplianceView from "./appliances/router";
+import ApplianceView from "./appliances";
 
 // TODO: nginx jwt check
 (async () => {

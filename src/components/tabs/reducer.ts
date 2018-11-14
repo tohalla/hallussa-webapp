@@ -13,9 +13,6 @@ export interface TabAction extends AnyAction {
 
 export interface CreatePayload {
   activeTab: string;
-  createContent: any;
-  createDrawer: any;
-  createLabel: any;
   tabName: string;
 }
 
@@ -53,7 +50,7 @@ const createTab = (state: object, view: string, payload: CreatePayload) =>
   changeTab(
     assocPath(
       [view, "tabs", payload.tabName],
-      omit(["activeTab", "view"], payload)
+      state
     ),
     view,
     payload.tabName
