@@ -16,9 +16,7 @@ const typeHandler = cond([
 ]);
 
 export interface EntityGroup<T> {
-  [key: string]: {
-    [key: string]: T
-  };
+  [key: string]: T;
 }
 
 const session: Reducer = (state = {}, {payload, type}: AnyAction) =>

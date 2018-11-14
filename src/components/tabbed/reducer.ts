@@ -2,7 +2,7 @@ import { assocPath, cond, dissocPath, equals, T } from "ramda";
 
 import {
   CLOSE_TAB,
-  OPEN_TAB,
+  CREATE_TAB,
   TabAction
 } from "./actions";
 
@@ -11,7 +11,7 @@ const closeTab = (state = {}, view: string, payload: string) =>
   dissocPath([view, "tabs", payload], state);
 
 const typeHandler = cond([
-  [equals(OPEN_TAB), (type, state, view, payload) => assocPath([view, "tabs", payload.key], payload, state)] ,
+  [equals(CREATE_TAB), (type, state, view, payload) => assocPath([view, "tabs", payload.key], payload, state)] ,
   [equals(CLOSE_TAB), (type, state, view, payload) => closeTab(state, view, payload)],
   [T, (type, state, view, payload) => state],
 ]);

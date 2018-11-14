@@ -18,7 +18,7 @@ const typeHandler = cond([
   [T, (type, state, payload) => state],
 ]);
 
-const reducer: Reducer<object, AccountAction> = (
+const reducer: Reducer<{[key: number]: any}, AccountAction> = (
   state = {},
   {payload, type}: AccountAction
 ) =>
