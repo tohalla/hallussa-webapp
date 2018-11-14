@@ -7,11 +7,11 @@ interface ListingProps {
   maintainers: any;
 }
 
-class ListingView extends Component<ListingProps>{
+class ListingView extends Component<ListingProps> {
   public render() {
     return (
       <div>List of Appliances</div>
-    )
+    );
   }
 }
 

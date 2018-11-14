@@ -11,12 +11,11 @@ interface ViewProps {
 }
 
 const setUnsaved = () => {
-  console.log("Would toggle unsaved state");
-}
+  // TODO:  toggle unsaved state;
+};
 
 class NewView extends Component<ViewProps> {
   public handleClick = () => {
-    console.log("Same logic as in this function would be part of a form.");
     this.props.setUnsaved();
   }
 

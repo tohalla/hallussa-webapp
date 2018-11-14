@@ -1,7 +1,7 @@
 import React from "react";
 import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 
-import ApplianceView from "./appliance/view/ApplianceView";
+import ApplianceRoot from "./appliance/ApplianceRoot";
 import Topbar from "./navigation/Topbar";
 import Organisations from "./organisation/Organisations";
 
@@ -13,7 +13,7 @@ export default () => (
       <Topbar />
       <Switch>
         <Route path="/organisation" component={Organisations} />
-        <Route path="/appliances" component={ApplianceView} />
+        <Route path="/appliances" component={ApplianceRoot} />
         <Route path="/maintainers" component={PlaceHolder("Maintainers")} />
         <Redirect path="*" to="/organisation" />
       </Switch>

@@ -40,7 +40,7 @@ class DetailsView extends Component<ViewDispatchProps> {
   }
 
   public handleClick() {
-    console.log("todo");
+    // TODO
   }
 
   public render() {
