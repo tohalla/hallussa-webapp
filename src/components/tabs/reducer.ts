@@ -38,8 +38,14 @@ const typeHandler = cond([
 
 export default (
   state = {
-    appliances: {activeTab: undefined, tabs: []},
-    maintainers: {activeTab: undefined, tabs: []},
+    appliances: {activeTab: "appliances", tabs: {
+      appliances: {label: "Appliances", sticky: true},
+      newAppliance: {label: "", sticky: true},
+    }},
+    maintainers: {activeTab: "maintainers", tabs: {
+      maintainers: {label: "Maintainers", sticky: true},
+      new: {label: "", sticky: true},
+    }},
   },
   { view, payload, type }: TabAction
 ) =>

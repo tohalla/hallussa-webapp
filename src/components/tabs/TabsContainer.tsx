@@ -57,6 +57,7 @@ class TabsContainer extends Component<TabsContainerProps> {
 
   public render() {
     const { tabs } = this.props;
+    console.log(tabs);
     return (
       <div>
         {Object.keys(tabs).map((k) => this.renderTab(k, tabs[k]))}
