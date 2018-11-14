@@ -13,10 +13,20 @@ const composeEnhancers =  process.env.NODE_ENV === "development"
 export interface ReduxState {
   entities: {
     accounts?: {},
+    appliances?: {},
+    maintainers?: {},
     organisations?: {}
   };
   session: {
     activeAccount?: number;
+  };
+  views: {
+    appliances: {
+      tabs: {}
+    },
+    maintainers: {
+      tabs: {}
+    }
   };
 }
 
