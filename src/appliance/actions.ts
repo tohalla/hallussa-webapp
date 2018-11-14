@@ -1,4 +1,4 @@
-import { path } from "ramda";
+import { find } from "ramda";
 import { CALL_API, ReduxAPICall } from "../store/middleware/api";
 
 export const FETCH_APPLIANCES_REQUEST = "FETCH_APPLIANCES_REQUEST";
@@ -11,7 +11,7 @@ export interface AppliancePayload {
   name: string;
   createdAt: string;
   updatedAt: string;
-  maintainers: [number];
+  maintainers: ReadonlyArray<number>;
 }
 
 export interface ApplianceAction {
@@ -20,7 +20,11 @@ export interface ApplianceAction {
 }
 
 export const fetchAppliances = (organisation: number, {bypassCache = false} = {}): ReduxAPICall => ({
-  attemptToFetchFromStore: bypassCache ? undefined : path(["entities", "appliances"]),
+  attemptToFetchFromStore: bypassCache ? undefined : (state) =>
+    !Boolean(find(// check if store contains all maintainers defined in organisation
+      (appliance) => typeof state.entities.appliances[appliance] === "undefined",
+      state.entities.organisations[organisation].appliances
+    )) && state.entities.appliances,
   endpoint: `/organisations/${organisation}/appliances?eager=maintainers`,
   method: "GET",
   type: CALL_API,

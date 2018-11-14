@@ -11,7 +11,7 @@ export interface AccountPayload {
   firstName: string;
   lastName: string;
   email: string;
-  organisations: Array<{id: number, isAdmin: boolean}>;
+  organisations: ReadonlyArray<{id: number, isAdmin: boolean}>;
 }
 
 export interface AccountAction extends AnyAction {
