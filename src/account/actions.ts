@@ -7,13 +7,13 @@ export interface AccountPayload {
   email: string;
 }
 
-export const SET_ACTIVE_ACCOUNT = Symbol("SET_ACTIVE_ACCOUNT");
-export const FETCH_ACCOUNT_REQUEST = Symbol("FETCH_ACCOUNT_REQUEST");
-export const FETCH_ACCOUNT_SUCCESS = Symbol("FETCH_ACCOUNT_SUCCESS");
-export const FETCH_ACCOUNT_FAILURE = Symbol("FETCH_ACCOUNT_FAILURE");
+export const SET_ACTIVE_ACCOUNT = "SET_ACTIVE_ACCOUNT";
+export const FETCH_ACCOUNT_REQUEST = "FETCH_ACCOUNT_REQUEST";
+export const FETCH_ACCOUNT_SUCCESS = "FETCH_ACCOUNT_SUCCESS";
+export const FETCH_ACCOUNT_FAILURE = "FETCH_ACCOUNT_FAILURE";
 
 export interface AccountAction extends AnyAction {
-  type: symbol;
+  type: string;
   payload?: Partial<AccountPayload>;
 }
 

@@ -30,9 +30,9 @@ const closeTab = (state = {}, view: string, payload: string) =>
   dissocPath([view, "tabs", payload], state);
 
 const typeHandler = cond([
-  [equals<symbol>(CREATE_TAB), (type, state, view, payload) => createTab(state, view, payload)],
-  [equals<symbol>(CHANGE_TAB_TO), (type, state, view, payload) => changeTab(state, view, payload)],
-  [equals<symbol>(CLOSE_ACTIVE_TAB), (type, state, view, payload) => closeTab(state, view, payload)],
+  [equals(CREATE_TAB), (type, state, view, payload) => createTab(state, view, payload)],
+  [equals(CHANGE_TAB_TO), (type, state, view, payload) => changeTab(state, view, payload)],
+  [equals(CLOSE_ACTIVE_TAB), (type, state, view, payload) => closeTab(state, view, payload)],
   [T, (type, state, view, payload) => state],
 ]);
 

@@ -1,21 +1,14 @@
-import { AnyAction, applyMiddleware, compose, createStore, Dispatch } from "redux";
+import { applyMiddleware, compose, createStore } from "redux";
 import thunk from "redux-thunk";
 
 import { fetchAccount } from "../account/actions";
-import views from "../components/tabs/reducer";
 import api from "./middleware/api";
-import reducers from "./reducer";
+import reducer from "./reducer";
 
-const getStoreEnhancers = () => {
-  const enhancers = [applyMiddleware(thunk, api)];
-  if (
-    process.env.NODE_ENV === "development" &&
-    typeof (window as any).__REDUX_DEVTOOLS_EXTENSION__ === "function"
-  ) {
-    enhancers.push((window as any).__REDUX_DEVTOOLS_EXTENSION__());
-  }
-  return enhancers;
-};
+const composeEnhancers =  process.env.NODE_ENV === "development"
+  && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+    (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+  : compose;
 
 export interface ReduxState {
   entities: {
@@ -28,14 +21,14 @@ export interface ReduxState {
 }
 
 const store = createStore(
-  reducers,
-  compose(...getStoreEnhancers())
+  reducer,
+  composeEnhancers(applyMiddleware(thunk, api))
 );
 
 store.dispatch<any>(fetchAccount());
 
 if (module.hot) {
-  module.hot.accept("../reducers", () => store.replaceReducer(reducers));
+  module.hot.accept("../reducers", () => store.replaceReducer(reducer));
 }
 
 export default store;

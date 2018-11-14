@@ -9,7 +9,7 @@ import {
 } from "./actions";
 
 const typeHandler = cond([
-  [anyEquals<symbol>([
+  [anyEquals([
     FETCH_ORGANISATIONS_SUCCESS,
     FETCH_ORGANISATIONS_REQUEST,
     FETCH_ORGANISATIONS_FAILURE,

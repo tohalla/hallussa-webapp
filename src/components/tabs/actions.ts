@@ -1,8 +1,8 @@
 import { AnyAction } from "redux";
 
-export const CREATE_TAB = Symbol("CREATE_TAB");
-export const CLOSE_ACTIVE_TAB = Symbol("CLOSE_ACTIVE_TAB");
-export const CHANGE_TAB_TO = Symbol("CHANGE_TAB_TO");
+export const CREATE_TAB = "CREATE_TAB";
+export const CLOSE_ACTIVE_TAB = "CLOSE_ACTIVE_TAB";
+export const CHANGE_TAB_TO = "CHANGE_TAB_TO";
 
 export interface TabAction extends AnyAction {
   view: string;

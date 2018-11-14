@@ -9,7 +9,7 @@ import maintainers from "../maintainer/reducer";
 import organisations from "../organisation/reducer";
 
 const typeHandler = cond([
-  [equals<symbol>(SET_ACTIVE_ACCOUNT), (type, state, payload) => merge(state, {activeAccount: payload})],
+  [equals(SET_ACTIVE_ACCOUNT), (type, state, payload) => merge(state, {activeAccount: payload})],
   [T, (type, state, payload) => state],
 ]);
 
