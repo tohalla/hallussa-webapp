@@ -1,11 +1,11 @@
 import { applyMiddleware, compose, createStore } from "redux";
 import thunk from "redux-thunk";
 
-import { AccountPayload, fetchAccount } from "../account/actions";
+import { AccountAction, AccountPayload, fetchAccount } from "../account/actions";
 import { AppliancePayload } from "../appliance/actions";
 import { MaintainerPayload } from "../maintainer/actions";
-import { OrganisationPayload } from "../organisation/actions";
-import api from "./middleware/api";
+import { fetchOrganisations, OrganisationPayload, setActiveOrganisation } from "../organisation/actions";
+import api, { ReduxAPICall } from "./middleware/api";
 import reducer, { EntityGroup } from "./reducer";
 
 const composeEnhancers =  process.env.NODE_ENV === "development"
@@ -15,10 +15,10 @@ const composeEnhancers =  process.env.NODE_ENV === "development"
 
 export interface ReduxState {
   entities: {
-    accounts?: EntityGroup<AccountPayload>,
-    appliances?: EntityGroup<AppliancePayload>,
-    maintainers?: EntityGroup<MaintainerPayload>,
-    organisations?: EntityGroup<OrganisationPayload>
+    accounts: EntityGroup<AccountPayload>,
+    appliances: EntityGroup<AppliancePayload>,
+    maintainers: EntityGroup<MaintainerPayload>,
+    organisations: EntityGroup<OrganisationPayload>
   };
   session: {
     activeAccount?: number;
@@ -40,10 +40,24 @@ const store = createStore(
   composeEnhancers(applyMiddleware(thunk, api))
 );
 
-store.dispatch<any>(fetchAccount());
-
 if (module.hot) {
   module.hot.accept("../reducers", () => store.replaceReducer(reducer));
 }
+
+// fill store
+(async () => {
+  await Promise.all([
+    store.dispatch<any>(fetchAccount()), // fetch current account information
+    store.dispatch(fetchOrganisations()), // fetch organisations for current account
+  ]);
+
+  // read current account information from store
+  const account = store.getState().entities.accounts[store.getState().session.activeAccount] as AccountPayload;
+  // default organisation will be the first one on account (consider being able to set default organisation)
+  const organisation = account.organisations[0];
+
+  // set selected organisation as active
+  await store.dispatch<any>(setActiveOrganisation(organisation.id, organisation.isAdmin));
+})();
 
 export default store;
