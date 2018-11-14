@@ -6,10 +6,12 @@ import accounts from "../account/reducer";
 import appliances from "../appliance/reducer";
 import views from "../components/tabbed/reducer";
 import maintainers from "../maintainer/reducer";
+import { SET_ACTIVE_ORGANISATION } from "../organisation/actions";
 import organisations from "../organisation/reducer";
 
 const typeHandler = cond([
   [equals(SET_ACTIVE_ACCOUNT), (type, state, payload) => merge(state, {activeAccount: payload})],
+  [equals(SET_ACTIVE_ORGANISATION), (type, state, payload) => merge(state, payload)],
   [True, (type, state, payload) => state],
 ]);
 

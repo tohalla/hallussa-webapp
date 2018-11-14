@@ -1,5 +1,5 @@
 import { cond, merge, T } from "ramda";
-import { AnyAction, Reducer } from "redux";
+import { Reducer } from "redux";
 
 import { anyEquals } from "../util/utilityFunctions";
 import {

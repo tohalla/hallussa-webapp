@@ -22,6 +22,8 @@ export interface ReduxState {
   };
   session: {
     activeAccount?: number;
+    activeOrganisation?: number;
+    isAdmin?: boolean;
   };
   views: {
     appliances: {
