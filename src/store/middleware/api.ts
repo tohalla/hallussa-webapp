@@ -3,6 +3,7 @@ import { Action, Dispatch, Middleware } from "redux";
 
 import { getAndCheckJWT } from "../../auth/auth";
 import { apiUrl } from "../../config";
+import { ReduxState } from "../store";
 
 export const CALL_API = "CALL_API";
 
@@ -10,10 +11,11 @@ export interface ReduxAPICall extends Action {
   endpoint: string;
   method: "POST" | "GET" | "PUT" | "DEL";
   types: [string, string, string]; // [REQUEST, SUCCESS, FAILURE]
+  type: "CALL_API";
   body?: {[key: string]: any};
   onSuccess?(payload: any, cached: boolean): any; // get triggered on succesfull response
   onFailure?(payload: any): any; // gets triggered if the request fails
-  attemptToFetchFromStore?(state: {[key: string]: any}): any;
+  attemptToFetchFromStore?(state: ReduxState): any;
   transformResponse?(response: any): any; // writes returned object to the store
 }
 
