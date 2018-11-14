@@ -21,15 +21,11 @@ const createTab = (state: object, view: string, payload: CreatePayload) =>
     payload.tabName
   );
 
-/**
- * Changes the active tab.
- */
+// Changes the active tab.
 const changeTab = (state = {}, view: string, payload: string) =>
   assocPath([view, "activeTab"], payload, state);
 
-/**
- * Closes an open tab from tabs.
- */
+// Closes an open tab from tabs.
 const closeTab = (state = {}, view: string, payload: string) =>
   dissocPath([view, "tabs", payload], state);
 

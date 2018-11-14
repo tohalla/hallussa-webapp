@@ -24,7 +24,6 @@ class TabsContainer extends Component<TabsContainerProps> {
   public handleTabChange = (key: string, tab: any, isActive: boolean) => () => {
     if (!isActive) {
       this.props.changeTab(last(this.props.path), key);
-      // this.props.changeView()
     }
   }
 
@@ -46,8 +45,9 @@ class TabsContainer extends Component<TabsContainerProps> {
         onClick={this.handleTabChange(key, tab, isActive)}
         closable={true}
         onClose={this.handleTabClose(key, tab, isActive)}
-        key={`tab_${key}`}
-        active={isActive}>
+        key={key}
+        active={isActive}
+      >
         <Link to={this.getPath(key, tab)}>
           {label}
         </Link>

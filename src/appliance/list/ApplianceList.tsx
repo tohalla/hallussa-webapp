@@ -6,6 +6,6 @@ export default class ApplianceList extends Component {
       <div>
         Hello
       </div>
-    )
+    );
   }
 }

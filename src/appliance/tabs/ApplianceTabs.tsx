@@ -3,11 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import TabsContainer from "../../components/tabs/TabsContainer";
 
-const Tabs = (props: any) => (
-  <TabsContainer
-    {...props}
-  />
-);
+const Tabs = (props: any) => <TabsContainer {...props} />;
 
 const path = ["views", "appliances"];
 

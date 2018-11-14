@@ -21,19 +21,19 @@ interface TabComponentProps {
  */
 const TabComponent = (props: TabComponentProps) => {
   const { active, children, closable, onClose, onClick } = props;
-  const className = classnames(
+  const className = classnames({
+    activeTabStyle: active,
     styledTabComponent,
-    !!active && { activeTabStyle }
-  );
+  });
 
   return (
     <div className={className} onClick={onClick}>
       {children}
       {closable &&
-        <span className={closeClassName} onClick={onClose}></span>
+        <span className={closeClassName} onClick={onClose} />
       }
     </div>
-  )
+  );
 };
 
 export default TabComponent;
