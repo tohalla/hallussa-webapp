@@ -1,6 +1,6 @@
 import { AnyAction } from "redux";
 
-export const OPEN_TAB = "OPEN_TAB";
+export const CREATE_TAB = "CREATE_TAB";
 export const CLOSE_TAB = "CLOSE_TAB";
 export const CHANGE_TAB = "CHANGE_TAB";
 
@@ -17,7 +17,7 @@ export interface TabPayload {
 
 export const createTab = (view: string, payload: TabPayload) => ({
   payload,
-  type: OPEN_TAB,
+  type: CREATE_TAB,
   view,
 });
 
