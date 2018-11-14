@@ -8,12 +8,14 @@ export interface InputProps {
   onChange: ChangeEventHandler<HTMLInputElement>;
   placeholder?: string;
   type: "text" | "password" | "number" | "date";
+  required: boolean;
   value: string;
 }
 
 export default class Input extends Component<InputProps> {
   public static defaultProps = {
     autoComplete: "on",
+    required: false,
     type: "text",
   };
 

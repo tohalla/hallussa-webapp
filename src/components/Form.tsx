@@ -12,7 +12,6 @@ export interface FormProps {
 
 export default class Form extends Component<FormProps> {
   public static defaultProps = {
-    secondary: <span />,
     submitText: "Submit",
   };
 
