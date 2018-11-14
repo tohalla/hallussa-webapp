@@ -1,13 +1,16 @@
-import React from "react";
+import React, { ReactChild } from "react";
 
 import ContentLayout from "./ContentLayout";
 import Sidebar from "./Sidebar";
 
+// NOTE: styledWithSidebar style must use flexbox and direction attribute
+// As we want to flip the order of the elements so that the Sidebar is
+// displayed first when screensize is small.
 const styledWithSidebar = "";
 
 interface Props {
-  content: Node;
-  sidebarContent: Node;
+  content: ReactChild;
+  sidebarContent: ReactChild;
 }
 
 export default ({ content, sidebarContent }: Props) => {

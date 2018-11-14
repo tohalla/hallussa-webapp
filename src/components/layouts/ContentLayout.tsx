@@ -1,9 +1,9 @@
-import React from "react"
+import React, { ReactNode } from "react"
 
 const styledContentLayout = "";
 
 interface Props {
-  children: Node;
+  children: ReactNode;
 }
 
 export default (props: Props) => {

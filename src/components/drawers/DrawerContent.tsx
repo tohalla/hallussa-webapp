@@ -1,8 +1,8 @@
-import React from "react";
+import React, { ReactChild } from "react";
 
 interface Props {
   isOpen: boolean;
-  children: Node;
+  children: ReactChild;
 }
 
 export default (props: Props) => (

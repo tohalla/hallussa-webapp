@@ -7,20 +7,20 @@ interface Props {
   label: string;
   view: string;
   drawerId: string;
-  isActive: boolean;
-  toggleActiveDrawer: (view: string, drawerId: string) => void;
+  isOpen: boolean;
+  toggleDrawer: (view: string, drawerId: string) => void;
 }
 
 export default class DrawerLabel extends Component<Props> {
   public handleToggle = () => {
     const { view, drawerId } = this.props;
-    this.props.toggleActiveDrawer(view, drawerId);
+    this.props.toggleDrawer(view, drawerId);
   }
 
   public render() {
-    const { isActive, label } = this.props;
+    const { isOpen, label } = this.props;
     const className = classNames({
-      active: isActive,
+      open: isOpen,
       styledDrawer,
     });
     return (

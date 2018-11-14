@@ -1,7 +1,7 @@
-import React from "react";
+import React, { ReactChild } from "react";
 
 interface Props {
-  children: Node;
+  children: ReactChild[];
 }
 
 const styledSidebar = "";
