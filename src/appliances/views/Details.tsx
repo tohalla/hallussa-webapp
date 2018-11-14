@@ -2,19 +2,42 @@ import { head, last, path } from "ramda";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import { openTab } from "../../components/tabs/actions";
 import { CreatePayload } from "../../components/tabs/reducer";
 
 interface ViewDispatchProps {
   activeTab: string;
-  location: {
-    pathname: string;
-  };
+  tab: string;
+  // tab: {
+  //   [x: string]: string;
+  // };
   openTab: (view: string, payload: CreatePayload) => void;
 }
 
+interface Props extends ViewDispatchProps {
+  location: {
+    pathname: string;
+  };
+}
+
 class DetailsView extends Component<ViewDispatchProps> {
-  public componentWillMount() {
-    
+  public constructor(props: Props) {
+    super(props);
+    // console.log(props);
+    const {
+      activeTab,
+      tab: tabName,
+      // tab: {
+      //   key: tabName,
+      // },
+    } = props;
+    this.props.openTab(
+      "appliances",
+      {
+        activeTab,
+        tabName,
+      }
+    );
   }
 
   public handleClick() {
@@ -31,10 +54,18 @@ class DetailsView extends Component<ViewDispatchProps> {
   }
 }
 
-const mapStateToProps = (state: object) => ({
+const mapStateToProps = (state: object, ownProps: any) => ({
   activeTab: path(["views", "appliances", "activeTab"], state),
+  tab: last(path(["location", "pathname"], ownProps) as string),
+  // tab: {
+  //   details: (
+  //     path(["views", "appliances", "tabs", last(path(["location", "pathname"], ownProps) as string) as string], state)
+  //   ),
+  //   key: last(path(["location", "pathname"], ownProps) as string),
+  // },
 });
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  { openTab }
 )(DetailsView as any);
