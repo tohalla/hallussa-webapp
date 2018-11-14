@@ -25,7 +25,7 @@ export interface OrganisationAction {
 
 export const fetchOrganisations = ({bypassCache = false} = {}): ReduxAPICall => ({
   attemptToFetchFromStore: bypassCache ? undefined : path(["entities", "organisations"]),
-  endpoint: "/organisations",
+  endpoint: "/organisations?eager=[accounts,maintainers,appliances]",
   method: "GET",
   type: CALL_API,
   types: [

@@ -23,7 +23,7 @@ export interface MaintainerAction {
 
 export const fetchMaintainers = (organisation: number, {bypassCache = false} = {}): ReduxAPICall => ({
   attemptToFetchFromStore: bypassCache ? undefined : path(["entities", "maintainers"]),
-  endpoint: `/organisations/${organisation}/maintainers`,
+  endpoint: `/organisations/${organisation}/maintainers?eager=appliances`,
   method: "GET",
   type: CALL_API,
   types: [
