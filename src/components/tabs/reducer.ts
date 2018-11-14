@@ -40,5 +40,11 @@ const typeHandler = cond([
   [T, (type, state, view, payload) => state],
 ]);
 
-export default (state = {}, { view, payload, type }: TabAction) =>
+export default (
+  state = {
+    appliances: {activeTab: undefined, tabs: []},
+    maintainers: {activeTab: undefined, tabs: []},
+  },
+  { view, payload, type }: TabAction
+) =>
   typeHandler(type, state, view, payload);
