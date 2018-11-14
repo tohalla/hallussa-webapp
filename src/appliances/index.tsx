@@ -11,7 +11,7 @@ class ApplianceContainer extends Component<> {
         <Router />
         <div>
           Temporary list:
-          <Link to={}>
+          <Link to={"/appliances/1"}>
             1
           </Link>
         </div>
