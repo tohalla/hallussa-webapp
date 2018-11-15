@@ -1,6 +1,6 @@
 import { map, props } from "ramda";
 
-import { Entities, ReduxState } from "../store/store";
+import { EntitiesState, ReduxState } from "../store/store";
 import { OrganisationPayload } from "./actions";
 
 export const getOrganisation = (
@@ -18,7 +18,7 @@ export const getOrganisation = (
 
 export const getEntitiesByOrganisation = <T>(
   state: ReduxState,
-  entityType: Exclude<keyof Entities, "organisations">,
+  entityType: Exclude<keyof EntitiesState, "organisations">,
   organisationId?: number
 ): ReadonlyArray<T> => {
   const organisation = getOrganisation(state, organisationId);

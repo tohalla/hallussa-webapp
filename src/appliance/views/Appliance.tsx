@@ -1,14 +1,15 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
+import { connect, MapStateToProps } from "react-redux";
 
 import { createTab, TabPayload } from "../../components/tabbed/actions";
+import { EntityGroup } from "../../store/reducer";
 import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
 import { AppliancePayload } from "../actions";
 
 interface StateProps {
   appliance: AppliancePayload;
-  appliances: AppliancePayload[];
+  appliances: EntityGroup<AppliancePayload>;
   tabs: {[key: string]: TabPayload};
 }
 
@@ -16,7 +17,7 @@ interface DispatchProps {
   createTab(view: string, payload: TabPayload): any;
 }
 
-interface Props extends DispatchProps, StateProps {
+interface Props {
   match: {
     params: {
       appliance: string
@@ -24,8 +25,10 @@ interface Props extends DispatchProps, StateProps {
   };
 }
 
-class ApplianceView extends Component<Props> {
-  public static getDerivedStateFromProps(props: Props) {
+type AllProps = Props & DispatchProps & StateProps;
+
+class Appliance extends Component<AllProps> {
+  public static getDerivedStateFromProps(props: AllProps) {
     const {tabs, appliances, match: {params: {appliance}}} = props;
     try {
       const applianceId = Number(appliance);
@@ -39,8 +42,6 @@ class ApplianceView extends Component<Props> {
             sticky: false,
           });
         }
-      } else {
-        // props.changeTab("appliances", applianceId);
       }
     } catch (e) {
       throw e;
@@ -60,7 +61,10 @@ class ApplianceView extends Component<Props> {
   }
 }
 
-const mapStateToProps = (state: ReduxState, ownProps: Props) => ({
+const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (
+  state: ReduxState,
+  ownProps: Props
+): StateProps => ({
   appliance: state.entities.appliances[ownProps.match.params.appliance],
   appliances: state.entities.appliances,
   tabs: state.views.appliances.tabs,
@@ -69,4 +73,4 @@ const mapStateToProps = (state: ReduxState, ownProps: Props) => ({
 export default connect(
   mapStateToProps,
   {createTab}
-)(loadable(ApplianceView));
+)(loadable<AllProps>(Appliance));

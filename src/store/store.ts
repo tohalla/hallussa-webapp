@@ -13,13 +13,15 @@ const composeEnhancers =  process.env.NODE_ENV === "development"
     (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
   : compose;
 
+export interface EntitiesState {
+  accounts: EntityGroup<AccountPayload>;
+  appliances: EntityGroup<AppliancePayload>;
+  maintainers: EntityGroup<MaintainerPayload>;
+  organisations: EntityGroup<OrganisationPayload>;
+}
+
 export interface ReduxState {
-  entities: {
-    accounts: EntityGroup<AccountPayload>,
-    appliances: EntityGroup<AppliancePayload>,
-    maintainers: EntityGroup<MaintainerPayload>,
-    organisations: EntityGroup<OrganisationPayload>
-  };
+  entities: EntitiesState;
   session: {
     activeAccount?: number;
     activeOrganisation?: number;

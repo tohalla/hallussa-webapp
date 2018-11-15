@@ -1,12 +1,9 @@
-import { path } from "ramda";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Prompt } from "react-router";
 
-interface NewApplianceViewProps {
-  props: {
-    unsaved: boolean;
-  };
+interface Props {
+  unsaved: boolean;
   setUnsaved: () => void;
 }
 
@@ -14,13 +11,17 @@ const setUnsaved = () => {
   // TODO:  toggle unsaved state;
 };
 
-class NewApplianceView extends Component<NewApplianceViewProps> {
+class NewAppliance extends Component<Props> {
+  public static defaultProps = {
+    unsaved: false,
+  };
+
   public handleClick = () => {
     this.props.setUnsaved();
   }
 
   public render() {
-    const { props: { unsaved } } = this.props;
+    const { unsaved = false } = this.props;
     return (
       <>
         <Prompt
@@ -34,13 +35,9 @@ class NewApplianceView extends Component<NewApplianceViewProps> {
   }
 }
 
-const mapStateToProps = (state: object) => ({
-  props: path(["views", "appliances", "tabs", "new", "props"], state),
-});
-
 export default connect(
-  mapStateToProps,
+  undefined,
   {
     setUnsaved,
   }
-)(NewApplianceView as any);
+)(NewAppliance);

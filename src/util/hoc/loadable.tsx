@@ -3,11 +3,11 @@ import React from "react";
 
 const loadingProps = ["loading", "isFetching"];
 
-export default (
+export default <P, S = {}, SS = any>(
   Component: typeof React.Component,
   isLoading?: (props: {[key: string]: any}) => boolean
 ) =>
-  class Loadable extends React.Component {
+  class Loadable extends React.Component<P, S, SS> {
     public render() {
       if (
         (typeof isLoading === "function" && isLoading(this.props)) ||

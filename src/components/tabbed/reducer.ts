@@ -3,7 +3,8 @@ import { assocPath, cond, dissocPath, equals, T } from "ramda";
 import {
   CLOSE_TAB,
   CREATE_TAB,
-  TabAction
+  TabAction,
+  TabPayload
 } from "./actions";
 
 const typeHandler = cond([
@@ -16,17 +17,28 @@ const typeHandler = cond([
   [T, (type, state, view, payload) => state],
 ]);
 
+interface View {
+  tabs: {[key: string]: TabPayload};
+}
+
+export interface ViewsState {
+  appliances: View;
+  maintainers: View;
+}
+
+const initialState: ViewsState = {
+  appliances: {tabs: {
+    appliances: {key: "appliances", label: "Appliances", sticky: true},
+    new: {key: "new", label: "New appliance", sticky: true},
+  }},
+  maintainers: {tabs: {
+    maintainers: {key: "maintainers", label: "Maintainers", sticky: true},
+    new: {key: "new", label: "New maintainer", sticky: true},
+  }},
+};
+
 export default (
-  state = {
-    appliances: {tabs: {
-      appliances: {key: "appliances", label: "Appliances", sticky: true},
-      newAppliance: {key: "newAppliance", label: "", sticky: true},
-    }},
-    maintainers: {tabs: {
-      maintainers: {key: "maintainers", label: "Maintainers", sticky: true},
-      newMaintainer: {key: "newMaintainer", label: "", sticky: true},
-    }},
-  },
+  state = initialState,
   { view, payload, type }: TabAction
 ) =>
   typeHandler(type, state, view, payload);

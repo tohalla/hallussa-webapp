@@ -60,7 +60,7 @@ class TabsContainer extends Component<Props & DispatchProps> {
   }
 }
 
-export default connect<{}, DispatchProps, Props>(
+export default connect(
   undefined,
   {
     closeTab,

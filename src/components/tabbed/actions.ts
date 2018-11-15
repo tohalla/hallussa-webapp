@@ -10,7 +10,6 @@ export interface TabAction extends AnyAction {
 export interface TabPayload {
   key: string;
   label: string;
-  path?: string;
   sticky?: boolean;
 }
 
