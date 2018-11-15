@@ -17,7 +17,7 @@ import store from "./store/store";
     return ReactDOM.render(
       <Provider store={store}>
         <Router />
-      </Provider>,
+      </Provider > ,
       document.getElementById("app")
     );
   }

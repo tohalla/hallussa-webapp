@@ -1,9 +1,10 @@
+import classnames from "classnames";
 import button, { plain as plainStyle } from "emotion-styles/button";
 import React, { Component, MouseEventHandler } from "react";
 
 export interface ButtonProps {
-  onClick: MouseEventHandler;
-  children: string;
+  onClick?: MouseEventHandler;
+  children: JSX.Element | string;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
   plain: boolean;
@@ -23,13 +24,21 @@ export default class Button extends Component<ButtonProps> {
     }
     e.stopPropagation();
 
-    onClick(e);
+    if (typeof onClick === "function") {
+      onClick(e);
+    }
   }
 
   public render() {
-    const { plain, onClick, ...props } = this.props;
-    const classname = plain ? plainStyle : button;
+    const { plain, onClick, children, ...props } = this.props;
+    const classname = classnames(button, {
+      [plainStyle]: plain,
+    });
 
-    return <button className={classname} onClick={this.handleClick} {...props} />;
+    return (
+      <button className={classname} onClick={this.handleClick} {...props}>
+        {children}
+      </button>
+    );
   }
 }

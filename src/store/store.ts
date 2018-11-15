@@ -1,29 +1,65 @@
-import { AnyAction, applyMiddleware, createStore, Dispatch } from "redux";
+import { applyMiddleware, compose, createStore } from "redux";
 import thunk from "redux-thunk";
 
-import { fetchAccount } from "../account/actions";
-import api from "./middleware/api";
-import reducers from "./reducer";
+import { AccountAction, AccountPayload, fetchAccount } from "../account/actions";
+import { AppliancePayload } from "../appliance/actions";
+import { MaintainerPayload } from "../maintainer/actions";
+import { fetchOrganisations, OrganisationPayload, setActiveOrganisation } from "../organisation/actions";
+import api, { ReduxAPICall } from "./middleware/api";
+import reducer, { EntityGroup } from "./reducer";
+
+const composeEnhancers =  process.env.NODE_ENV === "development"
+  && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+    (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+  : compose;
+
+export interface EntitiesState {
+  accounts: EntityGroup<AccountPayload>;
+  appliances: EntityGroup<AppliancePayload>;
+  maintainers: EntityGroup<MaintainerPayload>;
+  organisations: EntityGroup<OrganisationPayload>;
+}
 
 export interface ReduxState {
-  entities: {
-    accounts?: {},
-    organisations?: {}
-  };
+  entities: EntitiesState;
   session: {
     activeAccount?: number;
+    activeOrganisation?: number;
+    isAdmin?: boolean;
+  };
+  views: {
+    appliances: {
+      tabs: {}
+    },
+    maintainers: {
+      tabs: {}
+    }
   };
 }
 
 const store = createStore(
-  reducers,
-  applyMiddleware(thunk, api)
+  reducer,
+  composeEnhancers(applyMiddleware(thunk, api))
 );
 
-store.dispatch<any>(fetchAccount());
-
 if (module.hot) {
-  module.hot.accept("../reducers", () => store.replaceReducer(reducers));
+  module.hot.accept("../reducers", () => store.replaceReducer(reducer));
 }
+
+// fill store
+(async () => {
+  await Promise.all([
+    store.dispatch<any>(fetchAccount()), // fetch current account information
+    store.dispatch(fetchOrganisations()), // fetch organisations for current account
+  ]);
+
+  // read current account information from store
+  const account = store.getState().entities.accounts[store.getState().session.activeAccount] as AccountPayload;
+  // default organisation will be the first one on account (consider being able to set default organisation)
+  const organisation = account.organisations[0];
+
+  // set selected organisation as active
+  await store.dispatch<any>(setActiveOrganisation(organisation.id, organisation.isAdmin));
+})();
 
 export default store;
