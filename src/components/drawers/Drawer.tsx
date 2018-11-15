@@ -1,10 +1,13 @@
 import React, { Component, ReactChild } from "react";
 import { connect } from "react-redux";
 
+import drawer from "emotion-styles/drawer";
+
 import DrawerContent from "./DrawerContent";
 import DrawerLabel from "./DrawerLabel";
 
 export interface Props {
+  maxHeight: string;
   label: string;
   view: string;
   drawerId: string;
@@ -14,8 +17,13 @@ export interface Props {
 }
 
 export default class Drawer extends Component<Props> {
+  public static defaultProps = {
+    maxHeight: "auto",
+  };
+
   public render() {
     const {
+      maxHeight,
       children,
       drawerId,
       isOpen,
@@ -24,7 +32,7 @@ export default class Drawer extends Component<Props> {
       view,
     } = this.props;
     return (
-      <div>
+      <div className={drawer}>
         <DrawerLabel
           label={label}
           view={view}
@@ -32,7 +40,7 @@ export default class Drawer extends Component<Props> {
           isOpen={isOpen}
           toggleDrawer={toggleActiveDrawer}
         />
-        <DrawerContent isOpen={isOpen} >
+        <DrawerContent isOpen={isOpen} maxHeight={maxHeight}>
           {children}
         </DrawerContent>
       </div>

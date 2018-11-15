@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { Component } from "react";
 
-const styledDrawer = "";
+import { label as labelStyle } from "emotion-styles/drawer";
 
 interface Props {
   label: string;
@@ -20,9 +20,8 @@ export default class DrawerLabel extends Component<Props> {
 
   public render() {
     const { isOpen, label } = this.props;
-    const className = classNames({
+    const className = classNames(labelStyle, {
       open: isOpen,
-      styledDrawer,
     });
     return (
       <div onClick={this.handleToggle}>

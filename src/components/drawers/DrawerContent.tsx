@@ -1,15 +1,18 @@
 import React, { ReactChild } from "react";
 
+import { content } from "emotion-styles/drawer";
+
 interface Props {
   isOpen: boolean;
+  maxHeight: string;
   children: ReactChild;
 }
 
-export default (props: Props) => (
+export default ({ isOpen, maxHeight, children }: Props) => (
   <>
-    {props.isOpen &&
-      <div>
-        {props.children}
+    {isOpen &&
+      <div className={content} style={{ maxHeight }}>
+        {children}
       </div>
     }
   </>

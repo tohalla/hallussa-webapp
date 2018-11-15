@@ -1,12 +1,11 @@
+import classNames from "classnames";
+import { path } from "ramda";
 import React, { ReactChild } from "react";
 
 import ContentLayout from "./ContentLayout";
 import Sidebar from "./Sidebar";
 
-// NOTE: styledWithSidebar style must use flexbox and direction attribute
-// As we want to flip the order of the elements so that the Sidebar is
-// displayed first when screensize is small.
-const styledWithSidebar = "";
+import { withSidebar } from "emotion-styles/container";
 
 interface Props {
   content: ReactChild;
@@ -15,7 +14,7 @@ interface Props {
 
 export default ({ content, sidebarContent }: Props) => {
   return (
-    <div className={styledWithSidebar}>
+    <div className={withSidebar}>
       <ContentLayout>
         {content}
       </ContentLayout>
@@ -23,5 +22,5 @@ export default ({ content, sidebarContent }: Props) => {
         {sidebarContent}
       </Sidebar>
     </div>
-  )
-}
+  );
+};

@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 
 import WithSidebar from "../../components/layouts/WithSidebar";
 
-import Sidebar from "../../components/layouts/Sidebar";
 import Latest from "../drawers/latest/Latest";
 import Summary from "../drawers/summary/Summary";
 
@@ -15,24 +14,26 @@ interface Props {
 export default class ApplianceView extends Component<Props> {
   public renderContent = () => {
     return (
-      <div>
+      <>
         Hey
-      </div>
+      </>
     )
   }
 
   public renderSidebarContent = () => {
     return (
-      <Sidebar>
+      <>
         <Summary
+          drawerCount={2}
           toggleActiveDrawer={this.props.toggleActiveDrawer}
           openDrawer={this.props.openDrawer}
         />
         <Latest
+          drawerCount={2}
           toggleActiveDrawer={this.props.toggleActiveDrawer}
           openDrawer={this.props.openDrawer}
         />
-      </Sidebar>
+      </>
     );
   }
 

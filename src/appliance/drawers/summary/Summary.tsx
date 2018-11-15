@@ -4,6 +4,7 @@ import Drawer from "../../../components/drawers/Drawer";
 import Content from "./Content";
 
 export default class Summary extends Component<{
+  drawerCount: number;
   openDrawer: string | undefined;
   toggleActiveDrawer: (view: string, drawer: string) => void;
 }> {

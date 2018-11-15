@@ -1,13 +1,13 @@
 import React, { ReactChild } from "react";
 
+import { sidebar } from "emotion-styles/sidebar";
+
 interface Props {
-  children: ReactChild[];
+  children: ReactChild;
 }
 
-const styledSidebar = "";
-
 export default (props: Props) => (
-  <div className={styledSidebar}>
+  <div className={sidebar}>
     {props.children}
   </div>
 );
