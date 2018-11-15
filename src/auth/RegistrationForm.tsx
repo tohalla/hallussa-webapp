@@ -5,13 +5,13 @@ import Form from "../components/Form";
 import Input from "../components/Input";
 import { baseUrl } from "../config";
 import { small } from "../emotion-styles/src/inline";
-import { authenticate } from "./auth";
+import { authenticate, register } from "./auth";
 
 type Inputs = "email"
   | "firstName"
   | "lastName"
   | "password"
-  | "repeatPassword";
+  | "retypePassword";
 
 class RegistrationForm extends Component<{}, { [input in Inputs]?: string }> {
   public state = {
@@ -19,12 +19,10 @@ class RegistrationForm extends Component<{}, { [input in Inputs]?: string }> {
     firstName: "",
     lastName: "",
     password: "",
-    repeatPassword: "",
+    retypePassword: "",
   };
 
-  public handleSubmit = async (event: FormEvent) => {
-    // TODO
-  }
+  public handleSubmit = async (event: FormEvent) => register(this.state);
 
   public handleInputChange = (input: Inputs) => (
     event: ChangeEvent<HTMLInputElement>
@@ -33,7 +31,7 @@ class RegistrationForm extends Component<{}, { [input in Inputs]?: string }> {
   }
 
   public render() {
-    const { email, password, firstName, lastName, repeatPassword } = this.state;
+    const { email, password, firstName, lastName, retypePassword } = this.state;
     return (
       <Form
         onSubmit={this.handleSubmit}
@@ -69,10 +67,10 @@ class RegistrationForm extends Component<{}, { [input in Inputs]?: string }> {
         />
         <Input
           name="re-enter-password"
-          onChange={this.handleInputChange("repeatPassword")}
+          onChange={this.handleInputChange("retypePassword")}
           type="password"
           placeholder="Re-enter password"
-          value={repeatPassword}
+          value={retypePassword}
         />
       </Form>
     );

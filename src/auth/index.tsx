@@ -10,6 +10,7 @@ import "emotion-styles";
 import { baseUrl } from "../config";
 import { authenticate } from "./auth";
 import AuthenticationForm from "./AuthenticationForm";
+import RegistrationForm from "./RegistrationForm";
 
 // TODO: nginx jwt check
 (async () => {
@@ -27,7 +28,7 @@ import AuthenticationForm from "./AuthenticationForm";
         <Router>
           <Switch>
             <Route exact={true} path={"/"} component={AuthenticationForm} />
-            <Route exact={true} path={"/register"} component={() => "register"} />
+            <Route exact={true} path={"/register"} component={RegistrationForm} />
             <Redirect path="*" to="/" />
           </Switch>
         </Router>
