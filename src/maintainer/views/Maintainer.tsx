@@ -3,13 +3,12 @@ import { connect, MapStateToProps } from "react-redux";
 
 import { RouteComponentProps } from "react-router";
 import { createTab, TabPayload } from "../../components/tabbed/actions";
-import { EntityGroup } from "../../store/reducer";
 import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
-import { AppliancePayload } from "../actions";
+import { MaintainerPayload } from "../actions";
 
 interface StateProps {
-  appliance: AppliancePayload;
+  maintainer: MaintainerPayload;
   tabs: {[key: string]: TabPayload};
 }
 
@@ -19,30 +18,30 @@ interface DispatchProps {
 
 type AllProps = RouteComponentProps & DispatchProps & StateProps;
 
-class Appliance extends Component<AllProps> {
-
+class Maintainer extends Component<AllProps> {
   public static getDerivedStateFromProps(props: AllProps) {
-    const {tabs, appliance, history} = props;
-    if (typeof appliance === "undefined") {
+    const {tabs, maintainer, history} = props;
+    if (typeof maintainer === "undefined") {
       history.push("/");
       return null;
     }
-    if (typeof tabs[appliance.id] === "undefined") {
-      props.createTab("appliances", {
-        key: String(appliance.id),
-        label: appliance.name,
+    if (typeof tabs[maintainer.id] === "undefined") {
+      props.createTab("maintainers", {
+        key: String(maintainer.id),
+        label: `${maintainer.firstName} ${maintainer.lastName}`,
         sticky: false,
       });
     }
     return {};
   }
+
   public state = {};
 
   public render() {
-    const {appliance} = this.props;
-    return typeof appliance === "object" && (
+    const {maintainer} = this.props;
+    return typeof maintainer === "object" && (
       <>
-        <div>Details of an appliance: {appliance.name}</div>
+        <div>Details of an maintainer: {maintainer.firstName}</div>
       </>
     );
   }
@@ -52,11 +51,11 @@ const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (
   state: ReduxState,
   ownProps: Props
 ): StateProps => ({
-  appliance: state.entities.appliances[ownProps.match.params.appliance],
+  maintainer: state.entities.maintainers[ownProps.match.params.maintainer],
   tabs: state.views.appliances.tabs,
 });
 
 export default connect(
   mapStateToProps,
   {createTab}
-)(loadable<AllProps>(Appliance));
+)(loadable<AllProps>(Maintainer));

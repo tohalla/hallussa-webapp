@@ -8,7 +8,7 @@ interface StateProps {
   maintainers: ReadonlyArray<MaintainerPayload>;
 }
 
-class ApplianceListingView extends Component<StateProps> {
+class MaintainerListing extends Component<StateProps> {
   public render() {
     return (
       <div>List of maintainers</div>
@@ -24,4 +24,4 @@ const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (
 
 export default connect(
   mapStateToProps
-)(ApplianceListingView);
+)(MaintainerListing);
