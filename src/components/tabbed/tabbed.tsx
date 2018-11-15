@@ -1,4 +1,4 @@
-import { path } from "ramda";
+import { path, pick } from "ramda";
 import React from "react";
 import { connect } from "react-redux";
 
@@ -16,12 +16,15 @@ export default (view: string) => {
   });
 
   return (Component: any) => {
-    const Tabbed = ({tabs, ...props}: StateProps) => (
-      <>
-        <TabsContainer view={view} tabs={tabs} />
-        <Component {...props} />
-      </>
-    );
+    const Tabbed = (props: StateProps) => {
+      const routerProps = pick(["history", "match", "location"], props);
+      return (
+        <>
+          <TabsContainer view={view} tabs={props.tabs} {...routerProps} />
+          <Component {...routerProps} />
+        </>
+      );
+    };
 
     return connect(
       mapStateToProps

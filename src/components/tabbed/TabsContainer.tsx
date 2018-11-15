@@ -1,23 +1,29 @@
 import { map, values } from "ramda";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
+import { RouteComponentProps } from "react-router";
 import { closeTab, createTab, TabPayload } from "./actions";
 import TabComponent from "./TabComponent";
 
-interface Props {
+interface Props extends RouteComponentProps {
   tabs: {[key: string]: TabPayload};
   view: string;
 }
 
 interface DispatchProps {
   closeTab(view: string, payload: string): any;
+  createTab(view: string, payload: TabPayload): any;
 }
 
 class TabsContainer extends Component<Props & DispatchProps> {
   public handleTabClose = (tab: TabPayload) => () => {
-    this.props.closeTab(this.props.view, tab.key);
+    const {history, location, view} = this.props;
+    if (location.pathname.endsWith(tab.key)) {
+      history.push("/"); // move to default tab if tab to be closed is open
+    }
+    this.props.closeTab(view, tab.key);
   }
 
   public getPath = (tab: TabPayload) => {
@@ -26,16 +32,21 @@ class TabsContainer extends Component<Props & DispatchProps> {
   }
 
   public renderTab = (tab: TabPayload) => {
-    const { label } = tab;
+    const { label, key } = tab;
     return (
-      <TabComponent
-        {...tab}
-        handleClose={this.handleTabClose(tab)}
+      <NavLink
+        activeClassName=""
+        exact={true}
+        key={key}
+        to={this.getPath(tab)}
       >
-        <Link to={this.getPath(tab)}>
+        <TabComponent
+          {...tab}
+          onClose={this.handleTabClose(tab)}
+        >
           {label}
-        </Link>
-      </TabComponent>
+        </TabComponent>
+      </NavLink>
     );
   }
 
@@ -49,7 +60,7 @@ class TabsContainer extends Component<Props & DispatchProps> {
   }
 }
 
-export default connect(
+export default connect<{}, DispatchProps, Props>(
   undefined,
   {
     closeTab,
