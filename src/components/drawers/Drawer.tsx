@@ -13,7 +13,7 @@ export interface Props {
   children: ReactChild;
 }
 
-class Drawer extends Component<Props> {
+export default class Drawer extends Component<Props> {
   public render() {
     const {
       children,
@@ -36,15 +36,15 @@ class Drawer extends Component<Props> {
           {children}
         </DrawerContent>
       </div>
-    )
+    );
   }
 }
 
-export default connect(
-  undefined,
-  {
-    toggleActiveDrawer: (view: string, drawerId: string) => {
-      console.log("Toggle", view, drawerId);
-    },
-  }
-)(Drawer);
+// export default connect(
+//   undefined,
+//   {
+//     toggleActiveDrawer: (view: string, drawerId: string) => {
+//       console.log("Toggle", view, drawerId);
+//     },
+//   }
+// )(Drawer);

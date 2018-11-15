@@ -3,18 +3,16 @@ import { connect } from "react-redux";
 
 import WithSidebar from "../../components/layouts/WithSidebar";
 
-import ApplianceList from "../list/ApplianceList";
-import ApplianceTabs from "../tabs/ApplianceTabs";
-
 import Sidebar from "../../components/layouts/Sidebar";
 import Latest from "../drawers/latest/Latest";
 import Summary from "../drawers/summary/Summary";
 
 interface Props {
   openDrawer: string;
+  toggleActiveDrawer: (view: string, drawer: string) => void;
 }
 
-class ApplianceView extends Component<Props> {
+export default class ApplianceView extends Component<Props> {
   public renderContent = () => {
     return (
       <div>
@@ -26,8 +24,14 @@ class ApplianceView extends Component<Props> {
   public renderSidebarContent = () => {
     return (
       <Sidebar>
-        <Summary {...this.props}} />
-        <Latest {...this.props} />
+        <Summary
+          toggleActiveDrawer={this.props.toggleActiveDrawer}
+          openDrawer={this.props.openDrawer}
+        />
+        <Latest
+          toggleActiveDrawer={this.props.toggleActiveDrawer}
+          openDrawer={this.props.openDrawer}
+        />
       </Sidebar>
     );
   }
@@ -38,20 +42,15 @@ class ApplianceView extends Component<Props> {
         content={this.renderContent()}
         sidebarContent={this.renderSidebarContent()}
       />
-      // <div>
-      //   {/* <ApplianceTabs />
-      //   <ApplianceList /> */}
-      //   Hello world!
-      // </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state: object) => ({
-  // TODO: Load from redux store
-  openDrawer: "summary",
-});
+// const mapStateToProps = (state: object) => ({
+//   // TODO: Load from redux store
+//   openDrawer: "summary",
+// });
 
-export default connect(
-  mapStateToProps
-)(ApplianceView);
+// export default connect(
+//   mapStateToProps
+// )(ApplianceView);

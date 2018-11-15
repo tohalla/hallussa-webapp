@@ -7,13 +7,15 @@ import Organisations from "./organisation/Organisations";
 
 const PlaceHolder = (content: string) => () => <div>{content}</div>;
 
+import withDrawer from "./components/hocs/WithSidebarHOC";
+
 export default () => (
   <Router>
     <>
       <Topbar />
       <Switch>
         <Route path="/organisation" component={Organisations} />
-        <Route path="/appliances" component={ApplianceView} />
+        <Route path="/appliances" component={withDrawer(ApplianceView)} />
         <Route path="/maintainers" component={PlaceHolder("Maintainers")} />
         <Redirect path="*" to="/organisation" />
       </Switch>

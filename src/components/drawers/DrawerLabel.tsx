@@ -13,8 +13,9 @@ interface Props {
 
 export default class DrawerLabel extends Component<Props> {
   public handleToggle = () => {
-    const { view, drawerId } = this.props;
-    this.props.toggleDrawer(view, drawerId);
+    const { view, drawerId, isOpen } = this.props;
+    const drawer = isOpen ? "" : drawerId;
+    this.props.toggleDrawer(view, drawer);
   }
 
   public render() {
