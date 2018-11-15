@@ -1,21 +1,22 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { changeTab, createTab, TabPayload } from "../../components/tabbed/actions";
+import { createTab, TabPayload } from "../../components/tabbed/actions";
 import { ReduxState } from "../../store/store";
+import loadable from "../../util/hoc/loadable";
 import { AppliancePayload } from "../actions";
 
 interface StateProps {
+  appliance: AppliancePayload;
   appliances: AppliancePayload[];
   tabs: {[key: string]: TabPayload};
 }
 
 interface DispatchProps {
-  changeTab(view: string, payload: string): any;
-  createTab(view: string, payload: string): any;
+  createTab(view: string, payload: TabPayload): any;
 }
 
-interface Props {
+interface Props extends DispatchProps, StateProps {
   match: {
     params: {
       appliance: string
@@ -23,9 +24,8 @@ interface Props {
   };
 }
 
-class ApplianceView extends Component<Props & StateProps & DispatchProps> {
-  public constructor(props: Props & StateProps & DispatchProps) {
-    super(props);
+class ApplianceView extends Component<Props> {
+  public static getDerivedStateFromProps(props: Props) {
     const {tabs, appliances, match: {params: {appliance}}} = props;
     try {
       const applianceId = Number(appliance);
@@ -33,35 +33,40 @@ class ApplianceView extends Component<Props & StateProps & DispatchProps> {
         if (typeof appliances[applianceId] === "undefined") {
           // TODO: handle non-existing appliance request (attempt to fetch and on fail throw an error)
         } else {
-          createTab("appliances", {
-            key: applianceId,
+          props.createTab("appliances", {
+            key: appliance,
             label: appliances[applianceId].name,
             sticky: false,
           });
         }
       } else {
-        changeTab("appliances", applianceId);
+        // props.changeTab("appliances", applianceId);
       }
     } catch (e) {
       throw e;
     }
+    return {};
   }
 
+  public state = {};
+
   public render() {
-    return (
+    const {appliance} = this.props;
+    return typeof appliance === "object" && (
       <>
-        <div>Details of an appliance</div>
+        <div>Details of an appliance: {appliance.name}</div>
       </>
     );
   }
 }
 
-const mapStateToProps = (state: ReduxState) => ({
+const mapStateToProps = (state: ReduxState, ownProps: Props) => ({
+  appliance: state.entities.appliances[ownProps.match.params.appliance],
   appliances: state.entities.appliances,
   tabs: state.views.appliances.tabs,
 });
 
 export default connect(
   mapStateToProps,
-  {changeTab, createTab}
-)(ApplianceView as any);
+  {createTab}
+)(loadable(ApplianceView));

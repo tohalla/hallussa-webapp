@@ -1,7 +1,6 @@
 import { path } from "ramda";
 import React from "react";
 import { connect } from "react-redux";
-import { RouteComponentProps } from "react-router";
 
 import { ReduxState } from "../../store/store";
 import { TabPayload } from "./actions";
@@ -26,6 +25,6 @@ export default (view: string) => {
 
     return connect(
       mapStateToProps
-    )(Tabbed as any);
+    )(Tabbed);
   };
 };

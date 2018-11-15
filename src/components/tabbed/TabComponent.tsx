@@ -7,7 +7,6 @@ const styledTabComponent = "";
 
 interface Props extends TabPayload {
   children: ReactChild[] | ReactChild;
-  handleOpen(): any;
   handleClose(): any;
 }
 
@@ -17,14 +16,14 @@ interface Props extends TabPayload {
  * Generic onClick event on a Tab bubbles from this component.
  */
 const TabComponent = (props: Props) => {
-  const { children, sticky, handleClose, handleOpen } = props;
+  const { children, sticky, handleClose } = props;
   const className = classnames({
     // TODO: [activeTabStyle]:
     styledTabComponent,
   });
 
   return (
-    <div className={className} onClick={handleOpen}>
+    <div className={className}>
       {children}
       {!sticky &&
         <span className="material-icons" onClick={handleClose}>

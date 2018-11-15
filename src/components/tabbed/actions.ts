@@ -2,14 +2,13 @@ import { AnyAction } from "redux";
 
 export const CREATE_TAB = "CREATE_TAB";
 export const CLOSE_TAB = "CLOSE_TAB";
-export const CHANGE_TAB = "CHANGE_TAB";
 
 export interface TabAction extends AnyAction {
   view: string;
 }
 
 export interface TabPayload {
-  key: string | number;
+  key: string;
   label: string;
   path?: string;
   sticky?: boolean;
@@ -21,14 +20,8 @@ export const createTab = (view: string, payload: TabPayload) => ({
   view,
 });
 
-export const closeTab = (view: string, payload: string | number) => ({
+export const closeTab = (view: string, payload: string) => ({
   payload,
   type: CLOSE_TAB,
-  view,
-});
-
-export const changeTab = (view: string, payload: string | number) => ({
-  payload,
-  type: CHANGE_TAB,
   view,
 });

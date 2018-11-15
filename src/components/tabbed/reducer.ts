@@ -6,13 +6,13 @@ import {
   TabAction
 } from "./actions";
 
-// Closes an open tab from tabs.
-const closeTab = (state = {}, view: string, payload: string) =>
-  dissocPath([view, "tabs", payload], state);
-
 const typeHandler = cond([
-  [equals(CREATE_TAB), (type, state, view, payload) => assocPath([view, "tabs", payload.key], payload, state)] ,
-  [equals(CLOSE_TAB), (type, state, view, payload) => closeTab(state, view, payload)],
+  [equals(CREATE_TAB), (type, state, view, payload) =>
+    assocPath([view, "tabs", payload.key], payload, state),
+  ],
+  [equals(CLOSE_TAB), (type, state, view, payload) =>
+    dissocPath([view, "tabs", payload], state),
+  ],
   [T, (type, state, view, payload) => state],
 ]);
 
