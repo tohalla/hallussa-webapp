@@ -1,15 +1,16 @@
 import { cond, merge, T } from "ramda";
-import { AnyAction, Reducer } from "redux";
+import { Reducer } from "redux";
 
 import { anyEquals } from "../util/utilityFunctions";
 import {
   FETCH_ORGANISATIONS_FAILURE,
   FETCH_ORGANISATIONS_REQUEST,
   FETCH_ORGANISATIONS_SUCCESS,
+  OrganisationAction,
 } from "./actions";
 
 const typeHandler = cond([
-  [anyEquals<symbol>([
+  [anyEquals([
     FETCH_ORGANISATIONS_SUCCESS,
     FETCH_ORGANISATIONS_REQUEST,
     FETCH_ORGANISATIONS_FAILURE,
@@ -17,7 +18,10 @@ const typeHandler = cond([
   [T, (type, state, payload) => state],
 ]);
 
-const reducer: Reducer = (state = null, {payload, type}: AnyAction) =>
+const reducer: Reducer<{[key: number]: any}, OrganisationAction> = (
+  state = {},
+  {payload, type}: OrganisationAction
+) =>
   typeHandler(type, state, payload);
 
 export default reducer;

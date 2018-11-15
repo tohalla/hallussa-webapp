@@ -5832,13 +5832,13 @@ react-test-renderer@^16.0.0-0:
     schedule "^0.3.0"
 
 react@^16.5.0:
-  version "16.5.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.5.0.tgz#f2c1e754bf9751a549d9c6d9aca41905beb56575"
+  version "16.6.1"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.6.1.tgz#ee2aef4f0a09e494594882029821049772f915fe"
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    schedule "^0.3.0"
+    scheduler "^0.11.0"
 
 read-pkg-up@^1.0.1:
   version "1.0.1"
@@ -6173,6 +6173,13 @@ schedule@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/schedule/-/schedule-0.3.0.tgz#1be2ab2fc2e768536269ce7326efb478d6c045e8"
   dependencies:
+    object-assign "^4.1.1"
+
+scheduler@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.11.0.tgz#def1f1bfa6550cc57981a87106e65e8aea41a6b5"
+  dependencies:
+    loose-envify "^1.1.0"
     object-assign "^4.1.1"
 
 "semver@2 || 3 || 4 || 5":

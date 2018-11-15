@@ -3,17 +3,19 @@ import { Action, Dispatch, Middleware } from "redux";
 
 import { getAndCheckJWT } from "../../auth/auth";
 import { apiUrl } from "../../config";
+import { ReduxState } from "../store";
 
-export const CALL_API = Symbol("CALL_API");
+export const CALL_API = "CALL_API";
 
 export interface ReduxAPICall extends Action {
   endpoint: string;
   method: "POST" | "GET" | "PUT" | "DEL";
-  types: [symbol, symbol, symbol]; // [REQUEST, SUCCESS, FAILURE]
+  types: [string, string, string]; // [REQUEST, SUCCESS, FAILURE]
+  type: "CALL_API";
   body?: {[key: string]: any};
   onSuccess?(payload: any, cached: boolean): any; // get triggered on succesfull response
   onFailure?(payload: any): any; // gets triggered if the request fails
-  attemptToFetchFromStore?(state: {[key: string]: any}): any;
+  attemptToFetchFromStore?(state: ReduxState): any;
   transformResponse?(response: any): any; // writes returned object to the store
 }
 
@@ -31,7 +33,6 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
   } else if (!isValid(action)) {
     throw new Error("Invalid api call " + JSON.stringify(action));
   }
-
   return (async () => {
     const {
       endpoint,
@@ -50,7 +51,7 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
         return response;
       },
       attemptToFetchFromStore,
-      } = action as ReduxAPICall;
+    } = action as ReduxAPICall;
 
     if (typeof attemptToFetchFromStore === "function") {
       const cached = attemptToFetchFromStore(getState());
@@ -86,7 +87,7 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
         // trigger onSuccess if defined
         const payload = await response.json();
         if (typeof onSuccess === "function") { onSuccess(payload, false); }
-        return next({payload: transformResponse(payload), type: successType}); // dispatch success action
+        return next({type: successType, payload: transformResponse(payload)}); // dispatch success action
       } else {
         throw new Error("failed to fetch");
       }

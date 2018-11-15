@@ -10,7 +10,7 @@ import {
 } from "./actions";
 
 const typeHandler = cond([
-  [anyEquals<symbol>([
+  [anyEquals([
     FETCH_ACCOUNT_SUCCESS,
     FETCH_ACCOUNT_REQUEST,
     FETCH_ACCOUNT_FAILURE,
@@ -18,7 +18,10 @@ const typeHandler = cond([
   [T, (type, state, payload) => state],
 ]);
 
-const reducer: Reducer = (state = {}, {payload, type}: AccountAction) =>
+const reducer: Reducer<{[key: number]: any}, AccountAction> = (
+  state = {},
+  {payload, type}: AccountAction
+) =>
   typeHandler(type, state, payload);
 
 export default reducer;
