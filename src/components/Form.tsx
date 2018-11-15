@@ -5,7 +5,7 @@ import Button from "./Button";
 
 export interface FormProps {
   onSubmit: FormEventHandler;
-  secondary: Node;
+  secondary: JSX.Element;
   submitText: string;
   children: ReactFragment;
 }
