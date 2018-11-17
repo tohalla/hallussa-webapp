@@ -12,20 +12,23 @@ import { stackedLayout } from "emotion-styles/layout";
 
 export interface InputProps {
   autoComplete: "off" | "on";
-  error?: string;
+  error: string | boolean;
   disabled?: boolean;
   name?: string;
   onBlur?: FocusEventHandler<HTMLInputElement>;
   onChange: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
   placeholder?: string;
-  type: "text" | "password" | "number" | "date";
+  type: "text" | "password" | "number" | "date" | "password";
+  required: boolean;
   value: string;
 }
 
 export default class Input extends Component<InputProps> {
   public static defaultProps = {
     autoComplete: "on",
+    error: false,
+    required: false,
     type: "text",
   };
 
@@ -41,6 +44,7 @@ export default class Input extends Component<InputProps> {
     const {onBlur} = this.props;
     this.visited = true;
     if (typeof onBlur === "function") { onBlur(event); }
+    this.forceUpdate(); // re-render to render error
   }
 
   public handleFocus: FocusEventHandler<HTMLInputElement> = (event) => {
@@ -62,7 +66,7 @@ export default class Input extends Component<InputProps> {
           onFocus={this.handleFocus}
           {...props}
         />
-        {displayError && <span className={errorStyle}>{error}</span>}
+        {displayError && typeof error === "string" && <span className={errorStyle}>{error}</span>}
       </div>
     );
   }
