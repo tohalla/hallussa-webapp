@@ -1,19 +1,20 @@
-import { path } from "ramda";
+import { values } from "ramda";
 import React from "react";
-import { connect } from "react-redux";
+import { connect, MapStateToProps } from "react-redux";
 
 import { ReduxAPICall } from "../store/middleware/api";
-import { fetchOrganisations } from "./actions";
+import { ReduxState } from "../store/store";
+import { fetchOrganisations, OrganisationPayload } from "./actions";
 
-const mapStateToProps = (state: object) => ({
-  organisations: path(["entities", "organisations"], state),
-});
+interface StateProps {
+  organisations: ReadonlyArray<OrganisationPayload>;
+}
 
-interface AccountDispatchProps {
+interface DispatchProps {
   fetchOrganisations(): ReduxAPICall;
 }
 
-class Organisations extends React.Component<AccountDispatchProps> {
+class Organisations extends React.Component<DispatchProps> {
   public componentWillMount() {
     this.props.fetchOrganisations();
   }
@@ -22,6 +23,12 @@ class Organisations extends React.Component<AccountDispatchProps> {
     return <div />;
   }
 }
+
+const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (
+  state: ReduxState
+) => ({
+  organisations: values(state.entities.organisations),
+});
 
 export default connect(
   mapStateToProps,

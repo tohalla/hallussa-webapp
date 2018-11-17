@@ -1,3 +1,4 @@
+import { AccountPayload } from "../account/actions";
 import { apiUrl, baseUrl } from "../config";
 
 /**
@@ -48,4 +49,22 @@ export const signOut = () => {
   localStorage.removeItem("expiresAt");
 
   window.location.href = baseUrl;
+};
+
+export const register = async (
+  account: Pick<AccountPayload, Exclude<keyof AccountPayload, "id" | "organisations">>
+    & {retypePassword: string, password: string},
+  authenticateAfter = true
+) => {
+  const response = await fetch(// send request to create account
+    `${apiUrl}/accounts`,
+    {
+      body: JSON.stringify(account),
+      headers: { ["Content-Type"]: "application/json" },
+      method: "POST",
+    }
+  );
+  if (authenticateAfter && response.ok) {
+    return authenticate({email: account.email, password: account.password});
+  }
 };

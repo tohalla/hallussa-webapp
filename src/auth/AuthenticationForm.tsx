@@ -1,8 +1,10 @@
 import React, { ChangeEvent, Component, FormEvent } from "react";
+import { Link } from "react-router-dom";
 
 import Form from "../components/Form";
 import Input from "../components/Input";
 import { baseUrl } from "../config";
+import { small } from "../emotion-styles/src/inline";
 import { authenticate } from "./auth";
 
 type Inputs = "email" | "password";
@@ -30,7 +32,11 @@ class AuthenticationForm extends Component<{}, { [input in Inputs]?: string }> {
   public render() {
     const { email, password } = this.state;
     return (
-      <Form onSubmit={this.handleSubmit} submitText="sign in">
+      <Form
+        onSubmit={this.handleSubmit}
+        secondary={<Link className={small} to="/register">Create a new account</Link>}
+        submitText="sign in"
+      >
         <Input
           name="email"
           onChange={this.handleInputChange("email")}

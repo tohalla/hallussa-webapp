@@ -2,21 +2,17 @@ import { navGroup, navItem } from "emotion-styles/topbar";
 import { path } from "ramda";
 import React from "react";
 
-import { connect } from "react-redux";
+import { connect, MapStateToProps } from "react-redux";
 import { AccountPayload } from "../account/actions";
 import { signOut } from "../auth/auth";
+import Button from "../components/Button";
 import { ReduxState } from "../store/store";
 
-export interface AccountMenuStateProps {
-  account: AccountPayload;
+interface StateProps {
+  account?: AccountPayload;
 }
 
-const mapStateToProps = (state: ReduxState) => ({
-  account: state.session.activeAccount && path(["entities", "accounts", state.session.activeAccount], state),
-  activeAccount: state.session.activeAccount,
-});
-
-class AccountMenu extends React.Component<AccountMenuStateProps> {
+class AccountMenu extends React.Component<StateProps> {
   public handleLogout = () => signOut();
 
   public render() {
@@ -27,10 +23,17 @@ class AccountMenu extends React.Component<AccountMenuStateProps> {
     return (
       <div className={navGroup}>
         Hello, {firstName}
-        <a className={navItem} onClick={this.handleLogout}>Log out</a>
+        <Button className={navItem} onClick={this.handleLogout} plain={true}>Log out</Button>
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps)(AccountMenu as any);
+const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (
+  state: ReduxState
+) => ({
+  account: typeof state.session.activeAccount === "undefined" ?
+    undefined : path(["entities", "accounts", state.session.activeAccount], state),
+});
+
+export default connect(mapStateToProps)(AccountMenu);
