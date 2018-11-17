@@ -25,7 +25,7 @@ class ApplianceListing extends Component<Props> {
       <>
         List of appliances...
       </>
-    )
+    );
   }
 
   public renderSidebarContent = () => {
