@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Form from "../components/Form";
 import Input from "../components/Input";
 import { small } from "../emotion-styles/src/inline";
+import { validateEmail } from "../util/validationFunctions";
 import { register } from "./auth";
 
 type Inputs = "email"
@@ -50,10 +51,7 @@ class RegistrationForm extends Component<{}, State > {
 
     newState.errors = {}; // clear old errors
 
-    if (
-      !/^([0-9a-zA-Z]([-\.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,5})$/
-        .test(newState.email)
-    ) {
+    if (validateEmail) {
       newState.errors.email = "Invalid email address.";
     }
 
