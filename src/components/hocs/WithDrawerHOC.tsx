@@ -1,5 +1,10 @@
 import React, { Component, ComponentType } from "react";
 
+export interface WithDrawerHOCProps {
+  openDrawer: string;
+  toggleActiveDrawer: (view: string, drawer: string) => void;
+}
+
 export default <P extends object>(WrappedComponent: ComponentType<P>) => (
   class extends Component<P & {[key: string]: any}> {
     constructor(props: any) {

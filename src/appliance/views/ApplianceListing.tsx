@@ -4,14 +4,53 @@ import { getEntitiesByOrganisation } from "../../organisation/state";
 import { ReduxState } from "../../store/store";
 import { AppliancePayload } from "../actions";
 
+import WithSidebar from "../../components/layouts/WithSidebar";
+
+import Latest from "../drawers/latest/Latest";
+import Summary from "../drawers/summary/Summary";
+
+import { WithDrawerHOCProps as OwnProps } from "../../components/hocs/WithDrawerHOC";
+
+// import withDrawer from "./components/hocs/WithSidebarHOC";
+
 interface StateProps {
   appliances: ReadonlyArray<AppliancePayload>;
 }
 
-class ApplianceListing extends Component<StateProps> {
+type Props = OwnProps & StateProps;
+
+class ApplianceListing extends Component<Props> {
+  public renderContent = () => {
+    return (
+      <>
+        List of appliances...
+      </>
+    )
+  }
+
+  public renderSidebarContent = () => {
+    return (
+      <>
+        <Summary
+          drawerCount={2}
+          toggleActiveDrawer={this.props.toggleActiveDrawer}
+          openDrawer={this.props.openDrawer}
+        />
+        <Latest
+          drawerCount={2}
+          toggleActiveDrawer={this.props.toggleActiveDrawer}
+          openDrawer={this.props.openDrawer}
+        />
+      </>
+    );
+  }
+
   public render() {
     return (
-      <div>List of Appliances</div>
+      <WithSidebar
+        content={this.renderContent()}
+        sidebarContent={this.renderSidebarContent()}
+      />
     );
   }
 }
