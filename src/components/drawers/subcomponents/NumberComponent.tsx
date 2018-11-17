@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React from "react";
 
-const styledNumberBlock = "";
+import inlineBlock, { numberBlock } from "emotion-styles/block";
 
 interface Props {
   number: string | number;
@@ -11,13 +11,11 @@ interface Props {
 
 export default (props: Props) => {
   const { number: n, size, label } = props;
-  const cn = classNames({
-    size,
-    styledNumberBlock,
-  });
+  const outerCn = classNames(inlineBlock, "padded");
+  const innerCn = classNames(size, numberBlock);
   return (
-    <div>
-      <div className={cn}>
+    <div className={outerCn}>
+      <div className={innerCn}>
         {n}
       </div>
       <p>{label}</p>
