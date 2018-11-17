@@ -5,26 +5,18 @@ import { label as labelStyle } from "emotion-styles/drawer";
 
 interface Props {
   label: string;
-  view: string;
-  drawerId: string;
-  isOpen: boolean;
-  toggleDrawer: (view: string, drawerId: string) => void;
+  expand: boolean;
+  handleToggle(): any;
 }
 
 export default class DrawerLabel extends Component<Props> {
-  public handleToggle = () => {
-    const { view, drawerId, isOpen } = this.props;
-    const drawer = isOpen ? "" : drawerId;
-    this.props.toggleDrawer(view, drawer);
-  }
-
   public render() {
-    const { isOpen, label } = this.props;
+    const { expand, label, handleToggle } = this.props;
     const className = classNames(labelStyle, {
-      open: isOpen,
+      open: expand,
     });
     return (
-      <div onClick={this.handleToggle}>
+      <div onClick={handleToggle}>
         <p className={className}>{label}</p>
       </div>
     );

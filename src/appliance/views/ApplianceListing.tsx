@@ -6,20 +6,15 @@ import { AppliancePayload } from "../actions";
 
 import WithSidebar from "../../components/layouts/WithSidebar";
 
-import Latest from "../drawers/latest/Latest";
-import Summary from "../drawers/summary/Summary";
-
-import { WithDrawerHOCProps as OwnProps } from "../../components/hocs/WithDrawerHOC";
-
-// import withDrawer from "./components/hocs/WithSidebarHOC";
+import Drawers from "../../components/drawers/Drawers";
+import Latest from "../drawers/Latest";
+import Summary from "../drawers/Summary";
 
 interface StateProps {
   appliances: ReadonlyArray<AppliancePayload>;
 }
 
-type Props = OwnProps & StateProps;
-
-class ApplianceListing extends Component<Props> {
+class ApplianceListing extends Component<StateProps> {
   public renderContent = () => {
     return (
       <>
@@ -30,18 +25,18 @@ class ApplianceListing extends Component<Props> {
 
   public renderSidebarContent = () => {
     return (
-      <>
-        <Summary
-          drawerCount={2}
-          toggleActiveDrawer={this.props.toggleActiveDrawer}
-          openDrawer={this.props.openDrawer}
-        />
-        <Latest
-          drawerCount={2}
-          toggleActiveDrawer={this.props.toggleActiveDrawer}
-          openDrawer={this.props.openDrawer}
-        />
-      </>
+      <Drawers
+        drawers={{
+          latest: {
+            content: <Latest />,
+            label: "Latest activity",
+          },
+          summary: {
+            content: <Summary />,
+            label: "Summary",
+          },
+        }}
+      />
     );
   }
 

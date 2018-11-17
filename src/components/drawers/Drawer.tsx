@@ -8,11 +8,9 @@ import DrawerLabel from "./DrawerLabel";
 export interface Props {
   maxHeight: string;
   label: string;
-  view: string;
-  drawerId: string;
-  isOpen: boolean;
-  toggleActiveDrawer: (view: string, drawerId: string) => void;
+  expand: boolean;
   children: ReactChild;
+  handleToggle(): any;
 }
 
 export default class Drawer extends Component<Props> {
@@ -22,26 +20,24 @@ export default class Drawer extends Component<Props> {
 
   public render() {
     const {
-      maxHeight,
       children,
-      drawerId,
-      isOpen,
+      expand,
+      handleToggle,
       label,
-      toggleActiveDrawer,
-      view,
+      maxHeight,
     } = this.props;
     return (
       <div className={drawer}>
         <DrawerLabel
+          expand={expand}
           label={label}
-          view={view}
-          drawerId={drawerId}
-          isOpen={isOpen}
-          toggleDrawer={toggleActiveDrawer}
+          handleToggle={handleToggle}
         />
-        <DrawerContent isOpen={isOpen} maxHeight={maxHeight}>
-          {children}
-        </DrawerContent>
+        {expand && (
+          <DrawerContent maxHeight={maxHeight}>
+            {children}
+          </DrawerContent>
+        )}
       </div>
     );
   }

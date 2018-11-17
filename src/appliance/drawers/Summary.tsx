@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import NumberComponent from "../../../components/drawers/subcomponents/NumberComponent";
+import NumberComponent from "../../components/drawers/subcomponents/NumberComponent";
 
 interface Props {
   [key: string]: any;
