@@ -24,8 +24,9 @@ export const fetchAppliances = (organisation: number, {bypassCache = false} = {}
       (appliance) => typeof state.entities.appliances[appliance] === "undefined",
       state.entities.organisations[organisation].appliances
     )) && state.entities.appliances,
-  endpoint: `/organisations/${organisation}/appliances?eager=maintainers`,
+  endpoint: `/organisations/${organisation}/appliances`,
   method: "get",
+  parameters: {eager: "maintainers"},
   successType: FETCH_APPLIANCES_SUCCESS,
   type: CALL_API,
 });

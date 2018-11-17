@@ -24,9 +24,10 @@ export const setActiveAccount = (payload: any) => ({
 });
 
 export const fetchAccount = () => (dispatch: Dispatch) => dispatch<ReduxAPICall>({
-  endpoint: "/accounts?eager=organisations",
+  endpoint: "/accounts",
   method: "get",
   onSuccess: (payload) => dispatch(setActiveAccount(payload.id)),
+  parameters: {eager: "organisations"},
   successType: FETCH_ACCOUNT_SUCCESS,
   transformResponse: (response) => ({[response.id]: response}),
   type: CALL_API,

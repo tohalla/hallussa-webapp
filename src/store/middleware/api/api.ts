@@ -1,4 +1,4 @@
-import { indexBy } from "ramda";
+import { indexBy, map } from "ramda";
 import { Action, Dispatch, Middleware } from "redux";
 
 import { getAndCheckJWT } from "../../../auth/auth";
@@ -13,6 +13,7 @@ export interface ReduxAPICall extends Action {
   method: APIMethods;
   successType: string;
   type: "CALL_API";
+  parameters?: {[key: string]: string};
   body?: {[key: string]: any};
   onSuccess?(payload: any, cached: boolean): any; // get triggered on succesfull response
   onFailure?(payload: any): any; // gets triggered if the request fails
@@ -36,22 +37,23 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
   }
   return (async () => {
     const {
+      attemptToFetchFromStore,
       endpoint,
       method,
       successType,
       body,
       onSuccess,
       onFailure,
+      parameters,
       transformResponse = (response: any): any => {
         if (Array.isArray(response)) {
           return indexBy(
             ((o: {[key: string]: any}) => o.id || o.hash),
             response
-          );
+            );
         }
         return response;
       },
-      attemptToFetchFromStore,
     } = action as ReduxAPICall;
 
     if (typeof attemptToFetchFromStore === "function") {
@@ -71,8 +73,7 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
     };
 
     const token = await getAndCheckJWT();
-    // set relevant headers
-    if (token) {
+    if (token) { // set relevant headers
       headers.authorization = `Bearer ${token}`;
     }
 
@@ -84,7 +85,12 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
     });
 
     try {
-      const response = await fetch(`${apiUrl}${endpoint}`, {
+      const response = await fetch(`${apiUrl}${endpoint}${parameters ?
+        "?" + map(
+          (key) => `${key}=${String(parameters[key])}`,
+          Object.keys(parameters)
+        ).join("+") : ""
+      }`, {
         body: body && JSON.stringify(body),
         headers,
         method,
