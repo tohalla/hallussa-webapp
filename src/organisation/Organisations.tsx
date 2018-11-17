@@ -24,9 +24,7 @@ class Organisations extends React.Component<DispatchProps> {
   }
 }
 
-const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (
-  state: ReduxState
-) => ({
+const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => ({
   organisations: values(state.entities.organisations),
 });
 

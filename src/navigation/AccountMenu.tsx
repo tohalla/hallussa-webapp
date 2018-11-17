@@ -29,9 +29,7 @@ class AccountMenu extends React.Component<StateProps> {
   }
 }
 
-const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (
-  state: ReduxState
-) => ({
+const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => ({
   account: typeof state.session.activeAccount === "undefined" ?
     undefined : path(["entities", "accounts", state.session.activeAccount], state),
 });

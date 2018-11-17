@@ -16,9 +16,7 @@ class ApplianceListing extends Component<StateProps> {
   }
 }
 
-const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (
-  state: ReduxState
-): StateProps => ({
+const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state): StateProps => ({
   appliances: getEntitiesByOrganisation(state, "appliances"),
 });
 

@@ -50,10 +50,7 @@ class Appliance extends Component<Props> {
   }
 }
 
-const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (
-  state: ReduxState,
-  ownProps: Props
-): StateProps => ({
+const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, ownProps): StateProps => ({
   appliance: state.entities.appliances[ownProps.match.params.appliance],
   tabs: state.views.appliances.tabs,
 });
