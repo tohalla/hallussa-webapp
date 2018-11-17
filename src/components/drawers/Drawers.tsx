@@ -21,7 +21,7 @@ export default class Drawers extends React.Component<Props, State> {
   }
 
   public handleToggle = (drawer: string) => () =>
-    this.setState(assocPath(["expand", drawer]))
+    this.setState(assocPath(["expand", drawer], !this.state.expand[drawer]))
 
   public render() {
     const {drawers} = this.props;
