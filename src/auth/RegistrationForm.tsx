@@ -1,4 +1,5 @@
-import { assoc, assocPath } from "ramda";
+import changeCase from "change-case";
+import { assoc, forEachObjIndexed, isEmpty } from "ramda";
 import React, { ChangeEvent, Component, FormEvent, RefObject } from "react";
 import { Link } from "react-router-dom";
 
@@ -15,12 +16,12 @@ type Inputs = "email"
 
 type State = {
   errors: {
-    retypePassword?: string
+    [input in Inputs]?: string | boolean
   };
 } & {[input in Inputs]: string};
 
 class RegistrationForm extends Component<{}, State > {
-  public state: State = {
+  public state: Readonly<State> = {
     email: "",
     errors: {},
     firstName: "",
@@ -29,11 +30,8 @@ class RegistrationForm extends Component<{}, State > {
     retypePassword: "",
   };
 
-  public retypePasswordRef: RefObject<Input>;
-
-  constructor(props: {}) {
-    super(props);
-    this.retypePasswordRef = React.createRef();
+  public componentDidMount() {
+    this.setState(this.validate());
   }
 
   public handleSubmit = async (event: FormEvent) => register(this.state);
@@ -41,70 +39,69 @@ class RegistrationForm extends Component<{}, State > {
   public handleInputChange = (input: Inputs) => (
     event: ChangeEvent<HTMLInputElement>
   ) => {
-    this.setState(assoc(input, event.target.value));
+    const newState = assoc(input, event.target.value, this.state);
+    this.setState(this.validate(newState));
   }
 
-  public validate = () => {
-    const retypePasswordInput = this.retypePasswordRef.current as Input;
-    const {retypePassword, password} = this.state;
+  // returns state given as parameter after validation (errors modified)
+  public validate = (state: Readonly<State> = this.state): State => {
+    const newState = {...state};
+    const {retypePassword, password} = state;
 
-    if (retypePasswordInput.visited && retypePassword !== password) {
-      this.setState(assocPath(["errors", "retypePassword"], "Passwords do not match"));
+    newState.errors = {}; // clear old errors
+
+    if (
+      !/^([0-9a-zA-Z]([-\.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,5})$/
+        .test(newState.email)
+    ) {
+      newState.errors.email = "Invalid email address.";
     }
+
+    if (password.length < 6) {
+      newState.errors.password = "Minimum length for password is 6 charachters.";
+    }
+
+    if (retypePassword !== password) {
+      newState.errors.retypePassword = "Passwords do not match.";
+    }
+
+    // all inputs are required, so set error to true if not already set
+    forEachObjIndexed((value, key) => {
+      if (key !== "errors" && (value as string).length === 0 && typeof newState.errors[key] === "undefined") {
+        newState.errors[key] = true;
+      }
+    }, newState);
+
+    return newState;
   }
+
+  public renderInput = (key: Inputs, type: "text" | "password" = "text", placeholder?: string) => (
+    <Input
+      error={this.state.errors[key]}
+      name={changeCase.paramCase(key)}
+      onChange={this.handleInputChange(key)}
+      placeholder={placeholder || changeCase.titleCase(key)}
+      required={true}
+      type={type}
+      value={this.state[key]}
+    />
+  )
 
   public render() {
-    const {
-      errors,
-      email,
-      password,
-      firstName,
-      lastName,
-      retypePassword,
-    } = this.state;
     return (
       <Form
+        isValid={isEmpty(this.state.errors)}
         onSubmit={this.handleSubmit}
         secondary={<Link className={small} to="/">I already have account</Link>}
         submitText="Register"
       >
-        <Input
-          name="email"
-          onChange={this.handleInputChange("email")}
-          value={email}
-          placeholder="Email address"
-        />
+        {this.renderInput("email", "text", "Email Address")}
         <>
-          <Input
-            name="first-name"
-            onChange={this.handleInputChange("firstName")}
-            value={firstName}
-            placeholder="First name"
-          />
-          <Input
-            name="last-name"
-            onChange={this.handleInputChange("lastName")}
-            value={lastName}
-            placeholder="Last name"
-          />
+          {this.renderInput("firstName")}
+          {this.renderInput("lastName")}
         </>
-        <Input
-          name="password"
-          onChange={this.handleInputChange("password")}
-          type="password"
-          placeholder="Password"
-          value={password}
-        />
-        <Input
-          error={errors.retypePassword}
-          name="re-enter-password"
-          onBlur={this.validate}
-          onChange={this.handleInputChange("retypePassword")}
-          type="password"
-          placeholder="Re-enter password"
-          ref={this.retypePasswordRef}
-          value={retypePassword}
-        />
+        {this.renderInput("password", "password")}
+        {this.renderInput("retypePassword", "password", "Re-enter password")}
       </Form>
     );
   }
