@@ -84,36 +84,28 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       type: CALL_API,
     });
 
-    try {
-      const response = await fetch(`${apiUrl}${endpoint}${parameters ?
-        "?" + map(
-          (key) => `${key}=${String(parameters[key])}`,
-          Object.keys(parameters)
-        ).join("+") : ""
-      }`, {
-        body: body && JSON.stringify(body),
-        headers,
-        method,
-      });
-      if (response.ok) {
-        // trigger onSuccess if defined
-        const payload = await response.json();
-        if (typeof onSuccess === "function") { onSuccess(payload, false); }
-        next<RequestAction>({ // dispatch api success action
-          endpoint,
-          method,
-          type: CALL_API_SUCCESS,
-        });
-        return next({payload: transformResponse(payload), type: successType}); // dispatch success for request action
-      } else {
-        throw new Error("failed to fetch");
-      }
-    } catch (error) {
-      if (typeof onFailure === "function") { onFailure(error); }
-      return next({
+    const response = await fetch(`${apiUrl}${endpoint}${parameters ?
+      "?" + map(
+        (key) => `${key}=${String(parameters[key])}`,
+        Object.keys(parameters)
+      ).join("+") : ""
+    }`, {body: body && JSON.stringify(body), headers, method});
+    if (response.ok) {
+      // trigger onSuccess if defined
+      const payload = await response.json();
+      next({payload: transformResponse(payload), type: successType}); // dispatch success for request action
+      next<RequestAction>({ // dispatch api success action
         endpoint,
         method,
-        payload: {isFetching: false, error},
+        type: CALL_API_SUCCESS,
+      });
+      if (typeof onSuccess === "function") { await onSuccess(payload, false); }
+    } else {
+      if (typeof onFailure === "function") { onFailure("failed to fetch"); }
+      next({
+        endpoint,
+        method,
+        payload: {isFetching: false, error: "Failed to fetch"},
         type: CALL_API_FAILURE,
       }); // dispatch failure action
     }

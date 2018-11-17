@@ -1,9 +1,23 @@
-import { find, path } from "ramda";
+import { find, values } from "ramda";
 import React from "react";
 
 const loadingProps = ["loading", "isFetching"];
 
-export interface Loading {"loading": boolean;}
+// check deeply if props indicate positive loading status
+const checkLoading = (props: {[key: string]: any}, depth = 1): boolean => {
+  if (find((k) => props[k] === true, loadingProps)) {
+    return true;
+  }
+  if (
+    depth > 0 &&
+    find(
+      (k) => typeof props[k] === "object" && checkLoading(props[k], depth - 1),
+      Object.keys(props)
+    )) {
+    return true;
+  }
+  return false;
+};
 
 export default <P, S = {}, SS = any>(
   Component: typeof React.Component,
@@ -11,10 +25,7 @@ export default <P, S = {}, SS = any>(
 ) =>
   class Loadable extends React.Component<P, S, SS> {
     public render() {
-      if (
-        (typeof isLoading === "function" && isLoading(this.props)) ||
-        find((prop) => path([prop], this.props) === true, loadingProps)
-      ) {
+      if ((typeof isLoading === "function" && isLoading(this.props)) || checkLoading(this.props)) {
         return  "loading..."; // replace with loading indicator component
       }
       return <Component {...this.props} />;

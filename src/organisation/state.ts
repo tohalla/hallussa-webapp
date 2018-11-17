@@ -1,11 +1,12 @@
 import { dissoc, map, props, values } from "ramda";
 
+import { RequestPayload } from "../store/middleware/api/actions";
 import { EntitiesState, ReduxState } from "../store/store";
 import { OrganisationPayload } from "./actions";
 
 // return all organisations as readonly array
-export const getOrganisations = (state: ReduxState): ReadonlyArray<OrganisationPayload> =>
-  values(state.entities.organisations);
+export const getOrganisations = (state: ReduxState): ReadonlyArray<OrganisationPayload> | RequestPayload =>
+  state.activeRequests.get["/organisations"] || values(state.entities.organisations);
 
 export const getOrganisation = (
   state: ReduxState,

@@ -5,21 +5,22 @@ import { navItem } from "emotion-styles/topbar";
 import { connect, MapStateToProps } from "react-redux";
 import { OrganisationPayload } from "../organisation/actions";
 import { getOrganisation, getOrganisations } from "../organisation/state";
+import { RequestPayload } from "../store/middleware/api/actions";
 import { ReduxState } from "../store/store";
 import loadable from "../util/hoc/loadable";
 
 interface StateProps {
   organisation?: OrganisationPayload;
-  organisations?: ReadonlyArray<OrganisationPayload>;
+  organisations?: ReadonlyArray<OrganisationPayload> | RequestPayload;
 }
 
 class OrganisationSelect extends React.Component<StateProps> {
   public render() {
-    const {organisation} = this.props;
+    const organisation = this.props.organisation as OrganisationPayload;
     return (
       <>
         <Link className={navItem} to="/organisation">
-          {typeof organisation === "undefined" ? "Organisation" : organisation.name}
+          {organisation.name}
         </Link>
       </>
     );
