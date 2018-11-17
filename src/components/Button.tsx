@@ -4,6 +4,7 @@ import React, { Component, MouseEventHandler } from "react";
 
 export interface ButtonProps {
   onClick?: MouseEventHandler;
+  className?: string;
   children: JSX.Element | string;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
@@ -30,10 +31,10 @@ export default class Button extends Component<ButtonProps> {
   }
 
   public render() {
-    const { plain, onClick, children, ...props } = this.props;
+    const { plain, onClick, children, className, ...props } = this.props;
     const classname = classnames(button, {
       [plainStyle]: plain,
-    });
+    }, className);
 
     return (
       <button className={classname} onClick={this.handleClick} {...props}>

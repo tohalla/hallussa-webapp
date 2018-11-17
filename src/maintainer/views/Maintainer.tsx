@@ -16,10 +16,12 @@ interface DispatchProps {
   createTab(view: string, payload: TabPayload): any;
 }
 
-type AllProps = RouteComponentProps & DispatchProps & StateProps;
+type Props = RouteComponentProps & DispatchProps & StateProps & {
+  match: {params: {maintainer: string}}
+};
 
-class Maintainer extends Component<AllProps> {
-  public static getDerivedStateFromProps(props: AllProps) {
+class Maintainer extends Component<Props> {
+  public static getDerivedStateFromProps(props: Props) {
     const {tabs, maintainer, history} = props;
     if (typeof maintainer === "undefined") {
       history.push("/");
@@ -58,4 +60,4 @@ const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (
 export default connect(
   mapStateToProps,
   {createTab}
-)(loadable<AllProps>(Maintainer));
+)(loadable<Props>(Maintainer));
