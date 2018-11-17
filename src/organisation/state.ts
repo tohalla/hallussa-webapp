@@ -1,12 +1,16 @@
-import { map, props } from "ramda";
+import { dissoc, map, props, values } from "ramda";
 
 import { EntitiesState, ReduxState } from "../store/store";
 import { OrganisationPayload } from "./actions";
 
+// return all organisations as readonly array
+export const getOrganisations = (state: ReduxState): ReadonlyArray<OrganisationPayload> =>
+  values(state.entities.organisations);
+
 export const getOrganisation = (
   state: ReduxState,
   organisationId?: number
-): OrganisationPayload | undefined => {
+): Readonly<OrganisationPayload> | undefined => {
   if (typeof organisationId === "undefined") { // use current active organisation if not given
     if (state.session.activeOrganisation) {
       return getOrganisation(state, state.session.activeOrganisation);

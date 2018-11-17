@@ -1,10 +1,8 @@
 import { find } from "ramda";
-import { OrganisationPayload } from "../organisation/actions";
-import { CALL_API, ReduxAPICall } from "../store/middleware/api";
+import { CALL_API } from "../store/middleware/api/actions";
+import { ReduxAPICall } from "../store/middleware/api/api";
 
-export const FETCH_MAINTAINERS_REQUEST = "FETCH_MAINTAINERS_REQUEST";
 export const FETCH_MAINTAINERS_SUCCESS = "FETCH_MAINTAINERS_SUCCESS";
-export const FETCH_MAINTAINERS_FAILURE = "FETCH_MAINTAINERS_FAILURE";
 
 export interface MaintainerPayload {
   id: number;
@@ -29,11 +27,7 @@ export const fetchMaintainers = (organisation: number, {bypassCache = false} = {
       state.entities.organisations[organisation].maintainers
     )) && state.entities.maintainers,
   endpoint: `/organisations/${organisation}/maintainers?eager=appliances`,
-  method: "GET",
+  method: "get",
+  successType: FETCH_MAINTAINERS_SUCCESS,
   type: CALL_API,
-  types: [
-    FETCH_MAINTAINERS_REQUEST,
-    FETCH_MAINTAINERS_SUCCESS,
-    FETCH_MAINTAINERS_FAILURE,
-  ],
 });

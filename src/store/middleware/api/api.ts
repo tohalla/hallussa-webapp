@@ -1,16 +1,17 @@
-import { indexBy, path } from "ramda";
+import { indexBy } from "ramda";
 import { Action, Dispatch, Middleware } from "redux";
 
-import { getAndCheckJWT } from "../../auth/auth";
-import { apiUrl } from "../../config";
-import { ReduxState } from "../store";
+import { getAndCheckJWT } from "../../../auth/auth";
+import { apiUrl } from "../../../config";
+import { ReduxState } from "../../store";
+import { CALL_API, CALL_API_FAILURE, CALL_API_SUCCESS, RequestAction } from "./actions";
 
-export const CALL_API = "CALL_API";
+export type APIMethods = "post" | "get" | "patch" | "del";
 
 export interface ReduxAPICall extends Action {
   endpoint: string;
-  method: "POST" | "GET" | "PUT" | "DEL";
-  types: [string, string, string]; // [REQUEST, SUCCESS, FAILURE]
+  method: APIMethods;
+  successType: string;
   type: "CALL_API";
   body?: {[key: string]: any};
   onSuccess?(payload: any, cached: boolean): any; // get triggered on succesfull response
@@ -22,10 +23,10 @@ export interface ReduxAPICall extends Action {
 /**
  * returns true if action can be interpreted as API call
  */
-const isValid = ({endpoint, types, method}: {[key: string]: any}) =>
-typeof endpoint === "string" &&
-Array.isArray(types) &&
-typeof method === "string";
+const isValid = ({endpoint, successType, method}: {[key: string]: any}) =>
+  typeof endpoint === "string" &&
+  typeof successType === "string" &&
+  typeof method === "string";
 
 const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => {
   if (action.type !== CALL_API) {
@@ -37,7 +38,7 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
     const {
       endpoint,
       method,
-      types: [requestType, successType, failureType],
+      successType,
       body,
       onSuccess,
       onFailure,
@@ -65,8 +66,6 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       }
     }
 
-    next({type: requestType, payload: {isFetching: true}}); // dispatch request action
-
     const headers: Record<string, string> = {
       ["content-type"]: "application/json",
     };
@@ -76,6 +75,13 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
     if (token) {
       headers.authorization = `Bearer ${token}`;
     }
+
+    next<RequestAction>({ // dispatch api request action
+      endpoint,
+      method,
+      payload: {isFetching: true, requestedAt: Date.now()},
+      type: CALL_API,
+    });
 
     try {
       const response = await fetch(`${apiUrl}${endpoint}`, {
@@ -87,13 +93,23 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
         // trigger onSuccess if defined
         const payload = await response.json();
         if (typeof onSuccess === "function") { onSuccess(payload, false); }
-        return next({type: successType, payload: transformResponse(payload)}); // dispatch success action
+        next<RequestAction>({ // dispatch api success action
+          endpoint,
+          method,
+          type: CALL_API_SUCCESS,
+        });
+        return next({payload: transformResponse(payload), type: successType}); // dispatch success for request action
       } else {
         throw new Error("failed to fetch");
       }
-    } catch (e) {
-      if (typeof onFailure === "function") { onFailure(e); }
-      return next({type: failureType, payload: e}); // dispatch failure action
+    } catch (error) {
+      if (typeof onFailure === "function") { onFailure(error); }
+      return next({
+        endpoint,
+        method,
+        payload: {isFetching: false, error},
+        type: CALL_API_FAILURE,
+      }); // dispatch failure action
     }
   })();
 };

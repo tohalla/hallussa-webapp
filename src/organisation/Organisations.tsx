@@ -2,7 +2,7 @@ import { values } from "ramda";
 import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
-import { ReduxAPICall } from "../store/middleware/api";
+import { ReduxAPICall } from "../store/middleware/api/api";
 import { ReduxState } from "../store/store";
 import { fetchOrganisations, OrganisationPayload } from "./actions";
 

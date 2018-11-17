@@ -3,6 +3,8 @@ import React from "react";
 
 const loadingProps = ["loading", "isFetching"];
 
+export interface Loading {"loading": boolean;}
+
 export default <P, S = {}, SS = any>(
   Component: typeof React.Component,
   isLoading?: (props: {[key: string]: any}) => boolean

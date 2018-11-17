@@ -1,10 +1,9 @@
 import { AnyAction, Dispatch } from "redux";
-import { CALL_API, ReduxAPICall } from "../store/middleware/api";
+import { CALL_API } from "../store/middleware/api/actions";
+import { ReduxAPICall } from "../store/middleware/api/api";
 
 export const SET_ACTIVE_ACCOUNT = "SET_ACTIVE_ACCOUNT";
-export const FETCH_ACCOUNT_REQUEST = "FETCH_ACCOUNT_REQUEST";
 export const FETCH_ACCOUNT_SUCCESS = "FETCH_ACCOUNT_SUCCESS";
-export const FETCH_ACCOUNT_FAILURE = "FETCH_ACCOUNT_FAILURE";
 
 export interface AccountPayload {
   id: number;
@@ -26,9 +25,9 @@ export const setActiveAccount = (payload: any) => ({
 
 export const fetchAccount = () => (dispatch: Dispatch) => dispatch<ReduxAPICall>({
   endpoint: "/accounts?eager=organisations",
-  method: "GET",
+  method: "get",
   onSuccess: (payload) => dispatch(setActiveAccount(payload.id)),
+  successType: FETCH_ACCOUNT_SUCCESS,
   transformResponse: (response) => ({[response.id]: response}),
   type: CALL_API,
-  types: [FETCH_ACCOUNT_REQUEST, FETCH_ACCOUNT_SUCCESS, FETCH_ACCOUNT_FAILURE],
 });

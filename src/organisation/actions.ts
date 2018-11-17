@@ -1,13 +1,11 @@
-import { isEmpty, path } from "ramda";
-import { AnyAction, Dispatch } from "redux";
+import { isEmpty } from "ramda";
+import { Dispatch } from "redux";
 import { fetchAppliances } from "../appliance/actions";
 import { fetchMaintainers } from "../maintainer/actions";
-import { CALL_API, ReduxAPICall } from "../store/middleware/api";
+import { CALL_API } from "../store/middleware/api/actions";
+import { ReduxAPICall } from "../store/middleware/api/api";
 
-export const FETCH_ORGANISATIONS_REQUEST = "FETCH_ORGANISATIONS_REQUEST";
 export const FETCH_ORGANISATIONS_SUCCESS = "FETCH_ORGANISATIONS_SUCCESS";
-export const FETCH_ORGANISATIONS_FAILURE = "FETCH_ORGANISATIONS_FAILURE";
-
 export const SET_ACTIVE_ORGANISATION = "SET_ACTIVE_ORGANISATION";
 
 export interface OrganisationPayload {
@@ -30,13 +28,9 @@ export const fetchOrganisations = ({bypassCache = false} = {}): ReduxAPICall => 
   attemptToFetchFromStore: bypassCache ? undefined : (state) =>
     !isEmpty(state.entities.organisations) && state.entities.organisations,
   endpoint: "/organisations?eager=[accounts,maintainers,appliances]",
-  method: "GET",
+  method: "get",
+  successType: FETCH_ORGANISATIONS_SUCCESS,
   type: CALL_API,
-  types: [
-    FETCH_ORGANISATIONS_REQUEST,
-    FETCH_ORGANISATIONS_SUCCESS,
-    FETCH_ORGANISATIONS_FAILURE,
-  ],
 });
 
 export const setActiveOrganisation = (organisation: number, isAdmin: boolean, fetchRelated = true) =>
