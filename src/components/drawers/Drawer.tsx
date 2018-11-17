@@ -1,5 +1,4 @@
 import React, { Component, ReactChild } from "react";
-import { connect } from "react-redux";
 
 import drawer from "emotion-styles/drawer";
 

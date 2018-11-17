@@ -5,14 +5,15 @@ export interface WithDrawerHOCProps {
   toggleActiveDrawer: (view: string, drawer: string) => void;
 }
 
-export default <P extends object>(WrappedComponent: ComponentType<P>) => (
-  class extends Component<P & {[key: string]: any}> {
-    constructor(props: any) {
-      super(props);
-      this.state = {
-        openDrawer: "",
-      };
-    }
+interface State {
+  openDrawer: string;
+}
+
+export default (WrappedComponent: typeof React.Component) => (
+  class extends Component {
+    public state = {
+      openDrawer: "",
+    };
 
     public handleToggle = (view: string, drawer = "") => {
       // NOTE: If we were to use redux for drawers,

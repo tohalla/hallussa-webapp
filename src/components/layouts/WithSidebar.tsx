@@ -1,11 +1,8 @@
-import classNames from "classnames";
-import { path } from "ramda";
 import React, { ReactChild } from "react";
 
+import { withSidebar } from "emotion-styles/container";
 import ContentLayout from "./ContentLayout";
 import Sidebar from "./Sidebar";
-
-import { withSidebar } from "emotion-styles/container";
 
 interface Props {
   content: ReactChild;

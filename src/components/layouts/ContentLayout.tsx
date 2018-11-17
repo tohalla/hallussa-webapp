@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react"
+import React, { ReactNode } from "react";
 
 const styledContentLayout = "";
 
@@ -11,5 +11,5 @@ export default (props: Props) => {
     <div className={styledContentLayout}>
       {props.children}
     </div>
-  )
-}
+  );
+};
