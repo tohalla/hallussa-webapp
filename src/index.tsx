@@ -3,6 +3,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 
+import "emotion-styles";
+
 import { appContainer } from "emotion-styles/container";
 import { authenticate } from "./auth/auth";
 import Router from "./Router";

@@ -5,6 +5,7 @@ import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 import { AccountPayload } from "../account/actions";
 import { signOut } from "../auth/auth";
+import Button from "../components/Button";
 import { ReduxState } from "../store/store";
 
 interface StateProps {
@@ -22,7 +23,7 @@ class AccountMenu extends React.Component<StateProps> {
     return (
       <div className={navGroup}>
         Hello, {firstName}
-        <a className={navItem} onClick={this.handleLogout}>Log out</a>
+        <Button className={navItem} onClick={this.handleLogout} plain={true}>Log out</Button>
       </div>
     );
   }
