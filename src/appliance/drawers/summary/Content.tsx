@@ -29,6 +29,7 @@ export default class Content extends Component<Props> {
               size={"sm"}
               number={0}
               label={"years"}
+              alert={true}
             />
             <NumberComponent
               size={"sm"}

@@ -7,12 +7,15 @@ interface Props {
   number: string | number;
   label: string;
   size: string;
+  alert?: boolean;
 }
 
-export default (props: Props) => {
-  const { number: n, size, label } = props;
+const NumberComponent = (props: Props) => {
+  const { number: n, size, label, alert } = props;
   const outerCn = classNames(inlineBlock, "padded");
-  const innerCn = classNames(size, numberBlock);
+  const innerCn = classNames(size, numberBlock, {
+    alert,
+  });
   return (
     <div className={outerCn}>
       <div className={innerCn}>
@@ -22,3 +25,9 @@ export default (props: Props) => {
     </div>
   );
 };
+
+NumberComponent.defaultProps = {
+  alert: false,
+};
+
+export default NumberComponent;
