@@ -1,24 +1,24 @@
 import { dissoc, map, props, values } from "ramda";
 
-import { RequestPayload } from "../store/middleware/api/actions";
+import { APIResponsePayload } from "../store/middleware/api/actions";
 import { EntitiesState, ReduxState } from "../store/store";
 import { OrganisationPayload } from "./actions";
 
 // return all organisations as readonly array
-export const getOrganisations = (state: ReduxState): ReadonlyArray<OrganisationPayload> | RequestPayload =>
+export const getOrganisations = (state: ReduxState): ReadonlyArray<OrganisationPayload> | APIResponsePayload =>
   state.activeRequests.get["/organisations"] || values(state.entities.organisations);
 
 export const getOrganisation = (
   state: ReduxState,
   organisationId?: number
-): Readonly<OrganisationPayload> | undefined => {
+): Readonly<OrganisationPayload> | undefined | APIResponsePayload => {
   if (typeof organisationId === "undefined") { // use current active organisation if not given
     if (state.session.activeOrganisation) {
       return getOrganisation(state, state.session.activeOrganisation);
     }
     return undefined; // if no active organisation, return undefined
   }
-  return state.entities.organisations[organisationId];
+  return state.activeRequests.get["/organisations"] || state.entities.organisations[organisationId];
 };
 
 export const getEntitiesByOrganisation = <T>(

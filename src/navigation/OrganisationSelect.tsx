@@ -5,13 +5,13 @@ import { navItem } from "emotion-styles/topbar";
 import { connect, MapStateToProps } from "react-redux";
 import { OrganisationPayload } from "../organisation/actions";
 import { getOrganisation, getOrganisations } from "../organisation/state";
-import { RequestPayload } from "../store/middleware/api/actions";
+import { APIResponsePayload } from "../store/middleware/api/actions";
 import { ReduxState } from "../store/store";
 import loadable from "../util/hoc/loadable";
 
 interface StateProps {
   organisation?: OrganisationPayload;
-  organisations?: ReadonlyArray<OrganisationPayload> | RequestPayload;
+  organisations?: ReadonlyArray<OrganisationPayload> | APIResponsePayload;
 }
 
 class OrganisationSelect extends React.Component<StateProps> {

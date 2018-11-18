@@ -4,7 +4,7 @@ import { Action, Dispatch, Middleware } from "redux";
 import { getAndCheckJWT } from "../../../auth/auth";
 import { apiUrl } from "../../../config";
 import { ReduxState } from "../../store";
-import { CALL_API, CALL_API_FAILURE, CALL_API_SUCCESS, RequestAction } from "./actions";
+import { APIResponseAction, CALL_API, CALL_API_FAILURE, CALL_API_SUCCESS } from "./actions";
 
 export type APIMethods = "post" | "get" | "patch" | "del";
 
@@ -45,14 +45,14 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       onSuccess,
       onFailure,
       parameters,
-      transformResponse = (response: any): any => {
-        if (Array.isArray(response)) {
+      transformResponse = (originalResopnse: any): any => {
+        if (Array.isArray(originalResopnse)) {
           return indexBy(
             ((o: {[key: string]: any}) => o.id || o.hash),
-            response
-            );
+            originalResopnse
+          );
         }
-        return response;
+        return originalResopnse;
       },
     } = action as ReduxAPICall;
 
@@ -77,7 +77,7 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       headers.authorization = `Bearer ${token}`;
     }
 
-    next<RequestAction>({ // dispatch api request action
+    next<APIResponseAction>({ // dispatch api request action
       endpoint,
       method,
       payload: {isFetching: true, requestedAt: Date.now()},
@@ -94,7 +94,7 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       // trigger onSuccess if defined
       const payload = await response.json();
       next({payload: transformResponse(payload), type: successType}); // dispatch success for request action
-      next<RequestAction>({ // dispatch api success action
+      next<APIResponseAction>({ // dispatch api success action
         endpoint,
         method,
         type: CALL_API_SUCCESS,

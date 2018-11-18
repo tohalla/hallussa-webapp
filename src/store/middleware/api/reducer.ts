@@ -3,11 +3,11 @@ import { Reducer } from "redux";
 
 import { anyEquals } from "../../../util/utilityFunctions";
 import {
+  APIResponseAction,
+  APIResponsePayload,
   CALL_API,
   CALL_API_FAILURE,
-  CALL_API_SUCCESS,
-  RequestAction,
-  RequestPayload
+  CALL_API_SUCCESS
 } from "./actions";
 import { APIMethods } from "./api";
 
@@ -21,12 +21,12 @@ const typeHandler = cond([
 ]);
 
 export type RequestsState = {
-  [key in APIMethods]: {[key: string]: RequestPayload}
+  [key in APIMethods]: {[key: string]: APIResponsePayload}
 };
 
-const reducer: Reducer<RequestsState, RequestAction> = (
+const reducer: Reducer<RequestsState, APIResponseAction> = (
   state = {del: {}, get: {}, patch: {}, post: {}},
-  {payload, type, method, endpoint}: RequestAction
+  {payload, type, method, endpoint}: APIResponseAction
 ) => typeHandler(type, state, method, endpoint, payload);
 
 export default reducer;
