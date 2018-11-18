@@ -1,10 +1,10 @@
 import classnames from "classnames";
-import React from "react";
+import React, { MouseEventHandler } from "react";
 import { TabPayload } from "./actions";
 
 interface Props extends TabPayload {
   label: string;
-  onClose(): any;
+  onClose: MouseEventHandler<HTMLElement>;
 }
 
 const icons = ["add"]; // labels that should be displayed as material icon

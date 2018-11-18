@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import { map, sort, values } from "ramda";
-import React, { Component } from "react";
+import React, { Component, MouseEventHandler } from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
@@ -20,7 +20,9 @@ interface DispatchProps {
 }
 
 class TabsContainer extends Component<Props & DispatchProps> {
-  public handleTabClose = (tab: TabPayload) => () => {
+  public handleTabClose = (tab: TabPayload): MouseEventHandler<HTMLElement> => (event) => {
+    event.stopPropagation();
+    event.preventDefault();
     const {history, location, view} = this.props;
     if (location.pathname.endsWith(tab.key)) {
       history.push("/"); // move to default tab if tab to be closed is open
