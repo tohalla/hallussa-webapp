@@ -47,11 +47,11 @@ class RegistrationForm extends Component<{}, State > {
   // returns state given as parameter after validation (errors modified)
   public validate = (state: Readonly<State> = this.state): State => {
     const newState = {...state};
-    const {retypePassword, password} = state;
+    const {email, retypePassword, password} = state;
 
     newState.errors = {}; // clear old errors
 
-    if (validateEmail) {
+    if (validateEmail(email)) {
       newState.errors.email = "Invalid email address.";
     }
 
