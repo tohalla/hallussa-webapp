@@ -18,12 +18,8 @@ export default (props: Props) => {
   const { label, sticky, onClose } = props;
   return (
     <>
-      {icons.indexOf(label) === -1 ?
-        label : <i className={classnames("material-icons")}>{label}</i>
-      }
-      {!sticky &&
-        <i className={classnames("material-icons")} onClick={onClose}>close</i>
-      }
+      <span className={classnames({"material-icons": icons.indexOf(label) > -1})}>{label}</span>
+      {!sticky && <i className={classnames("material-icons")} onClick={onClose}>close</i>}
     </>
   );
 };
