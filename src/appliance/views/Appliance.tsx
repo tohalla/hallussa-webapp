@@ -3,7 +3,6 @@ import { connect, MapStateToProps } from "react-redux";
 
 import { RouteComponentProps } from "react-router";
 import { createTab, TabPayload } from "../../components/tabbed/actions";
-import { EntityGroup } from "../../store/reducer";
 import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
 import { AppliancePayload } from "../actions";
