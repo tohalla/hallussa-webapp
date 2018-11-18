@@ -16,9 +16,7 @@ class MaintainerListing extends Component<StateProps> {
   }
 }
 
-const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (
-  state: ReduxState
-) => ({
+const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => ({
   maintainers: getEntitiesByOrganisation(state, "maintainers"),
 });
 

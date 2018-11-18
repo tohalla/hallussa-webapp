@@ -49,10 +49,7 @@ class Maintainer extends Component<Props> {
   }
 }
 
-const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (
-  state: ReduxState,
-  ownProps: Props
-): StateProps => ({
+const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, ownProps): StateProps => ({
   maintainer: state.entities.maintainers[ownProps.match.params.maintainer],
   tabs: state.views.appliances.tabs,
 });

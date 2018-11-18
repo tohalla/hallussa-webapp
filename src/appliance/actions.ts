@@ -1,9 +1,8 @@
 import { find } from "ramda";
-import { CALL_API, ReduxAPICall } from "../store/middleware/api";
+import { CALL_API } from "../store/middleware/api/actions";
+import { ReduxAPICall } from "../store/middleware/api/api";
 
-export const FETCH_APPLIANCES_REQUEST = "FETCH_APPLIANCES_REQUEST";
 export const FETCH_APPLIANCES_SUCCESS = "FETCH_APPLIANCES_SUCCESS";
-export const FETCH_APPLIANCES_FAILURE = "FETCH_APPLIANCES_FAILURE";
 
 export interface AppliancePayload {
   id: number;
@@ -25,12 +24,9 @@ export const fetchAppliances = (organisation: number, {bypassCache = false} = {}
       (appliance) => typeof state.entities.appliances[appliance] === "undefined",
       state.entities.organisations[organisation].appliances
     )) && state.entities.appliances,
-  endpoint: `/organisations/${organisation}/appliances?eager=maintainers`,
-  method: "GET",
+  endpoint: `/organisations/${organisation}/appliances`,
+  method: "get",
+  parameters: {eager: "maintainers"},
+  successType: FETCH_APPLIANCES_SUCCESS,
   type: CALL_API,
-  types: [
-    FETCH_APPLIANCES_REQUEST,
-    FETCH_APPLIANCES_SUCCESS,
-    FETCH_APPLIANCES_FAILURE,
-  ],
 });

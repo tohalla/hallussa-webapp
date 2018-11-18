@@ -8,6 +8,7 @@ import views from "../components/tabbed/reducer";
 import maintainers from "../maintainer/reducer";
 import { SET_ACTIVE_ORGANISATION } from "../organisation/actions";
 import organisations from "../organisation/reducer";
+import activeRequests from "./middleware/api/reducer";
 
 const typeHandler = cond([
   [equals(SET_ACTIVE_ACCOUNT), (type, state, payload) => merge(state, {activeAccount: payload})],
@@ -30,6 +31,7 @@ const entities = combineReducers({
 });
 
 export default combineReducers({
+  activeRequests,
   entities,
   session,
   views,
