@@ -3,8 +3,11 @@ import React from "react";
 
 const loadingProps = ["loading", "isFetching"];
 
-// check deeply if props indicate positive loading status
-const checkLoading = (props: {[key: string]: any}, depth = 1): boolean => {
+// check deeply if props indicate positive loading status or error
+const checkLoading = (props: {[key: string]: any}, depth = 1, checkErrors = true): boolean => {
+  if (checkErrors && typeof props.error ===  "string") {
+    throw new Error(props.error);
+  }
   if (find((k) => props[k] === true, loadingProps)) {
     return true;
   }
@@ -21,12 +24,17 @@ const checkLoading = (props: {[key: string]: any}, depth = 1): boolean => {
 
 export default <P, S = {}, SS = any>(
   Component: typeof React.Component,
-  isLoading?: (props: {[key: string]: any}) => boolean
+  isLoading?: (props: {[key: string]: any}) => boolean,
+  onError: (error: Error) => JSX.Element | string = (error) => "Error"
 ) =>
   class Loadable extends React.Component<P, S, SS> {
     public render() {
-      if ((typeof isLoading === "function" && isLoading(this.props)) || checkLoading(this.props)) {
-        return  "loading..."; // replace with loading indicator component
+      try {
+        if ((typeof isLoading === "function" && isLoading(this.props)) || checkLoading(this.props)) {
+          return  "loading..."; // replace with loading indicator component
+        }
+      } catch (error) {
+        return onError(error) || null;
       }
       return <Component {...this.props} />;
     }
