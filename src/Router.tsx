@@ -12,23 +12,26 @@ interface StateProps {
   organisationSelected: boolean;
 }
 
-const RootRouter = ({organisationSelected}: StateProps) => (
-  <Router>
-    <>
-      <Topbar />
-      <Switch>
-        <Route path="/organisations" component={OrganisationsRoot} />
-        {organisationSelected &&
-          <>
-            <Route path="/appliances" component={ApplianceRoot} />
-            <Route path="/maintainers" component={MaintainerRoot} />
-          </>
-        }
-        <Redirect path="*" to="/organisations" />
-      </Switch>
-    </>
-  </Router>
-);
+const RootRouter = ({organisationSelected}: StateProps) => {
+  const routes = [
+    <Route key="organisations" path="/organisations" component={OrganisationsRoot} />,
+    ...organisationSelected ? [
+      <Route key="appliances" path="/appliances" component={ApplianceRoot} />,
+      <Route key="maintainers" path="/maintainers" component={MaintainerRoot} />,
+    ] : [],
+  ];
+  return (
+    <Router>
+      <>
+        <Topbar />
+        <Switch>
+          {routes}
+          <Redirect path="*" to="/organisations" />
+        </Switch>
+      </>
+    </Router>
+  );
+};
 
 const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => ({
   organisationSelected: typeof state.session.activeOrganisation === "number",

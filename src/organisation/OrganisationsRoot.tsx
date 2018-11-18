@@ -1,13 +1,15 @@
 import React from "react";
 import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
-
-import tabbed from "../components/tabbed/tabbed";
+import ViewContainer from "../components/layouts/ViewContainer";
+import { viewContentContainer } from "../emotion-styles/src/container";
 
 export default () => (
   <Router basename="/organisations">
-    <Switch>
-      <Route exact={true} path="/" component={() => <div />} />
-      <Redirect path="*" to="/" />
-    </Switch>
+    <ViewContainer className={viewContentContainer}>
+      <Switch>
+        <Route exact={true} path="/" component={() => <div>"test"</div>} />
+        <Redirect path="*" to="/" />
+      </Switch>
+    </ViewContainer>
   </Router>
 );
