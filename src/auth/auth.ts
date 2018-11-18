@@ -31,7 +31,7 @@ export const authenticate = async (
         : {
           body: JSON.stringify(credentials),
           headers: { ["Content-Type"]: "application/json" },
-          method: "POST",
+          method: "post",
         } // otherwise should use email and password
     );
     const { token, expiresAt } = await response.json();
@@ -61,7 +61,7 @@ export const register = async (
     {
       body: JSON.stringify(account),
       headers: { ["Content-Type"]: "application/json" },
-      method: "POST",
+      method: "post",
     }
   );
   if (authenticateAfter && response.ok) {

@@ -1,11 +1,12 @@
 import { applyMiddleware, compose, createStore } from "redux";
 import thunk from "redux-thunk";
 
-import { AccountAction, AccountPayload, fetchAccount } from "../account/actions";
+import { AccountPayload, fetchAccount } from "../account/actions";
 import { AppliancePayload } from "../appliance/actions";
 import { MaintainerPayload } from "../maintainer/actions";
 import { fetchOrganisations, OrganisationPayload, setActiveOrganisation } from "../organisation/actions";
-import api, { ReduxAPICall } from "./middleware/api";
+import api from "./middleware/api/api";
+import { RequestsState } from "./middleware/api/reducer";
 import reducer, { EntityGroup } from "./reducer";
 
 const composeEnhancers =  process.env.NODE_ENV === "development"
@@ -22,18 +23,15 @@ export interface EntitiesState {
 
 export interface ReduxState {
   entities: EntitiesState;
+  activeRequests: RequestsState;
   session: {
     activeAccount?: number;
     activeOrganisation?: number;
     isAdmin?: boolean;
   };
   views: {
-    appliances: {
-      tabs: {}
-    },
-    maintainers: {
-      tabs: {}
-    }
+    appliances: { tabs: {} },
+    maintainers: { tabs: {} }
   };
 }
 
@@ -46,8 +44,8 @@ if (module.hot) {
   module.hot.accept("../reducers", () => store.replaceReducer(reducer));
 }
 
-// fill store
-(async () => {
+// fetch initial state to store using API
+export const initializeStore = async () => {
   await Promise.all([
     store.dispatch<any>(fetchAccount()), // fetch current account information
     store.dispatch(fetchOrganisations()), // fetch organisations for current account
@@ -59,7 +57,7 @@ if (module.hot) {
   const organisation = account.organisations[0];
 
   // set selected organisation as active
-  await store.dispatch<any>(setActiveOrganisation(organisation.id, organisation.isAdmin));
-})();
+  return store.dispatch<any>(setActiveOrganisation(organisation.id, organisation.isAdmin));
+};
 
 export default store;

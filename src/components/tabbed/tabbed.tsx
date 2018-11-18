@@ -13,9 +13,7 @@ interface StateProps {
 }
 
 export default (view: keyof ViewsState) => {
-  const mapStateToProps: MapStateToProps<StateProps, RouteComponentProps, ReduxState> = (
-    state: ReduxState
-  ) => ({
+  const mapStateToProps: MapStateToProps<StateProps, RouteComponentProps, ReduxState> = (state) => ({
     tabs: state.views[view].tabs,
   });
 

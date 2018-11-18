@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import Logo from "../components/Logo";
 import { sm } from "../emotion-styles/src/variables/breakpoints";
 import AccountMenu from "./AccountMenu";
+import OrganisationSelect from "./OrganisationSelect";
 
 export default class Topbar extends React.Component {
   public state = {
@@ -46,7 +47,7 @@ export default class Topbar extends React.Component {
           </div>
           {displayMenu &&
             <div className={navGroup}>
-              <Link className={navItem} to="/organisation">Organisation</Link>
+              {<OrganisationSelect />}
               <Link className={navItem} to="/appliances">Appliances</Link>
               <Link className={navItem} to="/maintainers">Maintainers</Link>
             </div>

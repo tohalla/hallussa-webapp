@@ -1,20 +1,10 @@
-import { cond, T } from "ramda";
+import { cond, equals, T } from "ramda";
 import { Reducer } from "redux";
 
-import { anyEquals } from "../util/utilityFunctions";
-import {
-  AccountAction,
-  FETCH_ACCOUNT_FAILURE,
-  FETCH_ACCOUNT_REQUEST,
-  FETCH_ACCOUNT_SUCCESS,
-} from "./actions";
+import { AccountAction, FETCH_ACCOUNT_SUCCESS } from "./actions";
 
 const typeHandler = cond([
-  [anyEquals([
-    FETCH_ACCOUNT_SUCCESS,
-    FETCH_ACCOUNT_REQUEST,
-    FETCH_ACCOUNT_FAILURE,
-  ]), (type, state, payload) => payload],
+  [equals(FETCH_ACCOUNT_SUCCESS), (type, state, payload) => payload],
   [T, (type, state, payload) => state],
 ]);
 
