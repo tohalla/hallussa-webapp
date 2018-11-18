@@ -1,6 +1,5 @@
+import { leftContainer } from "emotion-styles/sidebar";
 import React, { ReactNode } from "react";
-
-const styledContentLayout = "";
 
 interface Props {
   children: ReactNode;
@@ -8,7 +7,7 @@ interface Props {
 
 export default (props: Props) => {
   return (
-    <div className={styledContentLayout}>
+    <div className={leftContainer}>
       {props.children}
     </div>
   );

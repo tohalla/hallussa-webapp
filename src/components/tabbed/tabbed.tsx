@@ -1,8 +1,9 @@
-import { path, pick } from "ramda";
+import { pick } from "ramda";
 import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
 import { RouteComponentProps } from "react-router";
+import { tabbedContainer, tabbedContentContainer } from "../../emotion-styles/src/tabbed";
 import { ReduxState } from "../../store/store";
 import { TabPayload } from "./actions";
 import { ViewsState } from "./reducer";
@@ -24,10 +25,12 @@ export default (view: keyof ViewsState) => {
         props
       );
       return (
-        <>
+        <div className={tabbedContainer}>
           <TabsContainer view={view} tabs={props.tabs} {...routerProps} />
-          <Component {...routerProps} />
-        </>
+          <div className={tabbedContentContainer}>
+            <Component {...routerProps} />
+          </div>
+        </div>
       );
     };
 

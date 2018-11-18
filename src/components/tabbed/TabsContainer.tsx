@@ -1,9 +1,11 @@
+import classnames from "classnames";
 import { map, values } from "ramda";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 import { RouteComponentProps } from "react-router";
+import { actionTab, tab as tabStyle, tabActive, tabsContainer } from "../../emotion-styles/src/tabbed";
 import { closeTab, createTab, TabPayload } from "./actions";
 import TabComponent from "./TabComponent";
 
@@ -32,20 +34,21 @@ class TabsContainer extends Component<Props & DispatchProps> {
   }
 
   public renderTab = (tab: TabPayload) => {
-    const { label, key } = tab;
+    const {activeLabel, label, key, accent} = tab;
+    const {match: {path}} = this.props;
     return (
       <NavLink
-        activeClassName=""
+        className={classnames(tabStyle, {[actionTab]: accent})}
+        activeClassName={tabActive}
         exact={true}
         key={key}
         to={this.getPath(tab)}
       >
         <TabComponent
           {...tab}
+          label={path.startsWith(`/${key}`) && activeLabel ? activeLabel : label}
           onClose={this.handleTabClose(tab)}
-        >
-          {label}
-        </TabComponent>
+        />
       </NavLink>
     );
   }
@@ -53,17 +56,11 @@ class TabsContainer extends Component<Props & DispatchProps> {
   public render() {
     const { tabs } = this.props;
     return (
-      <div>
+      <div className={tabsContainer}>
         {map<TabPayload, JSX.Element>(this.renderTab, values(tabs))}
       </div>
     );
   }
 }
 
-export default connect(
-  undefined,
-  {
-    closeTab,
-    createTab,
-  }
-)(TabsContainer);
+export default connect(undefined, {closeTab, createTab})(TabsContainer);

@@ -10,6 +10,8 @@ export interface TabAction extends AnyAction {
 export interface TabPayload {
   key: string;
   label: string;
+  activeLabel?: string;
+  accent?: boolean;
   sticky?: boolean;
 }
 
