@@ -1,6 +1,6 @@
 import changeCase from "change-case";
-import { assoc, forEachObjIndexed, isEmpty } from "ramda";
-import React, { ChangeEvent, Component, FormEvent, RefObject } from "react";
+import { assoc, dissoc, forEachObjIndexed, isEmpty } from "ramda";
+import React, { ChangeEvent, Component, FormEvent } from "react";
 import { Link } from "react-router-dom";
 
 import Form from "../components/Form";
@@ -35,7 +35,9 @@ class RegistrationForm extends Component<{}, State > {
     this.setState(this.validate());
   }
 
-  public handleSubmit = async (event: FormEvent) => register(this.state);
+  public handleSubmit = async (event: FormEvent) => register(
+    dissoc("errors", this.state)
+  )
 
   public handleInputChange = (input: Inputs) => (
     event: ChangeEvent<HTMLInputElement>
