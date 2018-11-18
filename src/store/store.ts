@@ -55,7 +55,7 @@ export const initializeStore = async () => {
   const account = store.getState().entities.accounts[store.getState().session.activeAccount] as AccountPayload;
   // default organisation will be the first one on account (consider being able to set default organisation)
   const organisation = account.organisations[0];
-
+  if (typeof organisation === "undefined") { return; } // return if no organisations listed under account
   // set selected organisation as active
   return store.dispatch<any>(setActiveOrganisation(organisation.id, organisation.isAdmin));
 };
