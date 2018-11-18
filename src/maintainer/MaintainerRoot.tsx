@@ -10,13 +10,11 @@ const view = tabbed("maintainers");
 
 export default () => (
   <Router basename="/maintainers">
-    <>
-      <Switch>
-        <Route exact={true} path="/" component={view(MaintainerListing)} />
-        <Route exact={true} path="/new" component={view(NewMaintainer)} />
-        <Route exact={true} path="/:maintainer" component={view(Maintainer)} />
-        <Redirect path="*" to="/" />
-      </Switch>
-    </>
+    <Switch>
+      <Route exact={true} path="/" component={view(MaintainerListing)} />
+      <Route exact={true} path="/new" component={view(NewMaintainer)} />
+      <Route exact={true} path="/:maintainer" component={view(Maintainer)} />
+      <Redirect path="*" to="/" />
+    </Switch>
   </Router>
 );

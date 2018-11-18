@@ -19,7 +19,7 @@ const OrganisationNavigation = ({organisationSelected}: StateProps) => (
           <Link className={navItem} to="/appliances">Appliances</Link>
           <Link className={navItem} to="/maintainers">Maintainers</Link>
         </>
-      ) : <Link className={navItem} to="/organisation">Organisation</Link>
+      ) : <Link className={navItem} to="/organisation">Organisations</Link>
     }
   </div>
 );

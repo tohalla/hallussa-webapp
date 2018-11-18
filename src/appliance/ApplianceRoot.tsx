@@ -10,13 +10,11 @@ const view = tabbed("appliances");
 
 export default () => (
   <Router basename="/appliances">
-    <>
-      <Switch>
-        <Route exact={true} path="/" component={view(ApplianceListing)} />
-        <Route exact={true} path="/new" component={view(NewAppliance)} />
-        <Route exact={true} path="/:appliance" component={view(Appliance)} />
-        <Redirect path="*" to="/" />
-      </Switch>
-    </>
+    <Switch>
+      <Route exact={true} path="/" component={view(ApplianceListing)} />
+      <Route exact={true} path="/new" component={view(NewAppliance)} />
+      <Route exact={true} path="/:appliance" component={view(Appliance)} />
+      <Redirect path="*" to="/" />
+    </Switch>
   </Router>
 );
