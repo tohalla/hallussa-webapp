@@ -33,7 +33,7 @@ export default <P, S = {}, SS = any>(
     public render() {
       try {
         if ((typeof isLoading === "function" && isLoading(this.props)) || checkLoading(this.props)) {
-          return  "loading..."; // replace with loading indicator component
+          return "loading..."; // replace with loading indicator component
         }
       } catch (error) {
         return onError(error) || null;

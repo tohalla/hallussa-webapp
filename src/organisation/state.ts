@@ -8,6 +8,8 @@ import { OrganisationPayload } from "./actions";
 export const getOrganisations = (state: ReduxState): ReadonlyArray<OrganisationPayload> | APIResponsePayload =>
   state.activeRequests.get["/organisations"] || values(state.entities.organisations);
 
+type EntityTypes = Exclude<keyof EntitiesState, "organisations">;
+
 export const getOrganisation = (
   state: ReduxState,
   organisationId?: number
@@ -27,21 +29,31 @@ export const getOrganisation = (
 
 export const getEntitiesByOrganisation = <T>(
   state: ReduxState,
-  entityType: Exclude<keyof EntitiesState, "organisations">,
+  entityType: EntityTypes,
   organisationId?: number
 ): ReadonlyArray<T> | APIResponsePayload => {
   const organisation = getOrganisation(state, organisationId);
-  if (typeof organisation === "undefined") {
-    return []; // return empty array if organisation not found
-  } else if (typeof (organisation as APIResponsePayload).isFetching === "undefined") {
-    return organisation as APIResponsePayload; // if organisation fetching still hanging, return request status
-  }
-  const request = state.activeRequests.get[`organisations/${(organisation as OrganisationPayload).id}/${entityType}`];
-  if (typeof request === "undefined") {
-    return props<string, T>(
+  return getStatus(state, entityType, organisation) // if entity fetching still hanging, return request status
+    || props<string, T>(
       map(String, (organisation as OrganisationPayload).appliances),
       state.entities[entityType] as any
     );
+};
+
+export const getStatus = (
+  state: ReduxState,
+  entityType: EntityTypes,
+  organisation?: OrganisationPayload | APIResponsePayload
+): APIResponsePayload | undefined  => {
+  if (typeof organisation === "undefined") {
+    organisation = getOrganisation(state); // fetch organisation if not set
   }
-  return request; // if entity fetching still hanging, return request status
+  if (typeof organisation === "undefined") { // ... if still missing, wrong organisation was requested
+    throw new Error("organisation not defined");
+  }
+  if (typeof (organisation as APIResponsePayload).isFetching === "undefined") {
+    return state.activeRequests.get[`/organisations/${(organisation as OrganisationPayload).id}/${entityType}`];
+  } else {
+    return organisation as APIResponsePayload;
+  }
 };
