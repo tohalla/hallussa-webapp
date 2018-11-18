@@ -1,4 +1,4 @@
-import { find, values } from "ramda";
+import { find } from "ramda";
 import React from "react";
 
 const loadingProps = ["loading", "isFetching"];
@@ -28,6 +28,8 @@ export default <P, S = {}, SS = any>(
   onError: (error: Error) => JSX.Element | string = (error) => "Error"
 ) =>
   class Loadable extends React.Component<P, S, SS> {
+    public static shouldComponentUpdate = (nextProps: P) =>
+      !(typeof isLoading === "function" && isLoading(nextProps)) || checkLoading(nextProps)
     public render() {
       try {
         if ((typeof isLoading === "function" && isLoading(this.props)) || checkLoading(this.props)) {
