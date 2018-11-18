@@ -14,7 +14,7 @@ const typeHandler = cond([
   [equals(CLOSE_TAB), (type, state, view, payload) =>
     dissocPath([view, "tabs", payload], state),
   ],
-  [T, (type, state, view, payload) => state],
+  [T, (type, state) => state],
 ]);
 
 interface View {
@@ -28,12 +28,12 @@ export interface ViewsState {
 
 const initialState: ViewsState = {
   appliances: {tabs: {
-    appliances: {key: "appliances", label: "Appliances", sticky: true},
-    new: {accent: true, key: "new", activeLabel: "New appliance", label: "add", sticky: true},
+    appliances: {key: "appliances", label: "Appliances", sticky: true, order: -1},
+    new: {accent: true, key: "new", activeLabel: "New appliance", label: "add", sticky: true, order: 1},
   }},
   maintainers: {tabs: {
-    maintainers: {key: "maintainers", label: "Maintainers", sticky: true},
-    new: {accent: true, key: "new", activeLabel: "New maintainer", label: "add", sticky: true},
+    maintainers: {key: "maintainers", label: "Maintainers", sticky: true, order: -1},
+    new: {accent: true, key: "new", activeLabel: "New maintainer", label: "add", sticky: true, order: 1},
   }},
 };
 
