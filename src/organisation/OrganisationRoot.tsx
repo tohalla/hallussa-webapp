@@ -14,7 +14,7 @@ interface DispatchProps {
   fetchOrganisations(): ReduxAPICall;
 }
 
-class Organisations extends React.Component<DispatchProps> {
+class OrganisationRoot extends React.Component<DispatchProps> {
   public componentWillMount() {
     this.props.fetchOrganisations();
   }
@@ -31,4 +31,4 @@ const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => 
 export default connect(
   mapStateToProps,
   {fetchOrganisations}
-)(Organisations);
+)(OrganisationRoot);
