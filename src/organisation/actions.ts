@@ -35,10 +35,12 @@ export const fetchOrganisations = ({bypassCache = false} = {}): ReduxAPICall => 
 });
 
 export const setActiveOrganisation = (organisation: number, isAdmin: boolean, fetchRelated = true) =>
-  (dispatch: Dispatch) => {
+  async (dispatch: Dispatch) => {
     if (fetchRelated) {
-      dispatch(fetchAppliances(organisation));
-      dispatch(fetchMaintainers(organisation));
+      await Promise.all([
+        dispatch(fetchAppliances(organisation)),
+        dispatch(fetchMaintainers(organisation)),
+      ]);
     }
     return dispatch({
       payload: {activeOrganisation: organisation, isAdmin},

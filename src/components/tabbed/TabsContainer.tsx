@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import { map, values } from "ramda";
+import { map, sort, values } from "ramda";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
@@ -57,7 +57,18 @@ class TabsContainer extends Component<Props & DispatchProps> {
     const { tabs } = this.props;
     return (
       <div className={tabsContainer}>
-        {map<TabPayload, JSX.Element>(this.renderTab, values(tabs))}
+        {map<TabPayload, JSX.Element>(
+          this.renderTab,
+          sort<TabPayload>(
+            ({order: a = 0, createdAt: a2 = 0}, {order: b = 0, createdAt: b2 = 0}) => {
+              if (a === b) { // ... sort by creation time if order is same
+                return a2 - b2;
+              }
+              return a - b;
+            },
+            values(tabs)
+          )
+        )}
       </div>
     );
   }

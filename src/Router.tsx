@@ -6,17 +6,12 @@ import MaintainerRoot from "./maintainer/MaintainerRoot";
 import Topbar from "./navigation/Topbar";
 import Organisations from "./organisation/Organisations";
 
-const PlaceHolder = (content: string) => () => <div>{content}</div>;
-
-// import withDrawer from "./components/hocs/WithSidebarHOC";
-
 export default () => (
   <Router>
     <>
       <Topbar />
       <Switch>
         <Route path="/organisation" component={Organisations} />
-        {/* <Route path="/appliances" component={withDrawer(ApplianceRoot)} /> */}
         <Route path="/appliances" component={ApplianceRoot} />
         <Route path="/maintainers" component={MaintainerRoot} />
         <Redirect path="*" to="/organisation" />

@@ -21,7 +21,7 @@ type Props = RouteComponentProps & DispatchProps & StateProps & {
 };
 
 class Maintainer extends Component<Props> {
-  public static getDerivedStateFromProps(props: Props) {
+  public static getDerivedStateFromProps(props: Props, prevState: object) {
     const {tabs, maintainer, history} = props;
     if (typeof maintainer === "undefined") {
       history.push("/");
@@ -34,7 +34,7 @@ class Maintainer extends Component<Props> {
         sticky: false,
       });
     }
-    return {};
+    return prevState;
   }
 
   public state = {};
@@ -51,7 +51,7 @@ class Maintainer extends Component<Props> {
 
 const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, ownProps): StateProps => ({
   maintainer: state.entities.maintainers[ownProps.match.params.maintainer],
-  tabs: state.views.appliances.tabs,
+  tabs: state.views.maintainers.tabs,
 });
 
 export default connect(
