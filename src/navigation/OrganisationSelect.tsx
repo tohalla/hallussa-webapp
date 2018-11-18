@@ -30,7 +30,6 @@ class OrganisationSelect extends React.Component<StateProps> {
 const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => ({
   organisation: getOrganisation(state),
   organisations: getOrganisations(state),
-  state,
 });
 
 export default connect(mapStateToProps)(loadable(OrganisationSelect));

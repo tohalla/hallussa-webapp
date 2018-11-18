@@ -21,12 +21,11 @@ type Props = RouteComponentProps & DispatchProps & StateProps & {
 };
 
 class Appliance extends Component<Props> {
-
-  public static getDerivedStateFromProps(props: Props) {
+  public static getDerivedStateFromProps(props: Props, prevState: object) {
     const {tabs, appliance, history} = props;
     if (typeof appliance === "undefined") {
       history.push("/");
-      return null;
+      return prevState;
     }
     if (typeof tabs[appliance.id] === "undefined") {
       props.createTab("appliances", {
@@ -35,7 +34,7 @@ class Appliance extends Component<Props> {
         sticky: false,
       });
     }
-    return {};
+    return prevState;
   }
   public state = {};
 

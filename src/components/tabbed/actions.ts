@@ -13,10 +13,12 @@ export interface TabPayload {
   activeLabel?: string;
   accent?: boolean;
   sticky?: boolean;
+  order?: number;
+  createdAt?: number;
 }
 
 export const createTab = (view: string, payload: TabPayload) => ({
-  payload,
+  payload: {...payload, createdAt: Date.now()},
   type: CREATE_TAB,
   view,
 });
