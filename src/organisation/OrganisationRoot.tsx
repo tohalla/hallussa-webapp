@@ -1,34 +1,16 @@
-import { values } from "ramda";
 import React from "react";
-import { connect, MapStateToProps } from "react-redux";
+import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 
-import { ReduxAPICall } from "../store/middleware/api/api";
-import { ReduxState } from "../store/store";
-import { fetchOrganisations, OrganisationPayload } from "./actions";
+import tabbed from "../components/tabbed/tabbed";
 
-interface StateProps {
-  organisations: ReadonlyArray<OrganisationPayload>;
-}
+const view = tabbed("organisation");
 
-interface DispatchProps {
-  fetchOrganisations(): ReduxAPICall;
-}
-
-class OrganisationRoot extends React.Component<DispatchProps> {
-  public componentWillMount() {
-    this.props.fetchOrganisations();
-  }
-
-  public render() {
-    return <div />;
-  }
-}
-
-const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => ({
-  organisations: values(state.entities.organisations),
-});
-
-export default connect(
-  mapStateToProps,
-  {fetchOrganisations}
-)(OrganisationRoot);
+export default () => (
+  <Router basename="/appliances">
+    <>
+      <Switch>
+        <Redirect path="*" to="/" />
+      </Switch>
+    </>
+  </Router>
+);
