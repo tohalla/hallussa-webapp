@@ -7,11 +7,13 @@ import { AppliancePayload } from "../actions";
 import WithSidebar from "../../components/layouts/WithSidebar";
 
 import Drawers from "../../components/drawers/Drawers";
+import { APIResponsePayload } from "../../store/middleware/api/actions";
+import loadable from "../../util/hoc/loadable";
 import Latest from "../drawers/Latest";
 import Summary from "../drawers/Summary";
 
 interface StateProps {
-  appliances: ReadonlyArray<AppliancePayload>;
+  appliances: ReadonlyArray<AppliancePayload> | APIResponsePayload;
 }
 
 class ApplianceListing extends Component<StateProps> {
@@ -56,4 +58,4 @@ const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state): St
 
 export default connect(
   mapStateToProps
-)(ApplianceListing);
+)(loadable(ApplianceListing));

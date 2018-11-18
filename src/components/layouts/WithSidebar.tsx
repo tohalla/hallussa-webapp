@@ -1,6 +1,6 @@
 import React, { ReactChild } from "react";
 
-import { withSidebar } from "emotion-styles/container";
+import { sidebarContainer } from "emotion-styles/sidebar";
 import ContentLayout from "./ContentLayout";
 import Sidebar from "./Sidebar";
 
@@ -11,7 +11,7 @@ interface Props {
 
 export default ({ content, sidebarContent }: Props) => {
   return (
-    <div className={withSidebar}>
+    <div className={sidebarContainer}>
       <ContentLayout>
         {content}
       </ContentLayout>

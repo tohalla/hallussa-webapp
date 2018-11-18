@@ -1,16 +1,13 @@
 import classnames from "classnames";
-import React, { ReactChild } from "react";
-import { dark } from "../../emotion-styles/src/inline";
-import Button from "../Button";
+import React from "react";
 import { TabPayload } from "./actions";
 
-// TODO: Import from styles repository
-const styledTabComponent = "";
-
 interface Props extends TabPayload {
-  children: ReactChild[] | ReactChild;
+  label: string;
   onClose(): any;
 }
+
+const icons = ["add"]; // labels that should be displayed as material icon
 
 /**
  * TabComponent - Functional React Component
@@ -18,19 +15,15 @@ interface Props extends TabPayload {
  * Generic onClick event on a Tab bubbles from this component.
  */
 export default (props: Props) => {
-  const { children, sticky, onClose } = props;
-  const className = classnames({
-    // TODO: [activeTabStyle]:
-    styledTabComponent,
-  });
+  const { label, sticky, onClose } = props;
   return (
-    <div className={className}>
-      {children}
-      {!sticky &&
-        <Button onClick={onClose} plain={true}>
-          <i className={classnames("material-icons", dark)}>close</i>
-        </Button>
+    <>
+      {icons.indexOf(label) === -1 ?
+        label : <i className={classnames("material-icons")}>{label}</i>
       }
-    </div>
+      {!sticky &&
+        <i className={classnames("material-icons")} onClick={onClose}>close</i>
+      }
+    </>
   );
 };
