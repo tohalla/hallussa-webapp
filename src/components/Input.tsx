@@ -6,9 +6,9 @@ import React, {
   RefObject
 } from "react";
 
+import { stacked } from "emotion-styles/container";
 import { error as errorStyle } from "emotion-styles/inline";
 import input, { invalid } from "emotion-styles/input";
-import { stackedLayout } from "emotion-styles/layout";
 
 export interface InputProps {
   autoComplete: "off" | "on";
@@ -58,7 +58,7 @@ export default class Input extends Component<InputProps> {
     const displayError = Boolean(error) && this.visited && document.activeElement !== this.element.current;
     const className = classnames(input, {[invalid]: displayError});
     return (
-      <div className={stackedLayout}>
+      <div className={stacked}>
         <input
           className={className}
           ref={this.element}

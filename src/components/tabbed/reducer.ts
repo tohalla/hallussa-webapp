@@ -29,11 +29,11 @@ export interface ViewsState {
 const initialState: ViewsState = {
   appliances: {tabs: {
     appliances: {key: "appliances", label: "Appliances", sticky: true},
-    new: {key: "new", label: "New appliance", sticky: true},
+    new: {accent: true, key: "new", activeLabel: "New appliance", label: "add", sticky: true},
   }},
   maintainers: {tabs: {
     maintainers: {key: "maintainers", label: "Maintainers", sticky: true},
-    new: {key: "new", label: "New maintainer", sticky: true},
+    new: {accent: true, key: "new", activeLabel: "New maintainer", label: "add", sticky: true},
   }},
 };
 

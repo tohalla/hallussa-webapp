@@ -22,8 +22,12 @@ class AccountMenu extends React.Component<StateProps> {
     const {firstName} = this.props.account;
     return (
       <div className={navGroup}>
-        Hello, {firstName}
-        <Button className={navItem} onClick={this.handleLogout} plain={true}>Log out</Button>
+        <div className={navGroup}>
+          Hello, {firstName}
+        </div>
+        <div className={navGroup}>
+          <Button className={navItem} onClick={this.handleLogout} plain={true}>Log out</Button>
+        </div>
       </div>
     );
   }
