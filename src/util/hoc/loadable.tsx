@@ -25,7 +25,6 @@ export default <P, S = {}, SS = any>(
 ) =>
   class Loadable extends React.Component<P, S, SS> {
     public render() {
-      console.log(this.props);
       if ((typeof isLoading === "function" && isLoading(this.props)) || checkLoading(this.props)) {
         return  "loading..."; // replace with loading indicator component
       }

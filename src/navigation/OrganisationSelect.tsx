@@ -10,7 +10,7 @@ import { ReduxState } from "../store/store";
 import loadable from "../util/hoc/loadable";
 
 interface StateProps {
-  organisation?: OrganisationPayload;
+  organisation?: OrganisationPayload | APIResponsePayload;
   organisations?: ReadonlyArray<OrganisationPayload> | APIResponsePayload;
 }
 
@@ -30,6 +30,7 @@ class OrganisationSelect extends React.Component<StateProps> {
 const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => ({
   organisation: getOrganisation(state),
   organisations: getOrganisations(state),
+  state,
 });
 
 export default connect(mapStateToProps)(loadable(OrganisationSelect));

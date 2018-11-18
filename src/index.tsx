@@ -8,13 +8,15 @@ import "emotion-styles";
 import { appContainer } from "emotion-styles/container";
 import { authenticate } from "./auth/auth";
 import Router from "./Router";
-import store from "./store/store";
+import store, { initializeStore } from "./store/store";
 
 // TODO: nginx jwt check
 (async () => {
   const token = localStorage.getItem("token");
   if (token && (await authenticate(token))) {
     (document.getElementById("app") as HTMLElement).className = appContainer;
+
+    await initializeStore();
 
     return ReactDOM.render(
       <Provider store={store}>

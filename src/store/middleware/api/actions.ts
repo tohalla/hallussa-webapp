@@ -8,6 +8,7 @@ export const CALL_API_FAILURE = "CALL_API_FAILURE";
 export interface APIResponsePayload {
   requestedAt: number;
   isFetching: boolean;
+  error?: string;
 }
 
 export interface APIResponseAction extends AnyAction {

@@ -44,8 +44,8 @@ if (module.hot) {
   module.hot.accept("../reducers", () => store.replaceReducer(reducer));
 }
 
-// fill store
-(async () => {
+// fetch initial state to store using API
+export const initializeStore = async () => {
   await Promise.all([
     store.dispatch<any>(fetchAccount()), // fetch current account information
     store.dispatch(fetchOrganisations()), // fetch organisations for current account
@@ -57,7 +57,7 @@ if (module.hot) {
   const organisation = account.organisations[0];
 
   // set selected organisation as active
-  await store.dispatch<any>(setActiveOrganisation(organisation.id, organisation.isAdmin));
-})();
+  return store.dispatch<any>(setActiveOrganisation(organisation.id, organisation.isAdmin));
+};
 
 export default store;
