@@ -37,6 +37,7 @@ export const fetchOrganisations = ({bypassCache = false} = {}): ReduxAPICall => 
 
 export const setActiveOrganisation = (organisation: number, fetchRelated = true) =>
   async (dispatch: Dispatch) => {
+    localStorage.setItem("organisation", String(organisation)); // remember organisation for next session
     if (fetchRelated) {
       await Promise.all([
         dispatch(fetchAppliances(organisation)),
