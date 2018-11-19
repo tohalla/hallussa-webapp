@@ -5,6 +5,7 @@ import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
 import { OrganisationPayload } from "../actions";
+import OrganisationSelect from "../OrganisationSelect";
 import { getOrganisation, getOrganisations } from "../state";
 
 interface StateProps {
@@ -23,6 +24,7 @@ class Organisation extends React.Component<StateProps> {
 
     return (
       <>
+        <OrganisationSelect />
         <b>{name}</b>
         {organisationIdentifier}
       </>

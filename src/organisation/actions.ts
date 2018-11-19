@@ -9,7 +9,7 @@ export const FETCH_ORGANISATIONS_SUCCESS = "FETCH_ORGANISATIONS_SUCCESS";
 export const SET_ACTIVE_ORGANISATION = "SET_ACTIVE_ORGANISATION";
 
 export interface OrganisationPayload {
-  id: string;
+  id: number;
   name: string;
   organisationIdentifier: string;
   createdAt: string;

@@ -28,8 +28,8 @@ export interface InputProps {
 export default class Input extends Component<InputProps> {
   public static defaultProps = {
     autoComplete: "on",
-    error: false,
     autoFocus: false,
+    error: false,
     required: false,
     type: "text",
   };
