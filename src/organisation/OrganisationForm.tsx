@@ -3,13 +3,14 @@ import React from "react";
 import { RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
 
-import { connect } from "react-redux";
+import { connect, MapDispatchToProps } from "react-redux";
 import { Dispatch } from "redux";
 import Form, { FormInput, FormState } from "../components/Form";
+import { ReduxState } from "../store/store";
 import { createOrganisation, OrganisationPayload } from "./actions";
 
 interface DispatchProps {
-  createOrganisation: (organisation: OrganisationPayload) => (dispatch: Dispatch) => any;
+  createOrganisation: (organisation: OrganisationPayload) => any;
 }
 
 interface Props extends RouteComponentProps, DispatchProps {
@@ -38,8 +39,11 @@ class OrganisationForm extends React.Component<Props> {
     organisationIdentifier: "",
   };
 
-  public handleSubmit = (state: FormState<Inputs>) => {
-    this.props.createOrganisation(dissoc("errors", state));
+  public handleSubmit = async (state: FormState<Inputs>) => {
+    const organisation = await this.props.createOrganisation(dissoc("errors", state));
+    if (organisation) {
+      this.props.history.push(`/${organisation.id}`);
+    }
   }
 
   public render() {
@@ -53,6 +57,8 @@ class OrganisationForm extends React.Component<Props> {
   }
 }
 
-export default connect(
-  undefined, {createOrganisation}
+const mapDispatchToProps: MapDispatchToProps<DispatchProps, Props> = {createOrganisation};
+
+export default connect<{}, DispatchProps, Props, ReduxState>(
+  undefined, mapDispatchToProps
 )(OrganisationForm);
