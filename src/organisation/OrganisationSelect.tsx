@@ -1,7 +1,8 @@
-import { map } from "ramda";
+import { map, path } from "ramda";
 import React from "react";
-import { connect, MapStateToProps } from "react-redux";
+import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 
+import { RouteComponentProps } from "react-router";
 import Button from "../components/Button";
 import Select from "../components/Select";
 import { rowContainer } from "../emotion-styles/src/container";
@@ -17,10 +18,12 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  setActiveOrganisation(organisation: number): Promise<any>;
+  setActiveOrganisation(organisation: number, fetchRelated?: boolean): any;
 }
 
-type Props = StateProps & DispatchProps;
+interface Props extends RouteComponentProps {
+  organisation?: OrganisationPayload;
+}
 
 interface OrganisationOption {
   value: number;
@@ -36,20 +39,25 @@ const getOrganisationOption = (organisation: OrganisationPayload): OrganisationO
   label: organisation.name, organisation, value: organisation.id,
 });
 
-class OrganisationSelect extends React.Component<Props, State> {
-  constructor(props: Props) {
+class OrganisationSelect extends React.Component<Props & StateProps & DispatchProps, State> {
+  public static getDerivedStateFromProps(props: Props & StateProps & DispatchProps, prevState: State) {
+    if (props.organisation && props.organisation !== path(["selectedOrganisationOption", "organisation"], prevState)) {
+      return {...prevState, selectedOrganisationOption: getOrganisationOption(props.organisation)};
+    }
+    return prevState;
+  }
+
+  constructor(props: Props & StateProps & DispatchProps) {
     super(props);
     this.state = {
-      selectedOrganisationOption: props.activeOrganisation && getOrganisationOption(
-        props.activeOrganisation as OrganisationPayload
+      selectedOrganisationOption: getOrganisationOption(
+        props.organisation ? props.organisation : props.activeOrganisation as OrganisationPayload
       ),
     };
   }
 
-  public handleOrganisationSelect = (option: any) => this.setState({
-    selectedOrganisationOption: Array.isArray(option) ?
-      getOrganisationOption(this.props.activeOrganisation as OrganisationPayload) : option,
-  })
+  public handleOrganisationSelect = (option: any) =>
+    this.props.history.push(`/${option.value}`)
 
   public handleOrganisationChange = () => {
     const {selectedOrganisationOption} = this.state;
@@ -83,11 +91,15 @@ class OrganisationSelect extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => ({
+const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
   activeOrganisation: getOrganisation(state),
   organisations: getOrganisations(state),
 });
 
-export default connect(
-  mapStateToProps, {setActiveOrganisation}
-)(loadable<Props>(OrganisationSelect));
+const mapDispatchToProps: MapDispatchToProps<DispatchProps, Props> = {
+  setActiveOrganisation,
+};
+
+export default connect<StateProps, DispatchProps, Props, ReduxState>(
+  mapStateToProps, mapDispatchToProps
+)(loadable(OrganisationSelect));

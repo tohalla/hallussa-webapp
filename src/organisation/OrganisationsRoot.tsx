@@ -13,6 +13,7 @@ export default () => (
       <Switch>
         <Route exact={true} path="/" component={Organisation} />
         <Route exact={true} path="/new" component={OrganisationForm} />
+        <Route exact={true} path="/:organisation" component={Organisation} />
         <Redirect path="*" to="/" />
       </Switch>
     </ViewContainer>

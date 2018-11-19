@@ -29,7 +29,6 @@ class AuthenticationForm extends Component<{}, { [input in Inputs]?: string }> {
   }
 
   public render() {
-    const { email, password } = this.state;
     return (
       <Form
         inputs={AuthenticationForm.inputs}
