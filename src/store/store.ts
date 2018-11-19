@@ -27,7 +27,6 @@ export interface ReduxState {
   session: {
     activeAccount?: number;
     activeOrganisation?: number;
-    isAdmin?: boolean;
   };
   views: {
     appliances: { tabs: {} },
@@ -57,7 +56,7 @@ export const initializeStore = async () => {
   const organisation = account.organisations[0];
   if (typeof organisation === "undefined") { return; } // return if no organisations listed under account
   // set selected organisation as active
-  return store.dispatch<any>(setActiveOrganisation(organisation.id, organisation.isAdmin));
+  return store.dispatch<any>(setActiveOrganisation(organisation.id));
 };
 
 export default store;

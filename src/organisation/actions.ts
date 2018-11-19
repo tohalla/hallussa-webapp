@@ -34,7 +34,7 @@ export const fetchOrganisations = ({bypassCache = false} = {}): ReduxAPICall => 
   type: CALL_API,
 });
 
-export const setActiveOrganisation = (organisation: number, isAdmin: boolean, fetchRelated = true) =>
+export const setActiveOrganisation = (organisation: number, fetchRelated = true) =>
   async (dispatch: Dispatch) => {
     if (fetchRelated) {
       await Promise.all([
@@ -43,7 +43,7 @@ export const setActiveOrganisation = (organisation: number, isAdmin: boolean, fe
       ]);
     }
     return dispatch({
-      payload: {activeOrganisation: organisation, isAdmin},
+      payload: {activeOrganisation: organisation},
       type: SET_ACTIVE_ORGANISATION,
     });
   };

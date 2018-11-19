@@ -7,13 +7,19 @@ import Button from "../components/Button";
 import { APIResponsePayload } from "../store/middleware/api/actions";
 import { ReduxState } from "../store/store";
 import loadable from "../util/hoc/loadable";
-import { OrganisationPayload } from "./actions";
+import { OrganisationPayload, setActiveOrganisation } from "./actions";
 import { getOrganisation, getOrganisations } from "./state";
 
 interface StateProps {
   activeOrganisation?: Readonly<OrganisationPayload> | APIResponsePayload;
   organisations: ReadonlyArray<OrganisationPayload> | APIResponsePayload;
 }
+
+interface DispatchProps {
+  setActiveOrganisation(organisation: number): Promise<any>;
+}
+
+type Props = StateProps & DispatchProps;
 
 interface OrganisationOption {
   value: number;
@@ -25,8 +31,8 @@ interface State {
   selectedOrganisation?: OrganisationOption;
 }
 
-class Organisation extends React.Component<StateProps, State> {
-  constructor(props: StateProps) {
+class Organisation extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       selectedOrganisation: props.activeOrganisation && {
@@ -39,6 +45,9 @@ class Organisation extends React.Component<StateProps, State> {
 
   public handleOrganisationSelect = (option: any) =>
     this.setState({selectedOrganisation: option})
+
+  public handleOrganisationChange = () =>
+    this.props.setActiveOrganisation()
 
   public render() {
     const {activeOrganisation, organisations} = this.props;
@@ -72,5 +81,5 @@ const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => 
 });
 
 export default connect(
-  mapStateToProps
-)(loadable(Organisation));
+  mapStateToProps, {setActiveOrganisation}
+)(loadable<Props>(Organisation));
