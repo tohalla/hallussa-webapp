@@ -31,20 +31,24 @@ interface State {
   selectedOrganisationOption?: OrganisationOption;
 }
 
-class Organisation extends React.Component<Props, State> {
+const getOrganisationOption = (organisation: OrganisationPayload): OrganisationOption => ({
+  label: organisation.name, organisation, value: organisation.id,
+});
+
+class OrganisationSelect extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      selectedOrganisationOption: props.activeOrganisation && {
-        label: (props.activeOrganisation as OrganisationPayload).name,
-        organisation: (props.activeOrganisation as OrganisationPayload),
-        value: (props.activeOrganisation as OrganisationPayload).id,
-      },
+      selectedOrganisationOption: props.activeOrganisation && getOrganisationOption(
+        props.activeOrganisation as OrganisationPayload
+      ),
     };
   }
 
-  public handleOrganisationSelect = (option: any) =>
-    this.setState({selectedOrganisationOption: option})
+  public handleOrganisationSelect = (option: any) => this.setState({
+    selectedOrganisationOption: Array.isArray(option) ?
+      getOrganisationOption(this.props.activeOrganisation as OrganisationPayload) : option,
+  })
 
   public handleOrganisationChange = () => {
     const {selectedOrganisationOption} = this.state;
@@ -65,14 +69,13 @@ class Organisation extends React.Component<Props, State> {
       <>
         <Select
           onChange={this.handleOrganisationSelect}
-          options={map<OrganisationPayload, OrganisationOption>(
-            (organisation) => ({label: organisation.name, organisation, value: organisation.id}),
-            organisations
-          )}
-          value={this.state.selectedOrganisationOption}
+          options={map<OrganisationPayload, OrganisationOption>(getOrganisationOption, organisations)}
+          value={selectedOrganisationOption}
         />
         {selectedOrganisationOption && activeOrganisation !== selectedOrganisationOption.organisation &&
-          <Button onClick={this.handleOrganisationChange}>Set as active</Button>
+          <Button onClick={this.handleOrganisationChange}>
+            Set as active
+          </Button>
         }
       </>
     );
@@ -86,4 +89,4 @@ const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => 
 
 export default connect(
   mapStateToProps, {setActiveOrganisation}
-)(loadable<Props>(Organisation));
+)(loadable<Props>(OrganisationSelect));
