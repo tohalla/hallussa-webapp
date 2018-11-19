@@ -75,15 +75,18 @@ class RegistrationForm extends Component<{}, State > {
     return newState;
   }
 
-  public renderInput = (key: Inputs, type: "text" | "password" = "text", placeholder?: string) => (
+  public renderInput = (
+    key: Inputs,
+    props?: {placeholder?: string, type?: "text" | "password", autoFocus?: boolean}
+  ) => (
     <Input
       error={this.state.errors[key]}
       name={changeCase.paramCase(key)}
       onChange={this.handleInputChange(key)}
-      placeholder={placeholder || changeCase.titleCase(key)}
+      placeholder={changeCase.titleCase(key)}
       required={true}
-      type={type}
       value={this.state[key]}
+      {...props}
     />
   )
 
@@ -95,13 +98,13 @@ class RegistrationForm extends Component<{}, State > {
         secondary={<Link className={small} to="/">I already have account</Link>}
         submitText="Register"
       >
-        {this.renderInput("email", "text", "Email Address")}
+        {this.renderInput("email", {autoFocus: true, placeholder: "Email address"})}
         <>
           {this.renderInput("firstName")}
           {this.renderInput("lastName")}
         </>
-        {this.renderInput("password", "password")}
-        {this.renderInput("retypePassword", "password", "Re-enter password")}
+        {this.renderInput("password", {type: "password"})}
+        {this.renderInput("retypePassword", {placeholder: "Re-enter password", type: "password"})}
       </Form>
     );
   }

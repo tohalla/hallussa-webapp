@@ -3,15 +3,15 @@ import React, { Component, FormEventHandler, ReactFragment } from "react";
 import { actionsRow, form, inputRow } from "emotion-styles/form";
 import Button from "./Button";
 
-export interface FormProps {
+interface Props {
   onSubmit: FormEventHandler;
-  secondary: JSX.Element;
+  secondary: ReactFragment;
   submitText: string;
   children: ReactFragment;
   isValid: boolean;
 }
 
-export default class Form extends Component<FormProps> {
+export default class Form extends Component<Props> {
   public static defaultProps = {
     isValid: true,
     secondary: <span />,

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Component, FormEvent } from "react";
+import React, { ChangeEvent, Component, FormEvent, RefObject } from "react";
 import { Link } from "react-router-dom";
 
 import Form from "../components/Form";
@@ -38,6 +38,7 @@ class AuthenticationForm extends Component<{}, { [input in Inputs]?: string }> {
         submitText="sign in"
       >
         <Input
+          autoFocus={true}
           name="email"
           onChange={this.handleInputChange("email")}
           value={email}
