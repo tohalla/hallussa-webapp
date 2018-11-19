@@ -28,14 +28,14 @@ interface OrganisationOption {
 }
 
 interface State {
-  selectedOrganisation?: OrganisationOption;
+  selectedOrganisationOption?: OrganisationOption;
 }
 
 class Organisation extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      selectedOrganisation: props.activeOrganisation && {
+      selectedOrganisationOption: props.activeOrganisation && {
         label: (props.activeOrganisation as OrganisationPayload).name,
         organisation: (props.activeOrganisation as OrganisationPayload),
         value: (props.activeOrganisation as OrganisationPayload).id,
@@ -44,10 +44,14 @@ class Organisation extends React.Component<Props, State> {
   }
 
   public handleOrganisationSelect = (option: any) =>
-    this.setState({selectedOrganisation: option})
+    this.setState({selectedOrganisationOption: option})
 
-  public handleOrganisationChange = () =>
-    this.props.setActiveOrganisation()
+  public handleOrganisationChange = () => {
+    const {selectedOrganisationOption} = this.state;
+    if (selectedOrganisationOption) {
+      this.props.setActiveOrganisation(selectedOrganisationOption.organisation.id);
+    }
+  }
 
   public render() {
     const {activeOrganisation, organisations} = this.props;
@@ -55,7 +59,7 @@ class Organisation extends React.Component<Props, State> {
       return "No organisations created.";
     }
 
-    const {selectedOrganisation} = this.state;
+    const {selectedOrganisationOption} = this.state;
 
     return (
       <>
@@ -65,10 +69,10 @@ class Organisation extends React.Component<Props, State> {
             (organisation) => ({label: organisation.name, organisation, value: organisation.id}),
             organisations
           )}
-          value={this.state.selectedOrganisation}
+          value={this.state.selectedOrganisationOption}
         />
-        {selectedOrganisation && activeOrganisation !== selectedOrganisation.organisation &&
-          <Button>Set as active</Button>
+        {selectedOrganisationOption && activeOrganisation !== selectedOrganisationOption.organisation &&
+          <Button onClick={this.handleOrganisationChange}>Set as active</Button>
         }
       </>
     );
