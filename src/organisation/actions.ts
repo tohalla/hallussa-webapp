@@ -1,6 +1,7 @@
 import { isEmpty } from "ramda";
 import { Dispatch } from "redux";
 import { fetchAppliances } from "../appliance/actions";
+import { resetTabs } from "../components/tabbed/actions";
 import { fetchMaintainers } from "../maintainer/actions";
 import { CALL_API } from "../store/middleware/api/actions";
 import { ReduxAPICall } from "../store/middleware/api/api";
@@ -42,6 +43,7 @@ export const setActiveOrganisation = (organisation: number, fetchRelated = true)
         dispatch(fetchMaintainers(organisation)),
       ]);
     }
+    dispatch(resetTabs); // should close all opened tabs
     return dispatch({
       payload: {activeOrganisation: organisation},
       type: SET_ACTIVE_ORGANISATION,

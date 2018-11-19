@@ -30,4 +30,4 @@ export const closeTab = (view: string, payload: string) => ({
   view,
 });
 
-export const resetTabs = () => ({ type: RESET_TABS });
+export const resetTabs = { type: RESET_TABS };

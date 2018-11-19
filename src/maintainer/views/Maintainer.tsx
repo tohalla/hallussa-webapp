@@ -3,11 +3,15 @@ import { connect, MapStateToProps } from "react-redux";
 
 import { RouteComponentProps } from "react-router";
 import { createTab, TabPayload } from "../../components/tabbed/actions";
+import { OrganisationPayload } from "../../organisation/actions";
+import { getOrganisation } from "../../organisation/state";
+import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
 import { MaintainerPayload } from "../actions";
 
 interface StateProps {
+  organisation?: OrganisationPayload | APIResponsePayload;
   maintainer: MaintainerPayload;
   tabs: {[key: string]: TabPayload};
 }
@@ -22,8 +26,12 @@ type Props = RouteComponentProps & DispatchProps & StateProps & {
 
 class Maintainer extends Component<Props> {
   public static getDerivedStateFromProps(props: Props, prevState: object) {
-    const {tabs, maintainer, history} = props;
-    if (typeof maintainer === "undefined") {
+    const {tabs, maintainer, history, organisation} = props;
+    if (
+      typeof maintainer === "undefined"
+      || typeof organisation === "undefined"
+      || (organisation as OrganisationPayload).appliances.indexOf(maintainer.id) === -1
+    ) {
       history.push("/");
       return null;
     }
@@ -51,6 +59,7 @@ class Maintainer extends Component<Props> {
 
 const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, ownProps): StateProps => ({
   maintainer: state.entities.maintainers[ownProps.match.params.maintainer],
+  organisation: getOrganisation(state),
   tabs: state.views.maintainers.tabs,
 });
 

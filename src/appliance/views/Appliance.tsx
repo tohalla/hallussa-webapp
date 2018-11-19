@@ -3,11 +3,15 @@ import { connect, MapStateToProps } from "react-redux";
 
 import { RouteComponentProps } from "react-router";
 import { createTab, TabPayload } from "../../components/tabbed/actions";
+import { OrganisationPayload } from "../../organisation/actions";
+import { getOrganisation } from "../../organisation/state";
+import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
 import { AppliancePayload } from "../actions";
 
 interface StateProps {
+  organisation?: OrganisationPayload | APIResponsePayload;
   appliance: AppliancePayload;
   tabs: {[key: string]: TabPayload};
 }
@@ -22,8 +26,12 @@ type Props = RouteComponentProps & DispatchProps & StateProps & {
 
 class Appliance extends Component<Props> {
   public static getDerivedStateFromProps(props: Props, prevState: object) {
-    const {tabs, appliance, history} = props;
-    if (typeof appliance === "undefined") {
+    const {tabs, appliance, history, organisation} = props;
+    if (
+      typeof appliance === "undefined"
+      || typeof organisation === "undefined"
+      || (organisation as OrganisationPayload).appliances.indexOf(appliance.id) === -1
+    ) {
       history.push("/");
       return prevState;
     }
@@ -50,6 +58,7 @@ class Appliance extends Component<Props> {
 
 const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, ownProps): StateProps => ({
   appliance: state.entities.appliances[ownProps.match.params.appliance],
+  organisation: getOrganisation(state),
   tabs: state.views.appliances.tabs,
 });
 
