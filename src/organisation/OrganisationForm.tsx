@@ -3,17 +3,23 @@ import React from "react";
 import { RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
 
-import Form, { FormInput } from "../components/Form";
-import { OrganisationPayload } from "./actions";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import Form, { FormInput, FormState } from "../components/Form";
+import { createOrganisation, OrganisationPayload } from "./actions";
 
-interface Props extends RouteComponentProps {
+interface DispatchProps {
+  createOrganisation: (organisation: OrganisationPayload) => (dispatch: Dispatch) => any;
+}
+
+interface Props extends RouteComponentProps, DispatchProps {
   onCancel: () => any;
   organisation?: OrganisationPayload;
 }
 
 type Inputs = "name" | "organisationIdentifier";
 
-export default class OrganisationForm extends React.Component<Props> {
+class OrganisationForm extends React.Component<Props> {
   public static inputs: ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]> = [
     {key: "name", props: {autoFocus: true}, validate: {required: true, minLength: 3}},
     {key: "organisationIdentifier", validate: {required: true}},
@@ -32,8 +38,8 @@ export default class OrganisationForm extends React.Component<Props> {
     organisationIdentifier: "",
   };
 
-  public handleSubmit = () => {
-    dissoc("errors", this.state);
+  public handleSubmit = (state: FormState<Inputs>) => {
+    this.props.createOrganisation(dissoc("errors", state));
   }
 
   public render() {
@@ -46,3 +52,7 @@ export default class OrganisationForm extends React.Component<Props> {
     );
   }
 }
+
+export default connect(
+  undefined, {createOrganisation}
+)(OrganisationForm);

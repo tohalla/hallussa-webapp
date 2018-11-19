@@ -12,7 +12,7 @@ type Inputs = "email" | "password";
 class AuthenticationForm extends Component<{}, { [input in Inputs]?: string }> {
   public static inputs: ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]> = [
     {key: "email", props: {autoFocus: true}, validate: {required: true}},
-    {key: "password", validate: {required: true}},
+    {key: "password", props: {type: "password"}, validate: {required: true}},
   ];
 
   public state = {

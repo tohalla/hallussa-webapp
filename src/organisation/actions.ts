@@ -6,6 +6,7 @@ import { fetchMaintainers } from "../maintainer/actions";
 import { CALL_API } from "../store/middleware/api/actions";
 import { ReduxAPICall } from "../store/middleware/api/api";
 
+export const CREATE_ORGANISATION_SUCCESS = "CREATE_ORGANISATION_SUCCESS";
 export const FETCH_ORGANISATIONS_SUCCESS = "FETCH_ORGANISATIONS_SUCCESS";
 export const SET_ACTIVE_ORGANISATION = "SET_ACTIVE_ORGANISATION";
 
@@ -34,6 +35,17 @@ export const fetchOrganisations = ({bypassCache = false} = {}): ReduxAPICall => 
   successType: FETCH_ORGANISATIONS_SUCCESS,
   type: CALL_API,
 });
+
+export const createOrganisation = (organisation: OrganisationPayload) => async (dispatch: Dispatch) => {
+  await dispatch({
+    body: organisation,
+    endpoint: "/organisations",
+    method: "post",
+    successType: CREATE_ORGANISATION_SUCCESS,
+    type: CALL_API,
+  });
+  return dispatch(fetchOrganisations({bypassCache: true})); // lazily fetch organisation from api
+};
 
 export const setActiveOrganisation = (organisation: number, fetchRelated = true) =>
   async (dispatch: Dispatch) => {
