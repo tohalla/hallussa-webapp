@@ -1,19 +1,24 @@
-import changeCase from "change-case";
-import { assoc, dissoc, forEachObjIndexed, isEmpty } from "ramda";
-import React, { ChangeEvent, Component, FormEvent } from "react";
+import { assoc, dissoc, forEachObjIndexed, isEmpty, map } from "ramda";
+import React, { ChangeEvent, Component, FormEvent, ReactFragment } from "react";
 import { Link } from "react-router-dom";
 
 import Form from "../components/Form";
-import Input from "../components/Input";
+import { FormInput, getFormInput } from "../components/util";
 import { small } from "../emotion-styles/src/inline";
 import { validateEmail } from "../util/validationFunctions";
 import { register } from "./auth";
 
-type Inputs = "email"
-  | "firstName"
-  | "lastName"
-  | "password"
-  | "retypePassword";
+type Inputs = "email" | "firstName" | "lastName" | "password" | "retypePassword";
+
+const inputs: ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]> = [
+  {key: "email", props: {autoFocus: true, placeholder: "Email address"}},
+  [
+    {key: "firstName", props: {}},
+    {key: "lastName", props: {}},
+  ],
+  {key: "password", props: {type: "password"}},
+  {key: "retypePassword", props: {placeholder: "Re-enter password", type: "password"}},
+];
 
 type State = {
   errors: {
@@ -31,6 +36,13 @@ class RegistrationForm extends Component<{}, State > {
     retypePassword: "",
   };
 
+  public renderInput: (p: any) => ReactFragment;
+
+  constructor(props: object) {
+    super(props);
+    this.renderInput = getFormInput(this);
+  }
+
   public componentDidMount() {
     this.setState(this.validate());
   }
@@ -39,9 +51,7 @@ class RegistrationForm extends Component<{}, State > {
     dissoc("errors", this.state)
   )
 
-  public handleInputChange = (input: Inputs) => (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
+  public handleInputChange = (input: Inputs) => (event: ChangeEvent<HTMLInputElement>) => {
     const newState = assoc(input, event.target.value, this.state);
     this.setState(this.validate(newState));
   }
@@ -75,21 +85,6 @@ class RegistrationForm extends Component<{}, State > {
     return newState;
   }
 
-  public renderInput = (
-    key: Inputs,
-    props?: {placeholder?: string, type?: "text" | "password", autoFocus?: boolean}
-  ) => (
-    <Input
-      error={this.state.errors[key]}
-      name={changeCase.paramCase(key)}
-      onChange={this.handleInputChange(key)}
-      placeholder={changeCase.titleCase(key)}
-      required={true}
-      value={this.state[key]}
-      {...props}
-    />
-  )
-
   public render() {
     return (
       <Form
@@ -98,13 +93,7 @@ class RegistrationForm extends Component<{}, State > {
         secondary={<Link className={small} to="/">I already have account</Link>}
         submitText="Register"
       >
-        {this.renderInput("email", {autoFocus: true, placeholder: "Email address"})}
-        <>
-          {this.renderInput("firstName")}
-          {this.renderInput("lastName")}
-        </>
-        {this.renderInput("password", {type: "password"})}
-        {this.renderInput("retypePassword", {placeholder: "Re-enter password", type: "password"})}
+        {map<any, ReactFragment>(this.renderInput, inputs)}
       </Form>
     );
   }

@@ -12,7 +12,7 @@ import { sm } from "../emotion-styles/src/variables/breakpoints";
 import AccountMenu from "./AccountMenu";
 import OrganisationNavigation from "./OrganisationNavigation";
 
-export default class Topbar extends React.Component<StateProps> {
+export default class Topbar extends React.Component {
   public state = {
     expand: false,
     width: window.innerWidth,

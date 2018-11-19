@@ -4,6 +4,7 @@ import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom"
 
 import ViewContainer from "../components/layouts/ViewContainer";
 import { padded, viewContentContainer } from "../emotion-styles/src/container";
+import OrganisationForm from "./OrganisationForm";
 import Organisation from "./views/Organisation";
 
 export default () => (
@@ -11,6 +12,7 @@ export default () => (
     <ViewContainer className={classNames(viewContentContainer, padded)}>
       <Switch>
         <Route exact={true} path="/" component={Organisation} />
+        <Route exact={true} path="/new" component={OrganisationForm} />
         <Redirect path="*" to="/" />
       </Switch>
     </ViewContainer>

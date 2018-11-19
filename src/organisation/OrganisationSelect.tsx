@@ -4,6 +4,7 @@ import { connect, MapStateToProps } from "react-redux";
 
 import Button from "../components/Button";
 import Select from "../components/Select";
+import { rowContainer } from "../emotion-styles/src/container";
 import { APIResponsePayload } from "../store/middleware/api/actions";
 import { ReduxState } from "../store/store";
 import loadable from "../util/hoc/loadable";
@@ -66,7 +67,7 @@ class OrganisationSelect extends React.Component<Props, State> {
     const {selectedOrganisationOption} = this.state;
 
     return (
-      <>
+      <div className={rowContainer}>
         <Select
           onChange={this.handleOrganisationSelect}
           options={map<OrganisationPayload, OrganisationOption>(getOrganisationOption, organisations)}
@@ -77,7 +78,7 @@ class OrganisationSelect extends React.Component<Props, State> {
             Set as active
           </Button>
         }
-      </>
+      </div>
     );
   }
 }
