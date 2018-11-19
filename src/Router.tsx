@@ -1,18 +1,20 @@
 import React from "react";
 import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 
+import ApplianceRoot from "./appliance/ApplianceRoot";
+import MaintainerRoot from "./maintainer/MaintainerRoot";
 import Topbar from "./navigation/Topbar";
-
-const PlaceHolder = (content: string) => () => <div>{content}</div>;
+import Organisations from "./organisation/Organisations";
 
 export default () => (
   <Router>
     <>
       <Topbar />
       <Switch>
-        <Route path="/appliances" component={PlaceHolder("Appliances")} />
-        <Route path="/maintainers" component={PlaceHolder("Maintainers")} />
-        <Redirect path="*" to="/appliances" />
+        <Route path="/organisation" component={Organisations} />
+        <Route path="/appliances" component={ApplianceRoot} />
+        <Route path="/maintainers" component={MaintainerRoot} />
+        <Redirect path="*" to="/organisation" />
       </Switch>
     </>
   </Router>

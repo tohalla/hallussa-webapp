@@ -2,20 +2,19 @@ import classNames from "classnames";
 import {
   logoContainer,
   navGroup,
-  navItem,
   toggleButton,
   topbar
 } from "emotion-styles/topbar";
 import React from "react";
-import { Link } from "react-router-dom";
 
 import Logo from "../components/Logo";
 import { sm } from "../emotion-styles/src/variables/breakpoints";
 import AccountMenu from "./AccountMenu";
+import OrganisationNavigation from "./OrganisationNavigation";
 
-export default class Topbar extends React.Component {
+export default class Topbar extends React.Component<StateProps> {
   public state = {
-    expand: true,
+    expand: false,
     width: window.innerWidth,
   };
 
@@ -44,12 +43,7 @@ export default class Topbar extends React.Component {
               menu
             </i>
           </div>
-          {displayMenu &&
-            <div className={navGroup}>
-              <Link className={navItem} to="/appliances">Appliances</Link>
-              <Link className={navItem} to="/maintainers">Maintainers</Link>
-            </div>
-          }
+          {displayMenu && <OrganisationNavigation />}
         </div>
         {displayMenu && <AccountMenu />}
       </div>

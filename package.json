@@ -5,14 +5,14 @@
   "scripts": {
     "serve": "parcel pages/*.html",
     "build": "parcel build pages/*.html --experimental-scope-hoisting --public-url .",
-    "lint": "tslint -c tslint.json './src/**/*.ts'"
+    "lint": "tslint -c tslint.json './src/**/*.ts{,x}'"
   },
   "repository": {
     "type": "git",
     "url": "git@version.aalto.fi:hallast1/CS-E4400_hallussa-webapp.git"
   },
   "dependencies": {
-    "@types/redux-thunk": "^2.1.0",
+    "change-case": "^3.0.2",
     "classnames": "^2.2.6",
     "normalize.css": "^8.0.0",
     "ramda": "^0.25.0",
@@ -25,6 +25,9 @@
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.1.5",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.1.5",
     "@types/classnames": "^2.2.6",
     "@types/jest": "^23.3.2",
     "@types/ramda": "^0.25.38",
@@ -32,9 +35,9 @@
     "@types/react-dom": "^16.0.7",
     "@types/react-redux": "^6.0.8",
     "@types/react-router-dom": "^4.3.1",
-    "babel-core": "^6.26.3",
+    "@types/redux-thunk": "^2.1.0",
+    "@types/webpack-env": "^1.13.6",
     "babel-plugin-module-resolver": "^3.1.1",
-    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
