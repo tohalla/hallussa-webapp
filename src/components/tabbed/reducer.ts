@@ -3,19 +3,10 @@ import { assocPath, cond, dissocPath, equals, T } from "ramda";
 import {
   CLOSE_TAB,
   CREATE_TAB,
+  RESET_TABS,
   TabAction,
   TabPayload
 } from "./actions";
-
-const typeHandler = cond([
-  [equals(CREATE_TAB), (type, state, view, payload) =>
-    assocPath([view, "tabs", payload.key], payload, state),
-  ],
-  [equals(CLOSE_TAB), (type, state, view, payload) =>
-    dissocPath([view, "tabs", payload], state),
-  ],
-  [T, (type, state) => state],
-]);
 
 interface View {
   tabs: {[key: string]: TabPayload};
@@ -36,6 +27,17 @@ const initialState: ViewsState = {
     new: {accent: true, key: "new", activeLabel: "New maintainer", label: "add", sticky: true, order: 1},
   }},
 };
+
+const typeHandler = cond([
+  [equals(CREATE_TAB), (type, state, view, payload) =>
+    assocPath([view, "tabs", payload.key], payload, state),
+  ],
+  [equals(CLOSE_TAB), (type, state, view, payload) =>
+    dissocPath([view, "tabs", payload], state),
+  ],
+  [equals(RESET_TABS), (type, state) => initialState],
+  [T, (type, state) => state],
+]);
 
 export default (
   state = initialState,
