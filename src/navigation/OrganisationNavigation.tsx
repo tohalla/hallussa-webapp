@@ -4,7 +4,7 @@ import { connect, MapStateToProps } from "react-redux";
 import { navGroup, navItem } from "emotion-styles/topbar";
 import { Link } from "react-router-dom";
 import { ReduxState } from "../store/store";
-import OrganisationSelect from "./OrganisationSelect";
+import OrganisationSelect from "./OrganisationNavItem";
 
 interface StateProps {
   organisationSelected: boolean;
@@ -19,7 +19,7 @@ const OrganisationNavigation = ({organisationSelected}: StateProps) => (
           <Link className={navItem} to="/appliances">Appliances</Link>
           <Link className={navItem} to="/maintainers">Maintainers</Link>
         </>
-      ) : <Link className={navItem} to="/organisation">Organisation</Link>
+      ) : <Link className={navItem} to="/organisation">Organisations</Link>
     }
   </div>
 );

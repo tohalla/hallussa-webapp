@@ -1,7 +1,8 @@
+import classNames from "classnames";
 import React, { ReactChild } from "react";
 
-import { sidebarContainer } from "emotion-styles/sidebar";
-import ContentLayout from "./ContentLayout";
+import { leftContainer, sidebarContainer } from "emotion-styles/sidebar";
+import { padded } from "../../emotion-styles/src/container";
 import Sidebar from "./Sidebar";
 
 interface Props {
@@ -12,9 +13,9 @@ interface Props {
 export default ({ content, sidebarContent }: Props) => {
   return (
     <div className={sidebarContainer}>
-      <ContentLayout>
+      <div className={classNames(padded, leftContainer)}>
         {content}
-      </ContentLayout>
+      </div>
       <Sidebar>
         {sidebarContent}
       </Sidebar>

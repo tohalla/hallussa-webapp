@@ -11,8 +11,8 @@ export interface APIResponsePayload {
   error?: string;
 }
 
-export interface APIResponseAction extends AnyAction {
+export interface APIResponseAction<T = any> extends AnyAction {
   endpoint: string;
-  payload?: Partial<APIResponsePayload>;
+  payload?: Partial<APIResponsePayload> | T;
   method: APIMethods;
 }

@@ -1,15 +1,17 @@
 import { isEmpty } from "ramda";
 import { Dispatch } from "redux";
 import { fetchAppliances } from "../appliance/actions";
+import { resetTabs } from "../components/tabbed/actions";
 import { fetchMaintainers } from "../maintainer/actions";
-import { CALL_API } from "../store/middleware/api/actions";
+import { APIResponseAction, CALL_API } from "../store/middleware/api/actions";
 import { ReduxAPICall } from "../store/middleware/api/api";
 
+export const CREATE_ORGANISATION_SUCCESS = "CREATE_ORGANISATION_SUCCESS";
 export const FETCH_ORGANISATIONS_SUCCESS = "FETCH_ORGANISATIONS_SUCCESS";
 export const SET_ACTIVE_ORGANISATION = "SET_ACTIVE_ORGANISATION";
 
 export interface OrganisationPayload {
-  id: string;
+  id: number;
   name: string;
   organisationIdentifier: string;
   createdAt: string;
@@ -34,16 +36,30 @@ export const fetchOrganisations = ({bypassCache = false} = {}): ReduxAPICall => 
   type: CALL_API,
 });
 
-export const setActiveOrganisation = (organisation: number, isAdmin: boolean, fetchRelated = true) =>
+export const createOrganisation = (organisation: OrganisationPayload) => async (dispatch: Dispatch) => {
+  const response = await dispatch<APIResponseAction<OrganisationPayload>>({
+    body: organisation,
+    endpoint: "/organisations",
+    method: "post",
+    successType: CREATE_ORGANISATION_SUCCESS,
+    type: CALL_API,
+  });
+  await dispatch(fetchOrganisations({bypassCache: true})); // lazily fetch organisation from api
+  return response.payload as OrganisationPayload;
+};
+
+export const setActiveOrganisation = (organisation: number, fetchRelated = true) =>
   async (dispatch: Dispatch) => {
+    localStorage.setItem("organisation", String(organisation)); // remember organisation for next session
     if (fetchRelated) {
       await Promise.all([
         dispatch(fetchAppliances(organisation)),
         dispatch(fetchMaintainers(organisation)),
       ]);
     }
+    dispatch(resetTabs); // should close all opened tabs
     return dispatch({
-      payload: {activeOrganisation: organisation, isAdmin},
+      payload: {activeOrganisation: organisation},
       type: SET_ACTIVE_ORGANISATION,
     });
   };

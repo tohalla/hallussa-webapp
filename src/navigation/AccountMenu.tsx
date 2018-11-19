@@ -26,7 +26,7 @@ class AccountMenu extends React.Component<StateProps> {
           Hello, {firstName}
         </div>
         <div className={navGroup}>
-          <Button className={navItem} onClick={this.handleLogout} plain={true}>Log out</Button>
+          <Button onClick={this.handleLogout} plain={true}>Log out</Button>
         </div>
       </div>
     );
