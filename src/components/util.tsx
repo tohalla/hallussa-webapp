@@ -2,15 +2,11 @@ import changeCase from "change-case";
 import { map } from "ramda";
 import React, { ChangeEventHandler, Fragment, ReactFragment } from "react";
 
-import Input, { InputProps } from "./Input";
-
-export interface FormInput<Inputs> {
-  key: Inputs;
-  props?: Partial<InputProps>;
-}
+import { FormInput } from "./Form";
+import Input from "./Input";
 
 export const getFormInput = <Inputs extends string>({state, handleInputChange}: {
-  state: {[key: string]: any},
+  state: any,
   handleInputChange: (key: Inputs) => ChangeEventHandler<HTMLInputElement>
 }) => (formInput: FormInput<Inputs> | ReadonlyArray<FormInput<Inputs>>): ReactFragment => {
   const getInput = (input: FormInput<Inputs>) => (
@@ -21,6 +17,7 @@ export const getFormInput = <Inputs extends string>({state, handleInputChange}: 
       placeholder={changeCase.titleCase(input.key)}
       onChange={handleInputChange(input.key)}
       value={state[input.key]}
+      {...input.validate}
       {...input.props}
     />
   );
