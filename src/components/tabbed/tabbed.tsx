@@ -3,7 +3,7 @@ import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
 import { RouteComponentProps } from "react-router";
-import { tabbedContainer, tabbedContentContainer } from "../../emotion-styles/src/tabbed";
+import { viewContentContainer } from "../../emotion-styles/src/container";
 import { ReduxState } from "../../store/store";
 import { TabPayload } from "./actions";
 import { ViewsState } from "./reducer";
@@ -25,12 +25,12 @@ export default (view: keyof ViewsState) => {
         props
       );
       return (
-        <div className={tabbedContainer}>
+        <>
           <TabsContainer view={view} tabs={props.tabs} {...routerProps} />
-          <div className={tabbedContentContainer}>
+          <div className={viewContentContainer}>
             <Component {...routerProps} />
           </div>
-        </div>
+        </>
       );
     };
 

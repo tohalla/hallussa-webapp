@@ -14,15 +14,13 @@ interface StateProps {
   organisations?: ReadonlyArray<OrganisationPayload> | APIResponsePayload;
 }
 
-class OrganisationSelect extends React.Component<StateProps> {
+class OrganisationNavItem extends React.Component<StateProps> {
   public render() {
     const organisation = this.props.organisation as OrganisationPayload;
     return (
-      <>
-        <Link className={navItem} to="/organisation">
-          {organisation.name}
-        </Link>
-      </>
+      <Link className={navItem} to="/organisation">
+        {organisation.name}
+      </Link>
     );
   }
 }
@@ -32,4 +30,4 @@ const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => 
   organisations: getOrganisations(state),
 });
 
-export default connect(mapStateToProps)(loadable(OrganisationSelect));
+export default connect(mapStateToProps)(loadable(OrganisationNavItem));

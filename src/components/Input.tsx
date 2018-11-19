@@ -14,7 +14,8 @@ export interface InputProps {
   autoComplete: "off" | "on";
   error: string | boolean;
   disabled?: boolean;
-  name?: string;
+  autoFocus: boolean;
+  name: string;
   onBlur?: FocusEventHandler<HTMLInputElement>;
   onChange: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
@@ -27,6 +28,7 @@ export interface InputProps {
 export default class Input extends Component<InputProps> {
   public static defaultProps = {
     autoComplete: "on",
+    autoFocus: false,
     error: false,
     required: false,
     type: "text",
@@ -39,6 +41,15 @@ export default class Input extends Component<InputProps> {
     super(props);
     this.element = React.createRef();
   }
+
+  public componentDidMount() {
+    if (this.props.autoFocus) {
+      this.focus();
+    }
+  }
+
+  public focus = (options?: FocusOptions) =>
+    (this.element.current as HTMLInputElement).focus(options)
 
   public handleBlur: FocusEventHandler<HTMLInputElement> = (event) => {
     const {onBlur} = this.props;
@@ -54,7 +65,7 @@ export default class Input extends Component<InputProps> {
   }
 
   public render() {
-    const {error, onBlur, onFocus, ...props} = this.props;
+    const {error, onBlur, onFocus, autoFocus, ...props} = this.props;
     const displayError = Boolean(error) && this.visited && document.activeElement !== this.element.current;
     const className = classnames(input, {[invalid]: displayError});
     return (

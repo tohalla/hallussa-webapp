@@ -100,6 +100,7 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
         type: CALL_API_SUCCESS,
       });
       if (typeof onSuccess === "function") { await onSuccess(payload, false); }
+      return {payload};
     } else {
       if (typeof onFailure === "function") { onFailure("failed to fetch"); }
       next({
