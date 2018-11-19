@@ -1,9 +1,9 @@
 import { map } from "ramda";
 import React from "react";
 import { connect, MapStateToProps } from "react-redux";
-import Select from "react-select";
 
 import Button from "../components/Button";
+import Select from "../components/Select";
 import { APIResponsePayload } from "../store/middleware/api/actions";
 import { ReduxState } from "../store/store";
 import loadable from "../util/hoc/loadable";

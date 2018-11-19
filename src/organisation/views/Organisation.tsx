@@ -1,6 +1,7 @@
 import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
+import { rowContainer } from "emotion-styles/container";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
@@ -24,7 +25,9 @@ class Organisation extends React.Component<StateProps> {
 
     return (
       <>
-        <OrganisationSelect />
+        <div className={rowContainer}>
+          <OrganisationSelect />
+        </div>
         <b>{name}</b>
         {organisationIdentifier}
       </>
