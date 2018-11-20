@@ -2022,7 +2022,7 @@ cheerio@^1.0.0-rc.2:
     lodash "^4.15.0"
     parse5 "^3.0.1"
 
-chokidar@^2.0.3:
+chokidar@^2.0.0, chokidar@^2.0.3:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-2.0.4.tgz#356ff4e2b0e8e43e322d18a372460bbcf3accd26"
   dependencies:
@@ -6470,6 +6470,12 @@ sane@^2.0.0:
     watch "~0.18.0"
   optionalDependencies:
     fsevents "^1.2.3"
+
+sass@^1.15.1:
+  version "1.15.1"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.15.1.tgz#25a03f6813413540210580b670628360c36267d3"
+  dependencies:
+    chokidar "^2.0.0"
 
 sax@^1.2.4, sax@~1.2.1, sax@~1.2.4:
   version "1.2.4"
