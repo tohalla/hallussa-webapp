@@ -1,0 +1,131 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+}
+
+#appContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+#banner-wrapper {
+  background: linear-gradient(to bottom, #fff 50%,#212121 50%);
+}
+
+#banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-height: 500px;
+  height: 60vh;
+  width: 100%;
+  background-image: url("../img/bg_img.svg");
+  background-repeat: no-repeat;
+  background-position: top;
+  background-size: cover;
+
+  @media (max-width: 767px) {
+    height: 80vh;
+    max-height: 30vh;
+  }
+
+  div {
+    text-align: center;
+    img {
+      width: 300px;
+  
+      @media (max-width: 767px) {
+        width: auto;
+      }
+    }
+  
+    p {
+      text-transform: uppercase;
+    }
+  }
+}
+
+section {
+  display: flex;
+
+  > div {
+    width: 50%;
+    padding: 1rem 2.5rem;
+  }
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+
+    > div {
+      width: 100%;
+      padding: 1rem;
+    }
+  }
+}
+
+#product {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 10rem 2.5rem 10rem;
+  color: #fff;
+  
+  p {
+    display: inline-block;
+    width: 30vw;
+  }
+
+  @media (max-width: 991px) {
+    padding: 1rem 2.5rem;
+
+    p {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 767px) {
+    padding: .5rem 1rem;
+  }
+}
+
+#clients {
+  display: flex;
+  justify-content: center;
+
+  > div {
+    padding: 1rem 2.5rem;
+    text-align: center;
+
+    > div {
+      padding-top: 1em;
+    }
+
+    span {
+      padding: 0 .5rem;
+    }
+  }
+}
+
+#quote {
+  font-style: italic;
+
+  &::before, &::after {
+    content: '"';
+  }
+}
+
+#sales-pitch {
+  background: #f7f7f7;
+}
+
+#features {
+
+}
+
+footer {
+  background: #606060;
+  padding: 1rem 2.5rem;
+  flex-grow: 1;
+}
