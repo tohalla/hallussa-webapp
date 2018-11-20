@@ -27,7 +27,6 @@ class OrganisationForm extends React.Component<Props> {
 
   public handleSubmit = async (state: FormState<Inputs>) => {
     const organisation = await this.props.createOrganisation(dissoc("errors", state));
-    console.log(organisation);
     if (organisation) {
       this.props.history.push(`/${organisation.id}`);
     }
