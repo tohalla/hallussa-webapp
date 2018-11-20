@@ -4,7 +4,6 @@ import { RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
 
 import { connect, MapDispatchToProps } from "react-redux";
-import { Dispatch } from "redux";
 import Form, { FormInput, FormState } from "../components/Form";
 import { ReduxState } from "../store/store";
 import { createOrganisation, OrganisationPayload } from "./actions";
@@ -26,21 +25,9 @@ class OrganisationForm extends React.Component<Props> {
     {key: "organisationIdentifier", validate: {required: true}},
   ];
 
-  public static getDerivedStateFromProps({organisation}: Props, prevState: object) {
-    if (typeof organisation === "undefined") {
-      return prevState;
-    }
-    return organisation;
-  }
-
-  public state = {
-    errors: {},
-    name: "",
-    organisationIdentifier: "",
-  };
-
   public handleSubmit = async (state: FormState<Inputs>) => {
     const organisation = await this.props.createOrganisation(dissoc("errors", state));
+    console.log(organisation);
     if (organisation) {
       this.props.history.push(`/${organisation.id}`);
     }

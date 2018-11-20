@@ -1,10 +1,13 @@
-import { cond, equals, merge, T } from "ramda";
+import { assoc, cond, equals, merge, T } from "ramda";
 import { Reducer } from "redux";
 
-import { FETCH_ORGANISATIONS_SUCCESS, OrganisationAction } from "./actions";
+import { CREATE_ORGANISATION_SUCCESS, FETCH_ORGANISATIONS_SUCCESS, OrganisationAction } from "./actions";
 
 const typeHandler = cond([
   [equals(FETCH_ORGANISATIONS_SUCCESS), (type, state, payload) => merge(state, payload)],
+  [equals(CREATE_ORGANISATION_SUCCESS), (type, state, payload) =>
+    payload.id ? assoc(payload.id, payload, state) : state,
+  ],
   [T, (type, state, payload) => state],
 ]);
 
