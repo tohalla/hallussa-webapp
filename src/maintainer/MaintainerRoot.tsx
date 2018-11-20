@@ -3,7 +3,7 @@ import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom"
 
 import ViewContainer from "../components/layouts/ViewContainer";
 import tabbed from "../components/tabbed/tabbed";
-import MaintainerForm from "./MaintainerForm";
+import MaintainerForm from "./components/MaintainerForm";
 import Maintainer from "./views/Maintainer";
 import MaintainerListing from "./views/MaintainerListing";
 
