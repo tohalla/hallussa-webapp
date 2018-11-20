@@ -11,7 +11,7 @@ import loadable from "../../util/hoc/loadable";
 import { MaintainerPayload } from "../actions";
 
 interface State {
-  appliances: ReadonlyArray<MaintainerPayload> | APIResponsePayload;
+  maintainers: ReadonlyArray<MaintainerPayload> | APIResponsePayload;
 }
 
 class MaintainerList extends React.Component<State> {
@@ -19,26 +19,26 @@ class MaintainerList extends React.Component<State> {
     {Header: "Id", accessor: "id"},
     {
       Header: "Name",
-      accessor: (appliance) => <Link to={`/${appliance.id}`}>{appliance.name}</Link>,
+      accessor: ({id, firstName, lastName}) => <Link to={`/${id}`}>{firstName} {lastName}</Link>,
       id: "name",
     },
-    {Header: "Model", accessor: undefined},
-    {Header: "Manufacturer", accessor: undefined},
+    {Header: "Email", accessor: "email"},
+    {Header: "Phone", accessor: "phone"},
   ];
 
   public render() {
-    const appliances = this.props.appliances as MaintainerPayload[];
+    const maintainers = this.props.maintainers as MaintainerPayload[];
     return (
       <Table
         columns={MaintainerList.columns}
-        data={appliances}
+        data={maintainers}
       />
     );
   }
 }
 
 const mapStateToProps: MapStateToProps<State, {}, ReduxState> = (state) => ({
-  appliances: getEntitiesByOrganisation(state, "appliances"),
+  maintainers: getEntitiesByOrganisation(state, "maintainers"),
 });
 
 export default connect(mapStateToProps)(loadable(MaintainerList));
