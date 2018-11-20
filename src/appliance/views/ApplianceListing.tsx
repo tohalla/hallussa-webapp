@@ -9,6 +9,7 @@ import WithSidebar from "../../components/layouts/WithSidebar";
 import Drawers from "../../components/drawers/Drawers";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import loadable from "../../util/hoc/loadable";
+import ApplianceList from "../components/ApplianceList";
 import Latest from "../drawers/Latest";
 import Summary from "../drawers/Summary";
 
@@ -17,14 +18,6 @@ interface StateProps {
 }
 
 class ApplianceListing extends Component<StateProps> {
-  public renderContent = () => {
-    return (
-      <>
-        List of appliances...
-      </>
-    );
-  }
-
   public renderSidebarContent = () => {
     return (
       <Drawers
@@ -45,7 +38,7 @@ class ApplianceListing extends Component<StateProps> {
   public render() {
     return (
       <WithSidebar
-        content={this.renderContent()}
+        content={<ApplianceList />}
         sidebarContent={this.renderSidebarContent()}
       />
     );
