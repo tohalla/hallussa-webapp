@@ -44,7 +44,6 @@ export const createOrganisation = (organisation: OrganisationPayload) => async (
     successType: CREATE_ORGANISATION_SUCCESS,
     type: CALL_API,
   });
-  await dispatch(fetchOrganisations({bypassCache: true})); // lazily fetch organisation from api
   return response.payload as OrganisationPayload;
 };
 
