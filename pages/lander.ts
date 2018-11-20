@@ -1,15 +1,51 @@
-import { appContainer, centerContent } from "../src/emotion-styles/src/container";
+import "../assets/img/bg_img.svg";
 // tslint:disable-next-line:max-line-length
-import { footerContainer, landerBgImg, landerTextImg, split, splitLeft, splitRight } from "../src/emotion-styles/src/lander";
-import { navItem, topbar } from "../src/emotion-styles/src/topbar";
+import logo from "../src/emotion-styles/src/logo";
+import { logoContainer, navGroup, navItem, toggleButton, topbar } from "../src/emotion-styles/src/topbar";
+
+const { body } = document;
 
 (document.getElementById("topbar") as HTMLElement).className = topbar;
-(document.getElementById("navItem") as HTMLElement).className = navItem;
-(document.getElementById("appContainer") as HTMLElement).className = appContainer;
-(document.getElementById("centerContent") as HTMLElement).className = centerContent;
-(document.getElementById("landerBgImg") as HTMLElement).className = landerBgImg;
-(document.getElementById("landerTextImg") as HTMLElement).className = landerTextImg;
-(document.getElementById("splitLeft") as HTMLElement).className = splitLeft;
-(document.getElementById("splitRight") as HTMLElement).className = splitRight;
-(document.getElementById("split") as HTMLElement).className = split;
-(document.getElementById("footerContainer") as HTMLElement).className = footerContainer;
+const navGroups = document.getElementsByClassName("navGroup");
+const navItems = document.getElementsByClassName("navItem");
+
+const applyClassToElems = (elems: HTMLCollectionOf<Element>, cn: string) => {
+  Array.from(elems).forEach((el) => {
+    el.className = cn;
+  });
+};
+
+applyClassToElems(navGroups, navGroup);
+applyClassToElems(navItems, navItem);
+
+(document.getElementById("logoContainer") as HTMLElement).className = logoContainer;
+(document.getElementById("logo") as HTMLElement).className = logo;
+const toggleMenu = (document.getElementById("toggleMenu") as HTMLElement);
+toggleMenu.className = `material-icons ${toggleButton}`;
+
+const navi = (document.getElementById("navi") as HTMLElement);
+
+let menuOpen = false;
+toggleMenu.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (menuOpen) {
+    navi.classList.add("closed");
+  } else {
+    navi.classList.remove("closed");
+  }
+  menuOpen = !menuOpen;
+});
+
+const breakpoint = 767;
+
+const toggleNavi = () => {
+  if (body.clientWidth > breakpoint) {
+    navi.classList.remove("closed");
+  } else {
+    navi.classList.add("closed");
+  }
+};
+
+window.addEventListener("resize", toggleNavi);
+
+toggleNavi();
