@@ -20,7 +20,7 @@ export interface InputProps {
   onChange: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
   placeholder?: string;
-  type: "text" | "password" | "number" | "date" | "password";
+  type: "text" | "password" | "number" | "date";
   required: boolean;
   value: string;
 }
