@@ -1,47 +1,41 @@
-import {
-  navGroup,
-  navItem,
-} from "emotion-styles/topbar";
+import { navGroup, navItem } from "emotion-styles/topbar";
 import { path } from "ramda";
 import React from "react";
-import { connect } from "react-redux";
 
-import { AccountPayload, fetchAccount } from "../account/actions";
+import { connect, MapStateToProps } from "react-redux";
+import { AccountPayload } from "../account/actions";
 import { signOut } from "../auth/auth";
-import { ReduxAPICall } from "../store/middleware/api";
-import loadable from "../util/hoc/loadable";
+import Button from "../components/Button";
+import { ReduxState } from "../store/store";
 
-interface AccountStateProps {
-  account: AccountPayload;
+interface StateProps {
+  account?: AccountPayload;
 }
 
-interface AccountDispatchProps {
-  fetchAccount(): ReduxAPICall;
-}
-
-const mapStateToProps = (state: object) => ({
-  account: path(["account"], state),
-});
-
-export class AccountMenu extends React.Component<AccountDispatchProps & AccountStateProps> {
-  public componentWillMount = () => {
-    this.props.fetchAccount();
-  }
-
+class AccountMenu extends React.Component<StateProps> {
   public handleLogout = () => signOut();
 
   public render() {
-    const {firstName} = this.props.account;
+    if (typeof this.props.account === "undefined") {
+      return false;
+    }
+    const {firstName} = this.props.account;
     return (
       <div className={navGroup}>
-        Hello, {firstName}
-        <a className={navItem} onClick={this.handleLogout}>Log out</a>
+        <div className={navGroup}>
+          Hello, {firstName}
+        </div>
+        <div className={navGroup}>
+          <Button onClick={this.handleLogout} plain={true}>Log out</Button>
+        </div>
       </div>
     );
   }
 }
 
-export default connect(
-  mapStateToProps,
-  {fetchAccount}
-)(loadable(AccountMenu));
+const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => ({
+  account: typeof state.session.activeAccount === "undefined" ?
+    undefined : path(["entities", "accounts", state.session.activeAccount], state),
+});
+
+export default connect(mapStateToProps)(AccountMenu);

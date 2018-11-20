@@ -1,3 +1,4 @@
+.package-lock.json
 node_modules
 dist
 
@@ -17,3 +18,5 @@ Thumbs.db
 .tern-port
 
 .cache
+
+temp

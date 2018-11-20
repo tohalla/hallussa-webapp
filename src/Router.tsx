@@ -1,19 +1,42 @@
 import React from "react";
 import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 
+import { connect, MapStateToProps } from "react-redux";
+import ApplianceRoot from "./appliance/ApplianceRoot";
+import MaintainerRoot from "./maintainer/MaintainerRoot";
 import Topbar from "./navigation/Topbar";
+import OrganisationsRoot from "./organisation/OrganisationsRoot";
+import { ReduxState } from "./store/store";
 
-const PlaceHolder = (content: string) => () => <div>{content}</div>;
+interface StateProps {
+  organisationSelected: boolean;
+}
 
-export default () => (
-  <Router>
-    <>
-      <Topbar />
-      <Switch>
-        <Route path="/appliances" component={PlaceHolder("Appliances")} />
-        <Route path="/maintainers" component={PlaceHolder("Maintainers")} />
-        <Redirect path="*" to="/appliances" />
-      </Switch>
-    </>
-  </Router>
-);
+const RootRouter = ({organisationSelected}: StateProps) => {
+  const routes = [
+    <Route key="organisations" path="/organisations" component={OrganisationsRoot} />,
+    ...organisationSelected ? [
+      <Route key="appliances" path="/appliances" component={ApplianceRoot} />,
+      <Route key="maintainers" path="/maintainers" component={MaintainerRoot} />,
+    ] : [],
+  ];
+  return (
+    <Router>
+      <>
+        <Topbar />
+        <Switch>
+          {routes}
+          <Redirect path="*" to="/organisations" />
+        </Switch>
+      </>
+    </Router>
+  );
+};
+
+const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => ({
+  organisationSelected: typeof state.session.activeOrganisation === "number",
+});
+
+export default connect(
+  mapStateToProps
+)(RootRouter);
