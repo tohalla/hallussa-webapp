@@ -39,7 +39,7 @@ export const fetchMaintainers = (organisation: number, {bypassCache = false} = {
 export const createMaintainer = (organisation: number, maintainer: MaintainerPayload) => async (dispatch: Dispatch) => {
   const response = await dispatch<APIResponseAction<MaintainerPayload>>({
     body: maintainer,
-    endpoint: `/organisations/${organisation}/appliances`,
+    endpoint: `/organisations/${organisation}/maintainers`,
     method: "post",
     successType: CREATE_MAINTAINER_SUCCESS,
     type: CALL_API,

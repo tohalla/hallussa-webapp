@@ -30,10 +30,10 @@ class Maintainer extends Component<Props> {
     if (
       typeof maintainer === "undefined"
       || typeof organisation === "undefined"
-      || (organisation as OrganisationPayload).appliances.indexOf(maintainer.id) === -1
+      || (organisation as OrganisationPayload).maintainers.indexOf(maintainer.id) === -1
     ) {
       history.push("/");
-      return null;
+      return prevState;
     }
     if (typeof tabs[maintainer.id] === "undefined") {
       props.createTab("maintainers", {
