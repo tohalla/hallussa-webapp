@@ -1,18 +1,21 @@
 import { find } from "ramda";
-import { CALL_API } from "../store/middleware/api/actions";
+import { Dispatch } from "redux";
+import { APIResponseAction, CALL_API } from "../store/middleware/api/actions";
 import { ReduxAPICall } from "../store/middleware/api/api";
 
 export const FETCH_MAINTAINERS_SUCCESS = "FETCH_MAINTAINERS_SUCCESS";
+export const CREATE_MAINTAINER_SUCCESS = "CREATE_MAINTAINER_SUCCESS";
 
 export interface MaintainerPayload {
-  id: number;
-  email: string;
-  phone: string;
-  firstName: string;
-  lastName: string;
-  createdAt: string;
-  updatedAt: string;
   appliances: ReadonlyArray<number>;
+  createdAt: string;
+  email: string;
+  firstName: string;
+  id: number;
+  lastName: string;
+  organisation: number;
+  phone: string;
+  updatedAt: string;
 }
 
 export interface MaintainerAction {
@@ -32,3 +35,14 @@ export const fetchMaintainers = (organisation: number, {bypassCache = false} = {
   successType: FETCH_MAINTAINERS_SUCCESS,
   type: CALL_API,
 });
+
+export const createMaintainer = (organisation: number, maintainer: MaintainerPayload) => async (dispatch: Dispatch) => {
+  const response = await dispatch<APIResponseAction<MaintainerPayload>>({
+    body: maintainer,
+    endpoint: `/organisations/${organisation}/appliances`,
+    method: "post",
+    successType: CREATE_MAINTAINER_SUCCESS,
+    type: CALL_API,
+  });
+  return response.payload as MaintainerPayload;
+};
