@@ -11,6 +11,10 @@ body {
   flex-direction: column;
 }
 
+.closed {
+  display: none !important;
+}
+
 #banner-wrapper {
   background: linear-gradient(to bottom, #fff 50%,#212121 50%);
 }
@@ -29,7 +33,7 @@ body {
 
   @media (max-width: 767px) {
     height: 80vh;
-    max-height: 30vh;
+    max-height: none;
   }
 
   div {
