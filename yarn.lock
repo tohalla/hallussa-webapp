@@ -888,6 +888,12 @@
     "@types/react-dom" "*"
     "@types/react-transition-group" "*"
 
+"@types/react-table@^6.7.16":
+  version "6.7.16"
+  resolved "https://registry.yarnpkg.com/@types/react-table/-/react-table-6.7.16.tgz#d17e036d9f503ee35edd0c6a4675cff40d5bea5d"
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-transition-group@*":
   version "2.0.14"
   resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-2.0.14.tgz#afd0cd785a97f070b55765e9f9d76ff568269001"
@@ -6115,6 +6121,12 @@ react-select@^2.1.1:
     react-input-autosize "^2.2.1"
     react-transition-group "^2.2.1"
 
+react-table@^6.8.6:
+  version "6.8.6"
+  resolved "https://registry.yarnpkg.com/react-table/-/react-table-6.8.6.tgz#a0ad8b4839319052d5befc012603fb161e52ede3"
+  dependencies:
+    classnames "^2.2.5"
+
 react-test-renderer@^16.0.0-0:
   version "16.5.0"
   resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.5.0.tgz#1aeca0edc4f27f63265dcaed80ba82e11e762f56"
@@ -6133,7 +6145,7 @@ react-transition-group@^2.2.1:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-"react@^15.3.0 || ^16.0.0":
+"react@^15.x.x || ^16.x.x":
   version "16.6.3"
   resolved "https://registry.yarnpkg.com/react/-/react-16.6.3.tgz#25d77c91911d6bbdd23db41e70fb094cc1e0871c"
   dependencies:
