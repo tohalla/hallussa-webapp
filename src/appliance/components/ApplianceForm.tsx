@@ -4,13 +4,13 @@ import { RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
 
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
-import Form, { FormInput, FormState } from "../components/Form";
-import { OrganisationPayload } from "../organisation/actions";
-import { getOrganisation } from "../organisation/state";
-import { APIResponsePayload } from "../store/middleware/api/actions";
-import { ReduxState } from "../store/store";
-import loadable from "../util/hoc/loadable";
-import { AppliancePayload, createAppliance } from "./actions";
+import Form, { FormInput, FormState } from "../../components/Form";
+import { OrganisationPayload } from "../../organisation/actions";
+import { getOrganisation } from "../../organisation/state";
+import { APIResponsePayload } from "../../store/middleware/api/actions";
+import { ReduxState } from "../../store/store";
+import loadable from "../../util/hoc/loadable";
+import { AppliancePayload, createAppliance } from "../actions";
 
 interface StateProps {
   organisation?: OrganisationPayload | APIResponsePayload;
