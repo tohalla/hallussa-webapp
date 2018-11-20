@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Form, { FormInput, FormState } from "../components/Form";
 import { baseUrl } from "../config";
 import { small } from "../emotion-styles/src/inline";
-import { validateEmail } from "../util/validationFunctions";
+import { isValidEmail } from "../util/validationFunctions";
 import { register } from "./auth";
 
 type Inputs = "email" | "firstName" | "lastName" | "password" | "retypePassword";
@@ -29,11 +29,11 @@ class RegistrationForm extends Component {
     window.location.href = baseUrl; // refresh page to log in
   }
 
-  // returns state given as parameter after validation (errors modified)
+  // custom validation logic
   public validate = (state: FormState<Inputs>) => {
     const {email, retypePassword, password} = state;
     const errors = {...state.errors};
-    if (!validateEmail(email)) {
+    if (!isValidEmail(email)) {
       errors.email = "Invalid email address.";
     }
     if (retypePassword !== password) {

@@ -2,6 +2,7 @@ import { append, assoc, assocPath, cond, equals, merge, path, T } from "ramda";
 import { Reducer } from "redux";
 
 import { AppliancePayload, CREATE_APPLIANCE_SUCCESS } from "../appliance/actions";
+import { CREATE_MAINTAINER_SUCCESS, MaintainerPayload } from "../maintainer/actions";
 import { CREATE_ORGANISATION_SUCCESS, FETCH_ORGANISATIONS_SUCCESS, OrganisationAction } from "./actions";
 
 const typeHandler = cond([
@@ -16,6 +17,13 @@ const typeHandler = cond([
     }
     return state;
   }], // connect newly created appliance to organisation
+  [equals(CREATE_MAINTAINER_SUCCESS), (type, state, {organisation, id}: MaintainerPayload) => {
+    if (id && organisation) {
+      const maintainers = [String(organisation), "maintainers"];
+      return assocPath(maintainers, append(id, path(maintainers, state) || []), state);
+    }
+    return state;
+  }], // connect newly created maintainer to organisation
   [T, (type, state, payload) => state],
 ]);
 
