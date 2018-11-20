@@ -1,25 +1,15 @@
 import React, { Component } from "react";
-import { connect, MapStateToProps } from "react-redux";
-import { getEntitiesByOrganisation } from "../../organisation/state";
-import { ReduxState } from "../../store/store";
 import { MaintainerPayload } from "../actions";
+import MaintainerList from "../components/MaintainerList";
 
 interface StateProps {
   maintainers: ReadonlyArray<MaintainerPayload>;
 }
 
-class MaintainerListing extends Component<StateProps> {
+export default class MaintainerListing extends Component<StateProps> {
   public render() {
     return (
-      <div>List of maintainers</div>
+      <MaintainerList />
     );
   }
 }
-
-const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => ({
-  maintainers: getEntitiesByOrganisation(state, "maintainers"),
-});
-
-export default connect(
-  mapStateToProps
-)(MaintainerListing);

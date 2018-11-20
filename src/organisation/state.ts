@@ -35,7 +35,7 @@ export const getEntitiesByOrganisation = <T>(
   const organisation = getOrganisation(state, organisationId);
   return getStatus(state, entityType, organisation) // if entity fetching still hanging, return request status
     || props<string, T>(
-      map(String, (organisation as OrganisationPayload).appliances),
+      map(String, (organisation as OrganisationPayload)[entityType]),
       state.entities[entityType] as any
     );
 };
