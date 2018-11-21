@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { pick } from "ramda";
 import React from "react";
 import { connect, MapStateToProps } from "react-redux";
@@ -9,6 +10,10 @@ import { TabPayload } from "./actions";
 import { ViewsState } from "./reducer";
 import TabsContainer from "./TabsContainer";
 
+interface Options {
+  contentContainerClassName?: string;
+}
+
 interface StateProps {
   tabs: {[key: string]: TabPayload};
 }
@@ -18,7 +23,7 @@ export default (view: keyof ViewsState) => {
     tabs: state.views[view].tabs,
   });
 
-  return (Component: any) => {
+  return (Component: any, {contentContainerClassName}: Options = {}) => {
     const Tabbed = (props: StateProps & RouteComponentProps) => {
       const routerProps: RouteComponentProps = pick(
         ["history", "match", "location"],
@@ -27,7 +32,7 @@ export default (view: keyof ViewsState) => {
       return (
         <>
           <TabsContainer view={view} tabs={props.tabs} {...routerProps} />
-          <div className={viewContentContainer}>
+          <div className={classNames(viewContentContainer, contentContainerClassName)}>
             <Component {...routerProps} />
           </div>
         </>

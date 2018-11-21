@@ -49,9 +49,7 @@ class Appliance extends Component<Props> {
   public render() {
     const {appliance} = this.props;
     return typeof appliance === "object" && (
-      <>
-        <div>Details of an appliance: {appliance.name}</div>
-      </>
+      <div>Details of an appliance: {appliance.name}</div>
     );
   }
 }
