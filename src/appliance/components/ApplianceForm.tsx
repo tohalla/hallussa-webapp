@@ -25,11 +25,12 @@ interface Props extends RouteComponentProps, DispatchProps, StateProps {
   appliance?: AppliancePayload;
 }
 
-type Inputs = "name" | "applianceIdentifier";
+type Inputs = "name" | "description";
 
 class ApplianceForm extends React.Component<Props> {
   public static inputs: ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]> = [
     {key: "name", props: {autoFocus: true}, validate: {required: true, minLength: 2}},
+    {key: "description"},
   ];
 
   public handleSubmit = async (state: FormState<Inputs>) => {

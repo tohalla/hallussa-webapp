@@ -23,6 +23,7 @@ class ApplianceList extends React.Component<StateProps, State> {
       accessor: (appliance) => <Link to={`/${appliance.id}`}>{appliance.name}</Link>,
       id: "name",
     },
+    {Header: "Description", accessor: "description"},
     {Header: "Model", accessor: undefined},
     {Header: "Manufacturer", accessor: undefined},
   ];

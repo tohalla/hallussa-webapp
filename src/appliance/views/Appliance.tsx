@@ -68,6 +68,7 @@ class Appliance extends Component<Props> {
           <h1>{appliance.name}</h1>
           <Button onClick={this.handleFetchQR}>Download QR code</Button>
         </div>
+        {appliance.description}
       </>
     );
   }
