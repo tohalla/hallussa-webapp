@@ -3,6 +3,7 @@ import { Action, Dispatch, Middleware } from "redux";
 
 import { getAndCheckJWT } from "../../../auth/auth";
 import { apiUrl } from "../../../config";
+import { authenticatedFetch } from "../../../util/utilityFunctions";
 import { ReduxState } from "../../store";
 import { APIResponseAction, CALL_API, CALL_API_FAILURE, CALL_API_SUCCESS } from "./actions";
 
@@ -72,11 +73,6 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       ["content-type"]: "application/json",
     };
 
-    const token = await getAndCheckJWT();
-    if (token) { // set relevant headers
-      headers.authorization = `Bearer ${token}`;
-    }
-
     next<APIResponseAction>({ // dispatch api request action
       endpoint,
       method,
@@ -84,7 +80,7 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       type: CALL_API,
     });
 
-    const response = await fetch(`${apiUrl}${endpoint}${parameters ?
+    const response = await authenticatedFetch(`${apiUrl}${endpoint}${parameters ?
       "?" + map(
         (key) => `${key}=${String(parameters[key])}`,
         Object.keys(parameters)
