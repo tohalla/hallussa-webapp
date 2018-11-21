@@ -1,5 +1,5 @@
 import { dissoc } from "ramda";
-import React from "react";
+import React, { ReactFragment } from "react";
 import { RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
 
@@ -12,14 +12,14 @@ interface DispatchProps {
   createOrganisation: (organisation: OrganisationPayload) => any;
 }
 
-interface Props extends RouteComponentProps, DispatchProps {
-  onCancel: () => any;
-  organisation?: OrganisationPayload;
+interface Props extends RouteComponentProps {
+  header: ReactFragment;
+  // organisation?: OrganisationPayload;
 }
 
 type Inputs = "name" | "organisationIdentifier";
 
-class OrganisationForm extends React.Component<Props> {
+class OrganisationForm extends React.Component<Props & DispatchProps> {
   public static inputs: ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]> = [
     {key: "name", props: {autoFocus: true}, validate: {required: true, minLength: 3}},
     {key: "organisationIdentifier", validate: {required: true}},
@@ -37,6 +37,7 @@ class OrganisationForm extends React.Component<Props> {
       <Form
         inputs={OrganisationForm.inputs}
         secondary={<Link to={"/"}>Cancel</Link>}
+        header={this.props.header}
         onSubmit={this.handleSubmit}
       />
     );
