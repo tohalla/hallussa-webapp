@@ -50,9 +50,7 @@ class Maintainer extends Component<Props> {
   public render() {
     const {maintainer} = this.props;
     return typeof maintainer === "object" && (
-      <>
-        <div>Details of an maintainer: {maintainer.firstName}</div>
-      </>
+      <div>Details of an maintainer: {maintainer.firstName}</div>
     );
   }
 }

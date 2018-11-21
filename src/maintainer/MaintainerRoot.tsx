@@ -3,6 +3,7 @@ import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom"
 
 import ViewContainer from "../components/layouts/ViewContainer";
 import tabbed from "../components/tabbed/tabbed";
+import { padded } from "../emotion-styles/src/container";
 import MaintainerForm from "./components/MaintainerForm";
 import Maintainer from "./views/Maintainer";
 import MaintainerListing from "./views/MaintainerListing";
@@ -13,9 +14,9 @@ export default () => (
   <Router basename="/maintainers">
     <ViewContainer>
       <Switch>
-        <Route exact={true} path="/" component={view(MaintainerListing)} />
-        <Route exact={true} path="/new" component={view(MaintainerForm)} />
-        <Route exact={true} path="/:maintainer" component={view(Maintainer)} />
+        <Route exact={true} path="/" component={view(MaintainerListing, {contentContainerClassName: padded})} />
+        <Route exact={true} path="/new" component={view(MaintainerForm, {contentContainerClassName: padded})} />
+        <Route exact={true} path="/:maintainer" component={view(Maintainer, {contentContainerClassName: padded})} />
         <Redirect path="*" to="/" />
       </Switch>
     </ViewContainer>
