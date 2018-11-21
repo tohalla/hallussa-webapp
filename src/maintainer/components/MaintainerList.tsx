@@ -4,6 +4,7 @@ import { Column } from "react-table";
 
 import { Link } from "react-router-dom";
 import Table from "../../components/Table";
+import { emptyContainer } from "../../emotion-styles/src/container";
 import { getEntitiesByOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
@@ -28,6 +29,9 @@ class MaintainerList extends React.Component<State> {
 
   public render() {
     const maintainers = this.props.maintainers as MaintainerPayload[];
+    if (maintainers.length === 0) {
+      return <div className={emptyContainer}>No maintainers created</div>;
+    }
     return (
       <Table
         columns={MaintainerList.columns}
