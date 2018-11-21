@@ -15,7 +15,14 @@ export default () => (
     <ViewContainer>
       <Switch>
         <Route exact={true} path="/" component={view(ApplianceListing)} />
-        <Route exact={true} path="/new" component={view(ApplianceForm, {contentContainerClassName: padded})} />
+        <Route
+          exact={true}
+          path="/new"
+          component={view(ApplianceForm, {
+            contentComponentProps: {header: <h1>New appliance</h1>},
+            contentContainerClassName: padded,
+          })}
+        />
         <Route exact={true} path="/:appliance" component={view(Appliance, {contentContainerClassName: padded})} />
         <Redirect path="*" to="/" />
       </Switch>

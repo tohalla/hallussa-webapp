@@ -1,8 +1,8 @@
 import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
-import { navGroup, navItem } from "emotion-styles/topbar";
-import { Link } from "react-router-dom";
+import { activeItem, navGroup, navItem } from "emotion-styles/topbar";
+import { NavLink, RouteComponentProps, withRouter } from "react-router-dom";
 import { ReduxState } from "../store/store";
 import OrganisationSelect from "./OrganisationNavItem";
 
@@ -10,16 +10,16 @@ interface StateProps {
   organisationSelected: boolean;
 }
 
-const OrganisationNavigation = ({organisationSelected}: StateProps) => (
+const OrganisationNavigation = ({organisationSelected}: StateProps & RouteComponentProps) => (
   <div className={navGroup}>
     {
       organisationSelected ? (
         <>
           <OrganisationSelect />
-          <Link className={navItem} to="/appliances">Appliances</Link>
-          <Link className={navItem} to="/maintainers">Maintainers</Link>
+          <NavLink activeClassName={activeItem} className={navItem} to="/appliances">Appliances</NavLink>
+          <NavLink activeClassName={activeItem} className={navItem} to="/maintainers">Maintainers</NavLink>
         </>
-      ) : <Link className={navItem} to="/organisation">Organisations</Link>
+      ) : <NavLink activeClassName={activeItem} className={navItem} to="/organisation">Organisations</NavLink>
     }
   </div>
 );
@@ -28,6 +28,6 @@ const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => 
   organisationSelected: typeof state.session.activeOrganisation === "number",
 });
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps
-)(OrganisationNavigation);
+)(OrganisationNavigation));

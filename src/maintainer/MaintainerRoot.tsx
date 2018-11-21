@@ -15,7 +15,14 @@ export default () => (
     <ViewContainer>
       <Switch>
         <Route exact={true} path="/" component={view(MaintainerListing, {contentContainerClassName: padded})} />
-        <Route exact={true} path="/new" component={view(MaintainerForm, {contentContainerClassName: padded})} />
+        <Route
+          exact={true}
+          path="/new"
+          component={view(MaintainerForm, {
+            contentComponentProps: {header: <h1>New maintainer</h1>},
+            contentContainerClassName: padded,
+          })}
+        />
         <Route exact={true} path="/:maintainer" component={view(Maintainer, {contentContainerClassName: padded})} />
         <Redirect path="*" to="/" />
       </Switch>

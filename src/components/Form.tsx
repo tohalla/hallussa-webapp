@@ -23,6 +23,7 @@ export type FormState<Inputs extends string> = {[key in Inputs]: any} & {
 };
 
 interface Props<Inputs extends string> {
+  header?: ReactFragment;
   onSubmit: (state: FormState<Inputs>) => any;
   inputs: ReadonlyArray<FormInput<Inputs> | ReadonlyArray<FormInput<Inputs>>>;
   secondary: ReactFragment;
@@ -115,10 +116,11 @@ export default class Form<Inputs extends string> extends Component<Props<Inputs>
   }
 
   public render() {
-    const { secondary, submitText } = this.props;
+    const { secondary, submitText, header } = this.props;
     const isValid = !Boolean(find(Boolean, values(this.state.errors)));
     return (
       <form className={form} onSubmit={this.handleSubmit}>
+        {header}
         {this.renderInputs()}
         <div className={actionsRow}>
           {secondary}
