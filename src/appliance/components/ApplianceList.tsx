@@ -11,11 +11,11 @@ import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
 import { AppliancePayload } from "../actions";
 
-interface State {
+interface StateProps {
   appliances: ReadonlyArray<AppliancePayload> | APIResponsePayload;
 }
 
-class ApplianceList extends React.Component<State> {
+class ApplianceList extends React.Component<StateProps, State> {
   public static columns: Array<Column<AppliancePayload>> = [
     {Header: "Id", accessor: "id"},
     {
@@ -41,7 +41,7 @@ class ApplianceList extends React.Component<State> {
   }
 }
 
-const mapStateToProps: MapStateToProps<State, {}, ReduxState> = (state) => ({
+const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => ({
   appliances: getEntitiesByOrganisation(state, "appliances"),
 });
 
