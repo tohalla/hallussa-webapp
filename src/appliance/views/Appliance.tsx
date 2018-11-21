@@ -2,12 +2,16 @@ import React, { Component } from "react";
 import { connect, MapStateToProps } from "react-redux";
 
 import { RouteComponentProps } from "react-router";
+import Button from "../../components/Button";
 import { createTab, TabPayload } from "../../components/tabbed/actions";
+import { apiUrl } from "../../config";
+import { spread } from "../../emotion-styles/src/container";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
+import { authenticatedFetch } from "../../util/utilityFunctions";
 import { AppliancePayload } from "../actions";
 
 interface StateProps {
@@ -44,12 +48,27 @@ class Appliance extends Component<Props> {
     }
     return prevState;
   }
+
   public state = {};
+
+  public handleFetchQR = async () => {
+    const {id: organisation} = this.props.organisation as OrganisationPayload;
+    const {id: appliance} = this.props.appliance as AppliancePayload;
+    const response = await authenticatedFetch(
+      `${apiUrl}/organisations/${organisation}/appliances/qr?appliances=[${appliance}]`
+      );
+    (window.open("", "_blank") as Window).document.body.innerHTML = await response.text();
+  }
 
   public render() {
     const {appliance} = this.props;
     return typeof appliance === "object" && (
-      <div>Details of an appliance: {appliance.name}</div>
+      <>
+        <div className={spread}>
+          <h1>{appliance.name}</h1>
+          <Button onClick={this.handleFetchQR}>Download QR code</Button>
+        </div>
+      </>
     );
   }
 }
