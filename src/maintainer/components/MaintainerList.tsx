@@ -11,11 +11,11 @@ import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
 import { MaintainerPayload } from "../actions";
 
-interface State {
+interface StateProps {
   maintainers: ReadonlyArray<MaintainerPayload> | APIResponsePayload;
 }
 
-class MaintainerList extends React.Component<State> {
+class MaintainerList extends React.Component<StateProps> {
   public static columns: Array<Column<MaintainerPayload>> = [
     {Header: "Id", accessor: "id"},
     {
@@ -41,7 +41,7 @@ class MaintainerList extends React.Component<State> {
   }
 }
 
-const mapStateToProps: MapStateToProps<State, {}, ReduxState> = (state) => ({
+const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => ({
   maintainers: getEntitiesByOrganisation(state, "maintainers"),
 });
 

@@ -12,6 +12,7 @@ export interface AppliancePayload {
   id: number;
   maintainers: ReadonlyArray<number>;
   name: string;
+  description: string;
   organisation: number;
   updatedAt: string;
 }
