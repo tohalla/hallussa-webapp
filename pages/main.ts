@@ -29,9 +29,9 @@ let menuOpen = false;
 toggleMenu.addEventListener("click", (e) => {
   e.preventDefault();
   if (menuOpen) {
-    navi.classList.add("closed");
+    navi.classList.add("hidden");
   } else {
-    navi.classList.remove("closed");
+    navi.classList.remove("hidden");
   }
   menuOpen = !menuOpen;
 });
@@ -40,9 +40,9 @@ const breakpoint = 767;
 
 const toggleNavi = () => {
   if (body.clientWidth > breakpoint) {
-    navi.classList.remove("closed");
+    navi.classList.remove("hidden");
   } else {
-    navi.classList.add("closed");
+    navi.classList.add("hidden");
   }
 };
 
