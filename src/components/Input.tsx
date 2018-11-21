@@ -53,9 +53,11 @@ export default class Input extends Component<InputProps> {
 
   public handleBlur: FocusEventHandler<HTMLInputElement> = (event) => {
     const {onBlur} = this.props;
-    this.visited = true;
     if (typeof onBlur === "function") { onBlur(event); }
-    this.forceUpdate(); // re-render to render error
+    window.setTimeout(() => {
+      this.visited = true;
+      this.forceUpdate(); // re-render to render error
+    }, 300);
   }
 
   public handleFocus: FocusEventHandler<HTMLInputElement> = (event) => {
