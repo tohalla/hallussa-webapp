@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { pick } from "ramda";
 import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
@@ -36,12 +37,15 @@ class Organisation extends React.Component<Props & StateProps> {
     }
 
     const {name, organisationIdentifier} = organisation || activeOrganisation as OrganisationPayload;
-    const routeProps = {history, match, location};
+    const routerProps: RouteComponentProps = pick(
+      ["history", "match", "location"],
+      this.props
+    );
 
     return (
       <>
         <div className={spread}>
-          <OrganisationSelect organisation={organisation} {...routeProps} />
+          <OrganisationSelect organisation={organisation} {...routerProps} />
           <NewOrganisation />
         </div>
         <b>{name}</b>

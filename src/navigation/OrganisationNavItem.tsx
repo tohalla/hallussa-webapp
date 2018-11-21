@@ -1,7 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink, RouteComponentProps, withRouter } from "react-router-dom";
 
-import { navItem } from "emotion-styles/topbar";
+import { activeItem, navItem } from "emotion-styles/topbar";
 import { connect, MapStateToProps } from "react-redux";
 import { OrganisationPayload } from "../organisation/actions";
 import { getOrganisation, getOrganisations } from "../organisation/state";
@@ -14,13 +14,13 @@ interface StateProps {
   organisations?: ReadonlyArray<OrganisationPayload> | APIResponsePayload;
 }
 
-class OrganisationNavItem extends React.Component<StateProps> {
+class OrganisationNavItem extends React.Component<StateProps & RouteComponentProps> {
   public render() {
     const organisation = this.props.organisation as OrganisationPayload;
     return (
-      <Link className={navItem} to="/organisation">
+      <NavLink activeClassName={activeItem} className={navItem} to="/organisations">
         {organisation.name}
-      </Link>
+      </NavLink>
     );
   }
 }
@@ -30,4 +30,6 @@ const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => 
   organisations: getOrganisations(state),
 });
 
-export default connect(mapStateToProps)(loadable(OrganisationNavItem));
+export default withRouter(connect(mapStateToProps)(
+  loadable<RouteComponentProps>(OrganisationNavItem)
+));

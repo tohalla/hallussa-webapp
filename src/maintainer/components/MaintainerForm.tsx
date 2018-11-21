@@ -1,5 +1,5 @@
 import { dissoc } from "ramda";
-import React from "react";
+import React, { ReactFragment } from "react";
 import { RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
 
@@ -23,6 +23,7 @@ interface DispatchProps {
 
 interface Props extends RouteComponentProps, DispatchProps, StateProps {
   onCancel: () => any;
+  header: ReactFragment;
   appliance?: MaintainerPayload;
 }
 
@@ -66,6 +67,7 @@ class MaintainerForm extends React.Component<Props> {
         secondary={<Link to={"/"}>Cancel</Link>}
         onSubmit={this.handleSubmit}
         validate={this.validate}
+        header={this.props.header}
       />
     );
   }

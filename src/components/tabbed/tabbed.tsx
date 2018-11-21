@@ -12,6 +12,7 @@ import TabsContainer from "./TabsContainer";
 
 interface Options {
   contentContainerClassName?: string;
+  contentComponentProps?: {[key: string]: any};
 }
 
 interface StateProps {
@@ -23,7 +24,7 @@ export default (view: keyof ViewsState) => {
     tabs: state.views[view].tabs,
   });
 
-  return (Component: any, {contentContainerClassName}: Options = {}) => {
+  return (Component: any, {contentContainerClassName, contentComponentProps}: Options = {}) => {
     const Tabbed = (props: StateProps & RouteComponentProps) => {
       const routerProps: RouteComponentProps = pick(
         ["history", "match", "location"],
@@ -33,7 +34,7 @@ export default (view: keyof ViewsState) => {
         <>
           <TabsContainer view={view} tabs={props.tabs} {...routerProps} />
           <div className={classNames(viewContentContainer, contentContainerClassName)}>
-            <Component {...routerProps} />
+            <Component {...routerProps} {...contentComponentProps} />
           </div>
         </>
       );

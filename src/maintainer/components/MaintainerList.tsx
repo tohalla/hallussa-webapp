@@ -33,10 +33,13 @@ class MaintainerList extends React.Component<StateProps> {
       return <div className={emptyContainer}>No maintainers created</div>;
     }
     return (
-      <Table
-        columns={MaintainerList.columns}
-        data={maintainers}
-      />
+      <>
+        <h1>Maintainer listing</h1>
+        <Table
+          columns={MaintainerList.columns}
+          data={maintainers}
+        />
+      </>
     );
   }
 }

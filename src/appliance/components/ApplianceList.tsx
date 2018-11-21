@@ -15,7 +15,7 @@ interface StateProps {
   appliances: ReadonlyArray<AppliancePayload> | APIResponsePayload;
 }
 
-class ApplianceList extends React.Component<StateProps, State> {
+class ApplianceList extends React.Component<StateProps> {
   public static columns: Array<Column<AppliancePayload>> = [
     {Header: "Id", accessor: "id"},
     {
@@ -34,10 +34,13 @@ class ApplianceList extends React.Component<StateProps, State> {
       return <div className={emptyContainer}>No appliances created</div>;
     }
     return (
-      <Table
-        columns={ApplianceList.columns}
-        data={appliances}
-      />
+      <>
+        <h1>Appliance listing</h1>
+        <Table
+          columns={ApplianceList.columns}
+          data={appliances}
+        />
+      </>
     );
   }
 }
