@@ -1,7 +1,0 @@
-@import "normalize.css";
-@import "./material-icons.css";
-@import url("../fonts/Roboto-Regular.ttf");
-
-html {
-  font-family: "Roboto", sans-serif;
-}

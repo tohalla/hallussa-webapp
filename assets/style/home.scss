@@ -11,10 +11,6 @@ body {
   flex-direction: column;
 }
 
-.closed {
-  display: none !important;
-}
-
 #banner-wrapper {
   background: linear-gradient(to bottom, #fff 50%,#212121 50%);
 }
@@ -126,31 +122,4 @@ section {
 
 #features {
 
-}
-
-footer {
-  display: flex;
-  color: #fff;
-  align-items: stretch;
-  background: #606060;
-  padding: 1rem 2.5rem;
-  flex-grow: 1;
-
-  a {
-    color: #fff;
-  }
-
-  div {
-    display: inline-block;
-    padding: 1rem 2.5rem;
-  }
-
-  @media (max-width: 991px) {
-    flex-direction: column;
-
-    div {
-      flex-grow: 1;
-      padding: 1rem 0;
-    }
-  }
 }
