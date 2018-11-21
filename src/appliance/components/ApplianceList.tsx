@@ -15,7 +15,7 @@ interface StateProps {
   appliances: ReadonlyArray<AppliancePayload> | APIResponsePayload;
 }
 
-class ApplianceList extends React.Component<StateProps, State> {
+class ApplianceList extends React.Component<StateProps> {
   public static columns: Array<Column<AppliancePayload>> = [
     {Header: "Id", accessor: "id"},
     {
