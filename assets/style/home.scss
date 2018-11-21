@@ -27,6 +27,9 @@ body {
   background-position: top;
   background-size: cover;
 
+  text-shadow: 0 1px rgba($color: #fff, $alpha: .1);
+  user-select: none;
+
   @media (max-width: 767px) {
     height: 80vh;
     max-height: none;
@@ -36,12 +39,12 @@ body {
     text-align: center;
     img {
       width: 300px;
-  
+
       @media (max-width: 767px) {
         width: auto;
       }
     }
-  
+
     p {
       text-transform: uppercase;
     }
@@ -71,7 +74,7 @@ section {
   width: 100%;
   padding: 0 10rem 2.5rem 10rem;
   color: #fff;
-  
+
   p {
     display: inline-block;
     width: 30vw;
@@ -120,6 +123,6 @@ section {
   background: #f7f7f7;
 }
 
-#features {
-
+#logo {
+  user-select: none;
 }
