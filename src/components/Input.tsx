@@ -6,9 +6,7 @@ import React, {
   RefObject
 } from "react";
 
-import { stacked } from "emotion-styles/container";
-import { error as errorStyle } from "emotion-styles/inline";
-import input, { invalid } from "emotion-styles/input";
+import input, { inputContainer, inputError, invalid } from "emotion-styles/input";
 
 export interface InputProps {
   autoComplete: "off" | "on";
@@ -79,7 +77,7 @@ export default class Input extends Component<InputProps> {
     const displayError = Boolean(error) && this.visited && document.activeElement !== this.element.current;
     const className = classnames(input, {[invalid]: displayError});
     return (
-      <div className={stacked}>
+      <div className={inputContainer}>
         <input
           className={className}
           ref={this.element}
@@ -87,7 +85,7 @@ export default class Input extends Component<InputProps> {
           onFocus={this.handleFocus}
           {...props}
         />
-        {displayError && typeof error === "string" && <span className={errorStyle}>{error}</span>}
+        {displayError && typeof error === "string" && <span className={inputError}>{error}</span>}
       </div>
     );
   }

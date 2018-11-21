@@ -34,10 +34,13 @@ class ApplianceList extends React.Component<StateProps> {
       return <div className={emptyContainer}>No appliances created</div>;
     }
     return (
-      <Table
-        columns={ApplianceList.columns}
-        data={appliances}
-      />
+      <>
+        <h1>Appliance listing</h1>
+        <Table
+          columns={ApplianceList.columns}
+          data={appliances}
+        />
+      </>
     );
   }
 }
