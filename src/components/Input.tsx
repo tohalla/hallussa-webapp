@@ -37,6 +37,8 @@ export default class Input extends Component<InputProps> {
   public element: RefObject<HTMLInputElement>;
   public visited: boolean = false;
 
+  public displayError?: NodeJS.Timer;
+
   constructor(props: InputProps) {
     super(props);
     this.element = React.createRef();
@@ -48,13 +50,19 @@ export default class Input extends Component<InputProps> {
     }
   }
 
+  public componentWillUnmount() {
+    if (this.displayError) {
+      clearTimeout(this.displayError);
+    }
+  }
+
   public focus = (options?: FocusOptions) =>
     (this.element.current as HTMLInputElement).focus(options)
 
   public handleBlur: FocusEventHandler<HTMLInputElement> = (event) => {
     const {onBlur} = this.props;
     if (typeof onBlur === "function") { onBlur(event); }
-    window.setTimeout(() => {
+    this.displayError = setTimeout(() => {
       this.visited = true;
       this.forceUpdate(); // re-render to render error
     }, 300);
