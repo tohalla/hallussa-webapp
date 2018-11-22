@@ -12,6 +12,8 @@ import { authenticate } from "./auth";
 import AuthenticationForm from "./AuthenticationForm";
 import RegistrationForm from "./RegistrationForm";
 
+document.body.hidden = false; // hack to disable rendering before loading js
+
 // TODO: nginx jwt check
 (async () => {
   const token = localStorage.getItem("token");

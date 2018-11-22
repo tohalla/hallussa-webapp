@@ -39,10 +39,12 @@ toggleMenu.addEventListener("click", (e) => {
 const breakpoint = 767;
 
 const toggleNavi = () => {
-  if (body.clientWidth > breakpoint) {
-    navi.classList.remove("hidden");
-  } else {
-    navi.classList.add("hidden");
+  if (navi) {
+    if (body.clientWidth > breakpoint) {
+      navi.classList.remove("hidden");
+    } else {
+      navi.classList.add("hidden");
+    }
   }
 };
 
