@@ -42,7 +42,6 @@ const typeHandler = cond([
 const reducer: Reducer<{[key: number]: any}, ApplianceAction> = (
   state = {},
   {payload, type, extra}: ApplianceAction
-) =>
-  typeHandler(type, state, payload, extra);
+) => typeHandler(type, state, payload, extra);
 
 export default reducer;

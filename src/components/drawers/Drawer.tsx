@@ -6,7 +6,6 @@ import DrawerContent from "./DrawerContent";
 import DrawerLabel from "./DrawerLabel";
 
 export interface Props {
-  maxHeight: string;
   label: string;
   expand: boolean;
   children: ReactChild;
@@ -14,17 +13,12 @@ export interface Props {
 }
 
 export default class Drawer extends Component<Props> {
-  public static defaultProps = {
-    maxHeight: "auto",
-  };
-
   public render() {
     const {
       children,
       expand,
       handleToggle,
       label,
-      maxHeight,
     } = this.props;
     return (
       <div className={drawer}>
@@ -34,7 +28,7 @@ export default class Drawer extends Component<Props> {
           handleToggle={handleToggle}
         />
         {expand && (
-          <DrawerContent maxHeight={maxHeight}>
+          <DrawerContent>
             {children}
           </DrawerContent>
         )}
