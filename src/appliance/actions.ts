@@ -6,6 +6,9 @@ import { ReduxAPICall } from "../store/middleware/api/api";
 export const FETCH_APPLIANCES_SUCCESS = "FETCH_APPLIANCES_SUCCESS";
 export const CREATE_APPLIANCE_SUCCESS = "CREATE_APPLIANCE_SUCCESS";
 
+export const REMOVE_MAINTAINER_FROM_APPLIANCE_SUCCESS = "REMOVE_MAINTAINER_FROM_APPLIANCE_SUCCESS";
+export const ASSING_MAINTAINER_TO_APPLIANCE_SUCCESS = "ASSING_MAINTAINER_TO_APPLIANCE_SUCCESS";
+
 export interface AppliancePayload {
   createdAt: string;
   hash: string;
@@ -45,3 +48,27 @@ export const createAppliance = (organisation: number, appliance: AppliancePayloa
   });
   return response.payload as AppliancePayload;
 };
+
+export const assignMaintainerToAppliance = (
+  organisation: number,
+  appliance: number,
+  maintainer: number
+): ReduxAPICall => ({
+  endpoint: `/organisations/${organisation}/appliances/${appliance}/maintainers/${maintainer}`,
+  extra: {appliance, maintainer},
+  method: "post",
+  successType: ASSING_MAINTAINER_TO_APPLIANCE_SUCCESS,
+  type: CALL_API,
+});
+
+export const removeMaintainerFromAppliance = (
+  organisation: number,
+  appliance: number,
+  maintainer: number
+): ReduxAPICall => ({
+  endpoint: `/organisations/${organisation}/appliances/${appliance}/maintainers/${maintainer}`,
+  extra: {appliance, maintainer},
+  method: "del",
+  successType: REMOVE_MAINTAINER_FROM_APPLIANCE_SUCCESS,
+  type: CALL_API,
+});
