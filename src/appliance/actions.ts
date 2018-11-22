@@ -23,6 +23,7 @@ export interface AppliancePayload {
 export interface ApplianceAction {
   type: string;
   payload: AppliancePayload;
+  extra?: object;
 }
 
 export const fetchAppliances = (organisation: number, {bypassCache = false} = {}): ReduxAPICall => ({
