@@ -3,6 +3,8 @@ import { connect, MapStateToProps } from "react-redux";
 
 import { RouteComponentProps } from "react-router";
 import Button from "../../components/Button";
+import Drawers from "../../components/drawers/Drawers";
+import WithSidebar from "../../components/layouts/WithSidebar";
 import { createTab, TabPayload } from "../../components/tabbed/actions";
 import { apiUrl } from "../../config";
 import { spread } from "../../emotion-styles/src/container";
@@ -60,16 +62,32 @@ class Appliance extends Component<Props> {
     (window.open("", "_blank") as Window).document.body.innerHTML = await response.text();
   }
 
+  public renderSidebar = () => (
+    <Drawers
+      drawers={{
+        maintainers: {
+          content: <div />,
+          label: "Maintainers",
+        },
+      }}
+    />
+  )
+
   public render() {
     const {appliance} = this.props;
     return typeof appliance === "object" && (
-      <>
-        <div className={spread}>
-          <h1>{appliance.name}</h1>
-          <Button onClick={this.handleFetchQR}>Download QR code</Button>
-        </div>
-        {appliance.description}
-      </>
+      <WithSidebar
+        content={
+          <>
+            <div className={spread}>
+              <h1>{appliance.name}</h1>
+              <Button onClick={this.handleFetchQR}>Download QR code</Button>
+            </div>
+            {appliance.description}
+          </>
+        }
+        sidebarContent={this.renderSidebar()}
+      />
     );
   }
 }
