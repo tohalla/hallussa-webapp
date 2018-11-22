@@ -69,7 +69,7 @@ export const removeMaintainerFromAppliance = (
 ): ReduxAPICall => ({
   endpoint: `/organisations/${organisation}/appliances/${appliance}/maintainers/${maintainer}`,
   extra: {appliance, maintainer},
-  method: "del",
+  method: "delete",
   successType: REMOVE_MAINTAINER_FROM_APPLIANCE_SUCCESS,
   type: CALL_API,
 });

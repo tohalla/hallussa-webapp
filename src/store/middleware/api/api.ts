@@ -1,13 +1,12 @@
 import { indexBy, map } from "ramda";
 import { Action, Dispatch, Middleware } from "redux";
 
-import { getAndCheckJWT } from "../../../auth/auth";
 import { apiUrl } from "../../../config";
 import { authenticatedFetch } from "../../../util/utilityFunctions";
 import { ReduxState } from "../../store";
 import { APIResponseAction, CALL_API, CALL_API_FAILURE, CALL_API_SUCCESS } from "./actions";
 
-export type APIMethods = "post" | "get" | "patch" | "del";
+export type APIMethods = "post" | "get" | "patch" | "delete";
 
 export interface ReduxAPICall extends Action {
   endpoint: string;
@@ -90,7 +89,12 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
     }`, {body: body && JSON.stringify(body), headers, method});
     if (response.ok) {
       // trigger onSuccess if defined
-      const payload = await response.json();
+      let payload;
+      try {
+        payload = await response.json();
+      } catch (e) {
+        // no body used...
+      }
       next({payload: transformResponse(payload), type: successType, extra}); // dispatch success for request action
       next<APIResponseAction>({ // dispatch api success action
         endpoint,
