@@ -22,6 +22,7 @@ interface DispatchProps {
 
 interface Props extends RouteComponentProps, DispatchProps, StateProps {
   onCancel: () => any;
+  submitText: string;
   header: ReactFragment;
   appliance?: AppliancePayload;
 }
@@ -29,6 +30,10 @@ interface Props extends RouteComponentProps, DispatchProps, StateProps {
 type Inputs = "name" | "description";
 
 class ApplianceForm extends React.Component<Props> {
+  public static defaultProps = {
+    submitText: "Create Appliance",
+  };
+
   public static inputs: ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]> = [
     {key: "name", props: {autoFocus: true}, validate: {required: true, minLength: 2}},
     {key: "description"},
@@ -43,12 +48,14 @@ class ApplianceForm extends React.Component<Props> {
   }
 
   public render() {
+    const {header, submitText} = this.props;
     return (
       <Form
         inputs={ApplianceForm.inputs}
         secondary={<Link to={"/"}>Cancel</Link>}
         onSubmit={this.handleSubmit}
-        header={this.props.header}
+        header={header}
+        submitText={submitText}
       />
     );
   }

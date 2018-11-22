@@ -24,12 +24,17 @@ interface DispatchProps {
 interface Props extends RouteComponentProps, DispatchProps, StateProps {
   onCancel: () => any;
   header: ReactFragment;
+  submitText: string;
   appliance?: MaintainerPayload;
 }
 
 type Inputs = "email" | "firstName" | "lastName" | "phone";
 
 class MaintainerForm extends React.Component<Props> {
+  public static defaultProps = {
+    submitText: "Create Maintainer",
+  };
+
   public static inputs: ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]> = [
     {key: "email", props: {autoFocus: true, placeholder: "Email address"}, validate: {required: true}},
     [
@@ -61,13 +66,15 @@ class MaintainerForm extends React.Component<Props> {
   }
 
   public render() {
+    const {header, submitText} = this.props;
     return (
       <Form
         inputs={MaintainerForm.inputs}
         secondary={<Link to={"/"}>Cancel</Link>}
         onSubmit={this.handleSubmit}
         validate={this.validate}
-        header={this.props.header}
+        header={header}
+        submitText={submitText}
       />
     );
   }

@@ -14,12 +14,17 @@ interface DispatchProps {
 
 interface Props extends RouteComponentProps {
   header: ReactFragment;
+  submitText: string;
   // organisation?: OrganisationPayload;
 }
 
 type Inputs = "name" | "organisationIdentifier";
 
 class OrganisationForm extends React.Component<Props & DispatchProps> {
+  public static defaultProps = {
+    submitText: "Create organisation",
+  };
+
   public static inputs: ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]> = [
     {key: "name", props: {autoFocus: true}, validate: {required: true, minLength: 3}},
     {key: "organisationIdentifier", validate: {required: true}},
@@ -33,12 +38,14 @@ class OrganisationForm extends React.Component<Props & DispatchProps> {
   }
 
   public render() {
+    const {header, submitText} = this.props;
     return (
       <Form
         inputs={OrganisationForm.inputs}
         secondary={<Link to={"/"}>Cancel</Link>}
-        header={this.props.header}
+        header={header}
         onSubmit={this.handleSubmit}
+        submitText={submitText}
       />
     );
   }
