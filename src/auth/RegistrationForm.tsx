@@ -1,14 +1,15 @@
 import { dissoc } from "ramda";
-import React, { Component } from "react";
+import React, { ChangeEventHandler, Component } from "react";
 import { Link } from "react-router-dom";
 
 import Form, { FormInput, FormState } from "../components/Form";
 import { baseUrl } from "../config";
+import { inputRow } from "../emotion-styles/src/form";
 import { small } from "../emotion-styles/src/inline";
 import { isValidEmail } from "../util/validationFunctions";
 import { register } from "./auth";
 
-type Inputs = "email" | "firstName" | "lastName" | "password" | "retypePassword";
+type Inputs = "email" | "firstName" | "lastName" | "password" | "retypePassword" | "tos";
 
 class RegistrationForm extends Component {
   public static inputs: ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]> = [
@@ -20,6 +21,8 @@ class RegistrationForm extends Component {
     {key: "password", props: {type: "password"}, validate: {required: true, minLength: 6}},
     {key: "retypePassword", props: {placeholder: "Re-enter password", type: "password"}, validate: {required: true}},
   ];
+
+  public state = {tos: false};
 
   public handleSubmit = async (state: FormState<Inputs>) => {
     await register(
@@ -42,6 +45,10 @@ class RegistrationForm extends Component {
     return errors;
   }
 
+  public handleTOSToggle: ChangeEventHandler<HTMLInputElement> = (event) => {
+    this.setState({tos: !this.state.tos});
+  }
+
   public render() {
     return (
       <Form
@@ -50,7 +57,19 @@ class RegistrationForm extends Component {
         secondary={<Link className={small} to="/">I already have account</Link>}
         submitText="Register"
         validate={this.validate}
-      />
+        isValid={this.state.tos}
+      >
+        <div className={inputRow}>
+          <label>
+            <input
+              type="checkbox"
+              checked={this.state.tos}
+              onChange={this.handleTOSToggle}
+            />
+            I have read and accepted <a href="/terms-of-service.html" target="_blank">terms of service</a>.
+          </label>
+        </div>
+      </Form>
     );
   }
 }

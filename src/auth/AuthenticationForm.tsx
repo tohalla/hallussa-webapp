@@ -34,7 +34,7 @@ class AuthenticationForm extends Component<{}, { [input in Inputs]?: string }> {
         inputs={AuthenticationForm.inputs}
         onSubmit={this.handleSubmit}
         secondary={<Link className={small} to="/register">Create a new account</Link>}
-        submitText="sign in"
+        submitText="Sign In"
       />
     );
   }
