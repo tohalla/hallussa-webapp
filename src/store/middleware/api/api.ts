@@ -16,6 +16,7 @@ export interface ReduxAPICall extends Action {
   type: "CALL_API";
   parameters?: {[key: string]: string};
   body?: {[key: string]: any};
+  extra?: object; // additional data to send on success
   onSuccess?(payload: any, cached: boolean): any; // get triggered on succesfull response
   onFailure?(payload: any): any; // gets triggered if the request fails
   attemptToFetchFromStore?(state: ReduxState): any;
@@ -41,6 +42,7 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       attemptToFetchFromStore,
       endpoint,
       method,
+      extra,
       successType,
       body,
       onSuccess,
@@ -89,7 +91,7 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
     if (response.ok) {
       // trigger onSuccess if defined
       const payload = await response.json();
-      next({payload: transformResponse(payload), type: successType}); // dispatch success for request action
+      next({payload: transformResponse(payload), type: successType, extra}); // dispatch success for request action
       next<APIResponseAction>({ // dispatch api success action
         endpoint,
         method,
