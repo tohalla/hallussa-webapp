@@ -15,6 +15,7 @@ import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
 import { authenticatedFetch } from "../../util/utilityFunctions";
 import { AppliancePayload } from "../actions";
+import MaintainerAssignment from "../components/MaintainerAssignment";
 
 interface StateProps {
   organisation?: OrganisationPayload | APIResponsePayload;
@@ -66,7 +67,7 @@ class Appliance extends Component<Props> {
     <Drawers
       drawers={{
         maintainers: {
-          content: <div />,
+          content: <MaintainerAssignment appliance={this.props.appliance} />,
           label: "Maintainers",
         },
       }}
