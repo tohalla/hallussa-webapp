@@ -54,7 +54,7 @@ export const createAppliance = (organisation: number, appliance: AppliancePayloa
 export const updateAppliance = (organisation: number, appliance: AppliancePayload) => async (dispatch: Dispatch) => {
   const response = await dispatch<APIResponseAction<AppliancePayload>>({
     body: appliance,
-    endpoint: `/organisations/${organisation}/appliances`,
+    endpoint: `/organisations/${organisation}/appliances/${appliance.id}`,
     method: "patch",
     successType: UPDATE_APPLIANCE_SUCCESS,
     type: CALL_API,
