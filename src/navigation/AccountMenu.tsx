@@ -6,6 +6,7 @@ import { connect, MapStateToProps } from "react-redux";
 import { AccountPayload } from "../account/actions";
 import { signOut } from "../auth/auth";
 import Button from "../components/Button";
+import { light } from "../emotion-styles/src/inline";
 import { ReduxState } from "../store/store";
 
 interface StateProps {
@@ -26,7 +27,7 @@ class AccountMenu extends React.Component<StateProps> {
           Hello, {firstName}
         </div>
         <div className={navGroup}>
-          <Button onClick={this.handleLogout} plain={true}>Log out</Button>
+          <Button className={light} onClick={this.handleLogout} plain={true}>Log out</Button>
         </div>
       </div>
     );

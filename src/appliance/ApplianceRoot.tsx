@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
+import { HashRouter as Router, Link, Redirect, Route, Switch } from "react-router-dom";
 
 import ViewContainer from "../components/layouts/ViewContainer";
 import tabbed from "../components/tabbed/tabbed";
@@ -19,7 +19,10 @@ export default () => (
           exact={true}
           path="/new"
           component={view(ApplianceForm, {
-            contentComponentProps: {header: <h1>New appliance</h1>},
+            contentComponentProps: {
+              header: <h1>New appliance</h1>,
+              secondary: <Link to={"/"}>Cancel</Link>,
+            },
             contentContainerClassName: padded,
           })}
         />

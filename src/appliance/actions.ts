@@ -5,6 +5,7 @@ import { ReduxAPICall } from "../store/middleware/api/api";
 
 export const FETCH_APPLIANCES_SUCCESS = "FETCH_APPLIANCES_SUCCESS";
 export const CREATE_APPLIANCE_SUCCESS = "CREATE_APPLIANCE_SUCCESS";
+export const UPDATE_APPLIANCE_SUCCESS = "UPDATE_APPLIANCE_SUCCESS";
 
 export const REMOVE_MAINTAINER_FROM_APPLIANCE_SUCCESS = "REMOVE_MAINTAINER_FROM_APPLIANCE_SUCCESS";
 export const ASSING_MAINTAINER_TO_APPLIANCE_SUCCESS = "ASSING_MAINTAINER_TO_APPLIANCE_SUCCESS";
@@ -45,6 +46,17 @@ export const createAppliance = (organisation: number, appliance: AppliancePayloa
     endpoint: `/organisations/${organisation}/appliances`,
     method: "post",
     successType: CREATE_APPLIANCE_SUCCESS,
+    type: CALL_API,
+  });
+  return response.payload as AppliancePayload;
+};
+
+export const updateAppliance = (organisation: number, appliance: AppliancePayload) => async (dispatch: Dispatch) => {
+  const response = await dispatch<APIResponseAction<AppliancePayload>>({
+    body: appliance,
+    endpoint: `/organisations/${organisation}/appliances/${appliance.id}`,
+    method: "patch",
+    successType: UPDATE_APPLIANCE_SUCCESS,
     type: CALL_API,
   });
   return response.payload as AppliancePayload;
