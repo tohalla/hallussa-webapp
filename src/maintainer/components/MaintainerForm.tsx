@@ -18,8 +18,8 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  createMaintainer: (organisation: number, appliance: MaintainerPayload) => any;
-  updateMaintainer: (organisation: number, appliance: MaintainerPayload) => any;
+  createMaintainer: (organisation: number, maintainer: MaintainerPayload) => any;
+  updateMaintainer: (organisation: number, maintainer: MaintainerPayload) => any;
 }
 
 type Props = Partial<FormProps<Inputs>> & RouteComponentProps;
@@ -43,7 +43,7 @@ class MaintainerForm extends React.Component<Props & StateProps & DispatchProps>
   public handleSubmit = async (state: FormState<Inputs>) => {
     const {id: organisation} = this.props.organisation as OrganisationPayload;
     const {state: maintainer, onSubmit} = this.props;
-    if (appliance) {
+    if (maintainer) {
       await this.props.updateMaintainer(organisation, {...maintainer, ...dissoc("errors", state)});
     } else {
       const newMaintainer = await this.props.createMaintainer(organisation, dissoc("errors", state));
