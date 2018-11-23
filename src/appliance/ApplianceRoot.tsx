@@ -23,7 +23,7 @@ export default () => (
             contentContainerClassName: padded,
           })}
         />
-        <Route exact={true} path="/:appliance" component={view(Appliance, {contentContainerClassName: padded})} />
+        <Route exact={true} path="/:appliance" component={view(Appliance)} />
         <Redirect path="*" to="/" />
       </Switch>
     </ViewContainer>
