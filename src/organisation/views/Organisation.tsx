@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { pick } from "ramda";
+import { equals, pick } from "ramda";
 import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
@@ -59,8 +59,10 @@ class Organisation extends React.Component<Props & StateProps, State> {
       return (
         <OrganisationForm
           state={organisation}
+          onSubmit={this.setAction()}
           secondary={<Button className={link} plain={true} onClick={this.setAction()}>Cancel</Button>}
           header={<h1>Edit organisation – {organisation.name}</h1>}
+          submitText="Update organisation"
           {...routerProps}
         />
       );

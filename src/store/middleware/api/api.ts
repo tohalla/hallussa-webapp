@@ -86,7 +86,7 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
         (key) => `${key}=${String(parameters[key])}`,
         Object.keys(parameters)
       ).join("+") : ""
-    }`, {body: body && JSON.stringify(body), headers, method});
+    }`, {body: body && JSON.stringify(body), headers, method: method.toUpperCase()});
     if (response.ok) {
       // trigger onSuccess if defined
       let payload;

@@ -58,16 +58,12 @@ export default class Form<Inputs extends string> extends Component<FormProps<Inp
     submitText: "Submit",
   };
 
-  public static getDerivedStateFromProps(props: FormProps<any>, prevState: FormState<any>) {
-    if (props.state) {
-      return props.state;
-    }
-    return prevState;
-  }
-
   constructor(props: FormProps<Inputs>) {
     super(props);
     this.state = getInputState(props.inputs) as FormState<Inputs>;
+    if (props.state) { // if state set in props...
+      this.state = merge(this.state, props.state);
+    }
   }
 
   public componentDidMount() {
