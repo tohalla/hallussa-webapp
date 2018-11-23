@@ -3,6 +3,7 @@ import React, {
   ChangeEventHandler,
   Component,
   FocusEventHandler,
+  ReactFragment,
   RefObject
 } from "react";
 
@@ -21,6 +22,7 @@ export interface InputProps {
   type: "text" | "password" | "number" | "date";
   required: boolean;
   value: string;
+  getInputElement(props: any): JSX.Element;
 }
 
 export default class Input extends Component<InputProps> {
@@ -28,6 +30,7 @@ export default class Input extends Component<InputProps> {
     autoComplete: "on",
     autoFocus: false,
     error: false,
+    getInputElement: (props: any) => (<input {...props} />),
     required: false,
     type: "text",
   };
@@ -73,18 +76,18 @@ export default class Input extends Component<InputProps> {
   }
 
   public render() {
-    const {error, onBlur, onFocus, autoFocus, ...props} = this.props;
+    const {error, onBlur, onFocus, autoFocus, getInputElement, ...props} = this.props;
     const displayError = Boolean(error) && this.visited && document.activeElement !== this.element.current;
     const className = classnames(input, {[invalid]: displayError});
     return (
       <div className={inputContainer}>
-        <input
-          className={className}
-          ref={this.element}
-          onBlur={this.handleBlur}
-          onFocus={this.handleFocus}
-          {...props}
-        />
+        {getInputElement({
+          className,
+          onBlur: this.handleBlur,
+          onFocus: this.handleFocus,
+          ref: this.element,
+          ...props,
+        })}
         {displayError && typeof error === "string" && <span className={inputError}>{error}</span>}
       </div>
     );

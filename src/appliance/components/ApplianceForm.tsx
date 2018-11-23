@@ -32,7 +32,7 @@ class ApplianceForm extends React.Component<Props & DispatchProps & StateProps>Â
 
   public static inputs: ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]> = [
     {key: "name", props: {autoFocus: true}, validate: {required: true, minLength: 2}},
-    {key: "description"},
+    {key: "description", props: {getInputElement: (props) => <textarea {...props} rows={3} />}},
   ];
 
   public handleSubmit = async (state: FormState<Inputs>) => {
