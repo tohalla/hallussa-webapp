@@ -21,12 +21,11 @@ interface DispatchProps {
 
 type Inputs = "name" | "organisationIdentifier";
 
-interface Props extends RouteComponentProps, Partial<FormProps<Inputs>> {
-  organisation?: OrganisationPayload;
-}
+type Props = Partial<FormProps<Inputs>> & RouteComponentProps;
 
 class OrganisationForm extends React.Component<Props & DispatchProps & StateProps> {
   public static defaultProps = {
+    secondary: <Link to={"/"}>Cancel</Link>,
     submitText: "Create organisation",
   };
 
@@ -50,7 +49,6 @@ class OrganisationForm extends React.Component<Props & DispatchProps & StateProp
     return (
       <Form
         inputs={OrganisationForm.inputs}
-        secondary={<Link to={"/"}>Cancel</Link>}
         onSubmit={this.handleSubmit}
         {...this.props}
       />
