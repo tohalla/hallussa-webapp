@@ -25,7 +25,7 @@ export type RequestsState = {
 };
 
 const reducer: Reducer<RequestsState, APIResponseAction> = (
-  state = {del: {}, get: {}, patch: {}, post: {}},
+  state = {delete: {}, get: {}, patch: {}, post: {}},
   {payload, type, method, endpoint}: APIResponseAction
 ) => typeHandler(type, state, method, endpoint, payload);
 

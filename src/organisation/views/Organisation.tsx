@@ -25,7 +25,7 @@ const NewOrganisation = () => <Link to="/new" className={button}>Create a new or
 
 class Organisation extends React.Component<Props & StateProps> {
   public render() {
-    const {activeOrganisation, organisation, history, match, location} = this.props;
+    const {activeOrganisation, organisation} = this.props;
     const organisations = this.props.organisations as ReadonlyArray<OrganisationPayload>;
     if (typeof activeOrganisation === "undefined" && organisations.length === 0) {
       return (

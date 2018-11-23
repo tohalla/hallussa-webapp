@@ -21,6 +21,7 @@ export interface MaintainerPayload {
 export interface MaintainerAction {
   type: string;
   payload: MaintainerPayload;
+  extra?: object;
 }
 
 export const fetchMaintainers = (organisation: number, {bypassCache = false} = {}): ReduxAPICall => ({
