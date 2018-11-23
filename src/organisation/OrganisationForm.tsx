@@ -3,13 +3,20 @@ import React, { ReactFragment } from "react";
 import { RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
 
-import { connect, MapDispatchToProps } from "react-redux";
+import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 import Form, { FormInput, FormState } from "../components/Form";
+import { APIResponsePayload } from "../store/middleware/api/actions";
 import { ReduxState } from "../store/store";
-import { createOrganisation, OrganisationPayload } from "./actions";
+import { createOrganisation, OrganisationPayload, setActiveOrganisation } from "./actions";
+import { getOrganisation } from "./state";
+
+interface StateProps {
+  activeOrganisation?: OrganisationPayload | APIResponsePayload;
+}
 
 interface DispatchProps {
   createOrganisation: (organisation: OrganisationPayload) => any;
+  setActiveOrganisation: (organisation: number, fetchRelated: boolean) => any;
 }
 
 interface Props extends RouteComponentProps {
@@ -20,7 +27,7 @@ interface Props extends RouteComponentProps {
 
 type Inputs = "name" | "organisationIdentifier";
 
-class OrganisationForm extends React.Component<Props & DispatchProps> {
+class OrganisationForm extends React.Component<Props & DispatchProps & StateProps> {
   public static defaultProps = {
     submitText: "Create organisation",
   };
@@ -31,9 +38,13 @@ class OrganisationForm extends React.Component<Props & DispatchProps> {
   ];
 
   public handleSubmit = async (state: FormState<Inputs>) => {
-    const organisation = await this.props.createOrganisation(dissoc("errors", state));
-    if (organisation) {
-      this.props.history.push(`/${organisation.id}`);
+    const {activeOrganisation, history} = this.props;
+    const newOrganisation = await this.props.createOrganisation(dissoc("errors", state));
+    if (newOrganisation) {
+      if (!activeOrganisation) {// set newly created organistaion active, if no previous organisations
+        this.props.setActiveOrganisation(newOrganisation.id, false);
+      }
+      history.push(`/${newOrganisation.id}`);
     }
   }
 
@@ -51,8 +62,12 @@ class OrganisationForm extends React.Component<Props & DispatchProps> {
   }
 }
 
-const mapDispatchToProps: MapDispatchToProps<DispatchProps, Props> = {createOrganisation};
+const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
+  activeOrganisation: getOrganisation(state),
+});
+
+const mapDispatchToProps: MapDispatchToProps<DispatchProps, Props> = { createOrganisation, setActiveOrganisation };
 
 export default connect<{}, DispatchProps, Props, ReduxState>(
-  undefined, mapDispatchToProps
+  mapStateToProps, mapDispatchToProps
 )(OrganisationForm);
