@@ -1,3 +1,4 @@
+import { pick } from "ramda";
 import React, { Component } from "react";
 import { connect, MapStateToProps } from "react-redux";
 
@@ -7,7 +8,9 @@ import Drawers from "../../components/drawers/Drawers";
 import WithSidebar from "../../components/layouts/WithSidebar";
 import { createTab, TabPayload } from "../../components/tabbed/actions";
 import { apiUrl } from "../../config";
-import { spread } from "../../emotion-styles/src/container";
+import { padded, spacedHorizontalContainer, spread } from "../../emotion-styles/src/container";
+import { link } from "../../emotion-styles/src/inline";
+import { spacer } from "../../emotion-styles/src/variables/spacing";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
@@ -15,6 +18,7 @@ import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
 import { authenticatedFetch } from "../../util/utilityFunctions";
 import { AppliancePayload } from "../actions";
+import ApplianceForm from "../components/ApplianceForm";
 import MaintainerAssignment from "../components/MaintainerAssignment";
 
 interface StateProps {
@@ -31,8 +35,13 @@ type Props = RouteComponentProps & DispatchProps & StateProps & {
   match: {params: {appliance: string}}
 };
 
-class Appliance extends Component<Props> {
-  public static getDerivedStateFromProps(props: Props, prevState: object) {
+type Actions = "default" | "edit";
+interface State {
+  action: Actions;
+}
+
+class Appliance extends Component<Props, State> {
+  public static getDerivedStateFromProps(props: Props, prevState: State) {
     const {tabs, appliance, history, organisation} = props;
     if (
       typeof appliance === "undefined"
@@ -52,7 +61,11 @@ class Appliance extends Component<Props> {
     return prevState;
   }
 
-  public state = {};
+  public state: State = {
+    action: "default",
+  };
+
+  public setAction = (action: Actions = "default") => () => this.setState({action});
 
   public handleFetchQR = async () => {
     const {id: organisation} = this.props.organisation as OrganisationPayload;
@@ -74,19 +87,47 @@ class Appliance extends Component<Props> {
     />
   )
 
+  public renderContent = () => {
+    const {appliance} = this.props;
+    return (
+      <div>
+        <div className={spread}>
+          <h1>{appliance.name}</h1>
+          <div className={spacedHorizontalContainer}>
+            <Button plain={true} onClick={this.setAction("edit")}>Edit appliance</Button>
+          </div>
+        </div>
+        {appliance.description}
+        <div className={spacer} />
+        <div className={spread}>
+          <span />
+          <Button onClick={this.handleFetchQR}>Download QR code</Button>
+        </div>
+      </div>
+    );
+  }
+
   public render() {
     const {appliance} = this.props;
-    return typeof appliance === "object" && (
+    const routerProps: RouteComponentProps = pick(["history", "match", "location"], this.props);
+    const {action} = this.state;
+    if (action === "edit") {
+      return (
+        <div className={padded}>
+          <ApplianceForm
+            state={appliance}
+            onSubmit={this.setAction()}
+            secondary={<Button className={link} plain={true} onClick={this.setAction()}>Cancel</Button>}
+            header={<h1>Edit appliance – {appliance.name}</h1>}
+            submitText="Update appliance"
+            {...routerProps}
+          />
+        </div>
+      );
+    }
+    return (
       <WithSidebar
-        content={
-          <>
-            <div className={spread}>
-              <h1>{appliance.name}</h1>
-              <Button onClick={this.handleFetchQR}>Download QR code</Button>
-            </div>
-            {appliance.description}
-          </>
-        }
+        content={this.renderContent()}
         sidebarContent={this.renderSidebar()}
       />
     );

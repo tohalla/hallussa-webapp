@@ -4,13 +4,13 @@ import { RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
 
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
-import Form, { FormInput, FormState } from "../../components/Form";
+import Form, { FormInput, FormProps, FormState } from "../../components/Form";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
-import { AppliancePayload, createAppliance } from "../actions";
+import { AppliancePayload, createAppliance, updateAppliance } from "../actions";
 
 interface StateProps {
   organisation?: OrganisationPayload | APIResponsePayload;
@@ -18,50 +18,55 @@ interface StateProps {
 
 interface DispatchProps {
   createAppliance: (organisation: number, appliance: AppliancePayload) => any;
+  updateAppliance: (organisation: number, appliance: AppliancePayload) => any;
 }
 
-interface Props extends RouteComponentProps, DispatchProps, StateProps {
-  onCancel: () => any;
-  submitText: string;
-  header: ReactFragment;
-  appliance?: AppliancePayload;
-}
+type Props = Partial<FormProps<Inputs>> & RouteComponentProps;
 
 type Inputs = "name" | "description";
 
-class ApplianceForm extends React.Component<Props> {
+class ApplianceForm extends React.Component<Props & DispatchProps & StateProps> {
   public static defaultProps = {
     submitText: "Create Appliance",
   };
 
   public static inputs: ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]> = [
     {key: "name", props: {autoFocus: true}, validate: {required: true, minLength: 2}},
-    {key: "description"},
+    {key: "description", props: {getInputElement: (props) => <textarea {...props} rows={3} />}},
   ];
 
   public handleSubmit = async (state: FormState<Inputs>) => {
     const {id: organisation} = this.props.organisation as OrganisationPayload;
-    const appliance = await this.props.createAppliance(organisation, dissoc("errors", state));
+    const {state: appliance, onSubmit} = this.props;
     if (appliance) {
-      this.props.history.push(`/${appliance.id}`);
+      await this.props.updateAppliance(organisation, {...appliance, ...dissoc("errors", state)});
+    } else {
+      const newAppliance = await this.props.createAppliance(organisation, dissoc("errors", state));
+      if (newAppliance) {
+        this.props.history.push(`/${newAppliance.id}`);
+      }
+    }
+    if (typeof onSubmit === "function") {
+      onSubmit(state);
     }
   }
 
   public render() {
-    const {header, submitText} = this.props;
+    const {onSubmit, ...props} = this.props;
     return (
       <Form
         inputs={ApplianceForm.inputs}
-        secondary={<Link to={"/"}>Cancel</Link>}
         onSubmit={this.handleSubmit}
-        header={header}
-        submitText={submitText}
+        {...props}
       />
     );
   }
 }
 
-const mapDispatchToProps: MapDispatchToProps<DispatchProps, Props> = {createAppliance};
+const mapDispatchToProps: MapDispatchToProps<DispatchProps, Props> = {
+  createAppliance,
+  updateAppliance,
+};
 
 const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
   organisation: getOrganisation(state),

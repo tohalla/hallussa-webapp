@@ -38,7 +38,7 @@ class OrganisationForm extends React.Component<Props & DispatchProps & StateProp
   public handleSubmit = async (state: FormState<Inputs>) => {
     const {activeOrganisation, history, state: organisation, onSubmit} = this.props;
     if (organisation) {
-      this.props.updateOrganisation({...organisation, ...dissoc("errors", state)});
+      await this.props.updateOrganisation({...organisation, ...dissoc("errors", state)});
     } else {
       const newOrganisation = await this.props.createOrganisation(dissoc("errors", state));
       if (newOrganisation) {
