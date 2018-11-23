@@ -3,7 +3,7 @@ import React from "react";
 import Drawer from "./Drawer";
 
 interface Props {
-  drawers: {[key: string]: {label: string, maxHeight?: string, content: JSX.Element}};
+  drawers: {[key: string]: {label: string, content: JSX.Element}};
 }
 
 interface State {
