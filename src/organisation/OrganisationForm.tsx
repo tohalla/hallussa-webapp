@@ -4,7 +4,7 @@ import { RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
 
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
-import Form, { FormInput, FormState } from "../components/Form";
+import Form, { FormInput, FormProps, FormState } from "../components/Form";
 import { APIResponsePayload } from "../store/middleware/api/actions";
 import { ReduxState } from "../store/store";
 import { createOrganisation, OrganisationPayload, setActiveOrganisation } from "./actions";
@@ -19,13 +19,11 @@ interface DispatchProps {
   setActiveOrganisation: (organisation: number, fetchRelated: boolean) => any;
 }
 
-interface Props extends RouteComponentProps {
-  header: ReactFragment;
-  submitText: string;
-  // organisation?: OrganisationPayload;
-}
-
 type Inputs = "name" | "organisationIdentifier";
+
+interface Props extends RouteComponentProps, Partial<FormProps<Inputs>> {
+  organisation?: OrganisationPayload;
+}
 
 class OrganisationForm extends React.Component<Props & DispatchProps & StateProps> {
   public static defaultProps = {
@@ -49,14 +47,12 @@ class OrganisationForm extends React.Component<Props & DispatchProps & StateProp
   }
 
   public render() {
-    const {header, submitText} = this.props;
     return (
       <Form
         inputs={OrganisationForm.inputs}
         secondary={<Link to={"/"}>Cancel</Link>}
-        header={header}
         onSubmit={this.handleSubmit}
-        submitText={submitText}
+        {...this.props}
       />
     );
   }
