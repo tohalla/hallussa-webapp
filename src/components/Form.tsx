@@ -1,4 +1,4 @@
-import { addIndex, assoc, find, forEach, map, values } from "ramda";
+import { addIndex, assoc, find, forEach, map, merge, values } from "ramda";
 import React, { ChangeEvent, Component, FormEventHandler, ReactFragment } from "react";
 
 import { actionsRow, form, inputRow } from "emotion-styles/form";
@@ -29,6 +29,7 @@ export interface FormProps<Inputs extends string> {
   inputs: ReadonlyArray<FormInput<Inputs> | ReadonlyArray<FormInput<Inputs>>>;
   secondary: ReactFragment;
   submitText: string;
+  state?: {[key in Inputs]: any};
   isValid: boolean;
   validate?: (state: FormState<Inputs>) => {[key in Inputs]?: string | boolean};
 }
@@ -56,6 +57,13 @@ export default class Form<Inputs extends string> extends Component<FormProps<Inp
     secondary: <span />,
     submitText: "Submit",
   };
+
+  public static getDerivedStateFromProps(props: FormProps<any>, prevState: FormState<any>) {
+    if (props.state) {
+      return props.state;
+    }
+    return prevState;
+  }
 
   constructor(props: FormProps<Inputs>) {
     super(props);
