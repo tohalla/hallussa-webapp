@@ -73,7 +73,7 @@ class Organisation extends React.Component<Props & StateProps, State> {
         <div>
           <div className={spread}>
             <h1>{name}</h1>
-            <Button onClick={this.setAction("edit")}>Edit organisation</Button>
+            <Button plain={true} onClick={this.setAction("edit")}>Edit organisation</Button>
           </div>
           {organisationIdentifier}
         </div>
