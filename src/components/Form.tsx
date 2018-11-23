@@ -22,7 +22,7 @@ export type FormState<Inputs extends string> = {[key in Inputs]: any} & {
   errors: {[key in Inputs]: string | boolean | undefined};
 };
 
-interface Props<Inputs extends string> {
+export interface FormProps<Inputs extends string> {
   children?: ReactFragment;
   header?: ReactFragment;
   onSubmit: (state: FormState<Inputs>) => any;
@@ -50,14 +50,14 @@ const getInputState = <Inputs extends string>(
   return {errors: {}, ...state};
 };
 
-export default class Form<Inputs extends string> extends Component<Props<Inputs>, FormState<Inputs>> {
+export default class Form<Inputs extends string> extends Component<FormProps<Inputs>, FormState<Inputs>> {
   public static defaultProps = {
     isValid: true,
     secondary: <span />,
     submitText: "Submit",
   };
 
-  constructor(props: Props<Inputs>) {
+  constructor(props: FormProps<Inputs>) {
     super(props);
     this.state = getInputState(props.inputs) as FormState<Inputs>;
   }
