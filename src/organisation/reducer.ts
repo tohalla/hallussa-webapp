@@ -1,14 +1,30 @@
-import { append, assoc, assocPath, cond, equals, merge, path, T } from "ramda";
+import { append, assoc, assocPath, cond, equals, merge, mergeWith, path, T, union } from "ramda";
 import { Reducer } from "redux";
 
 import { AppliancePayload, CREATE_APPLIANCE_SUCCESS } from "../appliance/actions";
 import { CREATE_MAINTAINER_SUCCESS, MaintainerPayload } from "../maintainer/actions";
-import { CREATE_ORGANISATION_SUCCESS, FETCH_ORGANISATIONS_SUCCESS, OrganisationAction } from "./actions";
+import {
+  CREATE_ORGANISATION_SUCCESS,
+  FETCH_ORGANISATIONS_SUCCESS,
+  OrganisationAction,
+  UPDATE_ORGANISATION_SUCCESS
+} from "./actions";
 
 const typeHandler = cond([
   [equals(FETCH_ORGANISATIONS_SUCCESS), (type, state, payload) => merge(state, payload)],
-  [equals(CREATE_ORGANISATION_SUCCESS), (type, state, payload) =>
-    payload.id ? assoc(String(payload.id), payload, state) : state,
+  [equals(CREATE_ORGANISATION_SUCCESS), (type, state, payload) => payload.id ?
+    assoc(String(payload.id), payload, state) : state,
+  ],
+  [equals(UPDATE_ORGANISATION_SUCCESS),(type, state, payload) => payload.id ?
+    assoc(
+      String(payload.id),
+      mergeWith(
+        (as, bs) => Array.isArray(as) ? union(as, bs) : as,
+        payload,
+        state[String(payload.id)]
+      ),
+      state
+    ) : state,
   ],
   [equals(CREATE_APPLIANCE_SUCCESS), (type, state, {organisation, id}: AppliancePayload) => {
     if (id && organisation) {

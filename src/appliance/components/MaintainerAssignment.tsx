@@ -4,7 +4,7 @@ import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 
 import Button from "../../components/Button";
 import Select from "../../components/Select";
-import { padded, rowContainer, stacked } from "../../emotion-styles/src/container";
+import { rowContainer, stacked } from "../../emotion-styles/src/container";
 import { large } from "../../emotion-styles/src/variables/fontSizes";
 import { normal } from "../../emotion-styles/src/variables/spacing";
 import { MaintainerPayload } from "../../maintainer/actions";
