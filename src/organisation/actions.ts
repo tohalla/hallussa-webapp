@@ -5,8 +5,10 @@ import { resetTabs } from "../components/tabbed/actions";
 import { fetchMaintainers } from "../maintainer/actions";
 import { APIResponseAction, CALL_API } from "../store/middleware/api/actions";
 import { ReduxAPICall } from "../store/middleware/api/api";
+import { authenticatedFetch } from "../util/utilityFunctions";
 
 export const CREATE_ORGANISATION_SUCCESS = "CREATE_ORGANISATION_SUCCESS";
+export const UPDATE_ORGANISATION_SUCCESS = "UPDATE_ORGANISATION_SUCCESS";
 export const FETCH_ORGANISATIONS_SUCCESS = "FETCH_ORGANISATIONS_SUCCESS";
 export const SET_ACTIVE_ORGANISATION = "SET_ACTIVE_ORGANISATION";
 
@@ -42,6 +44,17 @@ export const createOrganisation = (organisation: OrganisationPayload) => async (
     endpoint: "/organisations",
     method: "post",
     successType: CREATE_ORGANISATION_SUCCESS,
+    type: CALL_API,
+  });
+  return response.payload as OrganisationPayload;
+};
+
+export const updateOrganisation = (organisation: OrganisationPayload) => async (dispatch: Dispatch) => {
+  const response = await dispatch<APIResponseAction<OrganisationPayload>>({
+    body: organisation,
+    endpoint: `/organisations/${organisation.id}`,
+    method: "patch",
+    successType: UPDATE_ORGANISATION_SUCCESS,
     type: CALL_API,
   });
   return response.payload as OrganisationPayload;

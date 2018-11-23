@@ -1,4 +1,4 @@
-import { addIndex, assoc, find, forEach, map, values } from "ramda";
+import { addIndex, assoc, find, forEach, map, merge, values } from "ramda";
 import React, { ChangeEvent, Component, FormEventHandler, ReactFragment } from "react";
 
 import { actionsRow, form, inputRow } from "emotion-styles/form";
@@ -22,13 +22,14 @@ export type FormState<Inputs extends string> = {[key in Inputs]: any} & {
   errors: {[key in Inputs]: string | boolean | undefined};
 };
 
-interface Props<Inputs extends string> {
+export interface FormProps<Inputs extends string> {
   children?: ReactFragment;
   header?: ReactFragment;
   onSubmit: (state: FormState<Inputs>) => any;
   inputs: ReadonlyArray<FormInput<Inputs> | ReadonlyArray<FormInput<Inputs>>>;
   secondary: ReactFragment;
   submitText: string;
+  state?: {[key in Inputs]: any};
   isValid: boolean;
   validate?: (state: FormState<Inputs>) => {[key in Inputs]?: string | boolean};
 }
@@ -50,16 +51,19 @@ const getInputState = <Inputs extends string>(
   return {errors: {}, ...state};
 };
 
-export default class Form<Inputs extends string> extends Component<Props<Inputs>, FormState<Inputs>> {
+export default class Form<Inputs extends string> extends Component<FormProps<Inputs>, FormState<Inputs>> {
   public static defaultProps = {
     isValid: true,
     secondary: <span />,
     submitText: "Submit",
   };
 
-  constructor(props: Props<Inputs>) {
+  constructor(props: FormProps<Inputs>) {
     super(props);
     this.state = getInputState(props.inputs) as FormState<Inputs>;
+    if (props.state) { // if state set in props...
+      this.state = merge(this.state, props.state);
+    }
   }
 
   public componentDidMount() {

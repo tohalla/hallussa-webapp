@@ -32,12 +32,13 @@ export default class Button extends Component<ButtonProps> {
 
   public render() {
     const { plain, onClick, children, className, ...props } = this.props;
-    const classname = classnames(button, {
-      [plainStyle]: plain,
-    }, className);
 
     return (
-      <button className={classname} onClick={this.handleClick} {...props}>
+      <button
+        className={classnames(className || button, {[plainStyle]: plain})}
+        onClick={this.handleClick}
+        {...props}
+      >
         {children}
       </button>
     );
