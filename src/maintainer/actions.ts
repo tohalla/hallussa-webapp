@@ -5,6 +5,7 @@ import { ReduxAPICall } from "../store/middleware/api/api";
 
 export const FETCH_MAINTAINERS_SUCCESS = "FETCH_MAINTAINERS_SUCCESS";
 export const CREATE_MAINTAINER_SUCCESS = "CREATE_MAINTAINER_SUCCESS";
+export const UPDATE_MAINTAINER_SUCCESS = "UPDATE_MAINTAINER_SUCCESS";
 
 export interface MaintainerPayload {
   appliances: ReadonlyArray<number>;
@@ -43,6 +44,17 @@ export const createMaintainer = (organisation: number, maintainer: MaintainerPay
     endpoint: `/organisations/${organisation}/maintainers`,
     method: "post",
     successType: CREATE_MAINTAINER_SUCCESS,
+    type: CALL_API,
+  });
+  return response.payload as MaintainerPayload;
+};
+
+export const upsateMaintainer = (organisation: number, maintainer: MaintainerPayload) => async (dispatch: Dispatch) => {
+  const response = await dispatch<APIResponseAction<MaintainerPayload>>({
+    body: maintainer,
+    endpoint: `/organisations/${organisation}/maintainers/${maintainer.id}`,
+    method: "patch",
+    successType: UPDATE_MAINTAINER_SUCCESS,
     type: CALL_API,
   });
   return response.payload as MaintainerPayload;
