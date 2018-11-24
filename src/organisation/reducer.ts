@@ -1,10 +1,11 @@
-import { append, assoc, assocPath, cond, equals, merge, mergeWith, path, T, union } from "ramda";
+import { append, assoc, assocPath, cond, dissoc, equals, merge, mergeWith, path, T, union } from "ramda";
 import { Reducer } from "redux";
 
 import { AppliancePayload, CREATE_APPLIANCE_SUCCESS } from "../appliance/actions";
 import { CREATE_MAINTAINER_SUCCESS, MaintainerPayload } from "../maintainer/actions";
 import {
   CREATE_ORGANISATION_SUCCESS,
+  DELETE_ORGANISATIONS_SUCCESS,
   FETCH_ORGANISATIONS_SUCCESS,
   OrganisationAction,
   UPDATE_ORGANISATION_SUCCESS
@@ -12,6 +13,7 @@ import {
 
 const typeHandler = cond([
   [equals(FETCH_ORGANISATIONS_SUCCESS), (type, state, payload) => merge(state, payload)],
+  [equals(DELETE_ORGANISATIONS_SUCCESS), (type, state, payload, {id}) => dissoc(id, state)],
   [equals(CREATE_ORGANISATION_SUCCESS), (type, state, payload) => payload.id ?
     assoc(String(payload.id), payload, state) : state,
   ],
@@ -45,8 +47,8 @@ const typeHandler = cond([
 
 const reducer: Reducer<{[key: number]: any}, OrganisationAction> = (
   state = {},
-  {payload, type}: OrganisationAction
+  {payload, type, extra}: OrganisationAction
 ) =>
-  typeHandler(type, state, payload);
+  typeHandler(type, state, payload, extra);
 
 export default reducer;

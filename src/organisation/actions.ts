@@ -10,6 +10,7 @@ import { authenticatedFetch } from "../util/utilityFunctions";
 export const CREATE_ORGANISATION_SUCCESS = "CREATE_ORGANISATION_SUCCESS";
 export const UPDATE_ORGANISATION_SUCCESS = "UPDATE_ORGANISATION_SUCCESS";
 export const FETCH_ORGANISATIONS_SUCCESS = "FETCH_ORGANISATIONS_SUCCESS";
+export const DELETE_ORGANISATIONS_SUCCESS = "DELETE_ORGANISATIONS_SUCCESS";
 export const SET_ACTIVE_ORGANISATION = "SET_ACTIVE_ORGANISATION";
 
 export interface OrganisationPayload {
@@ -25,6 +26,7 @@ export interface OrganisationPayload {
 
 export interface OrganisationAction {
   type: string;
+  extra: object;
   payload: OrganisationPayload;
 }
 
@@ -59,6 +61,15 @@ export const updateOrganisation = (organisation: OrganisationPayload) => async (
   });
   return response.payload as OrganisationPayload;
 };
+
+export const deleteOrganisation = (organisation: OrganisationPayload) => ({
+  body: organisation,
+  endpoint: `/organisations/${organisation.id}`,
+  extra: organisation,
+  method: "delete",
+  successType: DELETE_ORGANISATIONS_SUCCESS,
+  type: CALL_API,
+});
 
 export const setActiveOrganisation = (organisation: number, fetchRelated = true) =>
   async (dispatch: Dispatch) => {
