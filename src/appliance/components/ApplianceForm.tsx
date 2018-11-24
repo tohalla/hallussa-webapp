@@ -18,7 +18,7 @@ interface StatePropsÂ {
 
 interface DispatchProps {
   createAppliance: (organisation: number, appliance: AppliancePayload) => any;
-  updateAppliance: (organisation: number, appliance: AppliancePayload) => any;
+  updateAppliance: (appliance: AppliancePayload) => any;
 }
 
 type Props = Partial<FormProps<Inputs>> & RouteComponentProps;
@@ -39,7 +39,7 @@ class ApplianceForm extends React.Component<Props & DispatchProps & StateProps>Â
     const {id: organisation} = this.props.organisation as OrganisationPayload;
     const {state: appliance, onSubmit} = this.props;
     if (appliance) {
-      await this.props.updateAppliance(organisation, {...appliance, ...dissoc("errors", state)});
+      await this.props.updateAppliance({...appliance, ...dissoc("errors", state)});
     } else {
       const newAppliance = await this.props.createAppliance(organisation, dissoc("errors", state));
       if (newAppliance) {
