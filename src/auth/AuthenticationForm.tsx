@@ -9,28 +9,29 @@ import { authenticate } from "./auth";
 
 type Inputs = "email" | "password";
 
-class AuthenticationForm extends Component<{}, { [input in Inputs]?: string }> {
+class AuthenticationForm extends Component<{}, { error?: string }> {
   public static inputs: ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]> = [
     {key: "email", props: {autoFocus: true}, validate: {required: true}},
     {key: "password", props: {type: "password"}, validate: {required: true}},
   ];
 
   public state = {
-    email: "",
-    password: "",
+    error: undefined,
   };
 
   public handleSubmit = async (state: FormState<Inputs>) => {
-    if (await authenticate(pick(["email", "password"], state))) {
+    try {
+      await authenticate(pick(["email", "password"], state));
       window.location.href = baseUrl;
-    } else {
-      // TODO: authentication error
+    } catch (error) {
+      this.setState({error});
     }
   }
 
   public render() {
     return (
       <Form
+        error={this.state.error}
         inputs={AuthenticationForm.inputs}
         onSubmit={this.handleSubmit}
         secondary={<Link className={small} to="/register">Create a new account</Link>}
