@@ -70,5 +70,7 @@ export const register = async (
   );
   if (authenticateAfter && response.ok) {
     return authenticate({email: account.email, password: account.password});
+  } else {
+    throw await response.text();
   }
 };
