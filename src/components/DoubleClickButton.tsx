@@ -2,6 +2,8 @@ import React, { MouseEventHandler, ReactFragment } from "react";
 
 import Button, { ButtonProps } from "./Button";
 
+export const deletionConfirmation = (timer: number) => `Click again to confirm deletion (${timer})`;
+
 interface Props extends Partial<ButtonProps> {
   children: ReactFragment;
   delayInSeconds?: number;

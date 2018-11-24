@@ -1,10 +1,11 @@
-import { assoc, assocPath, concat, cond, equals, merge, mergeWith, path, T, union, without } from "ramda";
+import { assoc, assocPath, concat, cond, dissoc, equals, merge, mergeWith, path, T, union, without } from "ramda";
 import { Reducer } from "redux";
 
 import {
   ApplianceAction,
   ASSING_MAINTAINER_TO_APPLIANCE_SUCCESS,
   CREATE_APPLIANCE_SUCCESS,
+  DELETE_APPLIANCE_SUCCESS,
   FETCH_APPLIANCES_SUCCESS,
   REMOVE_MAINTAINER_FROM_APPLIANCE_SUCCESS,
   UPDATE_APPLIANCE_SUCCESS
@@ -37,6 +38,7 @@ const typeHandler = cond([
       state
     ) : state,
   ],
+  [equals(DELETE_APPLIANCE_SUCCESS), (type, state, payload, appliance) => dissoc(String(appliance.id), state)],
   [equals(ASSING_MAINTAINER_TO_APPLIANCE_SUCCESS), (type, state, payload, {appliance, maintainer}) => {
     if (appliance && maintainer) {
       const maintainers = [String(appliance), "maintainers"];

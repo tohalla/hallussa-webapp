@@ -6,7 +6,7 @@ import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 import { rowContainer, spacedHorizontalContainer, spread } from "emotion-styles/container";
 import { Link, RouteComponentProps } from "react-router-dom";
 import Button from "../../components/Button";
-import DoubleClickButton from "../../components/DoubleClickButton";
+import DoubleClickButton, { deletionConfirmation } from "../../components/DoubleClickButton";
 import button from "../../emotion-styles/src/button";
 import { alertIndication, link } from "../../emotion-styles/src/inline";
 import { spacer } from "../../emotion-styles/src/variables/spacing";
@@ -36,7 +36,6 @@ interface State {
 }
 
 const NewOrganisation = () => <Link to="/new" className={button}>Create a new organisation</Link>;
-const deletionConfirmation = (timer: number) => `Click again to confirm deletion (${timer})`;
 
 class Organisation extends React.Component<Props & StateProps & DispatchProps, State> {
   public state: State = {
