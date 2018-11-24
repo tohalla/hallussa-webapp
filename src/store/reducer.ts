@@ -20,8 +20,13 @@ export interface EntityGroup<T> {
   [key: string]: T;
 }
 
-const session: Reducer = (state = {}, {payload, type}: AnyAction) =>
-  typeHandler(type, state, payload);
+export interface SessionState {
+  activeAccount?: number;
+  activeOrganisation?: number;
+}
+
+const session: Reducer = (state: SessionState = {}, {payload, type, extra}: AnyAction) =>
+  typeHandler(type, state, payload, extra);
 
 const entities = combineReducers({
   accounts,

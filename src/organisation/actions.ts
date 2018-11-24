@@ -71,14 +71,17 @@ export const deleteOrganisation = (organisation: OrganisationPayload) => ({
   type: CALL_API,
 });
 
-export const setActiveOrganisation = (organisation: number, fetchRelated = true) =>
+export const setActiveOrganisation = (organisation?: number, fetchRelated = true) =>
   async (dispatch: Dispatch) => {
-    localStorage.setItem("organisation", String(organisation)); // remember organisation for next session
-    if (fetchRelated) {
-      await Promise.all([
-        dispatch(fetchAppliances(organisation)),
-        dispatch(fetchMaintainers(organisation)),
-      ]);
+    // remember organisation for next session
+    if (organisation) {
+      localStorage.setItem("organisation", String(organisation));
+      if (fetchRelated) {
+        await Promise.all([
+          dispatch(fetchAppliances(organisation)),
+          dispatch(fetchMaintainers(organisation)),
+        ]);
+      }
     }
     dispatch(resetTabs); // should close all opened tabs
     return dispatch({

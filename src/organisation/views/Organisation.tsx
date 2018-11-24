@@ -1,18 +1,19 @@
 import classNames from "classnames";
-import { equals, pick } from "ramda";
+import { find, path, pick } from "ramda";
 import React from "react";
-import { connect, MapStateToProps } from "react-redux";
+import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 
-import { rowContainer, spread } from "emotion-styles/container";
+import { rowContainer, spacedHorizontalContainer, spread } from "emotion-styles/container";
 import { Link, RouteComponentProps } from "react-router-dom";
 import Button from "../../components/Button";
+import DoubleClickButton from "../../components/DoubleClickButton";
 import button from "../../emotion-styles/src/button";
-import { dark, link } from "../../emotion-styles/src/inline";
+import { alertIndication, link } from "../../emotion-styles/src/inline";
 import { spacer } from "../../emotion-styles/src/variables/spacing";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
-import { OrganisationPayload } from "../actions";
+import { deleteOrganisation, OrganisationPayload, setActiveOrganisation } from "../actions";
 import OrganisationForm from "../OrganisationForm";
 import OrganisationSelect from "../OrganisationSelect";
 import { getOrganisation, getOrganisations } from "../state";
@@ -23,6 +24,11 @@ interface StateProps {
   organisations: ReadonlyArray<OrganisationPayload> | APIResponsePayload;
 }
 
+interface DispatchProps {
+  setActiveOrganisation(organisation?: number): any;
+  deleteOrganisation(organisation: OrganisationPayload): any;
+}
+
 type Props = RouteComponentProps<{organisation?: string}>;
 type Actions = "default" | "edit";
 interface State {
@@ -30,16 +36,33 @@ interface State {
 }
 
 const NewOrganisation = () => <Link to="/new" className={button}>Create a new organisation</Link>;
+const deletionConfirmation = (timer: number) => `Click again to confirm deletion (${timer})`;
 
-class Organisation extends React.Component<Props & StateProps, State> {
+class Organisation extends React.Component<Props & StateProps & DispatchProps, State> {
   public state: State = {
     action: "default",
   };
 
   public setAction = (action: Actions = "default") => () => this.setState({action});
 
+  public handleDeleteOrganisation = async () => {
+    if (this.props.match.params.organisation) {
+      this.props.history.push("/"); // go back to root
+    }
+    const organisation = this.props.organisation || this.props.activeOrganisation as OrganisationPayload;
+    const organisations = this.props.organisations as OrganisationPayload[];
+    if (organisation === this.props.activeOrganisation) {
+      await this.props.setActiveOrganisation(path(
+        ["id"],
+        find((org) => org !== organisation, organisations)
+      ));
+    }
+    await this.props.deleteOrganisation(organisation);
+  }
+
   public render() {
     const organisation =  this.props.organisation || this.props.activeOrganisation as OrganisationPayload;
+
     const organisations = this.props.organisations as ReadonlyArray<OrganisationPayload>;
     if (typeof organisation === "undefined" && organisations.length === 0) {
       return (
@@ -48,6 +71,10 @@ class Organisation extends React.Component<Props & StateProps, State> {
           <NewOrganisation />
         </div>
       );
+    }
+
+    if (!organisation) {
+      return null;
     }
 
     const {name, organisationIdentifier} = organisation;
@@ -73,7 +100,17 @@ class Organisation extends React.Component<Props & StateProps, State> {
         <div>
           <div className={spread}>
             <h1>{name}</h1>
-            <Button plain={true} onClick={this.setAction("edit")}>Edit organisation</Button>
+            <div className={spacedHorizontalContainer}>
+              <DoubleClickButton
+                plain={true}
+                renderSecondaryContent={deletionConfirmation}
+                secondaryClassName={alertIndication}
+                onClick={this.handleDeleteOrganisation}
+              >
+                Delete organisation
+              </DoubleClickButton>
+              <Button plain={true} onClick={this.setAction("edit")}>Edit organisation</Button>
+            </div>
           </div>
           {organisationIdentifier}
         </div>
@@ -94,6 +131,11 @@ const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, 
   organisations: getOrganisations(state),
 });
 
+const mapDispatchToProps: MapDispatchToProps<DispatchProps, Props> = {
+  deleteOrganisation,
+  setActiveOrganisation,
+};
+
 export default connect(
-  mapStateToProps
+  mapStateToProps, mapDispatchToProps
 )(loadable(Organisation));

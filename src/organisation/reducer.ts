@@ -13,7 +13,7 @@ import {
 
 const typeHandler = cond([
   [equals(FETCH_ORGANISATIONS_SUCCESS), (type, state, payload) => merge(state, payload)],
-  [equals(DELETE_ORGANISATIONS_SUCCESS), (type, state, payload, {id}) => dissoc(id, state)],
+  [equals(DELETE_ORGANISATIONS_SUCCESS), (type, state, payload, organisation) => dissoc(organisation.id, state)],
   [equals(CREATE_ORGANISATION_SUCCESS), (type, state, payload) => payload.id ?
     assoc(String(payload.id), payload, state) : state,
   ],

@@ -1,11 +1,11 @@
 import classnames from "classnames";
-import button, { plain as plainStyle } from "emotion-styles/button";
-import React, { Component, MouseEventHandler } from "react";
+import button from "emotion-styles/button";
+import React, { Component, MouseEventHandler, ReactFragment } from "react";
 
 export interface ButtonProps {
   onClick?: MouseEventHandler;
   className?: string;
-  children: JSX.Element | string;
+  children: ReactFragment;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
   plain: boolean;
