@@ -22,14 +22,15 @@ class RegistrationForm extends Component {
     {key: "retypePassword", props: {placeholder: "Re-enter password", type: "password"}, validate: {required: true}},
   ];
 
-  public state = {tos: false};
+  public state = {tos: false, error: undefined};
 
   public handleSubmit = async (state: FormState<Inputs>) => {
-    await register(
-      dissoc("errors", state)
-    );
-
-    window.location.href = baseUrl; // refresh page to log in
+    try {
+      await register(dissoc("errors", state));
+      window.location.href = baseUrl; // refresh page to log in
+    } catch (error) {
+      this.setState({error});
+    }
   }
 
   // custom validation logic
@@ -50,6 +51,7 @@ class RegistrationForm extends Component {
   }
 
   public render() {
+    const {tos, error} = this.state;
     return (
       <Form
         inputs={RegistrationForm.inputs}
@@ -57,7 +59,8 @@ class RegistrationForm extends Component {
         secondary={<Link className={small} to="/">I already have account</Link>}
         submitText="Register"
         validate={this.validate}
-        isValid={this.state.tos}
+        isValid={tos}
+        error={error}
       >
         <div className={inputRow}>
           <label>
