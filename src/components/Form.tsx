@@ -1,7 +1,9 @@
+import classNames from "classnames";
 import { addIndex, assoc, find, forEach, map, mergeWith, pick, values } from "ramda";
 import React, { ChangeEvent, Component, FormEventHandler, ReactFragment } from "react";
 
 import { actionsRow, form, inputRow } from "emotion-styles/form";
+import { error as errorStyle } from "emotion-styles/inline";
 import Button from "./Button";
 import { InputProps } from "./Input";
 import { getFormInput } from "./util";
@@ -25,6 +27,7 @@ export type FormState<Inputs extends string> = {[key in Inputs]: any} & {
 export interface FormProps<Inputs extends string> {
   children?: ReactFragment;
   header?: ReactFragment;
+  error?: string;
   onSubmit: (state: FormState<Inputs>) => any;
   inputs: ReadonlyArray<FormInput<Inputs> | ReadonlyArray<FormInput<Inputs>>>;
   secondary: ReactFragment;
@@ -127,13 +130,14 @@ export default class Form<Inputs extends string> extends Component<FormProps<Inp
   }
 
   public render() {
-    const { children, secondary, submitText, header } = this.props;
+    const { children, secondary, submitText, header, error } = this.props;
     const isValid = this.props.isValid && !Boolean(find(Boolean, values(this.state.errors)));
     return (
       <form className={form} onSubmit={this.handleSubmit}>
         {header}
         {this.renderInputs()}
         {children}
+        {error && <i className={classNames(inputRow, errorStyle)}>{error}</i>}
         <div className={actionsRow}>
           {secondary}
           <Button type="submit" disabled={!isValid}>{submitText}</Button>
