@@ -6,6 +6,7 @@ import { ReduxAPICall } from "../store/middleware/api/api";
 export const FETCH_MAINTAINERS_SUCCESS = "FETCH_MAINTAINERS_SUCCESS";
 export const CREATE_MAINTAINER_SUCCESS = "CREATE_MAINTAINER_SUCCESS";
 export const UPDATE_MAINTAINER_SUCCESS = "UPDATE_MAINTAINER_SUCCESS";
+export const DELETE_MAINTAINER_SUCCESS = "DELETE_MAINTAINER_SUCCESS";
 
 export interface MaintainerPayload {
   appliances: ReadonlyArray<number>;
@@ -59,3 +60,12 @@ export const updateMaintainer = (maintainer: MaintainerPayload) => async (dispat
   });
   return response.payload as MaintainerPayload;
 };
+
+export const deleteMaintainer = (maintainer: MaintainerPayload) => ({
+  body: maintainer,
+  endpoint: `/organisations/${maintainer.organisation}/maintainers/${maintainer.id}`,
+  extra: maintainer,
+  method: "delete",
+  successType: DELETE_MAINTAINER_SUCCESS,
+  type: CALL_API,
+});

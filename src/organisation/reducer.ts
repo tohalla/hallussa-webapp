@@ -2,7 +2,7 @@ import { append, assoc, assocPath, cond, dissoc, equals, merge, mergeWith, path,
 import { Reducer } from "redux";
 
 import { AppliancePayload, CREATE_APPLIANCE_SUCCESS, DELETE_APPLIANCE_SUCCESS } from "../appliance/actions";
-import { CREATE_MAINTAINER_SUCCESS, MaintainerPayload } from "../maintainer/actions";
+import { CREATE_MAINTAINER_SUCCESS, DELETE_MAINTAINER_SUCCESS, MaintainerPayload } from "../maintainer/actions";
 import {
   CREATE_ORGANISATION_SUCCESS,
   DELETE_ORGANISATIONS_SUCCESS,
@@ -38,6 +38,10 @@ const typeHandler = cond([
   [equals(DELETE_APPLIANCE_SUCCESS), (type, state, payload, appliance) => {
     const appliances = [String(appliance.organisation), "appliances"];
     return assocPath(appliances, without([appliance.id], path(appliances, state) || []), state);
+  }],
+  [equals(DELETE_MAINTAINER_SUCCESS), (type, state, payload, maintainer) => {
+    const maintainers = [String(maintainer.organisation), "maintainers"];
+    return assocPath(maintainers, without([maintainer.id], path(maintainers, state) || []), state);
   }],
   [equals(CREATE_MAINTAINER_SUCCESS), (type, state, {organisation, id}: MaintainerPayload) => {
     if (id && organisation) {
