@@ -4,12 +4,13 @@ import { connect, MapStateToProps } from "react-redux";
 
 import { RouteComponentProps } from "react-router";
 import Button from "../../components/Button";
+import DoubleClickButton, { deletionConfirmation } from "../../components/DoubleClickButton";
 import Drawers from "../../components/drawers/Drawers";
 import WithSidebar from "../../components/layouts/WithSidebar";
-import { createTab, TabPayload } from "../../components/tabbed/actions";
+import { closeTab, createTab, TabPayload } from "../../components/tabbed/actions";
 import { apiUrl } from "../../config";
 import { padded, spacedHorizontalContainer, spread } from "../../emotion-styles/src/container";
-import { link } from "../../emotion-styles/src/inline";
+import { alertIndication, link } from "../../emotion-styles/src/inline";
 import { spacer } from "../../emotion-styles/src/variables/spacing";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
@@ -17,7 +18,7 @@ import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
 import { authenticatedFetch } from "../../util/utilityFunctions";
-import { AppliancePayload } from "../actions";
+import { AppliancePayload, deleteAppliance } from "../actions";
 import ApplianceForm from "../components/ApplianceForm";
 import MaintainerAssignment from "../components/MaintainerAssignment";
 
@@ -29,6 +30,8 @@ interface StateProps {
 
 interface DispatchProps {
   createTab(view: string, payload: TabPayload): any;
+  closeTab(view: string, payload: string): any;
+  deleteAppliance(appliance: AppliancePayload): any;
 }
 
 type Props = RouteComponentProps & DispatchProps & StateProps & {
@@ -76,6 +79,14 @@ class Appliance extends Component<Props, State> {
     (window.open("", "_blank") as Window).document.body.innerHTML = await response.text();
   }
 
+  public handleDeleteAppliance = async () => {
+    if (this.props.match.params.appliance) {
+      this.props.history.push("/"); // go back to root
+    }
+    this.props.closeTab("appliances", String(this.props.appliance.id));
+    await this.props.deleteAppliance(this.props.appliance);
+  }
+
   public renderSidebar = () => (
     <Drawers
       drawers={{
@@ -94,6 +105,14 @@ class Appliance extends Component<Props, State> {
         <div className={spread}>
           <h1>{appliance.name}</h1>
           <div className={spacedHorizontalContainer}>
+            <DoubleClickButton
+              plain={true}
+              renderSecondaryContent={deletionConfirmation}
+              secondaryClassName={alertIndication}
+              onClick={this.handleDeleteAppliance}
+            >
+              Delete appliance
+            </DoubleClickButton>
             <Button plain={true} onClick={this.setAction("edit")}>Edit appliance</Button>
           </div>
         </div>
@@ -142,5 +161,5 @@ const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, 
 
 export default connect(
   mapStateToProps,
-  {createTab}
+  {createTab, closeTab, deleteAppliance}
 )(loadable<Props>(Appliance));

@@ -1,10 +1,11 @@
-import { append, assoc, assocPath, cond, equals, merge, mergeWith, path, T, union } from "ramda";
+import { append, assoc, assocPath, cond, dissoc, equals, merge, mergeWith, path, T, union, without } from "ramda";
 import { Reducer } from "redux";
 
-import { AppliancePayload, CREATE_APPLIANCE_SUCCESS } from "../appliance/actions";
-import { CREATE_MAINTAINER_SUCCESS, MaintainerPayload } from "../maintainer/actions";
+import { AppliancePayload, CREATE_APPLIANCE_SUCCESS, DELETE_APPLIANCE_SUCCESS } from "../appliance/actions";
+import { CREATE_MAINTAINER_SUCCESS, DELETE_MAINTAINER_SUCCESS, MaintainerPayload } from "../maintainer/actions";
 import {
   CREATE_ORGANISATION_SUCCESS,
+  DELETE_ORGANISATIONS_SUCCESS,
   FETCH_ORGANISATIONS_SUCCESS,
   OrganisationAction,
   UPDATE_ORGANISATION_SUCCESS
@@ -12,6 +13,7 @@ import {
 
 const typeHandler = cond([
   [equals(FETCH_ORGANISATIONS_SUCCESS), (type, state, payload) => merge(state, payload)],
+  [equals(DELETE_ORGANISATIONS_SUCCESS), (type, state, payload, organisation) => dissoc(organisation.id, state)],
   [equals(CREATE_ORGANISATION_SUCCESS), (type, state, payload) => payload.id ?
     assoc(String(payload.id), payload, state) : state,
   ],
@@ -33,6 +35,14 @@ const typeHandler = cond([
     }
     return state;
   }], // connect newly created appliance to organisation
+  [equals(DELETE_APPLIANCE_SUCCESS), (type, state, payload, appliance) => {
+    const appliances = [String(appliance.organisation), "appliances"];
+    return assocPath(appliances, without([appliance.id], path(appliances, state) || []), state);
+  }],
+  [equals(DELETE_MAINTAINER_SUCCESS), (type, state, payload, maintainer) => {
+    const maintainers = [String(maintainer.organisation), "maintainers"];
+    return assocPath(maintainers, without([maintainer.id], path(maintainers, state) || []), state);
+  }],
   [equals(CREATE_MAINTAINER_SUCCESS), (type, state, {organisation, id}: MaintainerPayload) => {
     if (id && organisation) {
       const maintainers = [String(organisation), "maintainers"];
@@ -45,8 +55,8 @@ const typeHandler = cond([
 
 const reducer: Reducer<{[key: number]: any}, OrganisationAction> = (
   state = {},
-  {payload, type}: OrganisationAction
+  {payload, type, extra}: OrganisationAction
 ) =>
-  typeHandler(type, state, payload);
+  typeHandler(type, state, payload, extra);
 
 export default reducer;

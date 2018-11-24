@@ -4,15 +4,16 @@ import { connect, MapStateToProps } from "react-redux";
 
 import { RouteComponentProps } from "react-router";
 import Button from "../../components/Button";
-import { createTab, TabPayload } from "../../components/tabbed/actions";
-import { padded, spacedHorizontalContainer, spread } from "../../emotion-styles/src/container";
-import { link } from "../../emotion-styles/src/inline";
+import DoubleClickButton, { deletionConfirmation } from "../../components/DoubleClickButton";
+import { closeTab, createTab, TabPayload } from "../../components/tabbed/actions";
+import { spacedHorizontalContainer, spread } from "../../emotion-styles/src/container";
+import { alertIndication, link } from "../../emotion-styles/src/inline";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
-import { MaintainerPayload } from "../actions";
+import { deleteMaintainer, MaintainerPayload } from "../actions";
 import MaintainerForm from "../components/MaintainerForm";
 
 interface StateProps {
@@ -22,7 +23,9 @@ interface StateProps {
 }
 
 interface DispatchProps {
+  closeTab(view: string, payload: string): any;
   createTab(view: string, payload: TabPayload): any;
+  deleteMaintainer(appliance: MaintainerPayload): any;
 }
 
 type Props = RouteComponentProps & DispatchProps & StateProps & {
@@ -59,6 +62,15 @@ class Maintainer extends Component<Props, State> {
     action: "default",
   };
 
+  public handeDeleteMaintainer = async () => {
+    if (this.props.match.params.maintainer) {
+      this.props.history.push("/"); // go back to root
+    }
+    console.log(this.props.maintainer);
+    this.props.closeTab("maintainers", String(this.props.maintainer.id));
+    await this.props.deleteMaintainer(this.props.maintainer);
+  }
+
   public setAction = (action: Actions = "default") => () => this.setState({action});
 
   public render() {
@@ -85,6 +97,14 @@ class Maintainer extends Component<Props, State> {
         <div className={spread}>
           <h1>{maintainer.firstName} {maintainer.lastName}</h1>
           <div className={spacedHorizontalContainer}>
+            <DoubleClickButton
+              plain={true}
+              renderSecondaryContent={deletionConfirmation}
+              secondaryClassName={alertIndication}
+              onClick={this.handeDeleteMaintainer}
+            >
+              Delete maintainer
+            </DoubleClickButton>
             <Button plain={true} onClick={this.setAction("edit")}>Edit maintainer</Button>
           </div>
         </div>
@@ -102,5 +122,5 @@ const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, 
 
 export default connect(
   mapStateToProps,
-  {createTab}
+  {createTab, closeTab, deleteMaintainer}
 )(loadable<Props>(Maintainer));
