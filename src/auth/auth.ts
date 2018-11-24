@@ -1,3 +1,4 @@
+import { createContext } from "vm";
 import { AccountPayload } from "../account/actions";
 import { apiUrl, baseUrl } from "../config";
 
@@ -23,25 +24,28 @@ export const getAndCheckJWT = async (): Promise<string | null | void> => {
 export const authenticate = async (
   credentials: string | { email: string; password: string }
 ): Promise<boolean> => {
-  try {
-    const response = await fetch(
-      `${apiUrl}/auth`,
-      typeof credentials === "string" // attach authorization header if token provided as credentials
-        ? { headers: { authorization: `Bearer ${credentials}` } }
-        : {
-          body: JSON.stringify(credentials),
-          headers: { ["Content-Type"]: "application/json" },
-          method: "post",
-        } // otherwise should use email and password
-    );
+  const response = await fetch(
+    `${apiUrl}/auth`,
+    typeof credentials === "string" // attach authorization header if token provided as credentials
+      ? { headers: { authorization: `Bearer ${credentials}` } }
+      : {
+        body: JSON.stringify(credentials),
+        headers: { ["Content-Type"]: "application/json" },
+        method: "post",
+      } // otherwise should use email and password
+  );
+  if (response.ok) {
     const { token, expiresAt } = await response.json();
     localStorage.setItem("token", token);
     localStorage.setItem("expiresAt", expiresAt);
     return true;
-  } catch (e) {
-    signOut();
-    return false;
   }
+  if (response.status === 401) {
+    if (typeof credentials === "string") {
+      signOut(); // should logout if attempting to use invalid jwt for authentication
+    }
+  }
+  throw await response.text();
 };
 
 export const signOut = () => {
