@@ -49,10 +49,10 @@ export const createMaintainer = (organisation: number, maintainer: MaintainerPay
   return response.payload as MaintainerPayload;
 };
 
-export const updateMaintainer = (organisation: number, maintainer: MaintainerPayload) => async (dispatch: Dispatch) => {
+export const updateMaintainer = (maintainer: MaintainerPayload) => async (dispatch: Dispatch) => {
   const response = await dispatch<APIResponseAction<MaintainerPayload>>({
     body: maintainer,
-    endpoint: `/organisations/${organisation}/maintainers/${maintainer.id}`,
+    endpoint: `/organisations/${maintainer.organisation}/maintainers/${maintainer.id}`,
     method: "patch",
     successType: UPDATE_MAINTAINER_SUCCESS,
     type: CALL_API,
