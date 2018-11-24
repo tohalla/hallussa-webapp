@@ -1,4 +1,4 @@
-import { addIndex, assoc, find, forEach, map, merge, values } from "ramda";
+import { addIndex, assoc, find, forEach, map, mergeWith, pick, values } from "ramda";
 import React, { ChangeEvent, Component, FormEventHandler, ReactFragment } from "react";
 
 import { actionsRow, form, inputRow } from "emotion-styles/form";
@@ -62,7 +62,11 @@ export default class Form<Inputs extends string> extends Component<FormProps<Inp
     super(props);
     this.state = getInputState(props.inputs) as FormState<Inputs>;
     if (props.state) { // if state set in props...
-      this.state = merge(this.state, props.state);
+      this.state = mergeWith(
+        (as, bs) => bs || as,
+        this.state,
+        pick(Object.keys(this.state), props.state)
+      );
     }
   }
 

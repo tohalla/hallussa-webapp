@@ -1,11 +1,16 @@
-import { assoc, assocPath, concat, cond, equals, merge, path, T, without } from "ramda";
+import { assoc, assocPath, concat, cond, equals, merge, mergeWith, path, T, union, without } from "ramda";
 import { Reducer } from "redux";
 
 import {
   ASSING_MAINTAINER_TO_APPLIANCE_SUCCESS,
   REMOVE_MAINTAINER_FROM_APPLIANCE_SUCCESS
 } from "../appliance/actions";
-import { CREATE_MAINTAINER_SUCCESS, FETCH_MAINTAINERS_SUCCESS, MaintainerAction } from "./actions";
+import {
+  CREATE_MAINTAINER_SUCCESS,
+  FETCH_MAINTAINERS_SUCCESS,
+  MaintainerAction,
+  UPDATE_MAINTAINER_SUCCESS
+} from "./actions";
 
 const typeHandler = cond([
   [equals(FETCH_MAINTAINERS_SUCCESS), (type, state, payload) => merge(state, payload)],
@@ -23,6 +28,17 @@ const typeHandler = cond([
     }
     return state;
   }],
+  [equals(UPDATE_MAINTAINER_SUCCESS),(type, state, payload) => payload.id ?
+    assoc(
+      String(payload.id),
+      mergeWith(
+        (as, bs) => Array.isArray(as) ? union(as, bs) : as,
+        payload,
+        state[String(payload.id)]
+      ),
+      state
+    ) : state,
+  ],
   [equals(ASSING_MAINTAINER_TO_APPLIANCE_SUCCESS), (type, state, payload, {appliance, maintainer}) => {
     if (appliance && maintainer) {
       const appliances = [String(maintainer), "appliances"];

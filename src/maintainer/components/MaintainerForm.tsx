@@ -4,33 +4,29 @@ import { RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
 
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
-import Form, { FormInput, FormState } from "../../components/Form";
+import Form, { FormInput, FormProps, FormState } from "../../components/Form";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
 import { isValidEmail, isValidPhone } from "../../util/validationFunctions";
-import { createMaintainer, MaintainerPayload } from "../actions";
+import { createMaintainer, MaintainerPayload, updateMaintainer } from "../actions";
 
 interface StateProps {
   organisation?: OrganisationPayload | APIResponsePayload;
 }
 
 interface DispatchProps {
-  createMaintainer: (organisation: number, appliance: MaintainerPayload) => any;
+  createMaintainer: (organisation: number, maintainer: MaintainerPayload) => any;
+  updateMaintainer: (organisation: number, maintainer: MaintainerPayload) => any;
 }
 
-interface Props extends RouteComponentProps, DispatchProps, StateProps {
-  onCancel: () => any;
-  header: ReactFragment;
-  submitText: string;
-  appliance?: MaintainerPayload;
-}
+type Props = Partial<FormProps<Inputs>> & RouteComponentProps;
 
 type Inputs = "email" | "firstName" | "lastName" | "phone";
 
-class MaintainerForm extends React.Component<Props> {
+class MaintainerForm extends React.Component<Props & StateProps & DispatchProps> {
   public static defaultProps = {
     submitText: "Create Maintainer",
   };
@@ -46,9 +42,17 @@ class MaintainerForm extends React.Component<Props> {
 
   public handleSubmit = async (state: FormState<Inputs>) => {
     const {id: organisation} = this.props.organisation as OrganisationPayload;
-    const appliance = await this.props.createMaintainer(organisation, dissoc("errors", state));
-    if (appliance) {
-      this.props.history.push(`/${appliance.id}`);
+    const {state: maintainer, onSubmit} = this.props;
+    if (maintainer) {
+      await this.props.updateMaintainer(organisation, {...maintainer, ...dissoc("errors", state)});
+    } else {
+      const newMaintainer = await this.props.createMaintainer(organisation, dissoc("errors", state));
+      if (newMaintainer) {
+        this.props.history.push(`/${newMaintainer.id}`);
+      }
+    }
+    if (typeof onSubmit === "function") {
+      onSubmit(state);
     }
   }
 
@@ -66,21 +70,21 @@ class MaintainerForm extends React.Component<Props> {
   }
 
   public render() {
-    const {header, submitText} = this.props;
+    const {onSubmit, ...props} = this.props;
     return (
       <Form
         inputs={MaintainerForm.inputs}
-        secondary={<Link to={"/"}>Cancel</Link>}
         onSubmit={this.handleSubmit}
-        validate={this.validate}
-        header={header}
-        submitText={submitText}
+        {...props}
       />
     );
   }
 }
 
-const mapDispatchToProps: MapDispatchToProps<DispatchProps, Props> = {createMaintainer};
+const mapDispatchToProps: MapDispatchToProps<DispatchProps, Props> = {
+  createMaintainer,
+  updateMaintainer,
+};
 
 const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
   organisation: getOrganisation(state),

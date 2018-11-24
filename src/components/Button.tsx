@@ -35,7 +35,7 @@ export default class Button extends Component<ButtonProps> {
 
     return (
       <button
-        className={classnames(className || button, {[plainStyle]: plain})}
+        className={classnames(className, {[button]: !plain})}
         onClick={this.handleClick}
         {...props}
       >
