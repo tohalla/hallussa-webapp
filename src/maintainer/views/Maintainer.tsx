@@ -1,13 +1,17 @@
+import classNames from "classnames";
 import { pick } from "ramda";
 import React, { Component } from "react";
 import { connect, MapStateToProps } from "react-redux";
 
+import { format } from "date-fns";
 import { RouteComponentProps } from "react-router";
 import Button from "../../components/Button";
 import DoubleClickButton, { deletionConfirmation } from "../../components/DoubleClickButton";
 import { closeTab, createTab, TabPayload } from "../../components/tabbed/actions";
-import { spacedHorizontalContainer, spread } from "../../emotion-styles/src/container";
-import { alertIndication, link } from "../../emotion-styles/src/inline";
+import { rowContainer, spacedHorizontalContainer, spread, stacked } from "../../emotion-styles/src/container";
+import { alertIndication, info, link, timestamp } from "../../emotion-styles/src/inline";
+import { greyscale } from "../../emotion-styles/src/variables/colors";
+import { spacer } from "../../emotion-styles/src/variables/spacing";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
@@ -66,7 +70,6 @@ class Maintainer extends Component<Props, State> {
     if (this.props.match.params.maintainer) {
       this.props.history.push("/"); // go back to root
     }
-    console.log(this.props.maintainer);
     this.props.closeTab("maintainers", String(this.props.maintainer.id));
     await this.props.deleteMaintainer(this.props.maintainer);
   }
@@ -92,10 +95,12 @@ class Maintainer extends Component<Props, State> {
       );
     }
 
+    const {phone, firstName, lastName, email, createdAt, updatedAt} = maintainer;
+
     return (
       <>
         <div className={spread}>
-          <h1>{maintainer.firstName} {maintainer.lastName}</h1>
+          <h1>{firstName} {lastName}</h1>
           <div className={spacedHorizontalContainer}>
             <DoubleClickButton
               plain={true}
@@ -108,7 +113,18 @@ class Maintainer extends Component<Props, State> {
             <Button plain={true} onClick={this.setAction("edit")}>Edit maintainer</Button>
           </div>
         </div>
-        Details of an maintainer: {maintainer.firstName}
+        <div className={stacked}>
+          {phone && <div className={info}><i className="material-icons">phone</i> <span>{phone}</span></div>}
+          {email && <div className={info}>
+              <i className="material-icons">email</i>
+              <a href={`mailto:${email}`}>{email}</a>
+          </div>}
+        </div>
+        <div className={spacer} />
+        <div className={classNames(stacked, timestamp)} style={{alignSelf: "stretch", justifyContent: "center"}}>
+          <span>Created at {format(createdAt, "D.M.YYYY")}</span>
+          {updatedAt && <span>Updated at {format(updatedAt, "D.M.YYYY – HH:mm")}</span>}
+        </div>
       </>
     );
   }
