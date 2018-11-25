@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactFragment } from "react";
 import { connect, MapStateToProps } from "react-redux";
 import { Column } from "react-table";
 
@@ -15,7 +15,15 @@ interface StateProps {
   maintainers: ReadonlyArray<MaintainerPayload> | APIResponsePayload;
 }
 
-class MaintainerList extends React.Component<StateProps> {
+interface Props {
+  header: ReactFragment;
+}
+
+class MaintainerList extends React.Component<Props & StateProps> {
+  public static defaultProps = {
+    header: <h1>Maintainer listing</h1>,
+  };
+
   public static columns: Array<Column<MaintainerPayload>> = [
     {Header: "Id", accessor: "id", maxWidth: 50},
     {
@@ -30,22 +38,23 @@ class MaintainerList extends React.Component<StateProps> {
 
   public render() {
     const maintainers = this.props.maintainers as MaintainerPayload[];
-    if (maintainers.length === 0) {
-      return <div className={emptyContainer}>No maintainers created</div>;
-    }
     return (
       <>
-        <h1>Maintainer listing</h1>
-        <Table
-          columns={MaintainerList.columns}
-          data={maintainers}
-        />
+        {this.props.header}
+        {maintainers.length === 0 ?
+          <div className={emptyContainer}>No maintainers found</div>
+        :
+          <Table
+            columns={MaintainerList.columns}
+            data={maintainers}
+          />
+        }
       </>
     );
   }
 }
 
-const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => ({
+const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
   maintainers: getEntitiesByOrganisation(state, "maintainers"),
 });
 

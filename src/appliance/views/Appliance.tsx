@@ -101,6 +101,9 @@ class Appliance extends Component<Props, State> {
   )
 
   public renderContent = () => {
+    if (!this.props.appliance) {
+      return null;
+    }
     const {appliance: {name, description, location, createdAt, updatedAt}} = this.props;
     return (
       <div>

@@ -1,16 +1,17 @@
 import classNames from "classnames";
-import { pick } from "ramda";
+import { map, pick, values } from "ramda";
 import React, { Component } from "react";
 import { connect, MapStateToProps } from "react-redux";
 
 import { format } from "date-fns";
 import { RouteComponentProps } from "react-router";
+import { AppliancePayload } from "../../appliance/actions";
+import { ApplianceList } from "../../appliance/components/ApplianceList";
 import Button from "../../components/Button";
 import DoubleClickButton, { deletionConfirmation } from "../../components/DoubleClickButton";
 import { closeTab, createTab, TabPayload } from "../../components/tabbed/actions";
-import { rowContainer, spacedHorizontalContainer, spread, stacked } from "../../emotion-styles/src/container";
+import { spacedHorizontalContainer, spread, stacked } from "../../emotion-styles/src/container";
 import { alertIndication, info, link, timestamp } from "../../emotion-styles/src/inline";
-import { greyscale } from "../../emotion-styles/src/variables/colors";
 import { spacer } from "../../emotion-styles/src/variables/spacing";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
@@ -21,6 +22,7 @@ import { deleteMaintainer, MaintainerPayload } from "../actions";
 import MaintainerForm from "../components/MaintainerForm";
 
 interface StateProps {
+  appliances: ReadonlyArray<AppliancePayload>;
   organisation?: OrganisationPayload | APIResponsePayload;
   maintainer: MaintainerPayload;
   tabs: {[key: string]: TabPayload};
@@ -78,6 +80,9 @@ class Maintainer extends Component<Props, State> {
 
   public render() {
     const {maintainer} = this.props;
+    if (!maintainer) {
+      return null;
+    }
     const routerProps: RouteComponentProps = pick(["history", "match", "location"], this.props);
     const {action} = this.state;
     if (action === "edit") {
@@ -121,6 +126,11 @@ class Maintainer extends Component<Props, State> {
           </div>}
         </div>
         <div className={spacer} />
+        <ApplianceList
+          appliances={this.props.appliances}
+          header={<h3>Appliances</h3>}
+        />
+        <div className={spacer} />
         <div className={classNames(stacked, timestamp)} style={{alignSelf: "stretch", justifyContent: "center"}}>
           <span>Created at {format(createdAt, "D.M.YYYY")}</span>
           {updatedAt && <span>Updated at {format(updatedAt, "D.M.YYYY – HH:mm")}</span>}
@@ -130,11 +140,15 @@ class Maintainer extends Component<Props, State> {
   }
 }
 
-const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, ownProps): StateProps => ({
-  maintainer: state.entities.maintainers[ownProps.match.params.maintainer],
-  organisation: getOrganisation(state),
-  tabs: state.views.maintainers.tabs,
-});
+const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, ownProps): StateProps => {
+  const maintainer = state.entities.maintainers[ownProps.match.params.maintainer];
+  return {
+    appliances: maintainer ? values(pick(map(String, maintainer.appliances), state.entities.appliances)) : [],
+    maintainer,
+    organisation: getOrganisation(state),
+    tabs: state.views.maintainers.tabs,
+  };
+};
 
 export default connect(
   mapStateToProps,
