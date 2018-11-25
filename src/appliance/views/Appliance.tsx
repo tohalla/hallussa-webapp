@@ -119,6 +119,12 @@ class Appliance extends Component<Props, State> {
           </div>
         </div>
         {appliance.description}
+        {appliance.location &&
+          <>
+            <div className={spacer} />
+            <span>Located at {appliance.location}</span>
+          </>
+        }
         <div className={spacer} />
         <div className={spread}>
           <div className={classNames(stacked, timestamp)} style={{alignSelf: "stretch", justifyContent: "center"}}>
