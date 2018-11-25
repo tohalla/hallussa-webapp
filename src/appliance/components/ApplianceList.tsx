@@ -17,15 +17,14 @@ interface StateProps {
 
 class ApplianceList extends React.Component<StateProps> {
   public static columns: Array<Column<AppliancePayload>> = [
-    {Header: "Id", accessor: "id"},
+    {Header: "Id", accessor: "id", maxWidth: 50},
     {
       Header: "Name",
       accessor: (appliance) => <Link to={`/${appliance.id}`}>{appliance.name}</Link>,
       id: "name",
+      resizable: true,
     },
-    {Header: "Description", accessor: "description"},
-    {Header: "Model", accessor: undefined},
-    {Header: "Manufacturer", accessor: undefined},
+    {Header: "Description", accessor: "description", resizable: true},
   ];
 
   public render() {

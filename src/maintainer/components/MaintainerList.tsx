@@ -17,14 +17,15 @@ interface StateProps {
 
 class MaintainerList extends React.Component<StateProps> {
   public static columns: Array<Column<MaintainerPayload>> = [
-    {Header: "Id", accessor: "id"},
+    {Header: "Id", accessor: "id", maxWidth: 50},
     {
       Header: "Name",
       accessor: ({id, firstName, lastName}) => <Link to={`/${id}`}>{firstName} {lastName}</Link>,
       id: "name",
+      resizable: true,
     },
-    {Header: "Email", accessor: "email"},
-    {Header: "Phone", accessor: "phone"},
+    {Header: "Email", accessor: "email", resizable: true},
+    {Header: "Phone", accessor: "phone", resizable: true},
   ];
 
   public render() {
