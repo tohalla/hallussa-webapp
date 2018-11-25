@@ -1,7 +1,9 @@
+import classNames from "classnames";
 import { pick } from "ramda";
 import React, { Component } from "react";
 import { connect, MapStateToProps } from "react-redux";
 
+import { format } from "date-fns";
 import { RouteComponentProps } from "react-router";
 import Button from "../../components/Button";
 import DoubleClickButton, { deletionConfirmation } from "../../components/DoubleClickButton";
@@ -9,8 +11,8 @@ import Drawers from "../../components/drawers/Drawers";
 import WithSidebar from "../../components/layouts/WithSidebar";
 import { closeTab, createTab, TabPayload } from "../../components/tabbed/actions";
 import { apiUrl } from "../../config";
-import { padded, spacedHorizontalContainer, spread } from "../../emotion-styles/src/container";
-import { alertIndication, link } from "../../emotion-styles/src/inline";
+import { padded, spacedHorizontalContainer, spread, stacked } from "../../emotion-styles/src/container";
+import { alertIndication, info, link, timestamp } from "../../emotion-styles/src/inline";
 import { spacer } from "../../emotion-styles/src/variables/spacing";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
@@ -51,7 +53,7 @@ class Appliance extends Component<Props, State> {
       || typeof organisation === "undefined"
       || (organisation as OrganisationPayload).appliances.indexOf(appliance.id) === -1
     ) {
-      history.push("/");
+      history.push("/appliances");
       return prevState;
     }
     if (typeof tabs[appliance.id] === "undefined") {
@@ -81,7 +83,7 @@ class Appliance extends Component<Props, State> {
 
   public handleDeleteAppliance = async () => {
     if (this.props.match.params.appliance) {
-      this.props.history.push("/"); // go back to root
+      this.props.history.push("/appliances"); // go back to root
     }
     this.props.closeTab("appliances", String(this.props.appliance.id));
     await this.props.deleteAppliance(this.props.appliance);
@@ -99,11 +101,14 @@ class Appliance extends Component<Props, State> {
   )
 
   public renderContent = () => {
-    const {appliance} = this.props;
+    if (!this.props.appliance) {
+      return null;
+    }
+    const {appliance: {name, description, location, createdAt, updatedAt}} = this.props;
     return (
       <div>
         <div className={spread}>
-          <h1>{appliance.name}</h1>
+          <h1>{name}</h1>
           <div className={spacedHorizontalContainer}>
             <DoubleClickButton
               plain={true}
@@ -116,10 +121,21 @@ class Appliance extends Component<Props, State> {
             <Button plain={true} onClick={this.setAction("edit")}>Edit appliance</Button>
           </div>
         </div>
-        {appliance.description}
+        {description}
+        {location &&
+          <>
+            <div className={spacer} />
+            {location &&
+              <div className={info}><i className="material-icons">location_on</i> <span>{location}</span></div>
+            }
+          </>
+        }
         <div className={spacer} />
         <div className={spread}>
-          <span />
+          <div className={classNames(stacked, timestamp)} style={{alignSelf: "stretch", justifyContent: "center"}}>
+            <span>Created at {format(createdAt, "D.M.YYYY")}</span>
+            {updatedAt && <span>Updated at {format(updatedAt, "D.M.YYYY – HH:mm")}</span>}
+          </div>
           <Button onClick={this.handleFetchQR}>Download QR code</Button>
         </div>
       </div>

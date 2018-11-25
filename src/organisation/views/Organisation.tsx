@@ -35,7 +35,7 @@ interface State {
   action: Actions;
 }
 
-const NewOrganisation = () => <Link to="/new" className={button}>Create a new organisation</Link>;
+const NewOrganisation = () => <Link to="/organisations/new" className={button}>Create a new organisation</Link>;
 
 class Organisation extends React.Component<Props & StateProps & DispatchProps, State> {
   public state: State = {
@@ -46,7 +46,7 @@ class Organisation extends React.Component<Props & StateProps & DispatchProps, S
 
   public handleDeleteOrganisation = async () => {
     if (this.props.match.params.organisation) {
-      this.props.history.push("/"); // go back to root
+      this.props.history.push("/organisations"); // go back to root
     }
     const organisation = this.props.organisation || this.props.activeOrganisation as OrganisationPayload;
     const organisations = this.props.organisations as OrganisationPayload[];

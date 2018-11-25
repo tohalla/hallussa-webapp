@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactFragment } from "react";
 import { connect, MapStateToProps } from "react-redux";
 import { Column } from "react-table";
 
@@ -15,36 +15,46 @@ interface StateProps {
   maintainers: ReadonlyArray<MaintainerPayload> | APIResponsePayload;
 }
 
-class MaintainerList extends React.Component<StateProps> {
+interface Props {
+  header: ReactFragment;
+}
+
+class MaintainerList extends React.Component<Props & StateProps> {
+  public static defaultProps = {
+    header: <h1>Maintainer listing</h1>,
+  };
+
   public static columns: Array<Column<MaintainerPayload>> = [
-    {Header: "Id", accessor: "id"},
+    {Header: "Id", accessor: "id", maxWidth: 50},
     {
       Header: "Name",
-      accessor: ({id, firstName, lastName}) => <Link to={`/${id}`}>{firstName} {lastName}</Link>,
+      accessor: ({id, firstName, lastName}) => <Link to={`/maintainers/${id}`}>{firstName} {lastName}</Link>,
       id: "name",
+      resizable: true,
     },
-    {Header: "Email", accessor: "email"},
-    {Header: "Phone", accessor: "phone"},
+    {Header: "Email", accessor: "email", resizable: true},
+    {Header: "Phone", accessor: "phone", resizable: true},
   ];
 
   public render() {
     const maintainers = this.props.maintainers as MaintainerPayload[];
-    if (maintainers.length === 0) {
-      return <div className={emptyContainer}>No maintainers created</div>;
-    }
     return (
       <>
-        <h1>Maintainer listing</h1>
-        <Table
-          columns={MaintainerList.columns}
-          data={maintainers}
-        />
+        {this.props.header}
+        {maintainers.length === 0 ?
+          <div className={emptyContainer}>No maintainers found</div>
+        :
+          <Table
+            columns={MaintainerList.columns}
+            data={maintainers}
+          />
+        }
       </>
     );
   }
 }
 
-const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => ({
+const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
   maintainers: getEntitiesByOrganisation(state, "maintainers"),
 });
 
