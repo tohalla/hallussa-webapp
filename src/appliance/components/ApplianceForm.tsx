@@ -23,7 +23,7 @@ interface DispatchProps {
 
 type Props = Partial<FormProps<Inputs>> & RouteComponentProps;
 
-type Inputs = "name" | "description";
+type Inputs = "name" | "description" | "location";
 
 class ApplianceForm extends React.Component<Props & DispatchProps & StateProps>Â {
   public static defaultProps = {
@@ -33,6 +33,7 @@ class ApplianceForm extends React.Component<Props & DispatchProps & StateProps>Â
   public static inputs: ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]> = [
     {key: "name", props: {autoFocus: true}, validate: {required: true, minLength: 2}},
     {key: "description", props: {getInputElement: (props) => <textarea {...props} rows={3} />}},
+    {key: "location"},
   ];
 
   public handleSubmit = async (state: FormState<Inputs>) => {

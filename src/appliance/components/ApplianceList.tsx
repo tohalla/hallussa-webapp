@@ -25,6 +25,7 @@ class ApplianceList extends React.Component<StateProps> {
       resizable: true,
     },
     {Header: "Description", accessor: "description", resizable: true},
+    {Header: "Location", accessor: "location", resizable: true},
   ];
 
   public render() {
