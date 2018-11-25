@@ -51,7 +51,7 @@ class Maintainer extends Component<Props, State> {
       || typeof organisation === "undefined"
       || (organisation as OrganisationPayload).maintainers.indexOf(maintainer.id) === -1
     ) {
-      history.push("/");
+      history.push("/maintainers");
       return prevState;
     }
     if (typeof tabs[maintainer.id] === "undefined") {
@@ -70,7 +70,7 @@ class Maintainer extends Component<Props, State> {
 
   public handeDeleteMaintainer = async () => {
     if (this.props.match.params.maintainer) {
-      this.props.history.push("/"); // go back to root
+      this.props.history.push("/maintainers"); // go back to root
     }
     this.props.closeTab("maintainers", String(this.props.maintainer.id));
     await this.props.deleteMaintainer(this.props.maintainer);

@@ -53,7 +53,7 @@ class Appliance extends Component<Props, State> {
       || typeof organisation === "undefined"
       || (organisation as OrganisationPayload).appliances.indexOf(appliance.id) === -1
     ) {
-      history.push("/");
+      history.push("/appliances");
       return prevState;
     }
     if (typeof tabs[appliance.id] === "undefined") {
@@ -83,7 +83,7 @@ class Appliance extends Component<Props, State> {
 
   public handleDeleteAppliance = async () => {
     if (this.props.match.params.appliance) {
-      this.props.history.push("/"); // go back to root
+      this.props.history.push("/appliances"); // go back to root
     }
     this.props.closeTab("appliances", String(this.props.appliance.id));
     await this.props.deleteAppliance(this.props.appliance);

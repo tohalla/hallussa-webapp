@@ -57,7 +57,7 @@ class OrganisationSelect extends React.Component<Props & StateProps & DispatchPr
   }
 
   public handleOrganisationSelect = (option: any) =>
-    this.props.history.push(`/${option.value}`)
+    this.props.history.push(`/organisations/${option.value}`)
 
   public handleOrganisationChange = () => {
     const {selectedOrganisationOption} = this.state;

@@ -28,7 +28,7 @@ export class ApplianceList extends React.Component<StateProps & Props> {
     {Header: "Id", accessor: "id", maxWidth: 50},
     {
       Header: "Name",
-      accessor: (appliance) => <Link to={`/${appliance.id}`}>{appliance.name}</Link>,
+      accessor: (appliance) => <Link to={`/appliances/${appliance.id}`}>{appliance.name}</Link>,
       id: "name",
       resizable: true,
     },

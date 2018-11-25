@@ -25,14 +25,14 @@ class TabsContainer extends Component<Props & DispatchProps> {
     event.preventDefault();
     const {history, location, view} = this.props;
     if (location.pathname.endsWith(tab.key)) {
-      history.push("/"); // move to default tab if tab to be closed is open
+      history.push(`/${this.props.view}`); // move to default tab if tab to be closed is open
     }
     this.props.closeTab(view, tab.key);
   }
 
   public getPath = (tab: TabPayload) => {
     const { view } = this.props;
-    return view === tab.key ? "/" : `/${tab.key}`;
+    return `/${view}` + (view === tab.key ? "" : `/${tab.key}`);
   }
 
   public renderTab = (tab: TabPayload) => {
@@ -48,7 +48,7 @@ class TabsContainer extends Component<Props & DispatchProps> {
       >
         <TabComponent
           {...tab}
-          label={path.startsWith(`/${key}`) && activeLabel ? activeLabel : label}
+          label={path.endsWith(`/${key}`) && activeLabel ? activeLabel : label}
           onClose={this.handleTabClose(tab)}
         />
       </NavLink>

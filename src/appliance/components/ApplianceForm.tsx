@@ -44,7 +44,7 @@ class ApplianceForm extends React.Component<Props & DispatchProps & StateProps>Â
     } else {
       const newAppliance = await this.props.createAppliance(organisation, dissoc("errors", state));
       if (newAppliance) {
-        this.props.history.push(`/${newAppliance.id}`);
+        this.props.history.push(`/appliances/${newAppliance.id}`);
       }
     }
     if (typeof onSubmit === "function") {

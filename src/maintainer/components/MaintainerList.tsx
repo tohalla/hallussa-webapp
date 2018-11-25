@@ -28,7 +28,7 @@ class MaintainerList extends React.Component<Props & StateProps> {
     {Header: "Id", accessor: "id", maxWidth: 50},
     {
       Header: "Name",
-      accessor: ({id, firstName, lastName}) => <Link to={`/${id}`}>{firstName} {lastName}</Link>,
+      accessor: ({id, firstName, lastName}) => <Link to={`/maintainers/${id}`}>{firstName} {lastName}</Link>,
       id: "name",
       resizable: true,
     },
