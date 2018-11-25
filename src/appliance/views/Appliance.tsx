@@ -1,7 +1,9 @@
+import classNames from "classnames";
 import { pick } from "ramda";
 import React, { Component } from "react";
 import { connect, MapStateToProps } from "react-redux";
 
+import { format } from "date-fns";
 import { RouteComponentProps } from "react-router";
 import Button from "../../components/Button";
 import DoubleClickButton, { deletionConfirmation } from "../../components/DoubleClickButton";
@@ -9,8 +11,8 @@ import Drawers from "../../components/drawers/Drawers";
 import WithSidebar from "../../components/layouts/WithSidebar";
 import { closeTab, createTab, TabPayload } from "../../components/tabbed/actions";
 import { apiUrl } from "../../config";
-import { padded, spacedHorizontalContainer, spread } from "../../emotion-styles/src/container";
-import { alertIndication, link } from "../../emotion-styles/src/inline";
+import { centerContent, padded, rowContainer, spacedHorizontalContainer, spread, stacked } from "../../emotion-styles/src/container";
+import { alertIndication, link, timestamp } from "../../emotion-styles/src/inline";
 import { spacer } from "../../emotion-styles/src/variables/spacing";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
@@ -119,7 +121,10 @@ class Appliance extends Component<Props, State> {
         {appliance.description}
         <div className={spacer} />
         <div className={spread}>
-          <span />
+          <div className={classNames(stacked, timestamp)} style={{alignSelf: "stretch", justifyContent: "center"}}>
+            <span>Created at {format(appliance.createdAt, "D.M.YYYY")}</span>
+            {appliance.updatedAt && <span>Updated at {format(appliance.updatedAt, "D.M.YYYY – HH:mm")}</span>}
+          </div>
           <Button onClick={this.handleFetchQR}>Download QR code</Button>
         </div>
       </div>
