@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactFragment } from "react";
 import { connect, MapStateToProps } from "react-redux";
 import { Column } from "react-table";
 
@@ -15,37 +15,47 @@ interface StateProps {
   appliances: ReadonlyArray<AppliancePayload> | APIResponsePayload;
 }
 
-class ApplianceList extends React.Component<StateProps> {
+interface Props {
+  header: ReactFragment;
+}
+
+export class ApplianceList extends React.Component<StateProps & Props> {
+  public static defaultProps = {
+    header: <h1>Appliance listing</h1>,
+  };
+
   public static columns: Array<Column<AppliancePayload>> = [
-    {Header: "Id", accessor: "id"},
+    {Header: "Id", accessor: "id", maxWidth: 50},
     {
       Header: "Name",
-      accessor: (appliance) => <Link to={`/${appliance.id}`}>{appliance.name}</Link>,
+      accessor: (appliance) => <Link to={`/appliances/${appliance.id}`}>{appliance.name}</Link>,
       id: "name",
+      resizable: true,
     },
-    {Header: "Description", accessor: "description"},
-    {Header: "Model", accessor: undefined},
-    {Header: "Manufacturer", accessor: undefined},
+    {Header: "Description", accessor: "description", resizable: true},
+    {Header: "Location", accessor: "location", resizable: true},
   ];
 
   public render() {
+    const {header} = this.props;
     const appliances = this.props.appliances as AppliancePayload[];
-    if (appliances.length === 0) {
-      return <div className={emptyContainer}>No appliances created</div>;
-    }
     return (
       <>
-        <h1>Appliance listing</h1>
-        <Table
-          columns={ApplianceList.columns}
-          data={appliances}
-        />
+        {header}
+        {appliances.length === 0 ?
+          <div className={emptyContainer}>No appliances found</div>
+        :
+          <Table
+            columns={ApplianceList.columns}
+            data={appliances}
+          />
+        }
       </>
     );
   }
 }
 
-const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => ({
+const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
   appliances: getEntitiesByOrganisation(state, "appliances"),
 });
 

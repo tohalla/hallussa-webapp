@@ -26,7 +26,7 @@ type Props = Partial<FormProps<Inputs>> & RouteComponentProps;
 
 class OrganisationForm extends React.Component<Props & DispatchProps & StateProps> {
   public static defaultProps = {
-    secondary: <Link to={"/"}>Cancel</Link>,
+    secondary: <Link to={"/organisations/"}>Cancel</Link>,
     submitText: "Create organisation",
   };
 
@@ -46,7 +46,7 @@ class OrganisationForm extends React.Component<Props & DispatchProps & StateProp
           this.props.setActiveOrganisation(newOrganisation.id, false);
         }
       }
-      history.push(`/${newOrganisation.id}`);
+      history.push(`/organisations/${newOrganisation.id}`);
     }
     if (typeof onSubmit === "function") {
       onSubmit(state);

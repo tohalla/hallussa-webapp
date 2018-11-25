@@ -1,13 +1,18 @@
-import { pick } from "ramda";
+import classNames from "classnames";
+import { map, pick, values } from "ramda";
 import React, { Component } from "react";
 import { connect, MapStateToProps } from "react-redux";
 
+import { format } from "date-fns";
 import { RouteComponentProps } from "react-router";
+import { AppliancePayload } from "../../appliance/actions";
+import { ApplianceList } from "../../appliance/components/ApplianceList";
 import Button from "../../components/Button";
 import DoubleClickButton, { deletionConfirmation } from "../../components/DoubleClickButton";
 import { closeTab, createTab, TabPayload } from "../../components/tabbed/actions";
-import { spacedHorizontalContainer, spread } from "../../emotion-styles/src/container";
-import { alertIndication, link } from "../../emotion-styles/src/inline";
+import { spacedHorizontalContainer, spread, stacked } from "../../emotion-styles/src/container";
+import { alertIndication, info, link, timestamp } from "../../emotion-styles/src/inline";
+import { spacer } from "../../emotion-styles/src/variables/spacing";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
@@ -17,6 +22,7 @@ import { deleteMaintainer, MaintainerPayload } from "../actions";
 import MaintainerForm from "../components/MaintainerForm";
 
 interface StateProps {
+  appliances: ReadonlyArray<AppliancePayload>;
   organisation?: OrganisationPayload | APIResponsePayload;
   maintainer: MaintainerPayload;
   tabs: {[key: string]: TabPayload};
@@ -45,7 +51,7 @@ class Maintainer extends Component<Props, State> {
       || typeof organisation === "undefined"
       || (organisation as OrganisationPayload).maintainers.indexOf(maintainer.id) === -1
     ) {
-      history.push("/");
+      history.push("/maintainers");
       return prevState;
     }
     if (typeof tabs[maintainer.id] === "undefined") {
@@ -64,9 +70,8 @@ class Maintainer extends Component<Props, State> {
 
   public handeDeleteMaintainer = async () => {
     if (this.props.match.params.maintainer) {
-      this.props.history.push("/"); // go back to root
+      this.props.history.push("/maintainers"); // go back to root
     }
-    console.log(this.props.maintainer);
     this.props.closeTab("maintainers", String(this.props.maintainer.id));
     await this.props.deleteMaintainer(this.props.maintainer);
   }
@@ -75,6 +80,9 @@ class Maintainer extends Component<Props, State> {
 
   public render() {
     const {maintainer} = this.props;
+    if (!maintainer) {
+      return null;
+    }
     const routerProps: RouteComponentProps = pick(["history", "match", "location"], this.props);
     const {action} = this.state;
     if (action === "edit") {
@@ -92,10 +100,12 @@ class Maintainer extends Component<Props, State> {
       );
     }
 
+    const {phone, firstName, lastName, email, createdAt, updatedAt} = maintainer;
+
     return (
       <>
         <div className={spread}>
-          <h1>{maintainer.firstName} {maintainer.lastName}</h1>
+          <h1>{firstName} {lastName}</h1>
           <div className={spacedHorizontalContainer}>
             <DoubleClickButton
               plain={true}
@@ -108,17 +118,37 @@ class Maintainer extends Component<Props, State> {
             <Button plain={true} onClick={this.setAction("edit")}>Edit maintainer</Button>
           </div>
         </div>
-        Details of an maintainer: {maintainer.firstName}
+        <div className={stacked}>
+          {phone && <div className={info}><i className="material-icons">phone</i> <span>{phone}</span></div>}
+          {email && <div className={info}>
+              <i className="material-icons">email</i>
+              <a href={`mailto:${email}`}>{email}</a>
+          </div>}
+        </div>
+        <div className={spacer} />
+        <ApplianceList
+          appliances={this.props.appliances}
+          header={<h3>Appliances</h3>}
+        />
+        <div className={spacer} />
+        <div className={classNames(stacked, timestamp)} style={{alignSelf: "stretch", justifyContent: "center"}}>
+          <span>Created at {format(createdAt, "D.M.YYYY")}</span>
+          {updatedAt && <span>Updated at {format(updatedAt, "D.M.YYYY – HH:mm")}</span>}
+        </div>
       </>
     );
   }
 }
 
-const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, ownProps): StateProps => ({
-  maintainer: state.entities.maintainers[ownProps.match.params.maintainer],
-  organisation: getOrganisation(state),
-  tabs: state.views.maintainers.tabs,
-});
+const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, ownProps): StateProps => {
+  const maintainer = state.entities.maintainers[ownProps.match.params.maintainer];
+  return {
+    appliances: maintainer ? values(pick(map(String, maintainer.appliances), state.entities.appliances)) : [],
+    maintainer,
+    organisation: getOrganisation(state),
+    tabs: state.views.maintainers.tabs,
+  };
+};
 
 export default connect(
   mapStateToProps,

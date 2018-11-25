@@ -48,7 +48,7 @@ class MaintainerForm extends React.Component<Props & StateProps & DispatchProps>
     } else {
       const newMaintainer = await this.props.createMaintainer(organisation, dissoc("errors", state));
       if (newMaintainer) {
-        this.props.history.push(`/${newMaintainer.id}`);
+        this.props.history.push(`/maintainers/${newMaintainer.id}`);
       }
     }
     if (typeof onSubmit === "function") {

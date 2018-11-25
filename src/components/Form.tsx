@@ -32,7 +32,7 @@ export interface FormProps<Inputs extends string> {
   inputs: ReadonlyArray<FormInput<Inputs> | ReadonlyArray<FormInput<Inputs>>>;
   secondary: ReactFragment;
   submitText: string;
-  state?: {[key in Inputs]: any};
+  state?: {[key in Inputs]?: any};
   isValid: boolean;
   validate?: (state: FormState<Inputs>) => {[key in Inputs]?: string | boolean};
 }
