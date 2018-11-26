@@ -4,7 +4,7 @@
   "main": "src/index.tsx",
   "scripts": {
     "serve": "parcel pages/*.html",
-    "build": "parcel build pages/*.html",
+    "build": "parcel build pages/*.html --experimental-scope-hoisting",
     "lint": "tslint -c tslint.json './src/**/*.ts{,x}'"
   },
   "repository": {
