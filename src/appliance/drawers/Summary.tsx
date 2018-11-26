@@ -1,54 +1,47 @@
+import { filter, path } from "ramda";
 import React, { Component } from "react";
+import { connect, MapStateToProps } from "react-redux";
 import NumberComponent from "../../components/drawers/subcomponents/NumberComponent";
+import { getEntitiesByOrganisation } from "../../organisation/state";
+import { APIResponsePayload } from "../../store/middleware/api/actions";
+import { ReduxState } from "../../store/store";
+import loadable from "../../util/hoc/loadable";
+import { AppliancePayload } from "../actions";
 
-interface Props {
-  [key: string]: any;
+interface StateProps {
+  appliances: ReadonlyArray<AppliancePayload> | APIResponsePayload;
 }
 
-export default class Content extends Component<Props> {
+class Summary extends Component<StateProps> {
   public render() {
-    // TODO: Do not use hard-coded values
+    const appliances = this.props.appliances as ReadonlyArray<AppliancePayload>;
     return (
       <div>
+        <h3>Overview</h3>
         <div>
           <NumberComponent
             size={"lg"}
-            number={1}
+            number={appliances.length}
             label={"Number of appliances"}
           />
           <NumberComponent
             size={"lg"}
-            number={0}
+            number={
+              appliances.length -
+              filter((appliance) => Boolean(path(["appliance", "isMalfunctioning"], appliances))).length
+            }
             label={"Currently operative"}
           />
-        </div>
-        <div>
-          <p>Average runtime without maintanance</p>
-          <div>
-            <NumberComponent
-              size={"sm"}
-              number={0}
-              label={"years"}
-              alert={true}
-            />
-            <NumberComponent
-              size={"sm"}
-              number={5}
-              label={"months"}
-            />
-            <NumberComponent
-              size={"sm"}
-              number={3}
-              label={"weeks"}
-            />
-            <NumberComponent
-              size={"sm"}
-              number={23}
-              label={"days"}
-            />
-          </div>
         </div>
       </div>
     );
   }
 }
+
+const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state: ReduxState) => ({
+  appliances: getEntitiesByOrganisation(state, "appliances"),
+});
+
+export default connect(
+  mapStateToProps
+)(loadable(Summary));
