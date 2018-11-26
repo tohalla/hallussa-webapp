@@ -2,6 +2,7 @@ import { navGroup, navItem } from "emotion-styles/topbar";
 import { path } from "ramda";
 import React from "react";
 
+import classNames from "classnames";
 import { connect, MapStateToProps } from "react-redux";
 import { AccountPayload } from "../account/actions";
 import { signOut } from "../auth/auth";
@@ -17,12 +18,13 @@ class AccountMenu extends React.Component<StateProps> {
   public handleLogout = () => signOut();
 
   public render() {
+    const containerClass = classNames(navGroup, "horizontal");
     if (typeof this.props.account === "undefined") {
       return false;
     }
     const {firstName} = this.props.account;
     return (
-      <div className={navGroup}>
+      <div className={containerClass}>
         <div className={navGroup}>
           Hello, {firstName}
         </div>

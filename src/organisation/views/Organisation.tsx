@@ -3,7 +3,7 @@ import { find, path, pick } from "ramda";
 import React from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 
-import { rowContainer, spacedHorizontalContainer, spread } from "emotion-styles/container";
+import { rowContainer, spacedHorizontalContainer, spread, actionGroup } from "emotion-styles/container";
 import { Link, RouteComponentProps } from "react-router-dom";
 import Button from "../../components/Button";
 import DoubleClickButton, { deletionConfirmation } from "../../components/DoubleClickButton";
@@ -115,8 +115,10 @@ class Organisation extends React.Component<Props & StateProps & DispatchProps, S
         </div>
         <div className={spacer} />
         <div className={spread}>
-          <OrganisationSelect organisation={organisation} {...routerProps} />
-          <NewOrganisation />
+          <div className={actionGroup}>
+            <OrganisationSelect organisation={organisation} {...routerProps} />
+            <NewOrganisation />
+          </div>
         </div>
       </>
     );
