@@ -33,7 +33,6 @@
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.1.5",
     "@types/classnames": "^2.2.6",
-    "@types/date-fns": "^2.6.0",
     "@types/jest": "^23.3.2",
     "@types/ramda": "^0.25.38",
     "@types/react": "^16.4.14",

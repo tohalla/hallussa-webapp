@@ -19,7 +19,7 @@ export interface InputProps {
   onChange: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
   placeholder?: string;
-  type: "text" | "password" | "number" | "date";
+  type: "text" | "password" | "number" | "date" | "email";
   required: boolean;
   value: string;
   getInputElement(props: any): JSX.Element;
