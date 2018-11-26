@@ -37,7 +37,7 @@ export const fetchAppliances = (organisation: number, {bypassCache = false} = {}
     )) && state.entities.appliances,
   endpoint: `/organisations/${organisation}/appliances`,
   method: "get",
-  parameters: {eager: "maintainers"},
+  parameters: {eager: "[maintainers, status]"},
   successType: FETCH_APPLIANCES_SUCCESS,
   type: CALL_API,
 });

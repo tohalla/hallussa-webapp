@@ -1,3 +1,4 @@
+import { path } from "ramda";
 import React, { ReactFragment } from "react";
 import { connect, MapStateToProps } from "react-redux";
 import { Column } from "react-table";
@@ -5,6 +6,7 @@ import { Column } from "react-table";
 import { Link } from "react-router-dom";
 import Table from "../../components/Table";
 import { emptyContainer } from "../../emotion-styles/src/container";
+import { error, success } from "../../emotion-styles/src/inline";
 import { getEntitiesByOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
@@ -33,6 +35,14 @@ export class ApplianceList extends React.Component<StateProps & Props> {
       resizable: true,
     },
     {Header: "Description", accessor: "description", resizable: true},
+    {
+      Header: "Status",
+      accessor: (appliance) => path(["status", "isMalfunctioning"], appliance) ?
+        <span className={error}>Malfunctioning</span>
+      : <span className={success}>OK</span>,
+      id: "status",
+      width: 100,
+    },
     {Header: "Location", accessor: "location", resizable: true},
   ];
 

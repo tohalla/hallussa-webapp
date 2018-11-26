@@ -5,7 +5,6 @@ import { resetTabs } from "../components/tabbed/actions";
 import { fetchMaintainers } from "../maintainer/actions";
 import { APIResponseAction, CALL_API } from "../store/middleware/api/actions";
 import { ReduxAPICall } from "../store/middleware/api/api";
-import { authenticatedFetch } from "../util/utilityFunctions";
 
 export const CREATE_ORGANISATION_SUCCESS = "CREATE_ORGANISATION_SUCCESS";
 export const UPDATE_ORGANISATION_SUCCESS = "UPDATE_ORGANISATION_SUCCESS";
