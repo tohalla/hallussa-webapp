@@ -18,7 +18,7 @@ interface StateProps {
 }
 
 interface Props {
-  header: ReactFragment;
+  header?: ReactFragment;
 }
 
 export class ApplianceList extends React.Component<StateProps & Props> {
@@ -69,4 +69,6 @@ const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) 
   appliances: getEntitiesByOrganisation(state, "appliances"),
 });
 
-export default connect(mapStateToProps)(loadable(ApplianceList));
+export default connect<StateProps, {}, Props, ReduxState>(
+  mapStateToProps
+)(loadable(ApplianceList));
