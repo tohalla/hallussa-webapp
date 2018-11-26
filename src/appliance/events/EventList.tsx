@@ -7,11 +7,10 @@ import { Link } from "react-router-dom";
 import Table from "../../components/Table";
 import { emptyContainer } from "../../emotion-styles/src/container";
 import { MaintainerPayload } from "../../maintainer/actions";
-import { getEntitiesByOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
-import { AppliancePayload, MaintenanceEventPayload } from "../actions";
+import { MaintenanceEventPayload } from "../actions";
 
 interface StateProps {
   maintainers: ReadonlyArray<MaintainerPayload> | APIResponsePayload;
@@ -22,7 +21,7 @@ interface Props {
   header?: ReactFragment;
 }
 
-export class EventList extends React.Component<StateProps & Props> {
+class EventList extends React.Component<StateProps & Props> {
   public static defaultProps = {
     header: <h3>Maintenance events</h3>,
   };
@@ -76,7 +75,7 @@ export class EventList extends React.Component<StateProps & Props> {
 }
 
 const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
-  maintainers: getEntitiesByOrganisation(state, "maintainers"),
+  maintainers: state.entities.maintainers,
 });
 
 export default connect<StateProps, {}, Props, ReduxState>(
