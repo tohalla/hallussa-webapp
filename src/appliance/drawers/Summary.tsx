@@ -28,7 +28,7 @@ class Summary extends Component<StateProps> {
             size={"lg"}
             number={
               appliances.length -
-              filter((appliance) => Boolean(path(["appliance", "isMalfunctioning"], appliances))).length
+              filter((appliance) => Boolean(path(["status", "isMalfunctioning"], appliance)), appliances).length
             }
             label={"Currently operative"}
           />
