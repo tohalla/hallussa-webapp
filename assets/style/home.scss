@@ -4,6 +4,7 @@
 
 body {
   min-height: 100vh;
+  line-height: 1.5rem;
 }
 
 #banner-wrapper {
@@ -62,6 +63,10 @@ section {
       padding: 1rem;
     }
   }
+}
+
+#features, #sales-pitch {
+  padding: 3rem;
 }
 
 #product {

@@ -22,7 +22,7 @@ export default function Select<T = {label: string, value: any}>(
           minHeight: "auto",
         }),
         dropdownIndicator: (base) => ({...base, padding: `0 ${minimal}`}),
-        input: (base) => ({...base, minWidth: "150px"}),
+        input: (base) => ({...base, minWidth: "150px", textOverflow: "ellipsis"}),
         menu: (base) => ({...base, borderRadius: 0, marginTop: minimal}),
         option: (base, {isFocused, isSelected}) => ({
           ...base,
