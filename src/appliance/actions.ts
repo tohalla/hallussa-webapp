@@ -21,6 +21,17 @@ export interface AppliancePayload {
   description: string;
   organisation: number;
   updatedAt: string;
+  status?: {
+    isMalfunctioning: boolean;
+  };
+  maintenanceEvents?: ReadonlyArray<MaintenanceEventPayload>;
+}
+
+export interface MaintenanceEventPayload {
+  createdAt: string;
+  description: string;
+  resolvedAt: string;
+  assignedTo: number;
 }
 
 export interface ApplianceAction {
@@ -37,7 +48,7 @@ export const fetchAppliances = (organisation: number, {bypassCache = false} = {}
     )) && state.entities.appliances,
   endpoint: `/organisations/${organisation}/appliances`,
   method: "get",
-  parameters: {eager: "[maintainers, status]"},
+  parameters: {eager: "[maintainers, status, maintenanceEvents]"},
   successType: FETCH_APPLIANCES_SUCCESS,
   type: CALL_API,
 });

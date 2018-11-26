@@ -13,6 +13,7 @@ import { closeTab, createTab, TabPayload } from "../../components/tabbed/actions
 import { apiUrl } from "../../config";
 import { padded, spacedHorizontalContainer, spread, stacked } from "../../emotion-styles/src/container";
 import { alertIndication, info, link, timestamp } from "../../emotion-styles/src/inline";
+import { indicator } from "../../emotion-styles/src/variables/colors";
 import { spacer } from "../../emotion-styles/src/variables/spacing";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
@@ -20,9 +21,10 @@ import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
 import { authenticatedFetch } from "../../util/utilityFunctions";
-import { AppliancePayload, deleteAppliance } from "../actions";
+import { AppliancePayload, deleteAppliance, MaintenanceEventPayload } from "../actions";
 import ApplianceForm from "../components/ApplianceForm";
 import MaintainerAssignment from "../components/MaintainerAssignment";
+import EventList from "../events/EventList";
 
 interface StateProps {
   organisation?: OrganisationPayload | APIResponsePayload;
@@ -102,9 +104,17 @@ class Appliance extends Component<Props, State> {
 
   public renderContent = () => {
     if (!this.props.appliance) {
-      return null;
+      return <div />;
     }
-    const {appliance: {name, description, location, createdAt, updatedAt}} = this.props;
+    const {appliance: {
+      name,
+      description,
+      location,
+      createdAt,
+      updatedAt,
+      maintenanceEvents = [],
+      status,
+    }} = this.props;
     return (
       <div>
         <div className={spread}>
@@ -122,14 +132,17 @@ class Appliance extends Component<Props, State> {
           </div>
         </div>
         {description}
+        <div className={spacer} />
+        <div className={info}><i className="material-icons">info</i>
+          {status && status.isMalfunctioning ?
+            <span style={{color: indicator.error}}>Malfunctioning</span>
+          : <span style={{color: indicator.success}}>OK</span>}
+        </div>
         {location &&
-          <>
-            <div className={spacer} />
-            {location &&
-              <div className={info}><i className="material-icons">location_on</i> <span>{location}</span></div>
-            }
-          </>
+          <div className={info}><i className="material-icons">location_on</i><span>{location}</span></div>
         }
+        <div className={spacer} />
+        <EventList maintenanceEvents={maintenanceEvents as MaintenanceEventPayload[]} />
         <div className={spacer} />
         <div className={spread}>
           <div className={classNames(stacked, timestamp)} style={{alignSelf: "stretch", justifyContent: "center"}}>
