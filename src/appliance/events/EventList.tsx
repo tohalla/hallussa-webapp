@@ -45,10 +45,10 @@ export class EventList extends React.Component<StateProps & Props> {
       Header: "Assigned to",
       accessor: (event) => {
         if (!event.assignedTo) { return null; }
-        const maintainers = this.props.maintainers as MaintainerPayload[];
-        return (
-          <Link to={`/maintainers/${maintainers[event.assignedTo].id}`}>
-            {maintainers[event.assignedTo].firstName} {maintainers[event.assignedTo].lastName}
+        const maintainer = (this.props.maintainers as MaintainerPayload[])[event.assignedTo];
+        return maintainer && (
+          <Link to={`/maintainers/${maintainer.id}`}>
+            {maintainer.firstName} {maintainer.lastName}
           </Link>
         );
       },
