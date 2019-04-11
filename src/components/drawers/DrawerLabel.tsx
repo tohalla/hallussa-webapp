@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { Component } from "react";
 
-import { label as labelStyle } from "emotion-styles/drawer";
+import { label as labelStyle } from "styles/drawer";
 
 interface Props {
   label: string;

@@ -3,7 +3,7 @@ import React from "react";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 
 import ViewContainer from "../components/layouts/ViewContainer";
-import { padded, viewContentContainer } from "../emotion-styles/src/container";
+import { padded, viewContentContainer } from "../styles/container";
 import OrganisationForm from "./OrganisationForm";
 import Organisation from "./views/Organisation";
 

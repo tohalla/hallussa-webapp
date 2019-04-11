@@ -1,7 +1,7 @@
 import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
-import { activeItem, navGroup, navItem } from "emotion-styles/topbar";
+import { activeItem, navGroup, navItem } from "styles/topbar";
 import { NavLink, RouteComponentProps, withRouter } from "react-router-dom";
 import { ReduxState } from "../store/store";
 import OrganisationSelect from "./OrganisationNavItem";

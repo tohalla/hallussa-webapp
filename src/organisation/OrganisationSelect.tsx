@@ -5,7 +5,7 @@ import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import Button from "../components/Button";
 import Select from "../components/Select";
-import { rowContainer } from "../emotion-styles/src/container";
+import { rowContainer } from "../styles/container";
 import { APIResponsePayload } from "../store/middleware/api/actions";
 import { ReduxState } from "../store/store";
 import loadable from "../util/hoc/loadable";

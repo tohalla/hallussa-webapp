@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import button from "emotion-styles/button";
+import button from "styles/button";
 import React, { Component, MouseEventHandler, ReactFragment } from "react";
 
 export interface ButtonProps {

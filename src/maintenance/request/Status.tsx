@@ -1,5 +1,5 @@
 import "babel-polyfill";
-import defaultContainer, { appContainer, centerContent } from "emotion-styles/container";
+import defaultContainer, { appContainer, centerContent } from "styles/container";
 
 import React from "react";
 import ReactDOM from "react-dom";

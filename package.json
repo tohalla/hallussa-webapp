@@ -2,6 +2,8 @@
   "name": "hallussa-webapp",
   "description": "",
   "main": "src/index.tsx",
+  "license": "GPL-3.0-only",
+  "version": "0.0.0",
   "scripts": {
     "serve": "parcel pages/*.html",
     "build": "parcel build pages/*.html",
@@ -9,13 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@version.aalto.fi:hallast1/CS-E4400_hallussa-webapp.git"
+    "url": "git@github.com:tohalla/hallussa-webapp.git"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "change-case": "^3.0.2",
     "classnames": "^2.2.6",
     "date-fns": "^1.29.0",
+    "emotion": "^10.0.9",
     "normalize.css": "^8.0.1",
     "ramda": "^0.25.0",
     "react": "^15.x.x || ^16.x.x",

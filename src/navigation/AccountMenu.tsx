@@ -1,4 +1,4 @@
-import { navGroup, navItem } from "emotion-styles/topbar";
+import { navGroup, navItem } from "styles/topbar";
 import { path } from "ramda";
 import React from "react";
 
@@ -7,7 +7,7 @@ import { connect, MapStateToProps } from "react-redux";
 import { AccountPayload } from "../account/actions";
 import { signOut } from "../auth/auth";
 import Button from "../components/Button";
-import { light } from "../emotion-styles/src/inline";
+import { light } from "../styles/inline";
 import { ReduxState } from "../store/store";
 
 interface StateProps {

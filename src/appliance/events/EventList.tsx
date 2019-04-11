@@ -5,7 +5,7 @@ import { Column } from "react-table";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import Table from "../../components/Table";
-import { emptyContainer } from "../../emotion-styles/src/container";
+import { emptyContainer } from "../../styles/container";
 import { MaintainerPayload } from "../../maintainer/actions";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";

@@ -1,6 +1,6 @@
 import React, { Component, ReactChild } from "react";
 
-import drawer from "emotion-styles/drawer";
+import drawer from "styles/drawer";
 
 import DrawerContent from "./DrawerContent";
 import DrawerLabel from "./DrawerLabel";

@@ -2,8 +2,8 @@ import classNames from "classnames";
 import { addIndex, assoc, find, forEach, map, mergeWith, pick, values } from "ramda";
 import React, { ChangeEvent, Component, FormEventHandler, ReactFragment } from "react";
 
-import { actionsRow, form, inputRow } from "emotion-styles/form";
-import { error as errorStyle } from "emotion-styles/inline";
+import { actionsRow, form, inputRow } from "styles/form";
+import { error as errorStyle } from "styles/inline";
 import Button from "./Button";
 import { InputProps } from "./Input";
 import { getFormInput } from "./util";

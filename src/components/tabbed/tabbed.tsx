@@ -4,7 +4,7 @@ import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
 import { RouteComponentProps } from "react-router";
-import { viewContentContainer } from "../../emotion-styles/src/container";
+import { viewContentContainer } from "../../styles/container";
 import { ReduxState } from "../../store/store";
 import { TabPayload } from "./actions";
 import { ViewsState } from "./reducer";

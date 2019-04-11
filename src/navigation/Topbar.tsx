@@ -4,11 +4,11 @@ import {
   navGroup,
   toggleButton,
   topbar
-} from "emotion-styles/topbar";
+} from "styles/topbar";
 import React from "react";
 
 import Logo from "../components/Logo";
-import { sm } from "../emotion-styles/src/variables/breakpoints";
+import { sm } from "../styles/variables/breakpoints";
 import AccountMenu from "./AccountMenu";
 import OrganisationNavigation from "./OrganisationNavigation";
 

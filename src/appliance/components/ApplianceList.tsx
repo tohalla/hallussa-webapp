@@ -5,8 +5,8 @@ import { Column } from "react-table";
 
 import { Link } from "react-router-dom";
 import Table from "../../components/Table";
-import { emptyContainer } from "../../emotion-styles/src/container";
-import { error, success } from "../../emotion-styles/src/inline";
+import { emptyContainer } from "../../styles/container";
+import { error, success } from "../../styles/inline";
 import { getEntitiesByOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";

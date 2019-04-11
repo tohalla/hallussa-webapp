@@ -1,6 +1,6 @@
 import React, { ReactChild } from "react";
 
-import { content } from "emotion-styles/drawer";
+import { content } from "styles/drawer";
 
 interface Props {
   children: ReactChild;

@@ -1,8 +1,8 @@
 import classNames from "classnames";
 import React, { ReactChild } from "react";
 
-import { leftContainer, sidebarContainer } from "emotion-styles/sidebar";
-import { padded } from "../../emotion-styles/src/container";
+import { leftContainer, sidebarContainer } from "styles/sidebar";
+import { padded } from "../../styles/container";
 import Sidebar from "./Sidebar";
 
 interface Props {

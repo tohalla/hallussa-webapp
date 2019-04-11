@@ -3,9 +3,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 
-import "emotion-styles";
+import "styles";
 
-import { appContainer } from "emotion-styles/container";
+import { appContainer } from "styles/container";
 import { authenticate } from "./auth/auth";
 import Router from "./Router";
 import store, { initializeStore } from "./store/store";

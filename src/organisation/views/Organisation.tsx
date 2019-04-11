@@ -3,13 +3,13 @@ import { find, path, pick } from "ramda";
 import React from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 
-import { rowContainer, spacedHorizontalContainer, spread, actionGroup } from "emotion-styles/container";
+import { rowContainer, spacedHorizontalContainer, spread, actionGroup } from "styles/container";
 import { Link, RouteComponentProps } from "react-router-dom";
 import Button from "../../components/Button";
 import DoubleClickButton, { deletionConfirmation } from "../../components/DoubleClickButton";
-import button from "../../emotion-styles/src/button";
-import { alertIndication, link } from "../../emotion-styles/src/inline";
-import { spacer } from "../../emotion-styles/src/variables/spacing";
+import button from "../../styles/button";
+import { alertIndication, link } from "../../styles/inline";
+import { spacer } from "../../styles/variables/spacing";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";

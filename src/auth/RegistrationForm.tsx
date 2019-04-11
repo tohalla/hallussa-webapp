@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 
 import Form, { FormInput, FormState } from "../components/Form";
 import { baseUrl } from "../config";
-import { inputRow } from "../emotion-styles/src/form";
-import { small } from "../emotion-styles/src/inline";
+import { inputRow } from "../styles/form";
+import { small } from "../styles/inline";
 import { isValidEmail } from "../util/validationFunctions";
 import { register } from "./auth";
 

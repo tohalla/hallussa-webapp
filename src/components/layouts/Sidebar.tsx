@@ -1,6 +1,6 @@
 import React, { ReactChild } from "react";
 
-import { sidebar } from "emotion-styles/sidebar";
+import { sidebar } from "styles/sidebar";
 
 interface Props {
   children: ReactChild;

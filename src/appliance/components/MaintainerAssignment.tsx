@@ -4,9 +4,9 @@ import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 
 import Button from "../../components/Button";
 import Select from "../../components/Select";
-import { rowContainer, stacked } from "../../emotion-styles/src/container";
-import { large } from "../../emotion-styles/src/variables/fontSizes";
-import { normal } from "../../emotion-styles/src/variables/spacing";
+import { rowContainer, stacked } from "../../styles/container";
+import { large } from "../../styles/variables/fontSizes";
+import { normal } from "../../styles/variables/spacing";
 import { MaintainerPayload } from "../../maintainer/actions";
 import { getEntitiesByOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";

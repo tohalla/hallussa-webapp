@@ -7,7 +7,7 @@ import React, {
   RefObject
 } from "react";
 
-import input, { inputContainer, inputError, invalid } from "emotion-styles/input";
+import input, { inputContainer, inputError, invalid } from "styles/input";
 
 export interface InputProps {
   autoComplete: "off" | "on";

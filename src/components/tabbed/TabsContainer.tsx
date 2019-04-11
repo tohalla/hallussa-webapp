@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 import { RouteComponentProps } from "react-router";
-import { actionTab, tab as tabStyle, tabActive, tabsContainer } from "../../emotion-styles/src/tabbed";
+import { actionTab, tab as tabStyle, tabActive, tabsContainer } from "../../styles/tabbed";
 import { closeTab, createTab, TabPayload } from "./actions";
 import TabComponent from "./TabComponent";
 

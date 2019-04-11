@@ -1,6 +1,6 @@
 import React from "react";
 
-import logo from "emotion-styles/logo";
+import logo from "styles/logo";
 
 type Type = "light" | "dark" | "qr-light";
 

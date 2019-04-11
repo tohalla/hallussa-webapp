@@ -1,8 +1,8 @@
 import React from "react";
 import ReactTable, { TableProps } from "react-table";
 import "react-table/react-table.css";
-import { tableContainer } from "../emotion-styles/src/table";
-import { greyscale } from "../emotion-styles/src/variables/colors";
+import { tableContainer } from "../styles/table";
+import { greyscale } from "../styles/variables/colors";
 
 type Props = Pick<TableProps, "pageSize" | "columns" | "data">;
 

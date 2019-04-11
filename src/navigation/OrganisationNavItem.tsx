@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink, RouteComponentProps, withRouter } from "react-router-dom";
 
-import { activeItem, navItem } from "emotion-styles/topbar";
+import { activeItem, navItem } from "styles/topbar";
 import { connect, MapStateToProps } from "react-redux";
 import { OrganisationPayload } from "../organisation/actions";
 import { getOrganisation, getOrganisations } from "../organisation/state";

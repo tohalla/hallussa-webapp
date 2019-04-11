@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import Form, { FormInput, FormState } from "../components/Form";
 import { baseUrl } from "../config";
-import { small } from "../emotion-styles/src/inline";
+import { small } from "../styles/inline";
 import { authenticate } from "./auth";
 
 type Inputs = "email" | "password";

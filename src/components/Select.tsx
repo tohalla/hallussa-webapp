@@ -1,7 +1,7 @@
 
-import { greyscale } from "emotion-styles/variables/colors";
-import { inputHeight } from "emotion-styles/variables/sizes";
-import { minimal } from "emotion-styles/variables/spacing";
+import { greyscale } from "styles/variables/colors";
+import { inputHeight } from "styles/variables/sizes";
+import { minimal } from "styles/variables/spacing";
 import React from "react";
 import ReactSelect from "react-select";
 import { Props } from "react-select/lib/Select";

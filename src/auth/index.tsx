@@ -1,11 +1,11 @@
 import "@babel/polyfill";
-import defaultContainer, { appContainer, centerContent } from "emotion-styles/container";
+import defaultContainer, { appContainer, centerContent } from "styles/container";
 import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import "whatwg-fetch"; // fetch polyfill, replaces standard fetch
 
-import "emotion-styles";
+import "styles";
 
 import { baseUrl } from "../config";
 import { authenticate } from "./auth";

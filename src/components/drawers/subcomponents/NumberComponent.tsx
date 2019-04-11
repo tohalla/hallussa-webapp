@@ -1,8 +1,8 @@
 import classNames from "classnames";
 import React from "react";
 
-import { numberBlock, outerBlock } from "emotion-styles/block";
-import { small } from "../../../emotion-styles/src/inline";
+import { numberBlock, outerBlock } from "styles/block";
+import { small } from "../../../styles/inline";
 
 interface Props {
   number: string | number;

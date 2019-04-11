@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { ReactNode } from "react";
 
-import { viewContainer } from "emotion-styles/container";
+import { viewContainer } from "styles/container";
 
 interface Props {
   className?: string;

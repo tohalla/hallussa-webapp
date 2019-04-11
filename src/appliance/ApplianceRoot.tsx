@@ -3,7 +3,7 @@ import { Link, Redirect, Route, Switch } from "react-router-dom";
 
 import ViewContainer from "../components/layouts/ViewContainer";
 import tabbed from "../components/tabbed/tabbed";
-import { padded } from "../emotion-styles/src/container";
+import { padded } from "../styles/container";
 import ApplianceForm from "./components/ApplianceForm";
 import Appliance from "./views/Appliance";
 import ApplianceListing from "./views/ApplianceListing";

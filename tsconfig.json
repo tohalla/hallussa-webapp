@@ -11,7 +11,7 @@
     "jsx": "react",
     "baseUrl": "./",
     "paths": {
-      "emotion-styles/*": ["./src/emotion-styles/src/*"],
+      "styles/*": ["./src/styles/*"],
       "assets/*": ["/assets/*"]
     },
   },

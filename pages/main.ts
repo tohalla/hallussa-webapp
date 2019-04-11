@@ -1,7 +1,7 @@
 import "../assets/img/bg_img.svg";
 // tslint:disable-next-line:max-line-length
-import logo from "../src/emotion-styles/src/logo";
-import { logoContainer, navGroup, navItem, toggleButton, topbar } from "../src/emotion-styles/src/topbar";
+import logo from "../src/styles/logo";
+import { logoContainer, navGroup, navItem, toggleButton, topbar } from "../src/styles/topbar";
 
 const { body } = document;
 
