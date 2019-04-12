@@ -3,15 +3,15 @@ import { find, path, pick } from "ramda";
 import React from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 
-import { rowContainer, spacedHorizontalContainer, spread, actionGroup } from "styles/container";
 import { Link, RouteComponentProps } from "react-router-dom";
+import { actionGroup, rowContainer, spacedHorizontalContainer, spread } from "styles/container";
 import Button from "../../components/Button";
 import DoubleClickButton, { deletionConfirmation } from "../../components/DoubleClickButton";
+import { APIResponsePayload } from "../../store/middleware/api/actions";
+import { ReduxState } from "../../store/store";
 import button from "../../styles/button";
 import { alertIndication, link } from "../../styles/inline";
 import { spacer } from "../../styles/variables/spacing";
-import { APIResponsePayload } from "../../store/middleware/api/actions";
-import { ReduxState } from "../../store/store";
 import loadable from "../../util/hoc/loadable";
 import { deleteOrganisation, OrganisationPayload, setActiveOrganisation } from "../actions";
 import OrganisationForm from "../OrganisationForm";

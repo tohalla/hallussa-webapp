@@ -5,10 +5,10 @@ import { Column } from "react-table";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import Table from "../../components/Table";
-import { emptyContainer } from "../../styles/container";
 import { MaintainerPayload } from "../../maintainer/actions";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
+import { emptyContainer } from "../../styles/container";
 import loadable from "../../util/hoc/loadable";
 import { MaintenanceEventPayload } from "../actions";
 
@@ -39,7 +39,12 @@ class EventList extends React.Component<StateProps & Props> {
       id: "resolvedAt",
       width: 150,
     },
-    {Header: "Description", accessor: "description", resizable: true},
+    {
+      Header: "Description",
+      accessor: "description",
+      id:"description",
+      resizable: true,
+    },
     {
       Header: "Assigned to",
       accessor: (event) => {

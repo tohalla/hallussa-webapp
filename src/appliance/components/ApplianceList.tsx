@@ -5,11 +5,11 @@ import { Column } from "react-table";
 
 import { Link } from "react-router-dom";
 import Table from "../../components/Table";
-import { emptyContainer } from "../../styles/container";
-import { error, success } from "../../styles/inline";
 import { getEntitiesByOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
+import { emptyContainer } from "../../styles/container";
+import { error, success } from "../../styles/inline";
 import loadable from "../../util/hoc/loadable";
 import { AppliancePayload } from "../actions";
 
@@ -27,23 +27,29 @@ export class ApplianceList extends React.Component<StateProps & Props> {
   };
 
   public static columns: Array<Column<AppliancePayload>> = [
-    {Header: "Id", accessor: "id", maxWidth: 50},
+    {Header: "Id", accessor: "id", id: "id", maxWidth: 50},
     {
       Header: "Name",
       accessor: (appliance) => <Link to={`/appliances/${appliance.id}`}>{appliance.name}</Link>,
       id: "name",
       resizable: true,
     },
-    {Header: "Description", accessor: "description", resizable: true},
+    {
+      Header: "Description",
+      accessor: "description",
+      id: "description",
+      resizable: true,
+    },
     {
       Header: "Status",
       accessor: (appliance) => path(["status", "isMalfunctioning"], appliance) ?
         <span className={error}>Malfunctioning</span>
       : <span className={success}>OK</span>,
       id: "status",
-      width: 100,
+      maxWidth: 100,
+      resizable: true,
     },
-    {Header: "Location", accessor: "location", resizable: true},
+    {Header: "Location", accessor: "location", id: "location", resizable: true},
   ];
 
   public render() {

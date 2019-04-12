@@ -6,11 +6,25 @@ import { greyscale, text } from "./variables/colors";
 import fontSizes from "./variables/fontSizes";
 import { major, minor, normal } from "./variables/spacing";
 
+import "normalize.css";
+import "../../assets/fonts/Roboto-Regular.ttf";
+import "../../assets/style/material-icons.css";
+
 /**
  * Inject global styles
  */
 /*tslint:disable*/
 injectGlobal`
+  html {
+    font-family: "Roboto", sans-serif;
+  }
+
+  #appContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
   body {
     color: ${text.dark};
     font-size: ${fontSizes.base};

@@ -4,10 +4,10 @@ import { Column } from "react-table";
 
 import { Link } from "react-router-dom";
 import Table from "../../components/Table";
-import { emptyContainer } from "../../styles/container";
 import { getEntitiesByOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
+import { emptyContainer } from "../../styles/container";
 import loadable from "../../util/hoc/loadable";
 import { MaintainerPayload } from "../actions";
 
@@ -25,15 +25,15 @@ class MaintainerList extends React.Component<Props & StateProps> {
   };
 
   public static columns: Array<Column<MaintainerPayload>> = [
-    {Header: "Id", accessor: "id", maxWidth: 50},
+    {Header: "Id", accessor: "id", id: "id", maxWidth: 50},
     {
       Header: "Name",
       accessor: ({id, firstName, lastName}) => <Link to={`/maintainers/${id}`}>{firstName} {lastName}</Link>,
       id: "name",
       resizable: true,
     },
-    {Header: "Email", accessor: "email", resizable: true},
-    {Header: "Phone", accessor: "phone", resizable: true},
+    {Header: "Email", accessor: "email", id: "email", resizable: true},
+    {Header: "Phone", accessor: "phone", id: "phone", resizable: true},
   ];
 
   public render() {

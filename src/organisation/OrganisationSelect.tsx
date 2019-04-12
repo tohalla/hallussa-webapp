@@ -5,9 +5,9 @@ import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import Button from "../components/Button";
 import Select from "../components/Select";
-import { rowContainer } from "../styles/container";
 import { APIResponsePayload } from "../store/middleware/api/actions";
 import { ReduxState } from "../store/store";
+import { rowContainer } from "../styles/container";
 import loadable from "../util/hoc/loadable";
 import { OrganisationPayload, setActiveOrganisation } from "./actions";
 import { getOrganisation, getOrganisations } from "./state";
@@ -70,10 +70,11 @@ class OrganisationSelect extends React.Component<Props & StateProps & DispatchPr
     const {activeOrganisation, organisations} = this.props;
     if (!Array.isArray(organisations) || organisations.length === 0) {
       return "No organisations created.";
+    } else if (organisations.length === 1) {
+      return <div className={rowContainer} />;
     }
 
     const {selectedOrganisationOption} = this.state;
-
     return (
       <div className={rowContainer}>
         <Select
