@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { Component } from "react";
 
-import { label as labelStyle } from "styles/drawer";
+import { label as labelStyle, labelExpanded } from "styles/drawer";
 
 interface Props {
   label: string;
@@ -12,12 +12,9 @@ interface Props {
 export default class DrawerLabel extends Component<Props> {
   public render() {
     const { expand, label, handleToggle } = this.props;
-    const className = classNames(labelStyle, {
-      open: expand,
-    });
     return (
-      <div onClick={handleToggle}>
-        <p className={className}>{label}</p>
+      <div className={expand ? labelExpanded : labelStyle} onClick={handleToggle}>
+        {label}
       </div>
     );
   }

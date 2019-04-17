@@ -11,18 +11,23 @@ const drawer = css`
 export const label = css`
   color: ${greyscale[2]};
   text-transform: uppercase;
-  background-color: ${greyscale[8]};
+  background: ${greyscale[8]};
   margin: 0;
   padding: ${normal};
   border-bottom: 1px solid ${greyscale[4]};
   user-select: none;
 `;
 
+export const labelExpanded = css`
+  ${label}
+  border: 0;
+`;
+
 export const content = css`
   background: ${greyscale[9]};
-  margin-bottom: ${normal};
   padding: ${normal};
   user-select: none;
+  border-bottom: 1px solid ${greyscale[4]};
 `;
 
 export default drawer;

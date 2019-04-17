@@ -11,7 +11,7 @@ import {
 } from "./actions";
 import { APIMethods } from "./api";
 
-const typeHandler = cond([
+const typeHandler = cond<any, any>([
   [
     anyEquals([CALL_API, CALL_API_FAILURE]),
     (type, state, method, endpoint, payload) => assocPath([method, endpoint], payload, state),

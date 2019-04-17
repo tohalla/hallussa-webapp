@@ -36,12 +36,3 @@ export default class Drawer extends Component<Props> {
     );
   }
 }
-
-// export default connect(
-//   undefined,
-//   {
-//     toggleActiveDrawer: (view: string, drawerId: string) => {
-//       console.log("Toggle", view, drawerId);
-//     },
-//   }
-// )(Drawer);

@@ -7,7 +7,8 @@
   "scripts": {
     "serve": "parcel pages/*.html",
     "build": "parcel build pages/*.html",
-    "lint": "tslint -c tslint.json './src/**/*.ts{,x}'"
+    "lint": "tslint -c tslint.json -p tsconfig.json './src/**/*.ts{,x}'",
+    "prelint": "tsc -p tsconfig.json --noEmit"
   },
   "repository": {
     "type": "git",
@@ -19,10 +20,12 @@
     "classnames": "^2.2.6",
     "date-fns": "^1.29.0",
     "emotion": "^10.0.9",
+    "i18next": "^15.0.9",
     "normalize.css": "^8.0.1",
     "ramda": "^0.26.1",
     "react": "^15.x.x || ^16.x.x",
     "react-dom": "^15.3.0 || ^16.0.0",
+    "react-i18next": "^10.7.0",
     "react-redux": "^7.0.1",
     "react-router-dom": "^5.0.0",
     "react-select": "^2.1.1",

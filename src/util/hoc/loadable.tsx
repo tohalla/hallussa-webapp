@@ -1,5 +1,5 @@
-import { find } from "ramda";
-import React from "react";
+import { find, hasPath } from "ramda";
+import React, { Component, ComponentType } from "react";
 
 const loadingProps = ["loading", "isFetching"];
 
@@ -22,22 +22,18 @@ const checkLoading = (props: {[key: string]: any}, depth = 1, checkErrors = true
   return false;
 };
 
-export default <P, S = {}, SS = any>(
-  Component: typeof React.Component,
+export default <P extends {}>(
+  C: ComponentType<any> | typeof Component | ((p: P) => any),
   isLoading?: (props: {[key: string]: any}) => boolean,
   onError: (error: Error) => JSX.Element | string = (error) => "Error"
-) =>
-  class Loadable extends React.Component<P, S, SS> {
-    public shouldComponentUpdate = (nextProps: P) =>
-      !((typeof isLoading === "function" && isLoading(nextProps)) || checkLoading(nextProps))
-    public render() {
-      try {
-        if ((typeof isLoading === "function" && isLoading(this.props)) || checkLoading(this.props)) {
-          return "loading..."; // replace with loading indicator component
-        }
-      } catch (error) {
-        return onError(error) || null;
-      }
-      return <Component {...this.props} />;
+) => React.memo((props: P) => {
+  try {
+    if ((typeof isLoading === "function" && isLoading(props)) || checkLoading(props)) {
+      return "loading..."; // replace with loading indicator component
     }
-  };
+  } catch (error) {
+    return onError(error) || null;
+  }
+  return hasPath(["prototype", "render"], C) ?
+    <C {...props} /> : (C as (p: P) => any)(props);
+});

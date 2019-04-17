@@ -2,6 +2,7 @@ import React, { ReactFragment } from "react";
 import { connect, MapStateToProps } from "react-redux";
 import { Column } from "react-table";
 
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import Table from "../../components/Table";
 import { getEntitiesByOrganisation } from "../../organisation/state";
@@ -16,43 +17,39 @@ interface StateProps {
 }
 
 interface Props {
-  header: ReactFragment;
+  header?: ReactFragment;
 }
 
-class MaintainerList extends React.Component<Props & StateProps> {
-  public static defaultProps = {
-    header: <h1>Maintainer listing</h1>,
-  };
+const MaintainerList = (props: Props & StateProps) => {
+  const {t} = useTranslation();
+  const maintainers = props.maintainers as MaintainerPayload[];
 
-  public static columns: Array<Column<MaintainerPayload>> = [
-    {Header: "Id", accessor: "id", id: "id", maxWidth: 50},
+  const columns: Column[] = [
+    {Header: t("maintainer.field.id"), accessor: "id", id: "id", maxWidth: 50},
     {
-      Header: "Name",
+      Header: t("maintainer.field.name"),
       accessor: ({id, firstName, lastName}) => <Link to={`/maintainers/${id}`}>{firstName} {lastName}</Link>,
       id: "name",
       resizable: true,
     },
-    {Header: "Email", accessor: "email", id: "email", resizable: true},
-    {Header: "Phone", accessor: "phone", id: "phone", resizable: true},
+    {Header: t("maintainer.field.email"), accessor: "email", id: "email", resizable: true},
+    {Header: t("maintainer.field.phone"), accessor: "phone", id: "phone", resizable: true},
   ];
 
-  public render() {
-    const maintainers = this.props.maintainers as MaintainerPayload[];
-    return (
-      <>
-        {this.props.header}
-        {maintainers.length === 0 ?
-          <div className={emptyContainer}>No maintainers found</div>
-        :
-          <Table
-            columns={MaintainerList.columns}
-            data={maintainers}
-          />
-        }
-      </>
-    );
-  }
-}
+  return (
+    <>
+      {props.header}
+      {maintainers.length === 0 ?
+        <div className={emptyContainer}>{t("maintainer.listing.noMaintainers")}</div>
+      :
+        <Table
+          columns={columns}
+          data={maintainers}
+        />
+      }
+    </>
+  );
+};
 
 const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
   maintainers: getEntitiesByOrganisation(state, "maintainers"),

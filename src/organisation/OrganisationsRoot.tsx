@@ -1,14 +1,23 @@
 import classNames from "classnames";
 import React from "react";
-import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { Link, Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 import ViewContainer from "../components/layouts/ViewContainer";
 import { padded, viewContentContainer } from "../styles/container";
 import OrganisationForm from "./OrganisationForm";
 import Organisation from "./views/Organisation";
 
-const NewOrganisation = (props: RouteComponentProps) =>
-  <OrganisationForm header={<h1>New organisation</h1>} {...props} />;
+const NewOrganisation = (props: RouteComponentProps) => {
+  const {t} = useTranslation();
+  return (
+    <OrganisationForm
+      header={<h1>{t("organisation.create.title")}</h1>}
+      secondary={<Link to={"/organisations/"}>{t("cancel")}</Link>}
+      {...props}
+    />
+  );
+};
 
 export default () => (
   <ViewContainer className={classNames(viewContentContainer, padded)}>

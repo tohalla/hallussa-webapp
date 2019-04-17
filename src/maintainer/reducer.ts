@@ -28,7 +28,7 @@ import {
   UPDATE_MAINTAINER_SUCCESS
 } from "./actions";
 
-const typeHandler = cond([
+const typeHandler = cond<any, any>([
   [equals(FETCH_MAINTAINERS_SUCCESS), (type, state, payload) => merge(state, payload)],
   [equals(DELETE_APPLIANCE_SUCCESS), (type, state, payload, appliance) =>
     map(

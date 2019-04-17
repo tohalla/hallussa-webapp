@@ -1,10 +1,10 @@
 import { dissoc } from "ramda";
-import React, { ReactFragment } from "react";
+import React from "react";
 import { RouteComponentProps } from "react-router";
-import { Link } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
-import Form, { FormInput, FormProps, FormState } from "../../components/Form";
+import Form, { FormProps, FormState } from "../../components/Form";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
@@ -26,60 +26,57 @@ type Props = Partial<FormProps<Inputs>> & RouteComponentProps;
 
 type Inputs = "email" | "firstName" | "lastName" | "phone";
 
-class MaintainerForm extends React.Component<Props & StateProps & DispatchProps> {
-  public static defaultProps = {
-    submitText: "Create Maintainer",
-  };
+const MaintainerForm = ({onSubmit, ...props}: Props & StateProps & DispatchProps) => {
+  const {t} = useTranslation();
 
-  public static inputs: ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]> = [
-    {key: "email", props: {autoFocus: true, placeholder: "Email address"}, validate: {required: true}},
-    [
-      {key: "firstName", props: {}, validate: {required: true}},
-      {key: "lastName", props: {}, validate: {required: true}},
-    ],
-    {key: "phone", validate: {required: true, minLength: 6, maxLength: 15}},
-  ];
-
-  public handleSubmit = async (state: FormState<Inputs>) => {
-    const {id: organisation} = this.props.organisation as OrganisationPayload;
-    const {state: maintainer, onSubmit} = this.props;
-    if (maintainer) {
-      await this.props.updateMaintainer({...maintainer, ...dissoc("errors", state)});
+  const handleSubmit = async (state: FormState<Inputs>) => {
+    const {id: organisation} = props.organisation as OrganisationPayload;
+    if (props.state) {
+      await props.updateMaintainer({...props.state, ...dissoc("errors", state)});
     } else {
-      const newMaintainer = await this.props.createMaintainer(organisation, dissoc("errors", state));
+      const newMaintainer = await props.createMaintainer(organisation, dissoc("errors", state));
       if (newMaintainer) {
-        this.props.history.push(`/maintainers/${newMaintainer.id}`);
+        props.history.push(`/maintainers/${newMaintainer.id}`);
       }
     }
     if (typeof onSubmit === "function") {
       onSubmit(state);
     }
-  }
+  };
 
   // custom validation logic
-  public validate = (state: FormState<Inputs>) => {
+  const validate = (state: FormState<Inputs>) => {
     const {email, phone} = state;
     const errors = {...state.errors};
     if (!isValidEmail(email)) {
-      errors.email = "Invalid email address.";
+      errors.email = t<string>("maintainer.form.error.invalidEmail");
     }
     if (!isValidPhone(phone)) {
-      errors.phone = "Ivanlid phone number. Phone numbers may only contain numbers and specific characters (-+()).";
+      errors.phone = t<string>("maintainer.form.error.invalidPhone");
     }
     return errors;
-  }
+  };
 
-  public render() {
-    const {onSubmit, ...props} = this.props;
-    return (
-      <Form
-        inputs={MaintainerForm.inputs}
-        onSubmit={this.handleSubmit}
-        {...props}
-      />
-    );
-  }
-}
+  return (
+    <Form
+      inputs={[
+        {key: "email", props: {autoFocus: true, placeholder: t("maintainer.field.email")}, validate: {required: true}},
+        [
+          {key: "firstName", props: {placeholder: t("maintainer.field.firstName")}, validate: {required: true}},
+          {key: "lastName", props: {placeholder: t("maintainer.field.lastName")}, validate: {required: true}},
+        ],
+        {
+          key: "phone",
+          props: {placeholder: t("maintainer.field.phone")},
+          validate: {required: true, minLength: 6, maxLength: 15},
+        },
+      ]}
+      onSubmit={handleSubmit}
+      validate={validate}
+      {...props}
+    />
+  );
+};
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, Props> = {
   createMaintainer,

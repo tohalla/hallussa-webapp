@@ -1,11 +1,15 @@
 import React, { MouseEventHandler, ReactFragment } from "react";
 
+import { useTranslation } from "react-i18next";
 import Button, { ButtonProps } from "./Button";
 
-export const deletionConfirmation = (timer: number) => `Click again to confirm deletion (${timer})`;
+export const deletionConfirmation = (time: number) => {
+  const {t} = useTranslation();
+  return t("general.misc.confirmTimed", {time});
+};
 
 interface Props extends Partial<ButtonProps> {
-  children: ReactFragment;
+  children?: ReactFragment;
   delayInSeconds?: number;
   onClick: MouseEventHandler;
   secondaryClassName?: string;

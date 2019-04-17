@@ -1,10 +1,10 @@
 import { dissoc } from "ramda";
 import React from "react";
 import { RouteComponentProps } from "react-router";
-import { Link } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
-import Form, { FormInput, FormProps, FormState } from "../components/Form";
+import Form, { FormProps, FormState } from "../components/Form";
 import { APIResponsePayload } from "../store/middleware/api/actions";
 import { ReduxState } from "../store/store";
 import { createOrganisation, OrganisationPayload, setActiveOrganisation, updateOrganisation } from "./actions";
@@ -24,26 +24,19 @@ type Inputs = "name" | "organisationIdentifier" | "id";
 
 type Props = Partial<FormProps<Inputs>> & RouteComponentProps;
 
-class OrganisationForm extends React.Component<Props & DispatchProps & StateProps> {
-  public static defaultProps = {
-    secondary: <Link to={"/organisations/"}>Cancel</Link>,
-    submitText: "Create organisation",
-  };
-
-  public static inputs: ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]> = [
-    {key: "name", props: {autoFocus: true}, validate: {required: true, minLength: 3}},
-    {key: "organisationIdentifier", validate: {required: true}},
-  ];
-
-  public handleSubmit = async (state: FormState<Inputs>) => {
-    const {activeOrganisation, history, state: organisation, onSubmit} = this.props;
+const OrganisationForm = ({
+  onSubmit,
+  ...props
+}: Props & DispatchProps & StateProps) => {
+  const handleSubmit = async (state: FormState<Inputs>) => {
+    const {activeOrganisation, history, state: organisation} = props;
     if (organisation) {
-      await this.props.updateOrganisation({...organisation, ...dissoc("errors", state)});
+      await props.updateOrganisation({...organisation, ...dissoc("errors", state)});
     } else {
-      const newOrganisation = await this.props.createOrganisation(dissoc("errors", state));
+      const newOrganisation = await props.createOrganisation(dissoc("errors", state));
       if (newOrganisation) {
         if (!activeOrganisation) {// set newly created organistaion active, if no previous organisations
-          this.props.setActiveOrganisation(newOrganisation.id, false);
+          props.setActiveOrganisation(newOrganisation.id, false);
         }
       }
       history.push(`/organisations/${newOrganisation.id}`);
@@ -51,19 +44,29 @@ class OrganisationForm extends React.Component<Props & DispatchProps & StateProp
     if (typeof onSubmit === "function") {
       onSubmit(state);
     }
-  }
+  };
 
-  public render() {
-    const {onSubmit, ...props} = this.props;
-    return (
-      <Form
-        inputs={OrganisationForm.inputs}
-        onSubmit={this.handleSubmit}
-        {...props}
-      />
-    );
-  }
-}
+  const {t} = useTranslation();
+
+  return (
+    <Form
+      inputs={[
+        {
+          key: "name",
+          props: {autoFocus: true, placeholder: t("organisation.field.name")},
+          validate: {required: true, minLength: 3},
+        },
+        {
+          key: "organisationIdentifier",
+          props: {placeholder: t("organisation.field.organisationIdentifier")},
+          validate: {required: true},
+        },
+      ]}
+      onSubmit={handleSubmit}
+      {...props}
+    />
+  );
+};
 
 const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
   activeOrganisation: getOrganisation(state),

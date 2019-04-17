@@ -1,11 +1,11 @@
 import classnames from "classnames";
-import button from "styles/button";
 import React, { Component, MouseEventHandler, ReactFragment } from "react";
+import button from "styles/button";
 
 export interface ButtonProps {
   onClick?: MouseEventHandler;
   className?: string;
-  children: ReactFragment;
+  children?: ReactFragment;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
   plain: boolean;

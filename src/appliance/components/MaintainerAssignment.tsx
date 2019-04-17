@@ -2,16 +2,17 @@ import { groupBy, map } from "ramda";
 import React from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 
+import { withTranslation, WithTranslation } from "react-i18next";
 import Button from "../../components/Button";
 import Select from "../../components/Select";
-import { rowContainer, stacked } from "../../styles/container";
-import { large } from "../../styles/variables/fontSizes";
-import { normal } from "../../styles/variables/spacing";
 import { MaintainerPayload } from "../../maintainer/actions";
 import { getEntitiesByOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxAPICall } from "../../store/middleware/api/api";
 import { ReduxState } from "../../store/store";
+import { rowContainer, stacked } from "../../styles/container";
+import { large } from "../../styles/variables/fontSizes";
+import { normal } from "../../styles/variables/spacing";
 import loadable from "../../util/hoc/loadable";
 import { AppliancePayload, assignMaintainerToAppliance, removeMaintainerFromAppliance } from "../actions";
 
@@ -44,7 +45,7 @@ const getMaintainerOption = ({firstName, lastName, id}: MaintainerPayload) => ({
   label: `${firstName} ${lastName}`, value: id,
 });
 
-class MaintainerAssignment extends React.Component<Props & StateProps & DispatchProps, State> {
+class MaintainerAssignment extends React.Component<Props & StateProps & DispatchProps & WithTranslation, State> {
   public state: State = {
     maintainer: null,
   };
@@ -74,7 +75,7 @@ class MaintainerAssignment extends React.Component<Props & StateProps & Dispatch
   }
 
   public render() {
-    const {appliance, maintainers} = this.props;
+    const {appliance, maintainers, t} = this.props;
     const {assigned, assignable} = groupBy(
       (maintainer) => appliance.maintainers.indexOf(maintainer.id) === -1 ? "assignable" : "assigned",
       maintainers as ReadonlyArray<MaintainerPayload>
@@ -87,12 +88,12 @@ class MaintainerAssignment extends React.Component<Props & StateProps & Dispatch
             options={map(getMaintainerOption, assignable)}
             onChange={this.setMaintainer}
             value={this.state.maintainer}
-            placeholder="Select maintainer to assign"
+            placeholder={t("appliance.maintainer.selectMaintainer")}
           />
             {this.state.maintainer &&
-              <Button onClick={this.assignMaintainer}>Assign maintainer</Button>
+              <Button onClick={this.assignMaintainer}>{t("appliance.maintainer.addMaintainer")}</Button>
             }
-          </div> : "No more maintainers available to add."
+          </div> : t("appliance.maintainer.noMaintainers")
         }
         {assigned && <div style={{marginTop: normal}}>
           {map((maintainer: MaintainerPayload) => (
@@ -124,5 +125,5 @@ const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) 
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  loadable(MaintainerAssignment)
+  loadable(withTranslation()(MaintainerAssignment))
 );

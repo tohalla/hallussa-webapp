@@ -1,11 +1,11 @@
 import classNames from "classnames";
+import React from "react";
 import {
   logoContainer,
   navGroup,
   toggleButton,
   topbar
 } from "styles/topbar";
-import React from "react";
 
 import Logo from "../components/Logo";
 import { sm } from "../styles/variables/breakpoints";

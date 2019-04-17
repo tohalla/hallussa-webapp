@@ -11,7 +11,7 @@ import {
   UPDATE_ORGANISATION_SUCCESS
 } from "./actions";
 
-const typeHandler = cond([
+const typeHandler = cond<any, any>([
   [equals(FETCH_ORGANISATIONS_SUCCESS), (type, state, payload) => merge(state, payload)],
   [equals(DELETE_ORGANISATIONS_SUCCESS), (type, state, payload, organisation) => dissoc(organisation.id, state)],
   [equals(CREATE_ORGANISATION_SUCCESS), (type, state, payload) => payload.id ?

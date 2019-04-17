@@ -2,7 +2,7 @@ import { css } from "emotion";
 
 import { sm } from "./variables/breakpoints";
 import { greyscale } from "./variables/colors";
-import { major, minor, normal, minimal } from "./variables/spacing";
+import { major, minimal, minor, normal } from "./variables/spacing";
 
 export const body = css`
   font-family: "Roboto", sans-serif;

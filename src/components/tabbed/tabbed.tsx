@@ -4,8 +4,8 @@ import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
 import { RouteComponentProps } from "react-router";
-import { viewContentContainer } from "../../styles/container";
 import { ReduxState } from "../../store/store";
+import { viewContentContainer } from "../../styles/container";
 import { TabPayload } from "./actions";
 import { ViewsState } from "./reducer";
 import TabsContainer from "./TabsContainer";

@@ -12,7 +12,7 @@ import {
   UPDATE_APPLIANCE_SUCCESS
 } from "./actions";
 
-const typeHandler = cond([
+const typeHandler = cond<any, any>([
   [equals(FETCH_APPLIANCES_SUCCESS), (type, state, payload) => merge(state, payload)],
   [equals(CREATE_APPLIANCE_SUCCESS), (type, state, payload) =>
     payload.id ? assoc(String(payload.id), payload, state) : state,

@@ -1,10 +1,10 @@
 
-import { greyscale } from "styles/variables/colors";
-import { inputHeight } from "styles/variables/sizes";
-import { minimal } from "styles/variables/spacing";
 import React from "react";
 import ReactSelect from "react-select";
 import { Props } from "react-select/lib/Select";
+import { greyscale } from "styles/variables/colors";
+import { inputHeight } from "styles/variables/sizes";
+import { minimal } from "styles/variables/spacing";
 
 export default function Select<T = {label: string, value: any}>(
   props: Pick<Props<T>, Exclude<keyof Props<T>, "className" | "components">>

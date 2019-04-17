@@ -1,5 +1,6 @@
 import { filter, path } from "ramda";
 import React, { Component } from "react";
+import { useTranslation } from "react-i18next";
 import { connect, MapStateToProps } from "react-redux";
 import NumberComponent from "../../components/drawers/subcomponents/NumberComponent";
 import { getEntitiesByOrganisation } from "../../organisation/state";
@@ -12,31 +13,29 @@ interface StateProps {
   appliances: ReadonlyArray<AppliancePayload> | APIResponsePayload;
 }
 
-class Summary extends Component<StateProps> {
-  public render() {
-    const appliances = this.props.appliances as ReadonlyArray<AppliancePayload>;
-    return (
+export const Summary = (props: StateProps) => {
+  const appliances = props.appliances as ReadonlyArray<AppliancePayload>;
+  const {t} = useTranslation();
+  return (
+    <div>
+      <h3>{t("appliances.drawers.overview.title")}</h3>
       <div>
-        <h3>Overview</h3>
-        <div>
-          <NumberComponent
-            size={"lg"}
-            number={appliances.length}
-            label={"Number of appliances"}
-          />
-          <NumberComponent
-            size={"lg"}
-            number={
-              appliances.length -
-              filter((appliance) => Boolean(path(["status", "isMalfunctioning"], appliance)), appliances).length
-            }
-            label={"Currently operative"}
-          />
-        </div>
+        <NumberComponent
+          size={"lg"}
+          number={appliances.length}
+          label={t("appliances.drawers.overview.numberOfAppliances")}
+        />
+        <NumberComponent
+          size={"lg"}
+          number={
+            filter((appliance) => !path(["status", "isMalfunctioning"], appliance), appliances).length
+          }
+          label={t("appliances.drawers.overview.operativeAppliances")}
+        />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state: ReduxState) => ({
   appliances: getEntitiesByOrganisation(state, "appliances"),

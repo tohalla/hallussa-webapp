@@ -3,6 +3,7 @@ import { find, path, pick } from "ramda";
 import React from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 
+import { withTranslation, WithTranslation } from "react-i18next";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { actionGroup, rowContainer, spacedHorizontalContainer, spread } from "styles/container";
 import Button from "../../components/Button";
@@ -35,9 +36,7 @@ interface State {
   action: Actions;
 }
 
-const NewOrganisation = () => <Link to="/organisations/new" className={button}>Create a new organisation</Link>;
-
-class Organisation extends React.Component<Props & StateProps & DispatchProps, State> {
+class Organisation extends React.Component<Props & StateProps & DispatchProps & WithTranslation, State> {
   public state: State = {
     action: "default",
   };
@@ -60,13 +59,17 @@ class Organisation extends React.Component<Props & StateProps & DispatchProps, S
   }
 
   public render() {
+    const {t} = this.props;
     const organisation =  this.props.organisation || this.props.activeOrganisation as OrganisationPayload;
+
+    const NewOrganisation = () =>
+      <Link to="/organisations/new" className={button}>{t("organisation.action.create")}</Link>;
 
     const organisations = this.props.organisations as ReadonlyArray<OrganisationPayload>;
     if (typeof organisation === "undefined" && organisations.length === 0) {
       return (
         <div className={classNames(rowContainer, spread)}>
-          It seems you don't have any organisations created.
+          {t("organisation.noOrganisations")}
           <NewOrganisation />
         </div>
       );
@@ -86,9 +89,9 @@ class Organisation extends React.Component<Props & StateProps & DispatchProps, S
         <OrganisationForm
           state={organisation}
           onSubmit={this.setAction()}
-          secondary={<Button className={link} plain={true} onClick={this.setAction()}>Cancel</Button>}
-          header={<h1>Edit organisation – {organisation.name}</h1>}
-          submitText="Update organisation"
+          secondary={<Button className={link} plain={true} onClick={this.setAction()}>{t("cancel")}</Button>}
+          header={<h1>{t("organisation.edit.title", {organisation: organisation.name})}</h1>}
+          submitText={t("organisation.edit.form.submit")}
           {...routerProps}
         />
       );
@@ -106,9 +109,9 @@ class Organisation extends React.Component<Props & StateProps & DispatchProps, S
                 secondaryClassName={alertIndication}
                 onClick={this.handleDeleteOrganisation}
               >
-                Delete organisation
+                {t("organisation.action.delete")}
               </DoubleClickButton>
-              <Button plain={true} onClick={this.setAction("edit")}>Edit organisation</Button>
+              <Button plain={true} onClick={this.setAction("edit")}>{t("organisation.action.edit")}</Button>
             </div>
           </div>
           {organisationIdentifier}
@@ -139,4 +142,4 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, Props> = {
 
 export default connect(
   mapStateToProps, mapDispatchToProps
-)(loadable(Organisation));
+)(loadable(withTranslation()(Organisation)));

@@ -2,6 +2,7 @@ import { map, path } from "ramda";
 import React from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 
+import { WithTranslation, withTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router";
 import Button from "../components/Button";
 import Select from "../components/Select";
@@ -39,7 +40,7 @@ const getOrganisationOption = (organisation: OrganisationPayload): OrganisationO
   label: organisation.name, organisation, value: organisation.id,
 });
 
-class OrganisationSelect extends React.Component<Props & StateProps & DispatchProps, State> {
+class OrganisationSelect extends React.Component<Props & StateProps & DispatchProps & WithTranslation, State> {
   public static getDerivedStateFromProps(props: Props & StateProps & DispatchProps, prevState: State) {
     if (props.organisation && props.organisation !== path(["selectedOrganisationOption", "organisation"], prevState)) {
       return {...prevState, selectedOrganisationOption: getOrganisationOption(props.organisation)};
@@ -47,7 +48,7 @@ class OrganisationSelect extends React.Component<Props & StateProps & DispatchPr
     return prevState;
   }
 
-  constructor(props: Props & StateProps & DispatchProps) {
+  constructor(props: Props & StateProps & DispatchProps & WithTranslation) {
     super(props);
     this.state = {
       selectedOrganisationOption: getOrganisationOption(
@@ -67,9 +68,9 @@ class OrganisationSelect extends React.Component<Props & StateProps & DispatchPr
   }
 
   public render() {
-    const {activeOrganisation, organisations} = this.props;
+    const {activeOrganisation, organisations, t} = this.props;
     if (!Array.isArray(organisations) || organisations.length === 0) {
-      return "No organisations created.";
+      return t("organisation.noOrganisations");
     } else if (organisations.length === 1) {
       return <div className={rowContainer} />;
     }
@@ -84,7 +85,7 @@ class OrganisationSelect extends React.Component<Props & StateProps & DispatchPr
         />
         {selectedOrganisationOption && activeOrganisation !== selectedOrganisationOption.organisation &&
           <Button onClick={this.handleOrganisationChange}>
-            Set as active
+            {t("organisation.action.activate")}
           </Button>
         }
       </div>
@@ -103,4 +104,4 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, Props> = {
 
 export default connect<StateProps, DispatchProps, Props, ReduxState>(
   mapStateToProps, mapDispatchToProps
-)(loadable(OrganisationSelect));
+)(loadable(withTranslation()(OrganisationSelect)));

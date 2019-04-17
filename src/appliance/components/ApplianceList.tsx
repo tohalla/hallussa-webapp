@@ -1,9 +1,10 @@
 import { path } from "ramda";
 import React, { ReactFragment } from "react";
 import { connect, MapStateToProps } from "react-redux";
-import { Column } from "react-table";
 
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { Column } from "react-table";
 import Table from "../../components/Table";
 import { getEntitiesByOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
@@ -21,55 +22,55 @@ interface Props {
   header?: ReactFragment;
 }
 
-export class ApplianceList extends React.Component<StateProps & Props> {
-  public static defaultProps = {
-    header: <h1>Appliance listing</h1>,
-  };
+export const ApplianceList = ({header, appliances}: Props & StateProps) => {
+  const {t} = useTranslation();
 
-  public static columns: Array<Column<AppliancePayload>> = [
-    {Header: "Id", accessor: "id", id: "id", maxWidth: 50},
+  const columns: Column[] = [
+    {Header: t("appliance.field.id"), accessor: "id", id: "id", maxWidth: 50},
     {
-      Header: "Name",
+      Header: t("appliance.field.name"),
       accessor: (appliance) => <Link to={`/appliances/${appliance.id}`}>{appliance.name}</Link>,
       id: "name",
       resizable: true,
     },
     {
-      Header: "Description",
+      Header: t("appliance.field.description"),
       accessor: "description",
       id: "description",
       resizable: true,
     },
     {
-      Header: "Status",
+      Header: t("appliance.field.status"),
       accessor: (appliance) => path(["status", "isMalfunctioning"], appliance) ?
-        <span className={error}>Malfunctioning</span>
-      : <span className={success}>OK</span>,
+          <span className={error}>{t("appliance.status.malfunctioning")}</span>
+        : <span className={success}>{t("appliance.status.ok")}</span>,
       id: "status",
       maxWidth: 100,
       resizable: true,
     },
-    {Header: "Location", accessor: "location", id: "location", resizable: true},
+    {
+      Header: t("appliance.field.location"),
+      accessor: "location",
+      id: "location",
+      resizable: true,
+    },
   ];
 
-  public render() {
-    const {header} = this.props;
-    const appliances = this.props.appliances as AppliancePayload[];
-    return (
+  return (
       <>
         {header}
-        {appliances.length === 0 ?
-          <div className={emptyContainer}>No appliances found</div>
+        {(appliances as Readonly<AppliancePayload[]>).length === 0 ?
+          <div className={emptyContainer}>{t("appliance.listing.noAppliances")}</div>
         :
           <Table
-            columns={ApplianceList.columns}
-            data={appliances}
+            columns={columns}
+            pageSize={20}
+            data={appliances as AppliancePayload[]}
           />
         }
       </>
-    );
-  }
-}
+  );
+};
 
 const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
   appliances: getEntitiesByOrganisation(state, "appliances"),

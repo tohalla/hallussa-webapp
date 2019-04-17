@@ -59,7 +59,7 @@ export const initializeStore = async () => {
   : account.organisations[0]; // if not set in storage, use the first one
   if (typeof organisation === "undefined") { return; } // return if no organisations listed under account
   // set selected organisation as active
-  return store.dispatch<any>(setActiveOrganisation(organisation.id);
+  return store.dispatch<any>(setActiveOrganisation(organisation.id));
 };
 
 export default store;

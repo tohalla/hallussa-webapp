@@ -4,19 +4,20 @@ import React, { Component } from "react";
 import { connect, MapStateToProps } from "react-redux";
 
 import { format } from "date-fns";
+import { withTranslation, WithTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router";
 import { AppliancePayload } from "../../appliance/actions";
 import { ApplianceList } from "../../appliance/components/ApplianceList";
 import Button from "../../components/Button";
 import DoubleClickButton, { deletionConfirmation } from "../../components/DoubleClickButton";
 import { closeTab, createTab, TabPayload } from "../../components/tabbed/actions";
-import { spacedHorizontalContainer, spread, stacked } from "../../styles/container";
-import { alertIndication, info, link, timestamp } from "../../styles/inline";
-import { spacer } from "../../styles/variables/spacing";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
+import { spacedHorizontalContainer, spread, stacked } from "../../styles/container";
+import { alertIndication, info, link, timestamp } from "../../styles/inline";
+import { spacer } from "../../styles/variables/spacing";
 import loadable from "../../util/hoc/loadable";
 import { deleteMaintainer, MaintainerPayload } from "../actions";
 import MaintainerForm from "../components/MaintainerForm";
@@ -43,7 +44,7 @@ interface State {
   action: Actions;
 }
 
-class Maintainer extends Component<Props, State> {
+class Maintainer extends Component<Props & WithTranslation, State> {
   public static getDerivedStateFromProps(props: Props, prevState: object) {
     const {tabs, maintainer, history, organisation} = props;
     if (
@@ -79,7 +80,7 @@ class Maintainer extends Component<Props, State> {
   public setAction = (action: Actions = "default") => () => this.setState({action});
 
   public render() {
-    const {maintainer} = this.props;
+    const {maintainer, t} = this.props;
     if (!maintainer) {
       return null;
     }
@@ -92,8 +93,10 @@ class Maintainer extends Component<Props, State> {
             state={maintainer}
             secondary={<Button className={link} plain={true} onClick={this.setAction()}>Cancel</Button>}
             onSubmit={this.setAction()}
-            header={<h1>Edit maintainer – {maintainer.firstName} {maintainer.lastName}</h1>}
-            submitText="Update maintainer"
+            header={
+              <h1>{t("maintainer.edit.title", {maintainer: `${maintainer.firstName} ${maintainer.lastName}`})}</h1>
+            }
+            submitText={t("maintainer.edit.form.submit")}
             {...routerProps}
           />
         </div>
@@ -113,9 +116,9 @@ class Maintainer extends Component<Props, State> {
               secondaryClassName={alertIndication}
               onClick={this.handeDeleteMaintainer}
             >
-              Delete maintainer
+              {t("maintainer.action.delete")}
             </DoubleClickButton>
-            <Button plain={true} onClick={this.setAction("edit")}>Edit maintainer</Button>
+            <Button plain={true} onClick={this.setAction("edit")}>{t("maintainer.action.edit")}</Button>
           </div>
         </div>
         <div className={stacked}>
@@ -128,12 +131,15 @@ class Maintainer extends Component<Props, State> {
         <div className={spacer} />
         <ApplianceList
           appliances={this.props.appliances}
-          header={<h3>Appliances</h3>}
+          header={<h3>{t("maintainer.appliance.list.title")}</h3>}
         />
         <div className={spacer} />
         <div className={classNames(stacked, timestamp)} style={{alignSelf: "stretch", justifyContent: "center"}}>
-          <span>Created at {format(createdAt, "D.M.YYYY")}</span>
-          {updatedAt && <span>Updated at {format(updatedAt, "D.M.YYYY – HH:mm")}</span>}
+            <span>{t("maintainer.createdAt", {createdAt: format(createdAt, "D.M.YYYY")})}</span>
+            {
+              updatedAt &&
+              <span>{t("maintainer.updatedAt", {updatedAt: format(updatedAt, "D.M.YYYY – HH:mm")})}</span>
+            }
         </div>
       </>
     );
@@ -153,4 +159,4 @@ const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, 
 export default connect(
   mapStateToProps,
   {createTab, closeTab, deleteMaintainer}
-)(loadable<Props>(Maintainer));
+)(loadable<Props>(withTranslation()(Maintainer)));

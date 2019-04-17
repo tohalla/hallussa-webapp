@@ -4,6 +4,7 @@ import React, { ChangeEvent, Component, FormEventHandler, ReactFragment } from "
 
 import { actionsRow, form, inputRow } from "styles/form";
 import { error as errorStyle } from "styles/inline";
+import { TranslationProps } from "../../misc";
 import Button from "./Button";
 import { InputProps } from "./Input";
 import { getFormInput } from "./util";
@@ -31,7 +32,7 @@ export interface FormProps<Inputs extends string> {
   onSubmit: (state: FormState<Inputs>) => any;
   inputs: ReadonlyArray<FormInput<Inputs> | ReadonlyArray<FormInput<Inputs>>>;
   secondary: ReactFragment;
-  submitText: string;
+  submitText: ((p: TranslationProps) => string) | string;
   state?: {[key in Inputs]?: any};
   isValid: boolean;
   validate?: (state: FormState<Inputs>) => {[key in Inputs]?: string | boolean};

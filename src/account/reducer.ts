@@ -6,12 +6,11 @@ import { AccountAction, FETCH_ACCOUNT_SUCCESS } from "./actions";
 const typeHandler = cond([
   [equals(FETCH_ACCOUNT_SUCCESS), (type, state, payload) => payload],
   [T, (type, state, payload) => state],
-]);
+]) as any;
 
 const reducer: Reducer<{[key: number]: any}, AccountAction> = (
   state = {},
   {payload, type}: AccountAction
-) =>
-  typeHandler(type, state, payload);
+) => typeHandler(type, state, payload);
 
 export default reducer;

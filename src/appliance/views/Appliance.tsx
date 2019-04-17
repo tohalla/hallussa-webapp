@@ -4,6 +4,8 @@ import React, { Component } from "react";
 import { connect, MapStateToProps } from "react-redux";
 
 import { format } from "date-fns";
+import i18next from "i18next";
+import { withTranslation, WithTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router";
 import Button from "../../components/Button";
 import DoubleClickButton, { deletionConfirmation } from "../../components/DoubleClickButton";
@@ -11,14 +13,14 @@ import Drawers from "../../components/drawers/Drawers";
 import WithSidebar from "../../components/layouts/WithSidebar";
 import { closeTab, createTab, TabPayload } from "../../components/tabbed/actions";
 import { apiUrl } from "../../config";
-import { padded, spacedHorizontalContainer, spread, stacked } from "../../styles/container";
-import { alertIndication, info, link, timestamp } from "../../styles/inline";
-import { indicator } from "../../styles/variables/colors";
-import { spacer } from "../../styles/variables/spacing";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
+import { padded, spacedHorizontalContainer, spread, stacked } from "../../styles/container";
+import { alertIndication, info, link, timestamp } from "../../styles/inline";
+import { indicator } from "../../styles/variables/colors";
+import { spacer } from "../../styles/variables/spacing";
 import loadable from "../../util/hoc/loadable";
 import { authenticatedFetch } from "../../util/utilityFunctions";
 import { AppliancePayload, deleteAppliance, MaintenanceEventPayload } from "../actions";
@@ -38,7 +40,7 @@ interface DispatchProps {
   deleteAppliance(appliance: AppliancePayload): any;
 }
 
-type Props = RouteComponentProps & DispatchProps & StateProps & {
+type Props = RouteComponentProps & DispatchProps & StateProps & WithTranslation & {
   match: {params: {appliance: string}}
 };
 
@@ -91,18 +93,7 @@ class Appliance extends Component<Props, State> {
     await this.props.deleteAppliance(this.props.appliance);
   }
 
-  public renderSidebar = () => (
-    <Drawers
-      drawers={{
-        maintainers: {
-          content: <MaintainerAssignment appliance={this.props.appliance} />,
-          label: "Maintainers",
-        },
-      }}
-    />
-  )
-
-  public renderContent = () => {
+  public renderContent = (t: i18next.TFunction) => {
     if (!this.props.appliance) {
       return <div />;
     }
@@ -126,37 +117,47 @@ class Appliance extends Component<Props, State> {
               secondaryClassName={alertIndication}
               onClick={this.handleDeleteAppliance}
             >
-              Delete appliance
+              {t("appliance.action.delete")}
             </DoubleClickButton>
-            <Button plain={true} onClick={this.setAction("edit")}>Edit appliance</Button>
+            <Button plain={true} onClick={this.setAction("edit")}>
+              {t("appliance.action.edit")}
+            </Button>
           </div>
         </div>
         {description}
         <div className={spacer} />
         <div className={info}><i className="material-icons">info</i>
           {status && status.isMalfunctioning ?
-            <span style={{color: indicator.error}}>Malfunctioning</span>
-          : <span style={{color: indicator.success}}>OK</span>}
+            <span style={{color: indicator.error}}>{t("appliance.status.malfunctioning")}</span>
+          : <span style={{color: indicator.success}}>{t("appliance.status.ok")}</span>}
         </div>
         {location &&
           <div className={info}><i className="material-icons">location_on</i><span>{location}</span></div>
         }
         <div className={spacer} />
-        <EventList maintenanceEvents={maintenanceEvents as MaintenanceEventPayload[]} />
+        <EventList
+          header={<h3>{t("appliance.event.list.title")}</h3>}
+          maintenanceEvents={maintenanceEvents as MaintenanceEventPayload[]}
+        />
         <div className={spacer} />
         <div className={spread}>
           <div className={classNames(stacked, timestamp)} style={{alignSelf: "stretch", justifyContent: "center"}}>
-            <span>Created at {format(createdAt, "D.M.YYYY")}</span>
-            {updatedAt && <span>Updated at {format(updatedAt, "D.M.YYYY – HH:mm")}</span>}
+            <span>{t("appliance.createdAt", {createdAt: format(createdAt, "D.M.YYYY")})}</span>
+            {
+              updatedAt &&
+              <span>{t("appliance.updatedAt", {updatedAt: format(updatedAt, "D.M.YYYY – HH:mm")})}</span>
+            }
           </div>
-          <Button onClick={this.handleFetchQR}>Download QR code</Button>
+          <Button onClick={this.handleFetchQR}>
+            {t("appliance.action.downloadQR")}
+          </Button>
         </div>
       </div>
     );
   }
 
   public render() {
-    const {appliance} = this.props;
+    const {appliance, t} = this.props;
     const routerProps: RouteComponentProps = pick(["history", "match", "location"], this.props);
     const {action} = this.state;
     if (action === "edit") {
@@ -165,9 +166,13 @@ class Appliance extends Component<Props, State> {
           <ApplianceForm
             state={appliance}
             onSubmit={this.setAction()}
-            secondary={<Button className={link} plain={true} onClick={this.setAction()}>Cancel</Button>}
-            header={<h1>Edit appliance – {appliance.name}</h1>}
-            submitText="Update appliance"
+            secondary={
+              <Button className={link} plain={true} onClick={this.setAction()}>
+                {t("cancel")}
+              </Button>
+            }
+            header={<h1>{t("appliance.edit.title", {appliance: appliance.name})}</h1>}
+            submitText={t("appliance.edit.form.submit")}
             {...routerProps}
           />
         </div>
@@ -175,8 +180,17 @@ class Appliance extends Component<Props, State> {
     }
     return (
       <WithSidebar
-        content={this.renderContent()}
-        sidebarContent={this.renderSidebar()}
+        content={this.renderContent(t)}
+        sidebarContent={
+          <Drawers
+            drawers={{
+              maintainers: {
+                content: <MaintainerAssignment appliance={this.props.appliance} />,
+                label: t("appliance.drawers.maintainers.title"),
+              },
+            }}
+          />
+        }
       />
     );
   }
@@ -191,4 +205,4 @@ const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, 
 export default connect(
   mapStateToProps,
   {createTab, closeTab, deleteAppliance}
-)(loadable<Props>(Appliance));
+)(loadable<Props>(withTranslation()(Appliance)));

@@ -19,16 +19,23 @@ export interface ViewsState {
 
 const initialState: ViewsState = {
   appliances: {tabs: {
-    appliances: {key: "appliances", label: "Appliances", sticky: true, order: -1},
-    new: {accent: true, key: "new", activeLabel: "New appliance", label: "add", sticky: true, order: 1},
+    appliances: {key: "appliances", label: ({t}) => t("tab.appliance.appliances"), sticky: true, order: -1},
+    new: {accent: true, key: "new", activeLabel: ({t}) => t("tab.appliance.new"), label: "add", sticky: true, order: 1},
   }},
   maintainers: {tabs: {
-    maintainers: {key: "maintainers", label: "Maintainers", sticky: true, order: -1},
-    new: {accent: true, key: "new", activeLabel: "New maintainer", label: "add", sticky: true, order: 1},
+    maintainers: {key: "maintainers", label: ({t}) => t("tab.maintainer.maintainers"), sticky: true, order: -1},
+    new: {
+      accent: true,
+      activeLabel: ({t}) => t("tab.maintainer.new"),
+      key: "new",
+      label: "add",
+      order: 1,
+      sticky: true,
+    },
   }},
 };
 
-const typeHandler = cond([
+const typeHandler = cond<any, any>([
   [equals(CREATE_TAB), (type, state, view, payload) =>
     assocPath([view, "tabs", payload.key], payload, state),
   ],

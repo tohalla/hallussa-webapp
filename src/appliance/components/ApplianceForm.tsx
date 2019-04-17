@@ -1,10 +1,10 @@
 import { dissoc } from "ramda";
-import React, { ReactFragment } from "react";
+import React from "react";
 import { RouteComponentProps } from "react-router";
-import { Link } from "react-router-dom";
 
+import { withTranslation, WithTranslation } from "react-i18next";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
-import Form, { FormInput, FormProps, FormState } from "../../components/Form";
+import Form, { FormProps, FormState } from "../../components/Form";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
@@ -25,17 +25,7 @@ type Props = Partial<FormProps<Inputs>> & RouteComponentProps;
 
 type Inputs = "name" | "description" | "location";
 
-class ApplianceForm extends React.Component<Props & DispatchProps & StateProps> {
-  public static defaultProps = {
-    submitText: "Create Appliance",
-  };
-
-  public static inputs: ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]> = [
-    {key: "name", props: {autoFocus: true}, validate: {required: true, minLength: 2}},
-    {key: "description", props: {getInputElement: (props) => <textarea {...props} rows={3} />}},
-    {key: "location"},
-  ];
-
+class ApplianceForm extends React.Component<Props & DispatchProps & StateProps & WithTranslation> {
   public handleSubmit = async (state: FormState<Inputs>) => {
     const {id: organisation} = this.props.organisation as OrganisationPayload;
     const {state: appliance, onSubmit} = this.props;
@@ -53,10 +43,24 @@ class ApplianceForm extends React.Component<Props & DispatchProps & StateProps>�
   }
 
   public render() {
-    const {onSubmit, ...props} = this.props;
+    const {onSubmit, t, ...props} = this.props;
     return (
       <Form
-        inputs={ApplianceForm.inputs}
+        inputs={[
+          {
+            key: "name",
+            props: {autoFocus: true, placeholder: t("appliance.field.name")},
+            validate: {required: true, minLength: 2},
+          },
+          {
+            key: "description",
+            props: {
+              getInputElement: (p) => <textarea {...p} rows={3} />,
+              placeholder: t("appliance.field.description"),
+            },
+          },
+          {key: "location", props: {placeholder: t("appliance.field.location")}},
+        ]}
         onSubmit={this.handleSubmit}
         {...props}
       />
@@ -75,4 +79,4 @@ const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) 
 
 export default connect<StateProps, DispatchProps, Props, ReduxState>(
   mapStateToProps, mapDispatchToProps
-)(loadable(ApplianceForm));
+)(loadable(withTranslation()(ApplianceForm)));
