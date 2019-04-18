@@ -3,10 +3,10 @@ import React, { ChangeEventHandler, Component, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { Trans, useTranslation } from "react-i18next";
-import Form, { FormInput, FormState } from "../components/Form";
+import Form, { FormInput, FormState } from "../component/Form";
 import { baseUrl } from "../config";
-import { inputRow } from "../styles/form";
-import { small } from "../styles/inline";
+import { inputRow } from "../style/form";
+import { small } from "../style/inline";
 import { isValidEmail } from "../util/validationFunctions";
 import { register } from "./auth";
 

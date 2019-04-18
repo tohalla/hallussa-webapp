@@ -2,12 +2,12 @@ import React from "react";
 import { NavLink, RouteComponentProps, withRouter } from "react-router-dom";
 
 import { connect, MapStateToProps } from "react-redux";
-import { activeItem, navItem } from "styles/topbar";
+import { activeItem, navItem } from "style/topbar";
 import { OrganisationPayload } from "../organisation/actions";
 import { getOrganisation, getOrganisations } from "../organisation/state";
 import { APIResponsePayload } from "../store/middleware/api/actions";
 import { ReduxState } from "../store/store";
-import loadable from "../util/hoc/loadable";
+import Loadable from "../util/hoc/Loadable";
 
 interface StateProps {
   organisation?: OrganisationPayload | APIResponsePayload;
@@ -31,5 +31,5 @@ const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => 
 });
 
 export default withRouter(connect(mapStateToProps)(
-  loadable<RouteComponentProps>(OrganisationNavItem)
+  Loadable<RouteComponentProps>(OrganisationNavItem)
 ));

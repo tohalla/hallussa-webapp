@@ -3,9 +3,9 @@ import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 
-import "styles";
+import "style";
 
-import { appContainer } from "styles/container";
+import { appContainer } from "style/container";
 import { authenticate } from "./auth/auth";
 import i18n from "./i18n";
 import Router from "./Router";

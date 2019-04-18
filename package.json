@@ -5,8 +5,8 @@
   "license": "GPL-3.0-only",
   "version": "0.0.0",
   "scripts": {
-    "serve": "parcel pages/*.html",
-    "build": "parcel build pages/*.html",
+    "serve": "parcel page/*.html",
+    "build": "parcel build page/*.html",
     "lint": "tslint -c tslint.json -p tsconfig.json './src/**/*.ts{,x}'",
     "prelint": "tsc -p tsconfig.json --noEmit"
   },
@@ -32,6 +32,7 @@
     "react-table": "6.8.6",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
+    "style": "^0.0.3",
     "styles": "^0.2.1",
     "whatwg-fetch": "^3.0.0"
   },

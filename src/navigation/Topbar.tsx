@@ -5,10 +5,10 @@ import {
   navGroup,
   toggleButton,
   topbar
-} from "styles/topbar";
+} from "style/topbar";
 
-import Logo from "../components/Logo";
-import { sm } from "../styles/variables/breakpoints";
+import Logo from "../component/Logo";
+import { sm } from "../style/variables/breakpoints";
 import AccountMenu from "./AccountMenu";
 import OrganisationNavigation from "./OrganisationNavigation";
 

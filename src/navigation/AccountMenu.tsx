@@ -1,15 +1,15 @@
+import classNames from "classnames";
 import { path } from "ramda";
 import React from "react";
-import { navGroup, navItem } from "styles/topbar";
 
-import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import { connect, MapStateToProps } from "react-redux";
 import { AccountPayload } from "../account/actions";
 import { signOut } from "../auth/auth";
-import Button from "../components/Button";
+import Button from "../component/button/Button";
 import { ReduxState } from "../store/store";
-import { light } from "../styles/inline";
+import { light } from "../style/inline";
+import { navGroup, navItem } from "../style/topbar";
 
 interface StateProps {
   account?: AccountPayload;

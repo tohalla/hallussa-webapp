@@ -3,8 +3,8 @@ import { connect, MapStateToProps } from "react-redux";
 
 import { useTranslation } from "react-i18next";
 import { NavLink, RouteComponentProps, withRouter } from "react-router-dom";
-import { activeItem, navGroup, navItem } from "styles/topbar";
 import { ReduxState } from "../store/store";
+import { activeItem, navGroup, navItem } from "../style/topbar";
 import OrganisationNavItem from "./OrganisationNavItem";
 
 interface StateProps {

@@ -3,7 +3,7 @@
   "plugins": [
     ["module-resolver", {
       "alias": {
-        "styles": "./src/styles",
+        "style": "./src/style",
         "assets": "./assets/"
       }
     }]

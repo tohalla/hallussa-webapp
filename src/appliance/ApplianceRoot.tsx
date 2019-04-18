@@ -1,37 +1,34 @@
 import React from "react";
-import { Link, Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
-import { useTranslation } from "react-i18next";
-import ViewContainer from "../components/layouts/ViewContainer";
-import tabbed from "../components/tabbed/tabbed";
-import { padded } from "../styles/container";
-import ApplianceForm from "./components/ApplianceForm";
-import Appliance from "./views/Appliance";
-import ApplianceListing from "./views/ApplianceListing";
+import ViewContainer from "../component/layout/ViewContainer";
+import tabbed from "../component/tabbed/tabbed";
+import TabRouteIndexLookup from "../component/tabbed/TabRouteIndexLookup";
+import { AppliancePayload } from "./actions";
+import Create from "./view/Create";
+import Details from "./view/Details";
+import Listing from "./view/Listing";
 
-const view = tabbed("appliances");
+export const AppliancesTabbed = tabbed("appliances");
 
-export default () => {
-  const {t} = useTranslation();
-  return (
-    <ViewContainer>
-      <Switch>
-        <Route exact={true} path="/appliances" component={view(ApplianceListing)} />
-        <Route
-          exact={true}
-          path="/appliances/new"
-          component={view(ApplianceForm, {
-            contentComponentProps: {
-              header: <h1>{t("appliance.create.title")}</h1>,
-              secondary: <Link to={"/appliances"}>{t("cancel")}</Link>,
-              submitText: t("appliance.create.form.submit"),
-            },
-            contentContainerClassName: padded,
-          })}
-        />
-        <Route exact={true} path="/appliances/:appliance" component={view(Appliance)} />
-        <Redirect path="/appliances/*" to="/appliances" />
-      </Switch>
-    </ViewContainer>
-  );
-};
+const TabRoute = TabRouteIndexLookup<AppliancePayload>({
+  accessor: "appliance",
+  context: "appliances",
+  getLabel: (appliance) => appliance.name,
+  rootPath: "/appliances",
+});
+
+export default () => (
+  <ViewContainer>
+    <Switch>
+      <Route exact={true} path="/appliances" component={AppliancesTabbed(Listing)} />
+      <Route
+        exact={true}
+        path="/appliances/new"
+        component={AppliancesTabbed(Create)}
+      />
+      <TabRoute path="/appliances/:appliance" component={AppliancesTabbed(Details)} />
+      <Redirect to="/appliances" />
+    </Switch>
+  </ViewContainer>
+);

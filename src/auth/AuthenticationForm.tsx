@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
-import Form, { FormState } from "../components/Form";
+import Form, { FormState } from "../component/Form";
 import { baseUrl } from "../config";
-import { small } from "../styles/inline";
+import { small } from "../style/inline";
 import { authenticate } from "./auth";
 
 type Inputs = "email" | "password";

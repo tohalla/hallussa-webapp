@@ -2,10 +2,10 @@ import "@babel/polyfill";
 import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
-import defaultContainer, { appContainer, centerContent } from "styles/container";
+import defaultContainer, { appContainer, centerContent } from "style/container";
 import "whatwg-fetch"; // fetch polyfill, replaces standard fetch
 
-import "styles";
+import "style";
 
 import { baseUrl } from "../config";
 import i18n from "../i18n";

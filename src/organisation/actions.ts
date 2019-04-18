@@ -1,7 +1,7 @@
 import { isEmpty } from "ramda";
 import { Dispatch } from "redux";
 import { fetchAppliances } from "../appliance/actions";
-import { resetTabs } from "../components/tabbed/actions";
+import { resetTabs } from "../component/tabbed/actions";
 import { fetchMaintainers } from "../maintainer/actions";
 import { APIResponseAction, CALL_API } from "../store/middleware/api/actions";
 import { ReduxAPICall } from "../store/middleware/api/api";
