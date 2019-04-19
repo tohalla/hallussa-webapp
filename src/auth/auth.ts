@@ -1,6 +1,7 @@
-import { createContext } from "vm";
 import { AccountPayload } from "../account/actions";
 import { apiUrl, baseUrl } from "../config";
+
+let refreshTokenTimeout: number | undefined;
 
 /**
  * fetches, saves and returns new JWT if current one expiring in 10*60*1000ms = 10 minutes,
@@ -38,6 +39,9 @@ export const authenticate = async (
     const { token, expiresAt } = await response.json();
     localStorage.setItem("token", token);
     localStorage.setItem("expiresAt", expiresAt);
+    window.clearTimeout(refreshTokenTimeout);
+    // should attempt to refresh the token a minute before expiring
+    refreshTokenTimeout = window.setTimeout(getAndCheckJWT, (Number(expiresAt) - 60) * 1000 - Date.now());
     return true;
   }
   if (response.status === 401) {
@@ -49,6 +53,7 @@ export const authenticate = async (
 };
 
 export const signOut = () => {
+  window.clearTimeout(refreshTokenTimeout);
   localStorage.removeItem("token");
   localStorage.removeItem("expiresAt");
 
