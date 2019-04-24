@@ -67,10 +67,6 @@ const Organisation = ({
     );
   }
 
-  if (!organisation) {
-    return null;
-  }
-
   const {name, organisationIdentifier} = organisation;
 
   const renderContent = () => (

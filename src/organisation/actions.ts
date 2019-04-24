@@ -20,7 +20,7 @@ export interface OrganisationPayload {
   updatedAt: string;
   maintainers: ReadonlyArray<number>;
   appliances: ReadonlyArray<number>;
-  accounts: ReadonlyArray<{id: number, isAdmin: boolean}>;
+  accounts: ReadonlyArray<{id: number, userRole: number}>;
 }
 
 export interface OrganisationAction {

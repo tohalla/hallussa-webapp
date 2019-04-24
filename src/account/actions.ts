@@ -10,7 +10,7 @@ export interface AccountPayload {
   firstName: string;
   lastName: string;
   email: string;
-  organisations: ReadonlyArray<{id: number, isAdmin: boolean}>;
+  organisations: ReadonlyArray<{id: number, userRole: number}>;
 }
 
 export interface AccountAction extends AnyAction {
