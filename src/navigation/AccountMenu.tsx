@@ -2,14 +2,15 @@ import classNames from "classnames";
 import { path } from "ramda";
 import React from "react";
 
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { connect, MapStateToProps } from "react-redux";
+import { Link } from "react-router-dom";
 import { AccountPayload } from "../account/actions";
 import { signOut } from "../auth/auth";
 import Button from "../component/button/Button";
 import { ReduxState } from "../store/store";
 import { light } from "../style/inline";
-import { navGroup, navItem } from "../style/topbar";
+import { navGroup } from "../style/topbar";
 
 interface StateProps {
   account?: AccountPayload;
@@ -23,8 +24,12 @@ const AccountMenu = (props: StateProps) => {
   const {t} = useTranslation();
   return (
     <div className={classNames(navGroup, "horizontal")}>
-      <div className={navGroup}>
-        {t("navigation.user.greeting", {name: props.account.firstName})}
+      <div className={navGroup}>
+        <span>
+          <Trans i18nKey="navigation.user.greeting" values={{name: props.account.firstName}}>
+            a <Link className={light} to="/account">b</Link>
+          </Trans>
+        </span>
       </div>
       <div className={navGroup}>
         <Button className={light} onClick={signOut} plain={true}>
@@ -36,8 +41,7 @@ const AccountMenu = (props: StateProps) => {
 };
 
 const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => ({
-  account: typeof state.session.activeAccount === "undefined" ?
-    undefined : path(["entities", "accounts", state.session.activeAccount], state),
+  account: state.session.activeAccount ? state.entities.accounts[state.session.activeAccount] : undefined,
 });
 
 export default connect(mapStateToProps)(AccountMenu);

@@ -2,6 +2,7 @@ import React from "react";
 import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 
 import { connect, MapStateToProps } from "react-redux";
+import AccountRoot from "./account/AccountRoot";
 import ApplianceRoot from "./appliance/ApplianceRoot";
 import MaintainerRoot from "./maintainer/MaintainerRoot";
 import Topbar from "./navigation/Topbar";
@@ -15,6 +16,7 @@ interface StateProps {
 const RootRouter = ({organisationSelected}: StateProps) => {
   const routes = [
     <Route key="organisations" path="/organisations" component={OrganisationsRoot} />,
+    <Route key="account" path="/account" component={AccountRoot} />,
     ...organisationSelected ? [
       <Route key="appliances" path="/appliances" component={ApplianceRoot} />,
       <Route key="maintainers" path="/maintainers" component={MaintainerRoot} />,
