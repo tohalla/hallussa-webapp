@@ -76,10 +76,8 @@ export const setActiveOrganisation = (organisation?: number, fetchRelated = true
     if (organisation) {
       localStorage.setItem("organisation", String(organisation));
       if (fetchRelated) {
-        await Promise.all([
-          dispatch(fetchAppliances(organisation)),
-          dispatch(fetchMaintainers(organisation)),
-        ]);
+        dispatch(fetchAppliances(organisation));
+        dispatch(fetchMaintainers(organisation));
       }
     }
     dispatch(resetTabs); // should close all opened tabs
