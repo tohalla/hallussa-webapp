@@ -9,8 +9,8 @@ import Details from "./view/Details";
 export default () => (
   <ViewContainer className={classNames(viewContentContainer, padded)}>
     <Switch>
-      <Route exact={true} path="/account" component={Details} />
-      <Redirect path="/account/*" to="/account" />
+      <Route exact={true} path="/profile" component={Details} />
+      <Redirect path="/profile/*" to="/profile" />
     </Switch>
   </ViewContainer>
 );
