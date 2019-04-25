@@ -24,11 +24,6 @@ const Details = ({
     <div className={padded}>
       <div className={spread}>
         <h1>{firstName} {lastName}</h1>
-        <div className={spacedHorizontalContainer}>
-          <Link to={`/account/edit`}>
-            {t("maintainer.action.edit")}
-          </Link>
-        </div>
       </div>
       <div className={stacked}>
         {email && <div className={info}>
