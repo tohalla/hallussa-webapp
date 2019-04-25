@@ -1,5 +1,5 @@
 import { path } from "ramda";
-import React, { Dispatch } from "react";
+import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 import { RouteProps } from "react-router";
 import { Redirect, Route } from "react-router-dom";

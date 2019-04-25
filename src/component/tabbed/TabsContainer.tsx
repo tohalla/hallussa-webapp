@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import { map, sort, values } from "ramda";
-import React, { Component, MouseEventHandler } from "react";
+import React, { MouseEventHandler } from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 

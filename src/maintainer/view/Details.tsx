@@ -16,7 +16,7 @@ import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import { padded, spacedHorizontalContainer, spread, stacked } from "../../style/container";
-import { alertIndication, info, timestamp } from "../../style/inline";
+import { alertIndication, info } from "../../style/inline";
 import { spacer } from "../../style/variables/spacing";
 import Loadable from "../../util/hoc/Loadable";
 import { deleteMaintainer, MaintainerPayload } from "../actions";

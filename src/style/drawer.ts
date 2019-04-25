@@ -1,6 +1,5 @@
 import { css } from "emotion";
 
-import { sm } from "./variables/breakpoints";
 import { greyscale } from "./variables/colors";
 import { normal } from "./variables/spacing";
 

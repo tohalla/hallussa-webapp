@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import { path } from "ramda";
 import React from "react";
 
 import { useTranslation } from "react-i18next";
@@ -9,7 +8,6 @@ import { AccountPayload } from "../account/actions";
 import { signOut } from "../auth/auth";
 import Button from "../component/button/Button";
 import { ReduxState } from "../store/store";
-import { light } from "../style/inline";
 import { activeItem, navGroup, navItem } from "../style/topbar";
 
 interface StateProps {

@@ -1,4 +1,3 @@
-import classNames from "classnames";
 import React, { Component } from "react";
 
 import { label as labelStyle, labelExpanded } from "style/drawer";

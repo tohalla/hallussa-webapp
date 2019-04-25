@@ -50,8 +50,13 @@ export const initializeStore = async () => {
     store.dispatch(fetchOrganisations()), // fetch organisations for current account
   ]);
 
+  const activeAccount = store.getState().session.activeAccount;
+  if (!activeAccount) {
+    return;
+  }
+
   // read current account information from store
-  const account = store.getState().entities.accounts[store.getState().session.activeAccount] as AccountPayload;
+  const account = store.getState().entities.accounts[activeAccount] as AccountPayload;
   // default organisation will be the first one on account (consider being able to set default organisation)
   const sOrganisation = localStorage.getItem("organisation"); // read organisation from localstorage
   const organisation = sOrganisation ?

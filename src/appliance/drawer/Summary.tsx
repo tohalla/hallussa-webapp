@@ -1,5 +1,5 @@
 import { filter, path } from "ramda";
-import React, { Component } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { connect, MapStateToProps } from "react-redux";
 import NumberComponent from "../../component/drawer/subcomponents/NumberComponent";

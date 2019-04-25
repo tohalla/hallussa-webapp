@@ -1,11 +1,5 @@
 import classnames from "classnames";
-import React, {
-  ChangeEventHandler,
-  Component,
-  FocusEventHandler,
-  ReactFragment,
-  RefObject
-} from "react";
+import React, { ChangeEventHandler, Component, FocusEventHandler, RefObject } from "react";
 
 import input, { inputContainer, inputError, invalid } from "style/input";
 

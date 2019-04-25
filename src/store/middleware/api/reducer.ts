@@ -1,4 +1,4 @@
-import { assocPath, cond, dissocPath, equals, merge, T } from "ramda";
+import { assocPath, cond, dissocPath, equals, T } from "ramda";
 import { Reducer } from "redux";
 
 import { anyEquals } from "../../../util/utilityFunctions";

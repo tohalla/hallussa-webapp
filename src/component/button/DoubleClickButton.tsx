@@ -1,4 +1,4 @@
-import React, { FC, MouseEventHandler, ReactChild, ReactFragment, ReactNode } from "react";
+import React, { FC, MouseEventHandler, ReactFragment } from "react";
 
 import { useTranslation } from "react-i18next";
 import Button, { ButtonProps } from "./Button";

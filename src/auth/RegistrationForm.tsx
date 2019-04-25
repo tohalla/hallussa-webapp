@@ -1,5 +1,5 @@
 import { dissoc } from "ramda";
-import React, { ChangeEventHandler, Component, useState } from "react";
+import React, { ChangeEventHandler, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { Trans, useTranslation } from "react-i18next";

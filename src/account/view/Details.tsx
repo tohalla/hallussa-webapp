@@ -1,10 +1,9 @@
 import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
-import { useTranslation } from "react-i18next";
-import { Link, RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 import { ReduxState } from "../../store/store";
-import { actionGroup, padded, spacedHorizontalContainer, spread, stacked } from "../../style/container";
+import { padded, spread, stacked } from "../../style/container";
 import { info } from "../../style/inline";
 import { spacer } from "../../style/variables/spacing";
 import { AccountPayload } from "../actions";
@@ -18,8 +17,6 @@ type Props = RouteComponentProps<{organisation?: string}>;
 const Details = ({
   account: {firstName, lastName, email},
 }: Props & StateProps) => {
-  const {t} = useTranslation();
-
   return (
     <div className={padded}>
       <div className={spread}>
