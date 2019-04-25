@@ -1,7 +1,7 @@
-import { append, assoc, assocPath, cond, dissoc, equals, merge, mergeWith, path, T, union, without } from "ramda";
+import { append, assoc, cond, dissoc, equals, lensPath, merge, mergeWith, over, Pred, T, union, without } from "ramda";
 import { Reducer } from "redux";
 
-import { AppliancePayload, CREATE_APPLIANCE_SUCCESS, DELETE_APPLIANCE_SUCCESS } from "../appliance/actions";
+import { CREATE_APPLIANCE_SUCCESS, DELETE_APPLIANCE_SUCCESS } from "../appliance/actions";
 import { CREATE_MAINTAINER_SUCCESS, DELETE_MAINTAINER_SUCCESS, MaintainerPayload } from "../maintainer/actions";
 import {
   CREATE_ORGANISATION_SUCCESS,
@@ -10,6 +10,21 @@ import {
   OrganisationAction,
   UPDATE_ORGANISATION_SUCCESS
 } from "./actions";
+
+const getEntityHandlers = (
+  key: string,
+  {createType, deleteType}: {createType: string, deleteType: string}
+): ReadonlyArray<[Pred, (...a: any[]) => any]> => ([
+  [equals(createType), (type: string, state: {}, {organisation, id}: MaintainerPayload) => {
+    if (id && organisation) {
+      return over(lensPath([String(organisation), key]), append(id), state);
+    }
+    return state;
+  }],
+  [equals(deleteType), (type: string, state: any, payload: any, entity: any) => {
+    return over(lensPath([String(entity.organisation), key]), without([entity.id]), state);
+  }],
+]);
 
 const typeHandler = cond<any, any>([
   [equals(FETCH_ORGANISATIONS_SUCCESS), (type, state, payload) => merge(state, payload)],
@@ -28,28 +43,8 @@ const typeHandler = cond<any, any>([
       state
     ) : state,
   ],
-  [equals(CREATE_APPLIANCE_SUCCESS), (type, state, {organisation, id}: AppliancePayload) => {
-    if (id && organisation) {
-      const appliances = [String(organisation), "appliances"];
-      return assocPath(appliances, append(id, path(appliances, state) || []), state);
-    }
-    return state;
-  }], // connect newly created appliance to organisation
-  [equals(DELETE_APPLIANCE_SUCCESS), (type, state, payload, appliance) => {
-    const appliances = [String(appliance.organisation), "appliances"];
-    return assocPath(appliances, without([appliance.id], path(appliances, state) || []), state);
-  }],
-  [equals(DELETE_MAINTAINER_SUCCESS), (type, state, payload, maintainer) => {
-    const maintainers = [String(maintainer.organisation), "maintainers"];
-    return assocPath(maintainers, without([maintainer.id], path(maintainers, state) || []), state);
-  }],
-  [equals(CREATE_MAINTAINER_SUCCESS), (type, state, {organisation, id}: MaintainerPayload) => {
-    if (id && organisation) {
-      const maintainers = [String(organisation), "maintainers"];
-      return assocPath(maintainers, append(id, path(maintainers, state) || []), state);
-    }
-    return state;
-  }], // connect newly created maintainer to organisation
+  ...getEntityHandlers("maintainers", {createType: CREATE_MAINTAINER_SUCCESS, deleteType: DELETE_MAINTAINER_SUCCESS}),
+  ...getEntityHandlers("appliances", {createType: CREATE_APPLIANCE_SUCCESS, deleteType: DELETE_APPLIANCE_SUCCESS}),
   [T, (type, state, payload) => state],
 ]);
 

@@ -41,7 +41,7 @@ export const ApplianceList = ({header, appliances}: Props & StateProps) => {
     },
     {
       Header: t("appliance.field.status"),
-      accessor: ({status}) => <Status status={status} label={null} />,
+      accessor: ({status}) => <Status status={status} />,
       id: "status",
       maxWidth: 100,
       resizable: true,
