@@ -1,12 +1,12 @@
 import classNames from "classnames";
-import { find, path } from "ramda";
-import React from "react";
+import { equals, find } from "ramda";
+import React, { useEffect } from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 
 import { useTranslation } from "react-i18next";
-import { Route, Switch } from "react-router";
+import { Redirect, Route, Switch } from "react-router";
 import { Link, RouteComponentProps } from "react-router-dom";
-import DoubleClickButton, { deletionConfirmation } from "../../component/button/DoubleClickButton";
+import DoubleClickButton from "../../component/button/DoubleClickButton";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import button from "../../style/button";
@@ -41,30 +41,22 @@ const Organisation = ({
 }: Props & StateProps & DispatchProps & {organisations: Readonly<OrganisationPayload[]>}) => {
   const {t} = useTranslation();
   const organisation = props.organisation || activeOrganisation as OrganisationPayload;
-
-  const handleDeleteOrganisation = async () => {
-    if (match.params.organisation) {
-      history.push("/organisations"); // go back to root
-    }
-    if (organisation === activeOrganisation) {
-      await props.setActiveOrganisation(path(
-        ["id"],
-        find((org) => org !== organisation, organisations)
-      ));
-    }
-    await props.deleteOrganisation(organisation);
-  };
+  const handleDeleteOrganisation = () => props.deleteOrganisation(organisation);
 
   const NewOrganisation = () =>
     <Link to="/organisations/new" className={button}>{t("organisation.action.create")}</Link>;
 
-  if (typeof organisation === "undefined" && organisations.length === 0) {
+  if (organisations.length === 0) {
     return (
       <div className={classNames(rowContainer, spread)}>
         {t("organisation.noOrganisations")}
         <NewOrganisation />
       </div>
     );
+  } else if (typeof organisation === "undefined") {
+    return <Redirect to={`/organisations/${organisations[0].id}`} />;
+  } else if (organisation.id !== Number(match.params.organisation)) {
+    return <Redirect to={`/organisations/${organisation.id}`} />;
   }
 
   const {name, organisationIdentifier} = organisation;
@@ -77,7 +69,6 @@ const Organisation = ({
           <div className={spacedHorizontalContainer}>
             <DoubleClickButton
               plain={true}
-              renderSecondaryContent={deletionConfirmation}
               secondaryClassName={alertIndication}
               onClick={handleDeleteOrganisation}
             >

@@ -1,15 +1,13 @@
-import classNames from "classnames";
 import { map, pick, values } from "ramda";
-import React, { Component } from "react";
+import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
-import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { Route, RouteComponentProps, Switch } from "react-router";
 import { Link } from "react-router-dom";
 import { AppliancePayload } from "../../appliance/actions";
 import { ApplianceList } from "../../appliance/component/ApplianceList";
-import DoubleClickButton, { deletionConfirmation } from "../../component/button/DoubleClickButton";
+import DoubleClickButton from "../../component/button/DoubleClickButton";
 import { closeTab, createTab, TabPayload } from "../../component/tabbed/actions";
 import TabRouteIndexLookup from "../../component/tabbed/TabRouteIndexLookup";
 import Timestamps from "../../component/Timestamps";
@@ -62,7 +60,6 @@ const Maintainer = ({match, history, maintainer, ...props}: Props) => {
           <div className={spacedHorizontalContainer}>
             <DoubleClickButton
               plain={true}
-              renderSecondaryContent={deletionConfirmation}
               secondaryClassName={alertIndication}
               onClick={handeDeleteMaintainer}
             >

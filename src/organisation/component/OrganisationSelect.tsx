@@ -72,18 +72,18 @@ class OrganisationSelect extends React.Component<Props & StateProps & DispatchPr
     const {activeOrganisation, organisations, t} = this.props;
     if (!Array.isArray(organisations) || organisations.length === 0) {
       return t("organisation.noOrganisations");
-    } else if (organisations.length === 1) {
-      return <div className={rowContainer} />;
     }
 
     const {selectedOrganisationOption} = this.state;
     return (
       <div className={rowContainer}>
-        <Select
-          onChange={this.handleOrganisationSelect}
-          options={map<OrganisationPayload, OrganisationOption>(getOrganisationOption, organisations)}
-          value={selectedOrganisationOption}
-        />
+        {organisations.length > 1 &&
+          <Select
+            onChange={this.handleOrganisationSelect}
+            options={map<OrganisationPayload, OrganisationOption>(getOrganisationOption, organisations)}
+            value={selectedOrganisationOption}
+          />
+        }
         {selectedOrganisationOption && activeOrganisation !== selectedOrganisationOption.organisation &&
           <Button onClick={this.handleOrganisationChange}>
             {t("organisation.action.activate")}

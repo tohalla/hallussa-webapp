@@ -13,7 +13,7 @@ type EntityTypes = Exclude<keyof EntitiesState, "organisations">;
 export const getOrganisation = (
   state: ReduxState,
   organisationId?: number
-): Readonly<OrganisationPayload> |  APIResponsePayload | undefined => {
+): Readonly<OrganisationPayload> | APIResponsePayload | undefined => {
   const request = state.activeRequests.get["/organisations"];
   if (typeof request !== "undefined") {
     return request; // if organisations fetching still hanging, return request status

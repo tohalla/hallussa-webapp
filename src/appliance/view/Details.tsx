@@ -1,4 +1,3 @@
-import classNames from "classnames";
 import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
@@ -6,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Route, RouteComponentProps, Switch } from "react-router";
 import { Link } from "react-router-dom";
 import Button from "../../component/button/Button";
-import DoubleClickButton, { deletionConfirmation } from "../../component/button/DoubleClickButton";
+import DoubleClickButton from "../../component/button/DoubleClickButton";
 import Drawers from "../../component/drawer/Drawers";
 import WithSidebar from "../../component/layout/WithSidebar";
 import { closeTab, createTab, TabPayload } from "../../component/tabbed/actions";
@@ -88,7 +87,6 @@ const Details = ({
               <div className={spacedHorizontalContainer}>
                 <DoubleClickButton
                   plain={true}
-                  renderSecondaryContent={deletionConfirmation}
                   secondaryClassName={alertIndication}
                   onClick={handleDeleteAppliance}
                 >
@@ -161,4 +159,4 @@ const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, 
 export default connect(
   mapStateToProps,
   {createTab, closeTab, deleteAppliance}
-)(Loadable<Props, {organisation: OrganisationPayload}>(Details));
+)(Loadable<Props, {organisation?: OrganisationPayload}>(Details));

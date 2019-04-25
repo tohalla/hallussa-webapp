@@ -84,7 +84,7 @@ export const setActiveOrganisation = (organisation?: number, fetchRelated = true
     }
     dispatch(resetTabs); // should close all opened tabs
     return dispatch({
-      payload: {activeOrganisation: organisation},
+      payload: organisation,
       type: SET_ACTIVE_ORGANISATION,
     });
   };

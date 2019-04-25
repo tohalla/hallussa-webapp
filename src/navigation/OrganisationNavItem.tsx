@@ -14,22 +14,24 @@ interface StateProps {
   organisations?: ReadonlyArray<OrganisationPayload> | APIResponsePayload;
 }
 
-class OrganisationNavItem extends React.Component<StateProps & RouteComponentProps> {
-  public render() {
-    const organisation = this.props.organisation as OrganisationPayload;
-    return (
-      <NavLink activeClassName={activeItem} className={navItem} to="/organisations">
-        {organisation.name}
-      </NavLink>
-    );
-  }
-}
+type Props = StateProps & RouteComponentProps;
 
-const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state) => ({
+const OrganisationNavItem = ({organisation}: Props & {organisation?: OrganisationPayload}) => {
+  if (!organisation) {
+    return <div />;
+  }
+  return (
+    <NavLink activeClassName={activeItem} className={navItem} to="/organisations">
+      {organisation.name}
+    </NavLink>
+  );
+};
+
+const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state): StateProps => ({
   organisation: getOrganisation(state),
   organisations: getOrganisations(state),
 });
 
 export default withRouter(connect(mapStateToProps)(
-  Loadable<RouteComponentProps>(OrganisationNavItem)
+  Loadable<Props, {organisation?: OrganisationPayload}>(OrganisationNavItem)
 ));
