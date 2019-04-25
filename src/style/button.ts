@@ -4,7 +4,6 @@ import { buttonHeight } from "./variables/sizes";
 import { minimal, normal } from "./variables/spacing";
 
 const button = css`
-  cursor: default;
   display: flex;
   align-items: center;
   justify-content: center;
