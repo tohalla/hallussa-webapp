@@ -1,23 +1,12 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { connect, MapStateToProps } from "react-redux";
-import { RouteComponentProps } from "react-router";
 
+import { RouteComponentProps } from "react-router";
 import CancelButton from "../../component/button/CancelButton";
-import { ReduxState } from "../../store/store";
 import { padded } from "../../style/container";
-import { AppliancePayload } from "../actions";
 import ApplianceForm from "../component/ApplianceForm";
 
-interface StateProps {
-  appliance: AppliancePayload;
-}
-
-type Props = StateProps & RouteComponentProps & {
-  match: {params: {appliance: string}}
-};
-
-const Create = ({appliance, ...props}: Props) => {
+export default (props: RouteComponentProps) => {
   const {t} = useTranslation();
   return (
     <div className={padded}>
@@ -30,9 +19,3 @@ const Create = ({appliance, ...props}: Props) => {
     </div>
   );
 };
-
-const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, ownProps): StateProps => ({
-  appliance: state.entities.appliances[ownProps.match.params.appliance],
-});
-
-export default connect(mapStateToProps, {})(Create);
