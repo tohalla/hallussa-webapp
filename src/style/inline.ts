@@ -15,6 +15,10 @@ export const small = css`
   font-size: ${fontSize.small};
 `;
 
+export const capitalize = css`
+  text-transform: capitalize;
+`;
+
 export const info = css`
   display: flex;
   flex: 1;
