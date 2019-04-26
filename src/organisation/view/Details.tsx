@@ -17,6 +17,7 @@ import { deleteOrganisation, OrganisationPayload, setActiveOrganisation } from "
 import OrganisationSelect from "../component/OrganisationSelect";
 import { getOrganisation, getOrganisations } from "../state";
 import Edit from "./Edit";
+import Users from "./Users";
 
 interface StateProps {
   activeOrganisation?: Readonly<OrganisationPayload> | APIResponsePayload;
@@ -89,6 +90,7 @@ const Organisation = ({
     <Switch>
       <Route exact={true} path={match.url} component={Tabbed(Content, {contentContainerClassName: padded})} />
       <Route exact={true} path={`${match.path}/edit`} component={Edit} />
+      <Route exact={true} path={`${match.path}/users`} component={Tabbed(Users, {contentContainerClassName: padded})} />
       <Redirect to={match.url} />
     </Switch>
   );
