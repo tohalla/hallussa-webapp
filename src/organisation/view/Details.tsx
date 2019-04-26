@@ -1,4 +1,3 @@
-import classNames from "classnames";
 import React from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 
@@ -42,19 +41,13 @@ const Organisation = ({
   const organisation = props.organisation || activeOrganisation as OrganisationPayload;
   const handleDeleteOrganisation = () => props.deleteOrganisation(organisation);
 
-  const NewOrganisation = () =>
-    <Link to="/organisations/new" className={button}>{t("organisation.action.create")}</Link>;
-
   if (organisations.length === 0) {
-    return (
-      <div className={classNames(rowContainer, spread)}>
-        {t("organisation.noOrganisations")}
-        <NewOrganisation />
-      </div>
-    );
-  } else if (typeof organisation === "undefined") {
+    return <Redirect to="/organisations" />;
+  }
+  if (typeof organisation === "undefined") {
     return <Redirect to={`/organisations/${organisations[0].id}`} />;
-  } else if (organisation.id !== Number(match.params.organisation)) {
+  }
+  if (organisation.id !== Number(match.params.organisation)) {
     return <Redirect to={`/organisations/${organisation.id}`} />;
   }
 
@@ -84,7 +77,7 @@ const Organisation = ({
       <div className={spread}>
         <div className={actionGroup}>
           <OrganisationSelect organisation={organisation} history={history} />
-          <NewOrganisation />
+          <Link to="/organisations/new" className={button}>{t("organisation.action.create")}</Link>
         </div>
       </div>
     </>
