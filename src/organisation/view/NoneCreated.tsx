@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { memo } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { connect, MapStateToProps } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
@@ -7,7 +7,7 @@ import { Link, Redirect } from "react-router-dom";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import button from "../../style/button";
-import { rowContainer, spread } from "../../style/container";
+import { padded, rowContainer, spread, viewContentContainer } from "../../style/container";
 import Loadable from "../../util/hoc/Loadable";
 import { OrganisationPayload } from "../actions";
 import { getOrganisation } from "../state";
@@ -24,9 +24,11 @@ const NoneCreated = ({activeOrganisation}: {activeOrganisation: Readonly<Organis
   }
 
   return (
-    <div className={classNames(rowContainer, spread)}>
-      {t("organisation.noOrganisations")}
-      <Link to="/organisations/new" className={button}>{t("organisation.action.create")}</Link>
+    <div className={classNames(viewContentContainer, padded)}>
+      <div className={classNames(rowContainer, spread)}>
+        {t("organisation.noOrganisations")}
+        <Link to="/organisations/new" className={button}>{t("organisation.action.create")}</Link>
+      </div>
     </div>
   ) ;
 };

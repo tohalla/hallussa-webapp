@@ -5,10 +5,11 @@ import { useTranslation } from "react-i18next";
 import { Redirect, Route, Switch } from "react-router";
 import { Link, RouteComponentProps } from "react-router-dom";
 import DoubleClickButton from "../../component/button/DoubleClickButton";
+import tabbed from "../../component/tabbed/tabbed";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import button from "../../style/button";
-import { actionGroup, rowContainer, spacedHorizontalContainer, spread } from "../../style/container";
+import { actionGroup, padded, spacedHorizontalContainer, spread } from "../../style/container";
 import { alertIndication } from "../../style/inline";
 import { spacer } from "../../style/variables/spacing";
 import Loadable from "../../util/hoc/Loadable";
@@ -51,9 +52,10 @@ const Organisation = ({
     return <Redirect to={`/organisations/${organisation.id}`} />;
   }
 
+  const Tabbed = tabbed({view: "organisations", pathPostfix: String(organisation.id)});
   const {name, organisationIdentifier} = organisation;
 
-  const renderContent = () => (
+  const Content = () => (
     <>
       <div>
         <div className={spread}>
@@ -85,8 +87,9 @@ const Organisation = ({
 
   return (
     <Switch>
-      <Route exact={true} path={match.url} render={renderContent} />
+      <Route exact={true} path={match.url} component={Tabbed(Content, {contentContainerClassName: padded})} />
       <Route exact={true} path={`${match.path}/edit`} component={Edit} />
+      <Redirect to={match.url} />
     </Switch>
   );
 };

@@ -8,13 +8,14 @@ import {
   TabPayload
 } from "./actions";
 
-interface View {
+export interface TabbedView {
   tabs: {[key: string]: TabPayload};
 }
 
 export interface ViewsState {
-  appliances: View;
-  maintainers: View;
+  appliances: TabbedView;
+  maintainers: TabbedView;
+  organisations: TabbedView;
 }
 
 const initialState: ViewsState = {
@@ -32,6 +33,9 @@ const initialState: ViewsState = {
       order: 1,
       sticky: true,
     },
+  }},
+  organisations: {tabs: {
+    details: {key: "organisations", label: ({t}) => t("tab.organisation.details"), sticky: true, order: 0},
   }},
 };
 

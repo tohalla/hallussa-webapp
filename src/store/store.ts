@@ -3,6 +3,7 @@ import thunk from "redux-thunk";
 
 import { AccountPayload, fetchAccount } from "../account/actions";
 import { AppliancePayload } from "../appliance/actions";
+import { ViewsState } from "../component/tabbed/reducer";
 import { MaintainerPayload } from "../maintainer/actions";
 import { fetchOrganisations, OrganisationPayload, setActiveOrganisation } from "../organisation/actions";
 import api from "./middleware/api/api";
@@ -28,10 +29,7 @@ export interface ReduxState {
     activeAccount?: number;
     activeOrganisation?: number;
   };
-  views: {
-    appliances: { tabs: {} },
-    maintainers: { tabs: {} }
-  };
+  views: ViewsState;
 }
 
 const store = createStore(

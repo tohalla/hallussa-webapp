@@ -12,6 +12,7 @@ import TabComponent from "./TabComponent";
 interface Props extends RouteComponentProps {
   tabs: {[key: string]: TabPayload};
   view: string;
+  pathPostfix?: string;
 }
 
 interface DispatchProps {
@@ -19,7 +20,7 @@ interface DispatchProps {
   createTab(view: string, payload: TabPayload): any;
 }
 
-const TabsContainer = ({history, view, match, tabs, ...props}: Props & DispatchProps) => {
+const TabsContainer = ({history, view, match, pathPostfix, tabs, ...props}: Props & DispatchProps) => {
   const handleTabClose = (tab: TabPayload): MouseEventHandler<HTMLElement> => (event) => {
     const destination = getPath(tab);
     event.stopPropagation();
@@ -30,9 +31,8 @@ const TabsContainer = ({history, view, match, tabs, ...props}: Props & DispatchP
     props.closeTab(view, tab.key);
   };
 
-  const getPath = (tab: TabPayload) => {
-    return `/${view}` + (view === tab.key ? "" : `/${tab.key}`);
-  };
+  const getPath = (tab: TabPayload) =>
+    "/" + [view, pathPostfix, view === tab.key ? false : `${tab.key}`].filter(Boolean).join("/");
 
   const renderTab = (tab: TabPayload) => {
     const destination = getPath(tab);
@@ -45,7 +45,7 @@ const TabsContainer = ({history, view, match, tabs, ...props}: Props & DispatchP
       <TabLink
         className={classnames(tabStyle, {[actionTab]: accent})}
         activeClassName={tabActive}
-        exact={match.url !== destination}
+        exact={view === key}
         key={key}
         to={destination}
       >

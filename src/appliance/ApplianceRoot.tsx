@@ -9,7 +9,7 @@ import Create from "./view/Create";
 import Details from "./view/Details";
 import Listing from "./view/Listing";
 
-export const AppliancesTabbed = tabbed("appliances");
+export const AppliancesTabbed = tabbed({view: "appliances"});
 
 const TabRoute = TabRouteIndexLookup<AppliancePayload>({
   accessor: "appliance",

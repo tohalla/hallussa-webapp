@@ -10,7 +10,7 @@ import Create from "./view/Create";
 import Details from "./view/Details";
 import Listing from "./view/Listing";
 
-const MaintainersTabbed = tabbed("maintainers");
+const MaintainersTabbed = tabbed({view: "maintainers"});
 
 const TabRoute = TabRouteIndexLookup<MaintainerPayload>({
   accessor: "maintainer",

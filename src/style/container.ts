@@ -35,7 +35,7 @@ export const spacedHorizontalContainer = css`
   display: flex;
   flex: 0;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
 
   & > * + * {
     margin-left: ${normal};
@@ -53,7 +53,6 @@ export const rowContainer = css`
 export const spread = css`
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
   flex-direction: row;
 
   @media (max-width: ${sm}px) {
