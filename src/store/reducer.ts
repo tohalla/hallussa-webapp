@@ -3,6 +3,7 @@ import { combineReducers, Reducer } from "redux";
 
 import { SET_ACTIVE_ACCOUNT } from "../account/actions";
 import accounts from "../account/reducer";
+import userRoles from "../account/user-role/reducer";
 import appliances from "../appliance/reducer";
 import views from "../component/tabbed/reducer";
 import maintainers from "../maintainer/reducer";
@@ -38,6 +39,7 @@ const entities = combineReducers({
   appliances,
   maintainers,
   organisations,
+  userRoles,
 });
 
 export default combineReducers({

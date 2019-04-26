@@ -20,6 +20,7 @@ export interface OrganisationPayload {
   updatedAt: string;
   maintainers: ReadonlyArray<number>;
   appliances: ReadonlyArray<number>;
+  userRoles: ReadonlyArray<number>;
   accounts: ReadonlyArray<{id: number, userRole: number}>;
 }
 
@@ -34,7 +35,7 @@ export const fetchOrganisations = ({bypassCache = false} = {}): ReduxAPICall => 
     !isEmpty(state.entities.organisations) && state.entities.organisations,
   endpoint: "/organisations",
   method: "get",
-  parameters: {eager: "[accounts, maintainers, appliances]"},
+  parameters: {eager: "[accounts,maintainers,appliances,userRoles]"},
   successType: FETCH_ORGANISATIONS_SUCCESS,
   type: CALL_API,
 });

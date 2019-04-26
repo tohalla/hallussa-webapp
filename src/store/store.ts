@@ -2,6 +2,7 @@ import { applyMiddleware, compose, createStore } from "redux";
 import thunk from "redux-thunk";
 
 import { AccountPayload, fetchAccount } from "../account/actions";
+import { fetchRoles, UserRolePayload } from "../account/user-role/actions";
 import { AppliancePayload } from "../appliance/actions";
 import { ViewsState } from "../component/tabbed/reducer";
 import { MaintainerPayload } from "../maintainer/actions";
@@ -20,6 +21,7 @@ export interface EntitiesState {
   appliances: EntityGroup<AppliancePayload>;
   maintainers: EntityGroup<MaintainerPayload>;
   organisations: EntityGroup<OrganisationPayload>;
+  userRoles: EntityGroup<UserRolePayload>;
 }
 
 export interface ReduxState {
@@ -47,6 +49,8 @@ export const initializeStore = async () => {
     store.dispatch<any>(fetchAccount()), // fetch current account information
     store.dispatch(fetchOrganisations()), // fetch organisations for current account
   ]);
+
+  store.dispatch(fetchRoles());
 
   const activeAccount = store.getState().session.activeAccount;
   if (!activeAccount) {

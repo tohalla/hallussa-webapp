@@ -42,10 +42,10 @@ export interface ApplianceAction {
 
 export const fetchAppliances = (organisation: number, {bypassCache = false} = {}): ReduxAPICall => ({
   attemptToFetchFromStore: bypassCache ? undefined : (state) =>
-    !Boolean(find(// check if store contains all maintainers defined in organisation
+    state.entities.appliances && !Boolean(find(// check if store contains all appliances defined in organisation
       (appliance) => typeof state.entities.appliances[appliance] === "undefined",
       state.entities.organisations[organisation].appliances
-    )) && state.entities.appliances,
+    )),
   endpoint: `/organisations/${organisation}/appliances`,
   method: "get",
   parameters: {eager: "[maintainers, status, maintenanceEvents]"},
