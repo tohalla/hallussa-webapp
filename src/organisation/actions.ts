@@ -1,5 +1,6 @@
 import { isEmpty } from "ramda";
 import { Dispatch } from "redux";
+import { fetchAccounts } from "../account/actions";
 import { fetchAppliances } from "../appliance/actions";
 import { resetTabs } from "../component/tabbed/actions";
 import { fetchMaintainers } from "../maintainer/actions";
@@ -79,6 +80,7 @@ export const setActiveOrganisation = (organisation?: number, fetchRelated = true
       if (fetchRelated) {
         dispatch(fetchAppliances(organisation));
         dispatch(fetchMaintainers(organisation));
+        dispatch(fetchAccounts(organisation));
       }
     }
     dispatch(resetTabs); // should close all opened tabs

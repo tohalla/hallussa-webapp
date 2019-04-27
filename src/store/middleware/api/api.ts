@@ -13,7 +13,7 @@ export interface ReduxAPICall extends Action {
   method: APIMethods;
   successType: string;
   type: "CALL_API";
-  parameters?: {[key: string]: string};
+  parameters?: {[key: string]: string | number};
   body?: {[key: string]: any};
   extra?: object; // additional data to send on success
   onSuccess?(payload: any, cached: boolean): any; // get triggered on succesfull response

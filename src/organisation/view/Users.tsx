@@ -5,6 +5,9 @@ export default () => {
   const {t} = useTranslation();
 
   return (
-    <div />
+    <div>
+      <h1>{t("organisation.accounts.title")}</h1>
+      <h2>{t("organisation.logins.title")}</h2>
+    </div>
   );
 };
