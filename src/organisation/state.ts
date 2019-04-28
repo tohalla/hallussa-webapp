@@ -1,5 +1,5 @@
 import { paramCase } from "change-case";
-import { map, prop, props, values } from "ramda";
+import { append, reduce, values } from "ramda";
 
 import { APIResponsePayload } from "../store/middleware/api/actions";
 import { EntitiesState, ReduxState } from "../store/store";
@@ -32,13 +32,19 @@ export const getEntitiesByOrganisation = <T>(
   state: ReduxState,
   entityType: EntityType,
   organisationId?: number,
-  getKey: (entity: any) => string = (entity) => typeof entity === "object" ? prop("id", entity) : String(entity)
+  key: string = "id" // key used to determine the entity if relation is an object
 ): ReadonlyArray<T> | APIResponsePayload => {
   const organisation = getOrganisation(state, organisationId);
   return getStatus(state, entityType, organisation) // if entity fetching still hanging, return request status
-    || props<string, T>(
-      map(getKey, (organisation as OrganisationPayload)[entityType]),
-      state.entities[entityType] as any
+    || reduce<any, any>(
+      (prev, curr) => append(
+        typeof curr === "object" ?
+          {...curr, ...state.entities[entityType][curr[key]]}
+        : state.entities[entityType][String(curr)],
+        prev
+      ),
+      [],
+      (organisation as OrganisationPayload)[entityType]
     );
 };
 

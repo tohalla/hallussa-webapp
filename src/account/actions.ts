@@ -14,6 +14,7 @@ export interface AccountPayload {
   lastName: string;
   email: string;
   organisations: ReadonlyArray<{id: number, userRole: number}>;
+  userRole?: number;
 }
 
 export interface AccountAction extends AnyAction {
