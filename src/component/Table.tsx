@@ -4,7 +4,10 @@ import "react-table/react-table.css";
 import { tableContainer } from "../style/table";
 import { greyscale } from "../style/variables/colors";
 
-type Props = Pick<TableProps, "columns" | "data"> & {pageSize: number};
+interface Props<T> extends Pick<TableProps<T>, "columns"> {
+  data: Readonly<T[]>;
+  pageSize: number;
+}
 
 const getHeaderProps = () => ({style: {
   background: greyscale[7],
@@ -12,7 +15,7 @@ const getHeaderProps = () => ({style: {
   fontWeight: 900,
 }});
 
-const Table = (props: Props) => (
+const Table = <T extends {}>({data, ...props}: Props<T>) => (
   <div className={tableContainer}>
     <ReactTable
       getTheadProps={getHeaderProps}
@@ -21,9 +24,10 @@ const Table = (props: Props) => (
       resizable={false}
       pageSizeOptions={undefined}
       showPageSizeOptions={false}
-      showPaginationBottom={props.pageSize < props.data.length}
+      showPaginationBottom={props.pageSize < data.length}
       showPageJump={false}
       style={{background: greyscale[9]}}
+      data={data as T[]}
       {...props}
     />
   </div>

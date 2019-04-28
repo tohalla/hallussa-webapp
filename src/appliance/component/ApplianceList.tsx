@@ -1,27 +1,19 @@
 import React, { ReactFragment } from "react";
-import { connect, MapStateToProps } from "react-redux";
 
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Column } from "react-table";
 import Table from "../../component/Table";
-import { getEntitiesByOrganisation } from "../../organisation/state";
-import { APIResponsePayload } from "../../store/middleware/api/actions";
-import { ReduxState } from "../../store/store";
 import { emptyContainer } from "../../style/container";
-import Loadable from "../../util/hoc/Loadable";
 import { AppliancePayload } from "../actions";
 import Status from "./Status";
 
-interface StateProps {
-  appliances: ReadonlyArray<AppliancePayload> | APIResponsePayload;
-}
-
 interface Props {
+  appliances: Readonly<AppliancePayload[]>;
   header?: ReactFragment;
 }
 
-export const ApplianceList = ({header, appliances}: Props & StateProps) => {
+export default ({header, appliances}: Props) => {
   const {t} = useTranslation();
 
   const columns: Column[] = [
@@ -68,11 +60,3 @@ export const ApplianceList = ({header, appliances}: Props & StateProps) => {
       </>
   );
 };
-
-const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
-  appliances: getEntitiesByOrganisation(state, "appliances"),
-});
-
-export default connect<StateProps, {}, Props, ReduxState>(
-  mapStateToProps
-)(Loadable(ApplianceList));

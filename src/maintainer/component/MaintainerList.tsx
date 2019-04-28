@@ -1,28 +1,19 @@
 import React, { ReactFragment } from "react";
-import { connect, MapStateToProps } from "react-redux";
 import { Column } from "react-table";
 
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import Table from "../../component/Table";
-import { getEntitiesByOrganisation } from "../../organisation/state";
-import { APIResponsePayload } from "../../store/middleware/api/actions";
-import { ReduxState } from "../../store/store";
 import { emptyContainer } from "../../style/container";
-import Loadable from "../../util/hoc/Loadable";
 import { MaintainerPayload } from "../actions";
 
-interface StateProps {
-  maintainers: ReadonlyArray<MaintainerPayload> | APIResponsePayload;
-}
-
 interface Props {
+  maintainers: Readonly<MaintainerPayload[]>;
   header?: ReactFragment;
 }
 
-const MaintainerList = (props: Props & StateProps) => {
+export default ({maintainers, header}: Props) => {
   const {t} = useTranslation();
-  const maintainers = props.maintainers as MaintainerPayload[];
 
   const columns: Column[] = [
     {Header: t("maintainer.field.id"), accessor: "id", id: "id", maxWidth: 50},
@@ -38,7 +29,7 @@ const MaintainerList = (props: Props & StateProps) => {
 
   return (
     <>
-      {props.header}
+      {header}
       {maintainers.length === 0 ?
         <div className={emptyContainer}>{t("maintainer.listing.noMaintainers")}</div>
       :
@@ -50,9 +41,3 @@ const MaintainerList = (props: Props & StateProps) => {
     </>
   );
 };
-
-const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
-  maintainers: getEntitiesByOrganisation(state, "maintainers"),
-});
-
-export default connect(mapStateToProps)(Loadable(MaintainerList));

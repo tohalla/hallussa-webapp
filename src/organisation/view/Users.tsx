@@ -6,7 +6,7 @@ export default () => {
 
   return (
     <div>
-      <h1>{t("organisation.accounts.title")}</h1>
+      <h1>{t("organisation.users.title")}</h1>
       <h2>{t("organisation.logins.title")}</h2>
     </div>
   );
