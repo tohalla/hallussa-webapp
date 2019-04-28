@@ -1,3 +1,4 @@
+import { paramCase } from "change-case";
 import { map, prop, props, values } from "ramda";
 
 import { APIResponsePayload } from "../store/middleware/api/actions";
@@ -60,7 +61,7 @@ export const getStatus = (
   if (typeof (organisation as APIResponsePayload).isFetching === "undefined") {
     return state.activeRequests.get[`/organisations/${
       (organisation as OrganisationPayload).id
-    }/${entityType in entityPaths ? entityPaths[entityType] : entityType}` ];
+    }/${entityType in entityPaths ? entityPaths[entityType] : paramCase(entityType)}` ];
   } else {
     return organisation as APIResponsePayload;
   }
