@@ -18,6 +18,7 @@ export interface UserRolePayload {
   allowUpdateAppliance: boolean;
   allowUpdateMaintainer: boolean;
   allowUpdateOrganisation: boolean;
+  isShared: boolean;
 }
 
 export interface UserRoleAction {
