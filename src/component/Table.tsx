@@ -27,7 +27,7 @@ const Table = <T extends {}>({data, ...props}: Props<T>) => (
       showPaginationBottom={props.pageSize < data.length}
       showPageJump={false}
       style={{background: greyscale[9]}}
-      data={data as T[]}
+      data={data.filter(Boolean)}
       {...props}
     />
   </div>

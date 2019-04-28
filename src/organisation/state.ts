@@ -1,4 +1,4 @@
-import { map, props, values } from "ramda";
+import { map, prop, props, values } from "ramda";
 
 import { APIResponsePayload } from "../store/middleware/api/actions";
 import { EntitiesState, ReduxState } from "../store/store";
@@ -8,7 +8,7 @@ import { OrganisationPayload } from "./actions";
 export const getOrganisations = (state: ReduxState): ReadonlyArray<OrganisationPayload> | APIResponsePayload =>
   state.activeRequests.get["/organisations"] || values(state.entities.organisations);
 
-type EntityTypes = Exclude<keyof EntitiesState, "organisations">;
+type EntityType = Exclude<keyof EntitiesState, "organisations">;
 
 export const getOrganisation = (
   state: ReduxState,
@@ -29,20 +29,26 @@ export const getOrganisation = (
 
 export const getEntitiesByOrganisation = <T>(
   state: ReduxState,
-  entityType: EntityTypes,
-  organisationId?: number
+  entityType: EntityType,
+  organisationId?: number,
+  getKey: (entity: any) => string = (entity) => typeof entity === "object" ? prop("id", entity) : String(entity)
 ): ReadonlyArray<T> | APIResponsePayload => {
   const organisation = getOrganisation(state, organisationId);
   return getStatus(state, entityType, organisation) // if entity fetching still hanging, return request status
     || props<string, T>(
-      map(String, (organisation as OrganisationPayload)[entityType]),
+      map(getKey, (organisation as OrganisationPayload)[entityType]),
       state.entities[entityType] as any
     );
 };
 
+// object used to track if entity path differs from general form of /organisations/{orgId}/{entityType}
+const entityPaths: {[key in EntityType]?: string} = {
+  accounts: "users/accounts",
+};
+
 export const getStatus = (
   state: ReduxState,
-  entityType: EntityTypes,
+  entityType: EntityType,
   organisation?: OrganisationPayload | APIResponsePayload
 ): APIResponsePayload | undefined  => {
   if (typeof organisation === "undefined") {
@@ -52,7 +58,9 @@ export const getStatus = (
     throw new Error("organisation not defined");
   }
   if (typeof (organisation as APIResponsePayload).isFetching === "undefined") {
-    return state.activeRequests.get[`/organisations/${(organisation as OrganisationPayload).id}/${entityType}`];
+    return state.activeRequests.get[`/organisations/${
+      (organisation as OrganisationPayload).id
+    }/${entityType in entityPaths ? entityPaths[entityType] : entityType}` ];
   } else {
     return organisation as APIResponsePayload;
   }
