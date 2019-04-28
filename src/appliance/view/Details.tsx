@@ -80,58 +80,55 @@ const Details = ({
     } = appliance;
     return (
       <WithSidebar
-        content={
-          <>
-            <div className={spread}>
-              <h1>{name}</h1>
-              <div className={spacedHorizontalContainer}>
-                <DoubleClickButton
-                  plain={true}
-                  secondaryClassName={alertIndication}
-                  onClick={handleDeleteAppliance}
-                >
-                  {t("appliance.action.delete")}
-                </DoubleClickButton>
-                <Link to={`/appliances/${appliance.id}/edit`}>
-                  {t("appliance.action.edit")}
-                </Link>
-              </div>
-            </div>
-            {description}
-            <div className={spacer} />
-            <Status status={status} />
-            {location &&
-              <div className={info}><i className="material-icons">location_on</i><span>{location}</span></div>
-            }
-            <div className={spacer} />
-            <EventList
-              header={<h3>{t("appliance.event.list.title")}</h3>}
-              maintenanceEvents={maintenanceEvents as MaintenanceEventPayload[]}
-            />
-            <div className={spacer} />
-            <div className={spread}>
-              <Timestamps
-                translationKeys={{createdAt: "appliance.createdAt", updatedAt: "appliance.updatedAt"}}
-                createdAt={createdAt}
-                updatedAt={updatedAt}
-              />
-              <Button onClick={handleFetchQR}>
-                {t("appliance.action.downloadQR")}
-              </Button>
-            </div>
-          </>
-        }
         sidebarContent={
           <Drawers
             drawers={{
               maintainers: {
-                content: <MaintainerAssignment appliance={appliance} />,
-                label: t("appliance.drawers.maintainers.title"),
+                children: <MaintainerAssignment appliance={appliance} />,
+                label: t("appliance.drawer.maintainers.title"),
               },
             }}
           />
         }
-      />
+      >
+        <div className={spread}>
+          <h1>{name}</h1>
+          <div className={spacedHorizontalContainer}>
+            <DoubleClickButton
+              plain={true}
+              secondaryClassName={alertIndication}
+              onClick={handleDeleteAppliance}
+            >
+              {t("appliance.action.delete")}
+            </DoubleClickButton>
+            <Link to={`/appliances/${appliance.id}/edit`}>
+              {t("appliance.action.edit")}
+            </Link>
+          </div>
+        </div>
+        {description}
+        <div className={spacer} />
+        <Status status={status} />
+        {location &&
+          <div className={info}><i className="material-icons">location_on</i><span>{location}</span></div>
+        }
+        <div className={spacer} />
+        <EventList
+          header={<h3>{t("appliance.event.list.title")}</h3>}
+          maintenanceEvents={maintenanceEvents as MaintenanceEventPayload[]}
+        />
+        <div className={spacer} />
+        <div className={spread}>
+          <Timestamps
+            translationKeys={{createdAt: "appliance.createdAt", updatedAt: "appliance.updatedAt"}}
+            createdAt={createdAt}
+            updatedAt={updatedAt}
+          />
+          <Button onClick={handleFetchQR}>
+            {t("appliance.action.downloadQR")}
+          </Button>
+        </div>
+      </WithSidebar>
     );
   };
 

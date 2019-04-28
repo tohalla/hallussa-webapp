@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Route, RouteComponentProps, Switch } from "react-router";
 import { Link } from "react-router-dom";
 import { AppliancePayload } from "../../appliance/actions";
-import { ApplianceList } from "../../appliance/component/ApplianceList";
+import ApplianceList from "../../appliance/component/ApplianceList";
 import DoubleClickButton from "../../component/button/DoubleClickButton";
 import { closeTab, createTab, TabPayload } from "../../component/tabbed/actions";
 import TabRouteIndexLookup from "../../component/tabbed/TabRouteIndexLookup";

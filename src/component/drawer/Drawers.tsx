@@ -1,47 +1,32 @@
-import { assocPath, map } from "ramda";
-import React from "react";
-import Drawer from "./Drawer";
+import { lensPath, map, not, over } from "ramda";
+import React, { memo, useState } from "react";
+import Drawer, { DrawerProps } from "./Drawer";
 
-interface Props {
-  drawers: {[key: string]: {label: string, content: JSX.Element}};
+export interface DrawersProps {
+  drawers: {[key: string]: Pick<DrawerProps, "label" | "children">};
 }
 
-interface State {
-  expand: {
-    [key: string]: boolean;
-  };
-}
+export default memo(({drawers}: DrawersProps) => {
+  const [expand, setExpand] = useState(map(() => false, drawers));
 
-export default class Drawers extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      expand: map(() => false, props.drawers),
-    };
-  }
+  const handleToggle = (drawer: string) => () =>
+    setExpand(over(lensPath([drawer]), not, expand));
 
-  public handleToggle = (drawer: string) => () =>
-    this.setState(assocPath(["expand", drawer], !this.state.expand[drawer]))
-
-  public render() {
-    const {drawers} = this.props;
-    return (
-      map(
+  return (
+    <>
+      {map(
         (d) => {
-          const {content, ...drawerProps} = drawers[d];
           return (
             <Drawer
               key={d}
-              expand={this.state.expand[d]}
-              handleToggle={this.handleToggle(d)}
-              {...drawerProps}
-            >
-              {content}
-            </Drawer>
+              expand={expand[d]}
+              handleToggle={handleToggle(d)}
+              {...drawers[d]}
+            />
           );
         },
         Object.keys(drawers)
-      )
-    );
-  }
-}
+      )}
+    </>
+  );
+});

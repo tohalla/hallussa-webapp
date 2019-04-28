@@ -23,6 +23,9 @@ export const labelExpanded = css`
 `;
 
 export const content = css`
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
   background: ${greyscale[9]};
   padding: ${normal};
   user-select: none;

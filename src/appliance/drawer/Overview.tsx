@@ -13,27 +13,24 @@ interface StateProps {
   appliances: ReadonlyArray<AppliancePayload> | APIResponsePayload;
 }
 
-export const Summary = (props: StateProps) => {
+export const overview = (props: StateProps) => {
   const appliances = props.appliances as ReadonlyArray<AppliancePayload>;
   const {t} = useTranslation();
   return (
-    <div>
-      <h3>{t("appliances.drawers.overview.title")}</h3>
-      <div>
-        <NumberComponent
-          size={"lg"}
-          number={appliances.length}
-          label={t("appliances.drawers.overview.numberOfAppliances")}
-        />
-        <NumberComponent
-          size={"lg"}
-          number={
-            filter((appliance) => !path(["status", "isMalfunctioning"], appliance), appliances).length
-          }
-          label={t("appliances.drawers.overview.operativeAppliances")}
-        />
-      </div>
-    </div>
+    <>
+      <NumberComponent
+        size={"lg"}
+        number={appliances.length}
+        label={t("appliance.drawer.overview.numberOfAppliances")}
+      />
+      <NumberComponent
+        size={"lg"}
+        number={
+          filter((appliance) => !path(["status", "isMalfunctioning"], appliance), appliances).length
+        }
+        label={t("appliance.drawer.overview.operativeAppliances")}
+      />
+    </>
   );
 };
 
@@ -43,4 +40,4 @@ const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state: Red
 
 export default connect(
   mapStateToProps
-)(Loadable(Summary));
+)(Loadable(overview));
