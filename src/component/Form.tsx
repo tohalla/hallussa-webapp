@@ -72,10 +72,11 @@ export default class Form<Inputs extends string> extends Component<FormProps<Inp
         pick(Object.keys(this.state), props.state)
       );
     }
-  }
-
-  public componentDidMount() {
-    this.setState(assoc("errors", this.validate(this.props.inputs, this.state)));
+    this.state = assoc<any, Readonly<FormState<Inputs>>, string>(
+      "errors",
+      this.validate(this.props.inputs, this.state),
+      this.state
+    );
   }
 
   // Map children to separate row elements
