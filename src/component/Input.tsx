@@ -30,7 +30,7 @@ const Input = ({error, onBlur, onFocus, autoFocus, getInputElement, ...props}: I
     if (autoFocus) {
       focus();
     }
-    return window.clearTimeout(displayErrorTimer);
+    return () => window.clearTimeout(displayErrorTimer);
   }, []);
 
   const focus = (options?: FocusOptions) =>

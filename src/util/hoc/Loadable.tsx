@@ -1,4 +1,4 @@
-import { find, hasPath } from "ramda";
+import { equals, find, hasPath } from "ramda";
 import React, { Component, ComponentType } from "react";
 
 const loadingProps = ["loading", "isFetching"];
@@ -36,4 +36,4 @@ export default <A extends {}, B = {}>(
   }
   return hasPath(["prototype", "render"], C) ?
     <C {...props as A & B} /> : (C as (p: A & B) => any)(props as A & B);
-});
+}, (prev, next) => equals(prev, next));

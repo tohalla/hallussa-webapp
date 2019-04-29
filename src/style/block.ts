@@ -2,16 +2,13 @@ import { css } from "emotion";
 
 import { greyscale, indicator } from "./variables/colors";
 import { base, large, small } from "./variables/fontSizes";
-import { normal } from "./variables/spacing";
+import { minor, normal } from "./variables/spacing";
 
 export const outerBlock = css`
   display: inline-flex;
   align-items: center;
   flex-direction: column;
-
-  & + & {
-    margin-left: ${normal}
-  }
+  padding: ${minor}
 `;
 
 export const numberBlock = css`
