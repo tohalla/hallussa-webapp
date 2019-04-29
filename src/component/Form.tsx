@@ -4,7 +4,7 @@ import React, { ChangeEvent, Component, FormEventHandler, ReactFragment } from "
 
 import { actionsRow, form, inputRow } from "style/form";
 import { error as errorStyle } from "style/inline";
-import { TranslationProps } from "../../misc";
+import { Omit, TranslationProps } from "../../misc";
 import Button from "./button/Button";
 import { InputProps } from "./Input";
 import { getFormInput } from "./util";
@@ -18,7 +18,7 @@ export interface ValidationProps {
 export interface FormInput<Inputs> {
   validate?: ValidationProps;
   key: Inputs;
-  props?: Partial<Pick<InputProps, Exclude<keyof InputProps, keyof ValidationProps>>>;
+  props?: Partial<Omit<InputProps, keyof ValidationProps>>;
 }
 
 export type FormState<Inputs extends string> = {[key in Inputs]: any} & {
