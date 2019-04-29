@@ -53,6 +53,7 @@ const entityPaths: {[key in EntityType]?: string} = {
   accounts: "users/accounts",
 };
 
+// Will return api response payload if the request is still incomplete
 export const getStatus = (
   state: ReduxState,
   entityType: EntityType,
@@ -65,9 +66,10 @@ export const getStatus = (
     throw new Error("organisation not defined");
   }
   if (typeof (organisation as APIResponsePayload).isFetching === "undefined") {
+    const endpoint = entityType in entityPaths ? entityPaths[entityType] : paramCase(entityType);
     return state.activeRequests.get[`/organisations/${
       (organisation as OrganisationPayload).id
-    }/${entityType in entityPaths ? entityPaths[entityType] : paramCase(entityType)}` ];
+    }/${endpoint}`] || state.activeRequests.get[`/${endpoint}`];
   } else {
     return organisation as APIResponsePayload;
   }

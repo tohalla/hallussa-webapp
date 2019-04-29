@@ -8,7 +8,7 @@ import { APIResponseAction, CALL_API, CALL_API_FAILURE, CALL_API_SUCCESS } from 
 
 export type APIMethods = "post" | "get" | "patch" | "delete";
 
-export interface ReduxAPICall extends Action {
+export interface ReduxAPICall<T = any> extends Action {
   endpoint: string;
   method: APIMethods;
   successType: string;
@@ -16,7 +16,7 @@ export interface ReduxAPICall extends Action {
   parameters?: {[key: string]: string | number};
   body?: {[key: string]: any};
   extra?: object; // additional data to send on success
-  onSuccess?(payload: any, cached: boolean): any; // get triggered on succesfull response
+  onSuccess?(payload: T, cached: boolean): any; // get triggered on succesfull response
   onFailure?(payload: any): any; // gets triggered if the request fails
   attemptToFetchFromStore?(state: ReduxState): any;
   transformResponse?(response: any): any; // writes returned object to the store

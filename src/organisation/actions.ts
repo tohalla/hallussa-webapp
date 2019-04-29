@@ -1,6 +1,7 @@
 import { isEmpty } from "ramda";
 import { Dispatch } from "redux";
 import { fetchAccounts } from "../account/actions";
+import { updateActiveUserRole } from "../account/user-role/actions";
 import { fetchAppliances } from "../appliance/actions";
 import { resetTabs } from "../component/tabbed/actions";
 import { fetchMaintainers } from "../maintainer/actions";
@@ -73,7 +74,7 @@ export const deleteOrganisation = (organisation: OrganisationPayload) => ({
 });
 
 export const setActiveOrganisation = (organisation?: number, fetchRelated = true) =>
-  async (dispatch: Dispatch) => {
+  async (dispatch: Dispatch<any>) => {
     // remember organisation for next session
     if (organisation) {
       localStorage.setItem("organisation", String(organisation));
@@ -84,8 +85,9 @@ export const setActiveOrganisation = (organisation?: number, fetchRelated = true
       }
     }
     dispatch(resetTabs); // should close all opened tabs
-    return dispatch({
+    dispatch({
       payload: organisation,
       type: SET_ACTIVE_ORGANISATION,
     });
+    return dispatch(updateActiveUserRole);
   };

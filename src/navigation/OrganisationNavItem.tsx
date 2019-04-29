@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, RouteComponentProps } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import { connect, MapStateToProps } from "react-redux";
 import { activeItem, navItem } from "style/topbar";
@@ -13,9 +13,7 @@ interface StateProps {
   organisation?: OrganisationPayload | APIResponsePayload;
 }
 
-type Props = StateProps & RouteComponentProps;
-
-const OrganisationNavItem = ({organisation}: Props & {organisation?: OrganisationPayload}) => {
+const OrganisationNavItem = ({organisation}: {organisation?: OrganisationPayload}) => {
   if (!organisation) {
     return <div />;
   }
@@ -26,10 +24,10 @@ const OrganisationNavItem = ({organisation}: Props & {organisation?: Organisatio
   );
 };
 
-const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state): StateProps => ({
+const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state): StateProps => ({
   organisation: getOrganisation(state),
 });
 
 export default connect(mapStateToProps)(
-  Loadable<Props, {organisation?: OrganisationPayload}>(OrganisationNavItem)
+  Loadable<{}, {organisation?: OrganisationPayload}>(OrganisationNavItem)
 );

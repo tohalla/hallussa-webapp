@@ -21,13 +21,22 @@ export interface ViewsState {
 const initialState: ViewsState = {
   appliances: {tabs: {
     appliances: {key: "appliances", label: ({t}) => t("tab.appliance.appliances"), sticky: true, order: -1},
-    new: {accent: true, key: "new", activeLabel: ({t}) => t("tab.appliance.new"), label: "add", sticky: true, order: 1},
+    new: {
+      accent: true,
+      activeLabel: ({t}) => t("tab.appliance.new"),
+      allowRender: ({userRole}) => userRole.allowCreateAppliance,
+      key: "new",
+      label: "add",
+      order: 1,
+      sticky: true,
+    },
   }},
   maintainers: {tabs: {
     maintainers: {key: "maintainers", label: ({t}) => t("tab.maintainer.maintainers"), sticky: true, order: -1},
     new: {
       accent: true,
       activeLabel: ({t}) => t("tab.maintainer.new"),
+      allowRender: ({userRole}) => userRole.allowCreateMaintainer,
       key: "new",
       label: "add",
       order: 1,

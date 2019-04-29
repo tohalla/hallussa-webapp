@@ -1,8 +1,14 @@
 import { find } from "ramda";
+
+import { AnyAction } from "redux";
+import { ThunkAction } from "redux-thunk";
+import { Omit } from "../../../misc";
 import { CALL_API } from "../../store/middleware/api/actions";
 import { ReduxAPICall } from "../../store/middleware/api/api";
+import { ReduxState } from "../../store/store";
 
 export const FETCH_USER_ROLES_SUCCESS = "FETCH_USER_ROLES_SUCCESS";
+export const SET_ACTIVE_USER_ROLE = "SET_ACTIVE_USER_ROLE";
 
 export interface UserRolePayload {
   id: number;
@@ -21,6 +27,11 @@ export interface UserRolePayload {
   isShared: boolean;
 }
 
+export type UserRoleRights = Omit<
+  UserRolePayload,
+  "id" | "name" | "isShared" | "organisation"
+> | {[key: string]: false};
+
 export interface UserRoleAction {
   type: string;
   payload: UserRolePayload;
@@ -37,3 +48,20 @@ export const fetchRoles = (organisation?: number, {bypassCache = false} = {}): R
   successType: FETCH_USER_ROLES_SUCCESS,
   type: CALL_API,
 });
+
+export const updateActiveUserRole: ThunkAction<any, ReduxState, any, AnyAction> = (dispatch, getState) => {
+  const {entities: {organisations}, session: {activeAccount, activeOrganisation}} = getState();
+  if (activeAccount && activeOrganisation) {
+    const joinRelation = organisations[activeOrganisation].accounts.find(({id}) => id === activeAccount);
+    if (joinRelation) {
+      return dispatch({
+        payload: joinRelation.userRole,
+        type: SET_ACTIVE_USER_ROLE,
+      });
+    }
+  }
+
+  return dispatch({
+    type: SET_ACTIVE_USER_ROLE,
+  });
+};

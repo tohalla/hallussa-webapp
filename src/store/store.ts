@@ -30,6 +30,7 @@ export interface ReduxState {
   session: {
     activeAccount?: number;
     activeOrganisation?: number;
+    activeUserRole?: number;
   };
   views: ViewsState;
 }
