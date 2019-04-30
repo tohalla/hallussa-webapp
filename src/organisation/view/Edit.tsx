@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { connect, MapStateToProps } from "react-redux";
@@ -5,7 +6,7 @@ import { RouteComponentProps } from "react-router";
 
 import CancelButton from "../../component/button/CancelButton";
 import { ReduxState } from "../../store/store";
-import { padded } from "../../style/container";
+import container, { padded } from "../../style/container";
 import { OrganisationPayload } from "../actions";
 import OrganisationForm from "../component/OrganisationForm";
 
@@ -20,7 +21,7 @@ type Props = StateProps & RouteComponentProps & {
 const Edit = ({organisation, ...props}: Props) => {
   const {t} = useTranslation();
   return (
-    <div className={padded}>
+    <div className={classNames(padded, container)}>
       <OrganisationForm
         state={organisation}
         onSubmit={props.history.goBack}

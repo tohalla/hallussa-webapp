@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Redirect, Route, Switch } from "react-router";
 import { Link, RouteComponentProps } from "react-router-dom";
 import DoubleClickButton from "../../component/button/DoubleClickButton";
+import Restricted, { RestrictedRoute } from "../../component/Restricted";
 import tabbed from "../../component/tabbed/tabbed";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
@@ -62,16 +63,20 @@ const Organisation = ({
         <div className={spread}>
           <h1>{name}</h1>
           <div className={spacedHorizontalContainer}>
-            <DoubleClickButton
-              plain={true}
-              secondaryClassName={alertIndication}
-              onClick={handleDeleteOrganisation}
-            >
-              {t("organisation.action.delete")}
-            </DoubleClickButton>
-            <Link to={`/organisations/${organisation.id}/edit`}>
-              {t("organisation.action.edit")}
-            </Link>
+            <Restricted requirements={{userRole: {allowDeleteOrganisation: true}}}>
+              <DoubleClickButton
+                plain={true}
+                secondaryClassName={alertIndication}
+                onClick={handleDeleteOrganisation}
+              >
+                {t("organisation.action.delete")}
+              </DoubleClickButton>
+            </Restricted>
+            <Restricted requirements={{userRole: {allowUpdateOrganisation: true}}}>
+              <Link to={`/organisations/${organisation.id}/edit`}>
+                {t("organisation.action.edit")}
+              </Link>
+            </Restricted>
           </div>
         </div>
         {organisationIdentifier}
@@ -89,7 +94,12 @@ const Organisation = ({
   return (
     <Switch>
       <Route exact={true} path={match.url} component={Tabbed(Content, {contentContainerClassName: padded})} />
-      <Route exact={true} path={`${match.path}/edit`} component={Edit} />
+      <RestrictedRoute
+        path={`${match.path}/edit`}
+        to={match.url}
+        component={Edit}
+        requirements={{userRole: {allowUpdateOrganisation: true}}}
+      />
       <Route exact={true} path={`${match.path}/users`} component={Tabbed(Users, {contentContainerClassName: padded})} />
       <Redirect to={match.url} />
     </Switch>

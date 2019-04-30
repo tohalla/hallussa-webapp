@@ -2,6 +2,7 @@ import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import ViewContainer from "../component/layout/ViewContainer";
+import { RestrictedRoute } from "../component/Restricted";
 import tabbed from "../component/tabbed/tabbed";
 import TabRouteIndexLookup from "../component/tabbed/TabRouteIndexLookup";
 import { AppliancePayload } from "./actions";
@@ -22,10 +23,11 @@ export default () => (
   <ViewContainer>
     <Switch>
       <Route exact={true} path="/appliances" component={AppliancesTabbed(Listing)} />
-      <Route
-        exact={true}
+      <RestrictedRoute
+        to="/appliances"
         path="/appliances/new"
         component={AppliancesTabbed(Create)}
+        requirements={{userRole: {allowCreateAppliance: true}}}
       />
       <TabRoute path="/appliances/:appliance" component={AppliancesTabbed(Details)} />
       <Redirect to="/appliances" />

@@ -1,7 +1,7 @@
 import { AnyAction } from "redux";
 
 import { TranslationProps } from "../../../misc";
-import { UserRolePayload } from "../../account/user-role/actions";
+import { RequirementProps } from "../Restricted";
 
 export const CREATE_TAB = "CREATE_TAB";
 export const CLOSE_TAB = "CLOSE_TAB";
@@ -16,7 +16,7 @@ type labelType = ((p: TranslationProps) => string) | string;
 export interface TabPayload {
   key: string;
   label: labelType;
-  allowRender?: (options: {userRole: Partial<UserRolePayload>}) => boolean | undefined;
+  requirements?: RequirementProps;
   activeLabel?: labelType;
   accent?: boolean;
   sticky?: boolean;

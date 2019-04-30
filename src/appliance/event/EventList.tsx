@@ -19,7 +19,7 @@ interface StateProps {
 }
 
 interface Props {
-  maintenanceEvents: MaintenanceEventPayload[];
+  maintenanceEvents: Readonly<MaintenanceEventPayload[]>;
   header?: ReactFragment;
 }
 

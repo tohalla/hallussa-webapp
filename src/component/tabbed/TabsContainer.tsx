@@ -11,6 +11,7 @@ import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import { actionTab, tab as tabStyle, tabActive, tabsContainer } from "../../style/tabbed";
 import Loadable from "../../util/hoc/Loadable";
+import Restricted from "../Restricted";
 import { closeTab, createTab, TabPayload } from "./actions";
 import TabComponent from "./TabComponent";
 
@@ -52,11 +53,7 @@ const TabsContainer = ({
   const getPath = (tab: TabPayload) =>
     "/" + [view, pathPostfix, view === tab.key ? false : `${tab.key}`].filter(Boolean).join("/");
 
-  const renderTab = ({allowRender, ...tab}: TabPayload) => {
-    if (typeof allowRender === "function" && !allowRender({userRole})) {
-      return null;
-    }
-
+  const renderTab = ({requirements, ...tab}: TabPayload) => {
     const destination = getPath(tab);
     const {activeLabel, label, key, accent} = tab;
 
@@ -64,19 +61,20 @@ const TabsContainer = ({
       <div className={classnames(className, tabActive)}>{children}</div> : NavLink;
 
     return (
-      <TabLink
-        className={classnames(tabStyle, {[actionTab]: accent})}
-        activeClassName={tabActive}
-        exact={view === key}
-        key={key}
-        to={destination}
-      >
-        <TabComponent
-          {...tab}
-          label={match.path.startsWith(destination) && activeLabel ? activeLabel : label}
-          onClose={handleTabClose(tab)}
-        />
-      </TabLink>
+      <Restricted requirements={requirements} key={key}>
+        <TabLink
+          className={classnames(tabStyle, {[actionTab]: accent})}
+          activeClassName={tabActive}
+          exact={view === key}
+          to={destination}
+        >
+          <TabComponent
+            {...tab}
+            label={match.path.startsWith(destination) && activeLabel ? activeLabel : label}
+            onClose={handleTabClose(tab)}
+          />
+        </TabLink>
+      </Restricted>
     );
   };
 

@@ -24,10 +24,10 @@ const initialState: ViewsState = {
     new: {
       accent: true,
       activeLabel: ({t}) => t("tab.appliance.new"),
-      allowRender: ({userRole}) => userRole.allowCreateAppliance,
       key: "new",
       label: "add",
       order: 1,
+      requirements: {userRole: {allowCreateAppliance: true}},
       sticky: true,
     },
   }},
@@ -36,10 +36,10 @@ const initialState: ViewsState = {
     new: {
       accent: true,
       activeLabel: ({t}) => t("tab.maintainer.new"),
-      allowRender: ({userRole}) => userRole.allowCreateMaintainer,
       key: "new",
       label: "add",
       order: 1,
+      requirements: {userRole: {allowCreateMaintainer: true}},
       sticky: true,
     },
   }},

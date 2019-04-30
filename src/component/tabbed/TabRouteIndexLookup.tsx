@@ -2,9 +2,11 @@ import { path } from "ramda";
 import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 import { RouteProps } from "react-router";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+
 import { EntityGroup } from "../../store/reducer";
 import { ReduxState } from "../../store/store";
+import { RequirementProps, RestrictedRoute } from "../Restricted";
 import { createTab, TabPayload } from "./actions";
 
 interface StateProps {
@@ -16,7 +18,9 @@ interface DispatchProps {
   createTab(view: string, payload: TabPayload): any;
 }
 
-type Props = RouteProps;
+interface Props extends RouteProps {
+  requirements?: RequirementProps;
+}
 
 interface HProps<T> {
   context: "appliances" | "maintainers";
@@ -30,16 +34,18 @@ const TabRouteIndexLookup = <T extends {}>({context, getLabel, rootPath, accesso
     tabs,
     entities,
     createTab: openTab,
+    requirements,
+    component,
+    path: routePath,
     ...props
-}: Props & StateProps & DispatchProps & DispatchProps) => {
+  }: Props & StateProps & DispatchProps & DispatchProps) => {
     const requestedIndex = path<number>(["computedMatch", "params", accessor], props);
-    const redirect = typeof requestedIndex === "undefined" || typeof entities[requestedIndex] === "undefined";
 
-    if (
-      !redirect
-      && typeof requestedIndex !== "undefined"
-      && typeof tabs[requestedIndex] === "undefined"
-    ) {
+    if (typeof requestedIndex === "undefined" || typeof entities[requestedIndex] === "undefined") {
+      return <Redirect to={rootPath} />;
+    }
+
+    if (typeof requestedIndex !== "undefined" && typeof tabs[requestedIndex] === "undefined") {
       openTab(context, {
         key: String(requestedIndex),
         label: getLabel(entities[requestedIndex]),
@@ -47,7 +53,14 @@ const TabRouteIndexLookup = <T extends {}>({context, getLabel, rootPath, accesso
       });
     }
 
-    return redirect ? <Redirect to={rootPath} /> : <Route {...props} />;
+    return (
+      <RestrictedRoute
+        to={rootPath}
+        requirements={requirements}
+        component={component}
+        path={routePath}
+      />
+    );
   };
 
   const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({

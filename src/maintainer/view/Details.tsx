@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { AppliancePayload } from "../../appliance/actions";
 import ApplianceList from "../../appliance/component/ApplianceList";
 import DoubleClickButton from "../../component/button/DoubleClickButton";
+import Restricted from "../../component/Restricted";
 import { closeTab, createTab, TabPayload } from "../../component/tabbed/actions";
 import TabRouteIndexLookup from "../../component/tabbed/TabRouteIndexLookup";
 import Timestamps from "../../component/Timestamps";
@@ -58,23 +59,27 @@ const Maintainer = ({match, history, maintainer, ...props}: Props) => {
         <div className={spread}>
           <h1>{firstName} {lastName}</h1>
           <div className={spacedHorizontalContainer}>
-            <DoubleClickButton
-              plain={true}
-              secondaryClassName={alertIndication}
-              onClick={handeDeleteMaintainer}
-            >
-              {t("maintainer.action.delete")}
-            </DoubleClickButton>
-            <Link to={`/maintainers/${maintainer.id}/edit`}>
-              {t("maintainer.action.edit")}
-            </Link>
+            <Restricted requirements={{userRole: {allowDeleteMaintainer: true}}}>
+              <DoubleClickButton
+                plain={true}
+                secondaryClassName={alertIndication}
+                onClick={handeDeleteMaintainer}
+              >
+                {t("maintainer.action.delete")}
+              </DoubleClickButton>
+            </Restricted>
+            <Restricted requirements={{userRole: {allowUpdateMaintainer: true}}}>
+              <Link to={`/maintainers/${maintainer.id}/edit`}>
+                {t("maintainer.action.edit")}
+              </Link>
+            </Restricted>
           </div>
         </div>
         <div className={stacked}>
           {phone && <div className={info}><i className="material-icons">phone</i> <span>{phone}</span></div>}
           {email && <div className={info}>
-              <i className="material-icons">email</i>
-              <a href={`mailto:${email}`}>{email}</a>
+            <i className="material-icons">email</i>
+            <a href={`mailto:${email}`}>{email}</a>
           </div>}
         </div>
         <div className={spacer} />
@@ -102,7 +107,12 @@ const Maintainer = ({match, history, maintainer, ...props}: Props) => {
   return (
     <Switch>
       <Route exact={true} path={match.url} render={renderContent} />
-      <TabRoute exact={true} path={`${match.path}/edit`} component={Edit} />
+      <TabRoute
+        exact={true}
+        component={Edit}
+        path={`${match.path}/edit`}
+        requirements={{userRole: {allowUpdateMaintainer: true}}}
+      />
     </Switch>
   );
 };

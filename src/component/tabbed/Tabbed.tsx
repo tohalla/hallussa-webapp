@@ -31,7 +31,7 @@ export default ({view, pathPostfix}: {view: keyof ViewsState, pathPostfix?: stri
         <>
           <TabsContainer view={view} pathPostfix={pathPostfix} tabs={props.tabs} {...routerProps} />
           <div className={classNames(viewContentContainer, contentContainerClassName)}>
-            <Component {...contentComponentProps} />
+            <Component {...contentComponentProps} {...routerProps} />
           </div>
         </>
       );
