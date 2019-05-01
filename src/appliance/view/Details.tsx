@@ -84,7 +84,7 @@ const Details = ({
         }
       >
         <div className={spread}>
-          <h1>{name}</h1>
+          <h1>{appliance.name}</h1>
           <div className={spacedHorizontalContainer}>
             <Restricted requirements={{userRole: {allowDeleteAppliance: true}}}>
               <DoubleClickButton
@@ -105,7 +105,7 @@ const Details = ({
         {appliance.description}
         <div className={spacer} />
         <Status status={appliance.status} />
-        {location &&
+        {appliance.location &&
           <div className={info}><i className="material-icons">location_on</i><span>{appliance.location}</span></div>
         }
         <div className={spacer} />

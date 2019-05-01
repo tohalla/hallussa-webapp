@@ -7,6 +7,5 @@ export const major = "2.5rem";
 
 export const spacer = css`
   display: block;
-  flex: 0 0;
   height: ${major};
 `;

@@ -62,7 +62,7 @@ export const EventList = ({header, maintenanceEvents, maintainers}: StateProps &
   ];
 
   return (
-    <>
+    <div>
       {header}
       {maintenanceEvents.length === 0 ?
         <div className={emptyContainer}>No events found</div>
@@ -72,7 +72,7 @@ export const EventList = ({header, maintenanceEvents, maintainers}: StateProps &
           data={maintenanceEvents}
         />
       }
-    </>
+    </div>
   );
 };
 

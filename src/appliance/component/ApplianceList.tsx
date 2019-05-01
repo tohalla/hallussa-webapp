@@ -46,7 +46,7 @@ export default ({header, appliances}: Props) => {
   ];
 
   return (
-      <>
+      <div>
         {header}
         {(appliances as Readonly<AppliancePayload[]>).length === 0 ?
           <div className={emptyContainer}>{t("appliance.listing.noAppliances")}</div>
@@ -57,6 +57,6 @@ export default ({header, appliances}: Props) => {
             data={appliances as AppliancePayload[]}
           />
         }
-      </>
+      </div>
   );
 };
