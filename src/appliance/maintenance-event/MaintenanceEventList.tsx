@@ -23,7 +23,7 @@ interface Props {
   header?: ReactFragment;
 }
 
-export const EventList = ({header, maintenanceEvents, maintainers}: StateProps & Props) => {
+export const MaintenanceEventList = ({header, maintenanceEvents, maintainers}: StateProps & Props) => {
   const {t} = useTranslation();
 
   const columns: Column[] = [
@@ -82,4 +82,4 @@ const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) 
 
 export default connect<StateProps, {}, Props, ReduxState>(
   mapStateToProps
-)(Loadable(EventList));
+)(Loadable(MaintenanceEventList));

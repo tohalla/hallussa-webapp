@@ -25,7 +25,7 @@ import { authenticatedFetch } from "../../util/utilityFunctions";
 import { AppliancePayload, deleteAppliance } from "../actions";
 import MaintainerAssignment from "../component/MaintainerAssignment";
 import Status from "../component/Status";
-import EventList from "../event/EventList";
+import MaintenanceEventList from "../maintenance-event/MaintenanceEventList";
 import Edit from "./Edit";
 
 interface StateProps {
@@ -109,7 +109,7 @@ const Details = ({
           <div className={info}><i className="material-icons">location_on</i><span>{appliance.location}</span></div>
         }
         <div className={spacer} />
-        <EventList
+        <MaintenanceEventList
           header={<h3>{t("appliance.event.list.title")}</h3>}
           maintenanceEvents={appliance.maintenanceEvents || []}
         />
