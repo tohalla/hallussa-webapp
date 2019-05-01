@@ -37,8 +37,6 @@ export default ({view, pathPostfix}: {view: keyof ViewsState, pathPostfix?: stri
       );
     };
 
-    return connect(
-      mapStateToProps
-    )(Tabbed);
+    return connect(mapStateToProps)(Tabbed);
   };
 };

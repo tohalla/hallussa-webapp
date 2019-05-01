@@ -2,7 +2,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 import { RouteComponentProps } from "react-router";
-import CancelButton from "../../component/button/CancelButton";
 import { padded } from "../../style/container";
 import ApplianceForm from "../component/ApplianceForm";
 
@@ -11,7 +10,6 @@ export default (props: RouteComponentProps) => {
   return (
     <div className={padded}>
       <ApplianceForm
-        secondary={<CancelButton history={props.history} />}
         header={<h1>{t("appliance.create.title")}</h1>}
         submitText={t("appliance.create.form.submit")}
         {...props}

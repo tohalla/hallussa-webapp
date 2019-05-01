@@ -6,6 +6,7 @@ import { actionsRow, form, inputRow } from "style/form";
 import { error as errorStyle } from "style/inline";
 import { Omit, TranslationProps } from "../../misc";
 import Button from "./button/Button";
+import CancelButton from "./button/CancelButton";
 import { InputProps } from "./Input";
 import { getFormInput } from "./util";
 
@@ -58,7 +59,7 @@ const getInputState = <Inputs extends string>(
 export default class Form<Inputs extends string> extends Component<FormProps<Inputs>, FormState<Inputs>> {
   public static defaultProps = {
     isValid: true,
-    secondary: <span />,
+    secondary: <CancelButton />,
     submitText: "Submit",
   };
 

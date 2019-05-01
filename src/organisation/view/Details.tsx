@@ -93,7 +93,7 @@ const Organisation = ({
 
   return (
     <Switch>
-      <Route exact={true} path={match.url} component={Tabbed(Content, {contentContainerClassName: padded})} />
+      <Route exact={true} path={match.path} component={Tabbed(Content, {contentContainerClassName: padded})} />
       <RestrictedRoute
         path={`${match.path}/edit`}
         to={match.url}

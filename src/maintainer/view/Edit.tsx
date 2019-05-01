@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { connect, MapStateToProps } from "react-redux";
 import { RouteComponentProps } from "react-router";
 
-import CancelButton from "../../component/button/CancelButton";
 import { ReduxState } from "../../store/store";
 import { padded } from "../../style/container";
 import { MaintainerPayload } from "../actions";
@@ -24,7 +23,6 @@ const Edit = ({maintainer, ...props}: Props) => {
       <MaintainerForm
         state={maintainer}
         onSubmit={props.history.goBack}
-        secondary={<CancelButton history={props.history} />}
         header={<h1>{t("maintainer.edit.title", {maintainer: `${maintainer.firstName} ${maintainer.lastName}`})}</h1>}
         submitText={t("maintainer.edit.form.submit")}
         {...props}

@@ -48,9 +48,9 @@ export const RestrictedRoute = ({
   const C = ({activeUserRole, ...props}: StateProps & RouteComponentProps) =>
     allowAccess({requirements, activeUserRole}) && Component ?
       <Component {...props} /> : <Redirect to={to} />;
+
   return (
     <Route
-      exact={true}
       path={path}
       component={requirements ? connect(mapStateToProps)(Loadable(C)) : C}
     />

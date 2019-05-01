@@ -106,9 +106,8 @@ const Maintainer = ({match, history, maintainer, ...props}: Props) => {
 
   return (
     <Switch>
-      <Route exact={true} path={match.url} render={renderContent} />
+      <Route exact={true} path={match.path} render={renderContent} />
       <TabRoute
-        exact={true}
         component={Edit}
         path={`${match.path}/edit`}
         requirements={{userRole: {allowUpdateMaintainer: true}}}

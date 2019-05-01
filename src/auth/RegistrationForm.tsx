@@ -13,7 +13,7 @@ import { register } from "./auth";
 type Inputs = "email" | "firstName" | "lastName" | "password" | "retypePassword" | "tos";
 
 export default () => {
-  const [tos, setTOS] = useState();
+  const [tos, setTOS] = useState(false);
   const [error, setError] = useState();
   const {t} = useTranslation();
 

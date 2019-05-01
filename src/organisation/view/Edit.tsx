@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { connect, MapStateToProps } from "react-redux";
 import { RouteComponentProps } from "react-router";
 
-import CancelButton from "../../component/button/CancelButton";
 import { ReduxState } from "../../store/store";
 import container, { padded } from "../../style/container";
 import { OrganisationPayload } from "../actions";
@@ -25,7 +24,6 @@ const Edit = ({organisation, ...props}: Props) => {
       <OrganisationForm
         state={organisation}
         onSubmit={props.history.goBack}
-        secondary={<CancelButton history={props.history} />}
         header={<h1>{t("organisation.edit.title", {organisation: organisation.name})}</h1>}
         submitText={t("organisation.edit.form.submit")}
         {...props}

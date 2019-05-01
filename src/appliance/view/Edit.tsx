@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { connect, MapStateToProps } from "react-redux";
 import { RouteComponentProps } from "react-router";
 
-import CancelButton from "../../component/button/CancelButton";
 import { ReduxState } from "../../store/store";
 import { padded } from "../../style/container";
 import { AppliancePayload } from "../actions";
@@ -24,7 +23,6 @@ const Edit = ({appliance, ...props}: Props) => {
       <ApplianceForm
         state={appliance}
         onSubmit={props.history.goBack}
-        secondary={<CancelButton history={props.history} />}
         header={<h1>{t("appliance.edit.title", {appliance: appliance.name})}</h1>}
         submitText={t("appliance.edit.form.submit")}
         {...props}

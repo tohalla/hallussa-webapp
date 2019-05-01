@@ -4,8 +4,10 @@ import { connect, MapStateToProps } from "react-redux";
 import { RouteProps } from "react-router";
 import { Redirect } from "react-router-dom";
 
+import { getStatus } from "../../organisation/state";
 import { EntityGroup } from "../../store/reducer";
 import { ReduxState } from "../../store/store";
+import Loadable from "../../util/hoc/Loadable";
 import { RequirementProps, RestrictedRoute } from "../Restricted";
 import { createTab, TabPayload } from "./actions";
 
@@ -64,14 +66,14 @@ const TabRouteIndexLookup = <T extends {}>({context, getLabel, rootPath, accesso
   };
 
   const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
-    entities: state.entities[context],
+    entities: getStatus(state, context) || state.entities[context],
     tabs: state.views[context].tabs,
   });
 
   return connect<StateProps, DispatchProps, Props, ReduxState>(
     mapStateToProps,
     {createTab}
-  )(RouteComponent);
+  )(Loadable(RouteComponent));
 };
 
 export default TabRouteIndexLookup;

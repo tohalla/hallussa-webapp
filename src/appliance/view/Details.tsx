@@ -137,9 +137,8 @@ const Details = ({
 
   return (
     <Switch>
-      <Route exact={true} path={match.url} render={renderContent} />
+      <Route exact={true} path={match.path} render={renderContent} />
       <TabRoute
-        exact={true}
         path={`${match.path}/edit`}
         component={Edit}
         requirements={{userRole: {allowUpdateAppliance: true}}}
