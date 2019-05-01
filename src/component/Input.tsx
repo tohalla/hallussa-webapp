@@ -21,26 +21,23 @@ export interface InputProps {
 
 const Input = ({error, onBlur, onFocus, autoFocus, getInputElement, ...props}: InputProps) => {
   const inputElement = useRef<HTMLInputElement>();
-
-  let displayErrorTimer: number | undefined;
+  const [displayErrorTimer, setDisplayErrorTimer] = useState();
 
   const [displayError, setDisplayError] = useState(false);
 
-  useEffect(() => {
-    if (autoFocus) {
-      focus();
-    }
-    return () => window.clearTimeout(displayErrorTimer);
-  }, []);
+  useEffect(() => window.clearTimeout(displayErrorTimer), [displayErrorTimer]);
 
-  const focus = (options?: FocusOptions) =>
-    inputElement.current && inputElement.current.focus(options);
+  useEffect(() => {
+    if (inputElement.current && autoFocus) {
+      inputElement.current.focus();
+    }
+  }, []);
 
   const handleBlur: FocusEventHandler<HTMLInputElement> = (event) => {
     if (typeof onBlur === "function") { onBlur(event); }
-    displayErrorTimer = window.setTimeout(() => {
+    setDisplayErrorTimer(window.setTimeout(() => {
       setDisplayError(document.activeElement !== inputElement.current);
-    }, 300);
+    }, 300));
   };
 
   const handleFocus: FocusEventHandler<HTMLInputElement> = (event) => {
