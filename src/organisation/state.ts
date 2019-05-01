@@ -35,6 +35,9 @@ export const getEntitiesByOrganisation = <T>(
   key: string = "id" // key used to determine the entity if relation is an object
 ): ReadonlyArray<T> | APIResponsePayload => {
   const organisation = getOrganisation(state, organisationId);
+  if (typeof organisation === "undefined") {
+    return [];
+  }
   return getStatus(state, entityType, organisation) // if entity fetching still hanging, return request status
     || reduce<any, any>(
       (prev, curr) => append(

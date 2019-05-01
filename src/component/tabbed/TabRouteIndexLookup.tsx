@@ -66,7 +66,7 @@ const TabRouteIndexLookup = <T extends {}>({context, getLabel, rootPath, accesso
   };
 
   const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
-    entities: getStatus(state, context) || state.entities[context],
+    entities: state.session.activeOrganisation ? getStatus(state, context) || state.entities[context] : {},
     tabs: state.views[context].tabs,
   });
 

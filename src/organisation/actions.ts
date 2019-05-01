@@ -1,5 +1,6 @@
 import { isEmpty } from "ramda";
-import { Dispatch } from "redux";
+import { AnyAction, Dispatch } from "redux";
+import { ThunkAction } from "redux-thunk";
 import { fetchAccounts } from "../account/actions";
 import { updateActiveUserRole } from "../account/user-role/actions";
 import { fetchAppliances } from "../appliance/actions";
@@ -7,6 +8,7 @@ import { resetTabs } from "../component/tabbed/actions";
 import { fetchMaintainers } from "../maintainer/actions";
 import { APIResponseAction, CALL_API } from "../store/middleware/api/actions";
 import { ReduxAPICall } from "../store/middleware/api/api";
+import { ReduxState } from "../store/store";
 
 export const CREATE_ORGANISATION_SUCCESS = "CREATE_ORGANISATION_SUCCESS";
 export const UPDATE_ORGANISATION_SUCCESS = "UPDATE_ORGANISATION_SUCCESS";
@@ -64,14 +66,24 @@ export const updateOrganisation = (organisation: OrganisationPayload) => async (
   return response.payload as OrganisationPayload;
 };
 
-export const deleteOrganisation = (organisation: OrganisationPayload) => ({
-  body: organisation,
-  endpoint: `/organisations/${organisation.id}`,
-  extra: organisation,
-  method: "delete",
-  successType: DELETE_ORGANISATIONS_SUCCESS,
-  type: CALL_API,
-});
+export const deleteOrganisation: (
+  organisation: OrganisationPayload
+) => ThunkAction<any, ReduxState, any, AnyAction> = (organisation) => (dispatch, getState) => {
+  if (getState().session.activeOrganisation === organisation.id) {
+    dispatch({
+      payload: undefined,
+      type: SET_ACTIVE_ORGANISATION,
+    });
+  }
+  return dispatch({
+    body: organisation,
+    endpoint: `/organisations/${organisation.id}`,
+    extra: organisation,
+    method: "delete",
+    successType: DELETE_ORGANISATIONS_SUCCESS,
+    type: CALL_API,
+  });
+};
 
 export const setActiveOrganisation = (organisation?: number, fetchRelated = true) =>
   async (dispatch: Dispatch<any>) => {
