@@ -1,8 +1,10 @@
+import classNames from "classnames";
 import { groupBy, map } from "ramda";
 import React from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 
 import { withTranslation, WithTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import Button from "../../component/button/Button";
 import Select from "../../component/Select";
 import { MaintainerPayload } from "../../maintainer/actions";
@@ -10,8 +12,7 @@ import { getEntitiesByOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxAPICall } from "../../store/middleware/api/api";
 import { ReduxState } from "../../store/store";
-import { rowContainer, stacked } from "../../style/container";
-import { large } from "../../style/variables/fontSizes";
+import { rowContainer, spacedHorizontalContainer, stacked } from "../../style/container";
 import { normal } from "../../style/variables/spacing";
 import Loadable from "../../util/hoc/Loadable";
 import { AppliancePayload, assignMaintainerToAppliance, removeMaintainerFromAppliance } from "../actions";
@@ -97,15 +98,15 @@ class MaintainerAssignment extends React.Component<Props & StateProps & Dispatch
         }
         {assigned && <div style={{marginTop: normal}}>
           {map((maintainer: MaintainerPayload) => (
-            <div key={maintainer.id} className={rowContainer}>
-              {maintainer.firstName} {maintainer.lastName}
-              <span
-                className="material-icons"
-                style={{fontSize: large, cursor: "pointer"}}
+            <div key={maintainer.id} className={classNames(spacedHorizontalContainer, rowContainer)}>
+              <Link to={`/maintainers/${maintainer.id}`}>{maintainer.firstName} {maintainer.lastName}</Link>
+              <Button
+                className={classNames("material-icons")}
                 onClick={this.removeMaintainer(maintainer.id)}
+                plain={true}
               >
                 close
-              </span>
+              </Button>
             </div>
           ), assigned)}
         </div>}

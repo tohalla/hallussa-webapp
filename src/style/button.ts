@@ -1,5 +1,6 @@
 import { css } from "emotion";
 import { indicator, primary, text } from "./variables/colors";
+import { large } from "./variables/fontSizes";
 import { buttonHeight } from "./variables/sizes";
 import { minimal, normal } from "./variables/spacing";
 
@@ -20,6 +21,10 @@ const button = css`
   height: ${buttonHeight};
   text-decoration: none;
 
+  .material-icons {
+    font-size: ${large};
+  }
+
   &:hover {
     color: ${text.light};
     background: ${primary.dark};
@@ -35,13 +40,11 @@ const button = css`
 `;
 
 export const plain = css`
-  cursor: default;
   background: none;
   border: none;
   white-space: nowrap;
   padding: 0;
   margin: 0;
-  text-decoration: none;
   &:hover {
     background: none;
     text-decoration: underline;
