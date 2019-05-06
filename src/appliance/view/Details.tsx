@@ -6,7 +6,7 @@ import { Route, RouteComponentProps, Switch } from "react-router";
 import { Link } from "react-router-dom";
 import Button from "../../component/button/Button";
 import DoubleClickButton from "../../component/button/DoubleClickButton";
-import Drawers from "../../component/drawer/Drawers";
+import Drawer from "../../component/drawer/Drawer";
 import WithSidebar from "../../component/layout/WithSidebar";
 import Restricted from "../../component/Restricted";
 import { closeTab, createTab, TabPayload } from "../../component/tabbed/actions";
@@ -69,64 +69,59 @@ const Details = ({
     await props.deleteAppliance(appliance);
   };
 
-  const renderContent = () => {
-    return (
-      <WithSidebar
-        sidebarContent={
-          <Drawers
-            drawers={{
-              maintainers: {
-                children: <MaintainerAssignment appliance={appliance} />,
-                label: t("appliance.drawer.maintainers.title"),
-              },
-            }}
-          />
-        }
-      >
-        <div className={spread}>
-          <h1>{appliance.name}</h1>
-          <div className={spacedHorizontalContainer}>
-            <Restricted requirements={{userRole: {allowDeleteAppliance: true}}}>
-              <DoubleClickButton
-                plain={true}
-                secondaryClassName={alertIndication}
-                onClick={handleDeleteAppliance}
-              >
-                {t("appliance.action.delete")}
-              </DoubleClickButton>
-            </Restricted>
-            <Restricted requirements={{userRole: {allowUpdateAppliance: true}}}>
-              <Link to={`/appliances/${appliance.id}/edit`}>
-                {t("appliance.action.edit")}
-              </Link>
-            </Restricted>
-          </div>
+  const drawers = (
+    <>
+      <Drawer label={t("appliance.drawer.maintainers.title")}>
+        <MaintainerAssignment appliance={appliance} />
+      </Drawer>
+    </>
+  );
+
+  const Content = () => (
+    <WithSidebar sidebarContent={drawers}>
+      <div className={spread}>
+        <h1>{appliance.name}</h1>
+        <div className={spacedHorizontalContainer}>
+          <Restricted requirements={{userRole: {allowDeleteAppliance: true}}}>
+            <DoubleClickButton
+              plain={true}
+              secondaryClassName={alertIndication}
+              onClick={handleDeleteAppliance}
+            >
+              {t("appliance.action.delete")}
+            </DoubleClickButton>
+          </Restricted>
+          <Restricted requirements={{userRole: {allowUpdateAppliance: true}}}>
+            <Link to={`/appliances/${appliance.id}/edit`}>
+              {t("appliance.action.edit")}
+            </Link>
+          </Restricted>
         </div>
-        {appliance.description}
-        <div className={spacer} />
-        <Status status={appliance.status} />
-        {appliance.location &&
-          <div className={info}><i className="material-icons">location_on</i><span>{appliance.location}</span></div>
-        }
-        <div className={spacer} />
-        <MaintenanceEventList
-          header={<h3>{t("appliance.event.list.title")}</h3>}
-          maintenanceEvents={appliance.maintenanceEvents || []}
+      </div>
+      {appliance.description}
+      <div className={spacer} />
+      <Status status={appliance.status} />
+      {appliance.location &&
+        <div className={info}><i className="material-icons">location_on</i><span>{appliance.location}</span></div>
+      }
+      <div className={spacer} />
+      <MaintenanceEventList
+        header={<h3>{t("appliance.event.list.title")}</h3>}
+        maintenanceEvents={appliance.maintenanceEvents || []}
+      />
+      <div className={spacer} />
+      <div className={spread}>
+        <Timestamps
+          translationKeys={{createdAt: "appliance.createdAt", updatedAt: "appliance.updatedAt"}}
+          createdAt={appliance.createdAt}
+          updatedAt={appliance.updatedAt}
         />
-        <div className={spacer} />
-        <div className={spread}>
-          <Timestamps
-            translationKeys={{createdAt: "appliance.createdAt", updatedAt: "appliance.updatedAt"}}
-            createdAt={appliance.createdAt}
-            updatedAt={appliance.updatedAt}
-          />
-          <Button onClick={handleFetchQR}>
-            {t("appliance.action.downloadQR")}
-          </Button>
-        </div>
-      </WithSidebar>
-    );
-  };
+        <Button onClick={handleFetchQR}>
+          {t("appliance.action.downloadQR")}
+        </Button>
+      </div>
+    </WithSidebar>
+  );
 
   const TabRoute = TabRouteIndexLookup<AppliancePayload>({
     accessor: "appliance",
@@ -137,7 +132,7 @@ const Details = ({
 
   return (
     <Switch>
-      <Route exact={true} path={match.path} render={renderContent} />
+      <Route exact={true} path={match.path} component={Content} />
       <TabRoute
         path={`${match.path}/edit`}
         component={Edit}

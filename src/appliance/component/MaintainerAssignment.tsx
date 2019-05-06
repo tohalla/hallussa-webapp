@@ -1,9 +1,9 @@
 import classNames from "classnames";
 import { groupBy, map } from "ramda";
-import React from "react";
+import React, { useState } from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 
-import { withTranslation, WithTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import Button from "../../component/button/Button";
 import Select from "../../component/Select";
@@ -38,83 +38,75 @@ interface Props {
   appliance: AppliancePayload;
 }
 
-interface State {
-  maintainer?: null | {value: number, label: string};
-}
-
 const getMaintainerOption = ({firstName, lastName, id}: MaintainerPayload) => ({
   label: `${firstName} ${lastName}`, value: id,
 });
 
-class MaintainerAssignment extends React.Component<Props & StateProps & DispatchProps & WithTranslation, State> {
-  public state: State = {
-    maintainer: null,
-  };
+const MaintainerAssignment = ({
+  appliance,
+  maintainers,
+  ...props
+}: Props & StateProps & DispatchProps) => {
+  const [maintainer, setMaintainer] = useState();
+  const {t} = useTranslation();
 
-  public setMaintainer = (maintainer?: any) =>
-    this.setState({maintainer})
-
-  public assignMaintainer = async () => {
-    if (this.state.maintainer) {
-      const {appliance} = this.props;
-      await this.props.assignMaintainerToAppliance(
+  const assignMaintainer = async () => {
+    if (maintainer) {
+      await props.assignMaintainerToAppliance(
         appliance.organisation,
         appliance.id,
-        this.state.maintainer.value
+        maintainer.value
       );
     }
-    this.setState({maintainer: null});
-  }
+    setMaintainer(null);
+  };
 
-  public removeMaintainer = (maintainer: number) => () => {
-    const {appliance} = this.props;
-    this.props.removeMaintainerFromAppliance(
+  const removeMaintainer = (maintainerId: number) => () => {
+    props.removeMaintainerFromAppliance(
       appliance.organisation,
       appliance.id,
-      maintainer
+      maintainerId
     );
-  }
+  };
 
-  public render() {
-    const {appliance, maintainers, t} = this.props;
-    const {assigned, assignable} = groupBy(
-      (maintainer) => appliance.maintainers.indexOf(maintainer.id) === -1 ? "assignable" : "assigned",
-      maintainers as ReadonlyArray<MaintainerPayload>
-    );
-    return (
-      <>
-        {assignable ?
-        <div className={stacked}>
-          <Select
-            options={map(getMaintainerOption, assignable)}
-            onChange={this.setMaintainer}
-            value={this.state.maintainer}
-            placeholder={t("appliance.maintainer.selectMaintainer")}
-          />
-            {this.state.maintainer &&
-              <Button onClick={this.assignMaintainer}>{t("appliance.maintainer.addMaintainer")}</Button>
-            }
-          </div> : t("appliance.maintainer.noMaintainers")
-        }
-        {assigned && <div style={{marginTop: normal}}>
-          {map((maintainer: MaintainerPayload) => (
-            <div key={maintainer.id} className={classNames(spacedHorizontalContainer, rowContainer)}>
-              <Link to={`/maintainers/${maintainer.id}`}>{maintainer.firstName} {maintainer.lastName}</Link>
-              <Button
-                className={classNames("material-icons")}
-                onClick={this.removeMaintainer(maintainer.id)}
-                plain={true}
-              >
-                close
-              </Button>
-            </div>
-          ), assigned)}
-        </div>}
-        {}
-      </>
-    );
-  }
-}
+  const {assigned, assignable} = groupBy(
+    ({id}) => appliance.maintainers.indexOf(id) === -1 ? "assignable" : "assigned",
+    maintainers as ReadonlyArray<MaintainerPayload>
+  );
+
+  const handleSelectMaintainer = (m: MaintainerPayload) => setMaintainer(m);
+
+  return (
+    <>
+      {assignable ?
+      <div className={stacked}>
+        <Select
+          options={map(getMaintainerOption, assignable)}
+          onChange={handleSelectMaintainer}
+          value={maintainer}
+          placeholder={t("appliance.maintainer.selectMaintainer")}
+        />
+          {maintainer && <Button onClick={assignMaintainer}>{t("appliance.maintainer.addMaintainer")}</Button>}
+        </div> : t("appliance.maintainer.noMaintainers")
+      }
+      {assigned && <div style={{marginTop: normal}}>
+        {map(({id, firstName, lastName}: MaintainerPayload) => (
+          <div key={id} className={classNames(spacedHorizontalContainer, rowContainer)}>
+            <Link to={`/maintainers/${id}`}>{firstName} {lastName}</Link>
+            <Button
+              className={classNames("material-icons")}
+              onClick={removeMaintainer(id)}
+              plain={true}
+            >
+              close
+            </Button>
+          </div>
+        ), assigned)}
+      </div>}
+      {}
+    </>
+  );
+};
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, Props> = {
   assignMaintainerToAppliance,
@@ -126,5 +118,5 @@ const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) 
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  Loadable(withTranslation()(MaintainerAssignment))
+  Loadable(MaintainerAssignment)
 );

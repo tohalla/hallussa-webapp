@@ -1,8 +1,9 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { connect, MapStateToProps } from "react-redux";
 import { AppliancePayload } from "../actions";
 
-import Drawers, { DrawersProps } from "../../component/drawer/Drawers";
+import Drawer from "../../component/drawer/Drawer";
 import WithSidebar from "../../component/layout/WithSidebar";
 import { getEntitiesByOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
@@ -19,18 +20,16 @@ type Props = StateProps & {
   appliances: Readonly<AppliancePayload[]>;
 };
 
-const drawers: DrawersProps["drawers"] = {
-  summary: {
-    children: <Overview />,
-    label: ({t}) => t("appliance.drawer.overview.title"),
-  },
-};
-
 const Listing = ({appliances}: Props) => {
+  const {t} = useTranslation();
   return (
     <WithSidebar
       sidebarContent={
-        <Drawers drawers={drawers} />
+        <>
+          <Drawer label={t("appliance.drawer.overview.title")}>
+            <Overview />
+          </Drawer>
+        </>
       }
     >
       <ApplianceList appliances={appliances} />

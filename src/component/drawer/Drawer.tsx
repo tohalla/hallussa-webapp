@@ -1,32 +1,27 @@
-import React, { memo, ReactChild } from "react";
+import React, { memo, ReactChild, useState } from "react";
 
-import drawer from "style/drawer";
-
-import { useTranslation } from "react-i18next";
-import { TranslationProps } from "../../../misc";
-import DrawerContent from "./DrawerContent";
-import DrawerLabel from "./DrawerLabel";
+import drawer, { content, label as labelStyle, labelExpanded } from "style/drawer";
 
 export interface DrawerProps {
-  label: string | ((p: TranslationProps) => string);
-  expand: boolean;
+  label: string;
+  expand?: boolean;
   children: ReactChild;
-  handleToggle(): any;
 }
 
-export default memo(({children, expand, handleToggle, label}: DrawerProps) => {
-  const {t} = useTranslation();
+export default memo(({children, label, ...props}: DrawerProps) => {
+  const [expand = false, setExpand] = useState(props.expand);
+
+  const handleToggle = () => setExpand(!expand);
+
   return (
     <div className={drawer}>
-      <DrawerLabel
-        expand={expand}
-        label={typeof label === "function" ? label({t}) : label}
-        handleToggle={handleToggle}
-      />
+      <div className={expand ? labelExpanded : labelStyle} onClick={handleToggle}>
+        {label}
+      </div>
       {expand && (
-        <DrawerContent>
+        <div className={content}>
           {children}
-        </DrawerContent>
+        </div>
       )}
     </div>
   );
