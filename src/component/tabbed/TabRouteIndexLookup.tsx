@@ -1,5 +1,5 @@
 import { path } from "ramda";
-import React from "react";
+import React, { memo } from "react";
 import { connect, MapStateToProps } from "react-redux";
 import { RouteProps } from "react-router";
 import { Redirect } from "react-router-dom";
@@ -32,7 +32,7 @@ interface HProps<T> {
 }
 
 const TabRouteIndexLookup = <T extends {}>({context, getLabel, rootPath, accessor}: HProps<T>) => {
-  const RouteComponent = ({
+  const RouteComponent = memo(({
     tabs,
     entities,
     createTab: openTab,
@@ -63,7 +63,7 @@ const TabRouteIndexLookup = <T extends {}>({context, getLabel, rootPath, accesso
         path={routePath}
       />
     );
-  };
+  });
 
   const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
     entities: state.session.activeOrganisation ? getStatus(state, context) || state.entities[context] : {},

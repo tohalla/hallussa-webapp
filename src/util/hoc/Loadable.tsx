@@ -1,4 +1,4 @@
-import { equals, find, hasPath } from "ramda";
+import { equals, find } from "ramda";
 import React, { Component, ComponentType } from "react";
 
 const loadingProps = ["loading", "isFetching"];
@@ -25,15 +25,14 @@ const checkLoading = (props: {[key: string]: any}, depth = 1, checkErrors = true
 export default <A extends {}, B = {}>(
   C: ComponentType<any> | typeof Component | ((p: A) => any),
   isLoading?: (props: {[key: string]: any}) => boolean,
-  onError: (error: Error) => JSX.Element | string = (error) => "Error"
+  onError: (error: Error) => string = (error) => "Error"
 ) => React.memo((props: A) => {
   try {
     if ((typeof isLoading === "function" && isLoading(props)) || checkLoading(props)) {
-      return "loading..."; // replace with loading indicator component
+      return <div>loading...</div>; // replace with loading indicator component
     }
   } catch (error) {
-    return onError(error) || null;
+    return <div>{onError(error)}</div>;
   }
-  return hasPath(["prototype", "render"], C) ?
-    <C {...props as A & B} /> : (C as (p: A & B) => any)(props as A & B);
+  return <C {...props as A & B} />;
 }, equals);

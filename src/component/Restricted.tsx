@@ -1,5 +1,5 @@
 import { whereEq } from "ramda";
-import React, { ReactElement } from "react";
+import React, { memo, ReactElement } from "react";
 import { connect, MapStateToProps } from "react-redux";
 import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router";
 
@@ -39,7 +39,7 @@ export default connect<StateProps, {}, Props, ReduxState>(mapStateToProps)(
   ({children, ...props}: Props & StateProps) => allowAccess(props) && children ? children : null
 );
 
-export const RestrictedRoute = ({
+export const RestrictedRoute = memo(({
   component: Component,
   to,
   path,
@@ -55,4 +55,4 @@ export const RestrictedRoute = ({
       component={requirements ? connect(mapStateToProps)(Loadable(C)) : C}
     />
   );
-};
+});
