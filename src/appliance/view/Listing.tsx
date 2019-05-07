@@ -32,6 +32,7 @@ const Listing = ({appliances}: Props) => {
         </>
       }
     >
+      <h1>{t("organisation.appliances.title")}</h1>
       <ApplianceList appliances={appliances} />
     </WithSidebar>
   );

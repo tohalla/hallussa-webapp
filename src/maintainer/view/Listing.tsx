@@ -1,6 +1,7 @@
 import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
+import { useTranslation } from "react-i18next";
 import { getEntitiesByOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
@@ -17,8 +18,13 @@ type Props = StateProps & {
 };
 
 const Listing = ({maintainers}: Props) => {
+  const {t} = useTranslation();
+
   return (
-    <MaintainerList maintainers={maintainers} />
+    <>
+      <h1>{t("organisation.maintainers.title")}</h1>
+      <MaintainerList maintainers={maintainers} />
+    </>
   );
 };
 
