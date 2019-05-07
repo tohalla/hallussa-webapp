@@ -25,7 +25,7 @@ const Input = ({error, onBlur, onFocus, autoFocus, getInputElement, ...props}: I
 
   const [displayError, setDisplayError] = useState(false);
 
-  useEffect(() => window.clearTimeout(displayErrorTimer), [displayErrorTimer]);
+  useEffect(() => () => window.clearTimeout(displayErrorTimer), [displayErrorTimer]);
 
   useEffect(() => {
     if (inputElement.current && autoFocus) {
