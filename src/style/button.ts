@@ -2,7 +2,7 @@ import { css } from "emotion";
 import { indicator, primary, text } from "./variables/colors";
 import { large } from "./variables/fontSizes";
 import { buttonHeight } from "./variables/sizes";
-import { minimal, normal } from "./variables/spacing";
+import { minor, normal } from "./variables/spacing";
 
 const button = css`
   display: flex;
@@ -11,7 +11,7 @@ const button = css`
   border: none;
   color: ${text.light};
   background: ${primary.neutral};
-  padding: ${minimal} ${normal};
+  padding: ${minor} ${normal};
   text-transform: uppercase;
   font-size: 75%;
   white-space: nowrap;

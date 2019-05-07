@@ -67,6 +67,7 @@ export const uppercaseTitle = css`
 
 export const navItem = css`
   ${uppercaseTitle}
+  user-select: none;
 
   &:hover {
     color: ${text.light};
