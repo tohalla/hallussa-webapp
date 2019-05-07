@@ -44,7 +44,7 @@ export const spacedHorizontalContainer = css`
 
 export const rowContainer = css`
   display: flex;
-  flex: 1;
+  flex: 0;
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
@@ -54,6 +54,7 @@ export const spread = css`
   display: flex;
   justify-content: space-between;
   flex-direction: row;
+  align-items: flex-start;
 
   @media (max-width: ${sm}px) {
     flex-direction: column;
@@ -106,6 +107,7 @@ export const emptyContainer = css`
   align-items: center;
   justify-content: center;
   color: ${greyscale[4]};
+  padding: ${normal};
 `;
 
 export const growContainer = css`

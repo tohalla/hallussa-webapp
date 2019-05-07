@@ -16,6 +16,7 @@ export interface InputProps {
   type: "text" | "password" | "number" | "date" | "email";
   required: boolean;
   value: string;
+  size?: number;
   getInputElement(props: any): JSX.Element;
 }
 
