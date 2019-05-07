@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import classnames from "classnames";
 import React from "react";
 
 import { numberBlock, outerBlock } from "style/block";
@@ -13,7 +13,7 @@ interface Props {
 
 const NumberComponent = (props: Props) => {
   const { number: n, size, label, alert } = props;
-  const innerCn = classNames(size, numberBlock, {
+  const innerCn = classnames(size, numberBlock, {
     alert,
   });
   return (

@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import classnames from "classnames";
 import React from "react";
 import {
   logoContainer,
@@ -37,7 +37,7 @@ export default class Topbar extends React.Component {
           <div className={logoContainer}>
             <Logo type="light" />
             <i
-              className={classNames("material-icons", toggleButton)}
+              className={classnames("material-icons", toggleButton)}
               onClick={this.handleToggle}
             >
               menu

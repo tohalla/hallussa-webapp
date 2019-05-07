@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import classnames from "classnames";
 import React, { ReactNode } from "react";
 
 import { viewContainer } from "style/container";
@@ -9,5 +9,5 @@ interface Props {
 }
 
 export default ({className, ...props}: Props) => (
-  <div className={classNames(viewContainer, className)} {...props} />
+  <div className={classnames(viewContainer, className)} {...props} />
 );

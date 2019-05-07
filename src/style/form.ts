@@ -19,7 +19,6 @@ export const inputRow = css`
   display: flex;
   align-items: center;
   justify-content: stretch;
-  padding-bottom: ${normal};
   width: 100%;
 
   & > * {

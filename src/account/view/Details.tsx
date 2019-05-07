@@ -3,7 +3,7 @@ import { connect, MapStateToProps } from "react-redux";
 
 import { RouteComponentProps } from "react-router-dom";
 import { ReduxState } from "../../store/store";
-import { padded, spread, stacked } from "../../style/container";
+import { padded, stacked } from "../../style/container";
 import { info } from "../../style/inline";
 import { spacer } from "../../style/variables/spacing";
 import { AccountPayload } from "../actions";
@@ -19,9 +19,7 @@ const Details = ({
 }: Props & StateProps) => {
   return (
     <div className={padded}>
-      <div className={spread}>
-        <h1>{firstName} {lastName}</h1>
-      </div>
+      <h1>{firstName} {lastName}</h1>
       <div className={stacked}>
         {email && <div className={info}>
             <i className="material-icons">email</i>

@@ -2,15 +2,7 @@ import { css } from "emotion";
 
 import { sm } from "./variables/breakpoints";
 import { greyscale } from "./variables/colors";
-import { major, minor, normal } from "./variables/spacing";
-
-export const body = css`
-  font-family: "Roboto", sans-serif;
-  position: relative;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-`;
+import { major, normal } from "./variables/spacing";
 
 export const appContainer = css`
   display: flex;
@@ -19,46 +11,33 @@ export const appContainer = css`
   min-height: 100vh;
 `;
 
-const container = css`
-  display: flex;
-  flex-direction: column;
-  padding: ${major};
-
-  @media (max-width: ${sm}px) {
-    padding: ${major} ${minor};
-  }
-
-  background: ${greyscale[8]};
-`;
-
-export const spacedHorizontalContainer = css`
-  display: flex;
-  flex: 0;
-  flex-direction: row;
-  align-items: flex-start;
-
+export const contentHorizontalSpacing = css`
   & > * + * {
     margin-left: ${normal};
   }
 `;
 
+export const contentVerticalSpacing = css`
+  & > * + * {
+    margin-top: ${normal};
+  }
+`;
+
+export const flex1 = css`flex: 1;`;
+export const alignFlexStart = css`align-items: flex-start;`;
+
 export const rowContainer = css`
   display: flex;
-  flex: 0;
-  align-items: center;
-  justify-content: flex-start;
   flex-direction: row;
+
+  @media (max-width: ${sm}px) {
+    flex-direction: column;
+  }
 `;
 
 export const spread = css`
   display: flex;
   justify-content: space-between;
-  flex-direction: row;
-  align-items: flex-start;
-
-  @media (max-width: ${sm}px) {
-    flex-direction: column;
-  }
 `;
 
 export const centerContent = css`
@@ -100,6 +79,10 @@ export const padded = css`
   padding: ${normal} ${major};
 `;
 
+export const paddedMajor = css`
+  padding: ${major};
+`;
+
 export const emptyContainer = css`
   flex: 1;
   align-self: stretch;
@@ -109,24 +92,3 @@ export const emptyContainer = css`
   color: ${greyscale[4]};
   padding: ${normal};
 `;
-
-export const growContainer = css`
-  ${container}
-  flex-grow: 1;
-`;
-
-export const actionGroup = css`
-  & > * + * {
-    margin-top: ${minor};
-  }
-
-  @media (min-width: ${sm + 1}px) {
-    display: flex;
-    width: 100%;
-    & > * + * {
-      margin-top: 0;
-    }
-  }
-`;
-
-export default container;

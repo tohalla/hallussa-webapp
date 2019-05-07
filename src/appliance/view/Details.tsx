@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
@@ -16,7 +17,7 @@ import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
-import { spacedHorizontalContainer, spread } from "../../style/container";
+import { alignFlexStart, contentHorizontalSpacing, rowContainer, spread } from "../../style/container";
 import { alertIndication, info } from "../../style/inline";
 import { spacer } from "../../style/variables/spacing";
 import Loadable from "../../util/hoc/Loadable";
@@ -79,9 +80,9 @@ const Details = ({
     <Switch>
       <Route exact={true} path={match.path}>
         <WithSidebar sidebarContent={<ApplianceDrawers appliance={appliance} />}>
-          <div className={spread}>
+          <div className={classnames(spread, alignFlexStart)}>
             <h1>{appliance.name}</h1>
-            <div className={spacedHorizontalContainer}>
+            <div className={classnames(rowContainer, contentHorizontalSpacing)}>
               <Restricted requirements={{userRole: {allowDeleteAppliance: true}}}>
                 <DoubleClickButton
                   plain={true}

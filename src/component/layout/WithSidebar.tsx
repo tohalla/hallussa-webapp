@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import classnames from "classnames";
 import React, { ReactChild, ReactFragment } from "react";
 
 import { leftContainer, sidebar, sidebarContainer } from "style/sidebar";
@@ -12,7 +12,7 @@ interface Props {
 export default ({ children, sidebarContent }: Props) => {
   return (
     <div className={sidebarContainer}>
-      <div className={classNames(padded, leftContainer)}>
+      <div className={classnames(padded, leftContainer)}>
         {children}
       </div>
       <div className={sidebar}>

@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import classnames from "classnames";
 import React from "react";
 
 import { useTranslation } from "react-i18next";
@@ -17,7 +17,7 @@ interface StateProps {
 const AccountMenu = (props: StateProps) => {
   const {t} = useTranslation();
   return (
-    <div className={classNames(navGroup)}>
+    <div className={classnames(navGroup)}>
       <NavLink activeClassName={activeItem} className={navItem} to="/profile">
         {t("navigation.item.profile")}
       </NavLink>

@@ -1,11 +1,11 @@
-import classNames from "classnames";
+import classnames from "classnames";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { connect, MapStateToProps } from "react-redux";
 import { RouteComponentProps } from "react-router";
 
 import { ReduxState } from "../../store/store";
-import container, { padded } from "../../style/container";
+import { padded, viewContentContainer } from "../../style/container";
 import { OrganisationPayload } from "../actions";
 import OrganisationForm from "../component/OrganisationForm";
 
@@ -20,7 +20,7 @@ type Props = StateProps & RouteComponentProps & {
 const Edit = ({organisation, ...props}: Props) => {
   const {t} = useTranslation();
   return (
-    <div className={classNames(padded, container)}>
+    <div className={classnames(viewContentContainer, padded)}>
       <OrganisationForm
         state={organisation}
         onSubmit={props.history.goBack}

@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import classnames from "classnames";
 import { groupBy, map } from "ramda";
 import React, { useState } from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
@@ -12,7 +12,7 @@ import { getEntitiesByOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxAPICall } from "../../store/middleware/api/api";
 import { ReduxState } from "../../store/store";
-import { rowContainer, spacedHorizontalContainer, stacked } from "../../style/container";
+import { contentHorizontalSpacing, rowContainer, stacked } from "../../style/container";
 import { normal } from "../../style/variables/spacing";
 import Loadable from "../../util/hoc/Loadable";
 import { AppliancePayload, assignMaintainerToAppliance, removeMaintainerFromAppliance } from "../actions";
@@ -91,10 +91,10 @@ const MaintainerAssignment = ({
       }
       {assigned && <div style={{marginTop: normal}}>
         {map(({id, firstName, lastName}: MaintainerPayload) => (
-          <div key={id} className={classNames(spacedHorizontalContainer, rowContainer)}>
+          <div key={id} className={classnames(rowContainer, contentHorizontalSpacing)}>
             <Link to={`/maintainers/${id}`}>{firstName} {lastName}</Link>
             <Button
-              className={classNames("material-icons")}
+              className={classnames("material-icons")}
               onClick={removeMaintainer(id)}
               plain={true}
             >

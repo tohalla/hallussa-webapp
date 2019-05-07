@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import { map, pick, values } from "ramda";
 import React from "react";
 import { connect, MapStateToProps } from "react-redux";
@@ -16,7 +17,7 @@ import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
-import { padded, spacedHorizontalContainer, spread, stacked } from "../../style/container";
+import { alignFlexStart, contentHorizontalSpacing, padded, rowContainer, spread, stacked } from "../../style/container";
 import { alertIndication, info } from "../../style/inline";
 import { spacer } from "../../style/variables/spacing";
 import Loadable from "../../util/hoc/Loadable";
@@ -64,9 +65,9 @@ const Maintainer = ({match, history, maintainer, ...props}: Props) => {
     <Switch>
       <Route exact={true} path={match.path}>
         <div className={padded}>
-          <div className={spread}>
+          <div className={classnames(spread, alignFlexStart)}>
             <h1>{firstName} {lastName}</h1>
-            <div className={spacedHorizontalContainer}>
+            <div className={classnames(rowContainer, contentHorizontalSpacing)}>
               <Restricted requirements={{userRole: {allowDeleteMaintainer: true}}}>
                 <DoubleClickButton
                   plain={true}

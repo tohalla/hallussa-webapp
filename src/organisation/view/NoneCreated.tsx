@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import classnames from "classnames";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { connect, MapStateToProps } from "react-redux";
@@ -24,8 +24,8 @@ const NoneCreated = ({activeOrganisation}: {activeOrganisation: Readonly<Organis
   }
 
   return (
-    <div className={classNames(viewContentContainer, padded)}>
-      <div className={classNames(rowContainer, spread)}>
+    <div className={classnames(viewContentContainer, padded)}>
+      <div className={classnames(rowContainer, spread)}>
         {t("organisation.noOrganisations")}
         <Link to="/organisations/new" className={button}>{t("organisation.action.create")}</Link>
       </div>

@@ -1,10 +1,11 @@
-import classNames from "classnames";
+import classnames from "classnames";
 import { addIndex, assoc, find, forEach, map, mergeWith, pick, values } from "ramda";
 import React, { ChangeEvent, Component, FormEventHandler, ReactFragment } from "react";
 
 import { actionsRow, form, inputRow } from "style/form";
 import { error as errorStyle } from "style/inline";
 import { Omit, TranslationProps } from "../../misc";
+import { contentVerticalSpacing } from "../style/container";
 import Button from "./button/Button";
 import CancelButton from "./button/CancelButton";
 import { InputProps } from "./Input";
@@ -136,11 +137,11 @@ export default class Form<Inputs extends string> extends Component<FormProps<Inp
     const { children, secondary, submitText, header, error } = this.props;
     const isValid = this.props.isValid && !Boolean(find(Boolean, values(this.state.errors)));
     return (
-      <form className={form} onSubmit={this.handleSubmit}>
+      <form className={classnames(form, contentVerticalSpacing)} onSubmit={this.handleSubmit}>
         {header}
         {this.renderInputs()}
         {children}
-        {error && <i className={classNames(inputRow, errorStyle)}>{error}</i>}
+        {error && <i className={classnames(inputRow, errorStyle)}>{error}</i>}
         <div className={actionsRow}>
           {secondary}
           <Button type="submit" disabled={!isValid}>{submitText}</Button>

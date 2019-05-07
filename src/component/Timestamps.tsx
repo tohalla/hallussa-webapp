@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import classnames from "classnames";
 import { format } from "date-fns";
 import React from "react";
 
@@ -18,7 +18,7 @@ interface Props {
 const Timestamps = ({createdAt, updatedAt, translationKeys}: Props) => {
   const {t} = useTranslation();
   return (
-    <div className={classNames(stacked, timestamp)} style={{alignSelf: "stretch", justifyContent: "center"}}>
+    <div className={classnames(stacked, timestamp)} style={{alignSelf: "stretch", justifyContent: "center"}}>
       <span>{t(translationKeys.createdAt, {createdAt: format(createdAt, "D.M.YYYY")})}</span>
       {
         updatedAt &&

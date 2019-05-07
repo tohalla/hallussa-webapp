@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import classnames from "classnames";
 import { pick } from "ramda";
 import React from "react";
 import { connect, MapStateToProps } from "react-redux";
@@ -30,7 +30,7 @@ export default ({view, pathPostfix}: {view: keyof ViewsState, pathPostfix?: stri
       return (
         <>
           <TabsContainer view={view} pathPostfix={pathPostfix} tabs={props.tabs} {...routerProps} />
-          <div className={classNames(viewContentContainer, contentContainerClassName)}>
+          <div className={classnames(viewContentContainer, contentContainerClassName)}>
             <Component {...contentComponentProps} {...routerProps} />
           </div>
         </>

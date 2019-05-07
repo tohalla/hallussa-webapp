@@ -1,6 +1,7 @@
 import classnames from "classnames";
 import React, { Component, MouseEventHandler, ReactFragment } from "react";
-import button from "style/button";
+import button, { plain as plainStyle } from "style/button";
+import { link } from "../../style/inline";
 
 export interface ButtonProps {
   onClick?: MouseEventHandler;
@@ -35,7 +36,7 @@ export default class Button extends Component<ButtonProps> {
 
     return (
       <button
-        className={classnames(className, {[button]: !plain})}
+        className={classnames({[button]: !plain, [plainStyle]: plain, [link]: plain}, className)}
         onClick={this.handleClick}
         {...props}
       >

@@ -39,11 +39,6 @@ injectGlobal`
     ${link}
   }
 
-  button {
-    ${plain}
-    ${link}
-  }
-
   label {
     user-select: none;
     input[type="checkbox"] {

@@ -1,8 +1,9 @@
 import "@babel/polyfill";
+import classnames from "classnames";
 import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
-import defaultContainer, { appContainer, centerContent } from "style/container";
+import { appContainer, centerContent, paddedMajor, viewContentContainer } from "style/container";
 import "whatwg-fetch"; // fetch polyfill, replaces standard fetch
 
 import "style";
@@ -30,7 +31,7 @@ const mount = async () => {
   ReactDOM.render(
     (
       <div className={centerContent}>
-        <div className={defaultContainer}>
+        <div className={classnames(paddedMajor, viewContentContainer)}>
           <Router>
             <Switch>
               <Route exact={true} path={"/"} component={AuthenticationForm} />

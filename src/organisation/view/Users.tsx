@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import classnames from "classnames";
 import { path } from "ramda";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -11,7 +11,7 @@ import AddAccount from "../../account/component/AddAccount";
 import Restricted from "../../component/Restricted";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
-import { rowContainer, spread } from "../../style/container";
+import { contentVerticalSpacing, rowContainer, spread } from "../../style/container";
 import Loadable from "../../util/hoc/Loadable";
 import { OrganisationPayload } from "../actions";
 import { getEntitiesByOrganisation, getOrganisation } from "../state";
@@ -31,13 +31,15 @@ const Users = ({accounts, organisation}: Props) => {
   return (
     <>
       <h1>{t("organisation.users.title")}</h1>
-      <AccountList accounts={accounts} />
-      <Restricted requirements={{userRole: {allowManageUsers: true}}}>
-        <div className={classNames(rowContainer, spread)}>
-          <div />
-          <AddAccount organisation={organisation}/>
-        </div>
-      </Restricted>
+      <div className={contentVerticalSpacing}>
+        <AccountList accounts={accounts} />
+        <Restricted requirements={{userRole: {allowManageUsers: true}}}>
+          <div className={classnames(rowContainer, spread)}>
+            <div />
+            <AddAccount organisation={organisation}/>
+          </div>
+        </Restricted>
+      </div>
       <h2>{t("organisation.logins.title")}</h2>
     </>
   );

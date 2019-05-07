@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import React from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 
@@ -10,7 +11,14 @@ import tabbed from "../../component/tabbed/tabbed";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import button from "../../style/button";
-import { actionGroup, padded, spacedHorizontalContainer, spread } from "../../style/container";
+import {
+  alignFlexStart,
+  contentHorizontalSpacing,
+  flex1,
+  padded,
+  rowContainer,
+  spread
+} from "../../style/container";
 import { alertIndication } from "../../style/inline";
 import { spacer } from "../../style/variables/spacing";
 import Loadable from "../../util/hoc/Loadable";
@@ -60,9 +68,9 @@ const Organisation = ({
   const Content = () => (
     <>
       <div>
-        <div className={spread}>
+        <div className={classnames(spread, alignFlexStart)}>
           <h1>{name}</h1>
-          <div className={spacedHorizontalContainer}>
+          <div className={classnames(rowContainer, contentHorizontalSpacing)}>
             <Restricted requirements={{userRole: {allowDeleteOrganisation: true}}}>
               <DoubleClickButton
                 plain={true}
@@ -83,7 +91,7 @@ const Organisation = ({
       </div>
       <div className={spacer} />
       <div className={spread}>
-        <div className={actionGroup}>
+        <div className={classnames(rowContainer, spread, flex1)}>
           <OrganisationSelect organisation={organisation} history={history} />
           <Link to="/organisations/new" className={button}>{t("organisation.action.create")}</Link>
         </div>
