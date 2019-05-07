@@ -46,6 +46,7 @@ const initialState: ViewsState = {
   organisations: {tabs: {
     details: {key: "organisations", label: ({t}) => t("tab.organisation.details"), sticky: true, order: 0},
     users: {key: "users", label: ({t}) => t("tab.organisation.users"), sticky: true, order: 1},
+    preferences: {key: "preferences", label: ({t}) => t("tab.organisation.preferences"), sticky: true, order: 2},
   }},
 };
 

@@ -109,6 +109,12 @@ const Organisation = ({
         requirements={{userRole: {allowUpdateOrganisation: true}}}
       />
       <Route exact={true} path={`${match.path}/users`} component={Tabbed(Users, {contentContainerClassName: padded})} />
+      <RestrictedRoute
+        path={`${match.path}/preferences`}
+        to={match.url}
+        component={Tabbed(undefined, {contentContainerClassName: padded})}
+        requirements={{userRole: {allowUpdateOrganisation: true}}}
+      />
       <Redirect to={match.url} />
     </Switch>
   );
