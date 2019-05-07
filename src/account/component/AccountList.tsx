@@ -36,7 +36,10 @@ const AccountList = ({accounts, header, userRoles}: Props & StateProps) => {
     {Header: t("account.field.email"), accessor: "email", id: "email", resizable: true},
     {
       Header: t("account.field.role"),
-      accessor: ({userRole}) => t(`role.${path([userRole, "name"], userRoles)}`),
+      accessor: ({userRole}) => {
+        const roleName = path([userRole, "name"], userRoles);
+        return typeof roleName === "string" ? t(`role.${roleName}`) : t("notSet");
+      },
       id: "userRole",
     },
   ];
