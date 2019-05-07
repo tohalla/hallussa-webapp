@@ -6,6 +6,7 @@ import { connect, MapStateToProps } from "react-redux";
 import { AccountPayload } from "../../account/actions";
 import AccountList from "../../account/component/AccountList";
 import AddAccount from "../../account/component/AddAccount";
+import Restricted from "../../component/Restricted";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import { rowContainer, spread } from "../../style/container";
@@ -24,13 +25,15 @@ const Users = ({accounts}: Props) => {
   const {t} = useTranslation();
   return (
     <>
-      <h2>{t("organisation.logins.title")}</h2>
-      <AccountList accounts={accounts} />
-      <div className={classNames(rowContainer, spread)}>
-        <div />
-        <AddAccount />
-      </div>
       <h1>{t("organisation.users.title")}</h1>
+      <AccountList accounts={accounts} />
+      <Restricted requirements={{userRole: {allowManageUsers: true}}}>
+        <div className={classNames(rowContainer, spread)}>
+          <div />
+          <AddAccount />
+        </div>
+      </Restricted>
+      <h2>{t("organisation.logins.title")}</h2>
     </>
   );
 };

@@ -21,6 +21,7 @@ export interface UserRolePayload {
   allowDeleteOrganisation: boolean;
   allowManageMaintenanceTask: boolean;
   allowManageRoles: boolean;
+  allowManageUsers: boolean;
   allowUpdateAppliance: boolean;
   allowUpdateMaintainer: boolean;
   allowUpdateOrganisation: boolean;
