@@ -1,8 +1,10 @@
 import classNames from "classnames";
+import { path } from "ramda";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { connect, MapStateToProps } from "react-redux";
 
+import { RouteComponentProps } from "react-router";
 import { AccountPayload } from "../../account/actions";
 import AccountList from "../../account/component/AccountList";
 import AddAccount from "../../account/component/AddAccount";
@@ -11,17 +13,20 @@ import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import { rowContainer, spread } from "../../style/container";
 import Loadable from "../../util/hoc/Loadable";
-import { getEntitiesByOrganisation } from "../state";
+import { OrganisationPayload } from "../actions";
+import { getEntitiesByOrganisation, getOrganisation } from "../state";
 
 interface StateProps {
   accounts: Readonly<AccountPayload[]> |  APIResponsePayload;
+  organisation?: OrganisationPayload | APIResponsePayload;
 }
 
-type Props = StateProps & {
+type Props = StateProps & RouteComponentProps<{organisation: string}> & {
   accounts: Readonly<AccountPayload[]>;
+  organisation: OrganisationPayload;
 };
 
-const Users = ({accounts}: Props) => {
+const Users = ({accounts, organisation}: Props) => {
   const {t} = useTranslation();
   return (
     <>
@@ -30,7 +35,7 @@ const Users = ({accounts}: Props) => {
       <Restricted requirements={{userRole: {allowManageUsers: true}}}>
         <div className={classNames(rowContainer, spread)}>
           <div />
-          <AddAccount />
+          <AddAccount organisation={organisation}/>
         </div>
       </Restricted>
       <h2>{t("organisation.logins.title")}</h2>
@@ -38,9 +43,13 @@ const Users = ({accounts}: Props) => {
   );
 };
 
-const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
-  accounts: getEntitiesByOrganisation(state, "accounts"),
-});
+const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, ownProps) => {
+  const organisation = Number(path(["match", "params", "organisation"], ownProps));
+  return ({
+    accounts: getEntitiesByOrganisation(state, "accounts", organisation),
+    organisation: getOrganisation(state, organisation),
+  });
+};
 
 export default connect(
   mapStateToProps

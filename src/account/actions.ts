@@ -8,6 +8,8 @@ export const SET_ACTIVE_ACCOUNT = "SET_ACTIVE_ACCOUNT";
 export const FETCH_ACCOUNT_SUCCESS = "FETCH_ACCOUNT_SUCCESS";
 export const FETCH_ACCOUNTS_SUCCESS = "FETCH_ACCOUNTS_SUCCESS";
 
+export const ADD_ACCOUNT_SUCCESS = "ADD_ACCOUNT_SUCCESS";
+
 export interface AccountPayload {
   id: number;
   firstName: string;
@@ -46,5 +48,13 @@ export const fetchAccounts = (organisation: number, {bypassCache = false} = {}):
   endpoint: `/organisations/${organisation}/users/accounts`,
   method: "get",
   successType: FETCH_ACCOUNTS_SUCCESS,
+  type: CALL_API,
+});
+
+export const addAccount = (organisation: number, payload: {email: string, userRole?: number}): ReduxAPICall => ({
+  body: payload,
+  endpoint: `/organisations/${organisation}/users/accounts`,
+  method: "post",
+  successType: ADD_ACCOUNT_SUCCESS,
   type: CALL_API,
 });
