@@ -24,7 +24,6 @@ export const contentVerticalSpacing = css`
 `;
 
 export const flex1 = css`flex: 1;`;
-export const alignFlexStart = css`align-items: flex-start;`;
 
 export const rowContainer = css`
   display: flex;
@@ -40,6 +39,7 @@ export const spread = css`
   justify-content: space-between;
 `;
 
+export const alignFlexStart = css`align-items: flex-start;`;
 export const alignCenter = css`align-items: center;`;
 export const justifyCenter = css`justify-content: center;`;
 export const centerContent = css`
@@ -93,4 +93,15 @@ export const emptyContainer = css`
   justify-content: center;
   color: ${greyscale[4]};
   padding: ${normal};
+`;
+
+export const authContainer = css`
+  ${padded}
+  ${viewContentContainer}
+
+  position: absolute;
+
+  h1 {
+    color: ${greyscale[2]};
+  }
 `;

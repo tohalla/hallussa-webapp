@@ -1,7 +1,15 @@
 import classnames from "classnames";
-import React, { ChangeEventHandler, FocusEventHandler, memo, ReactFragment, useEffect, useRef, useState } from "react";
+import { equals, pick } from "ramda";
+import React, { ChangeEventHandler, FocusEventHandler, memo, MouseEventHandler, ReactFragment, useEffect, useRef, useState } from "react";
 
-import input, { inputContainer, inputError, invalid } from "style/input";
+import input, {
+  inputContainer,
+  inputError,
+  inputLabel,
+  inputLabelContainer,
+  inputLabelFocused,
+  invalid
+ } from "style/input";
 
 export interface InputProps {
   autoComplete: "off" | "on";
@@ -15,7 +23,6 @@ export interface InputProps {
   placeholder?: string;
   type: "text" | "password" | "number" | "date" | "email" | "checkbox" | "textarea";
   required: boolean;
-  tabindex?: number;
   rows: number;
   value: string | boolean;
   label?: ReactFragment;
@@ -29,8 +36,9 @@ const getInputElement = (type: InputProps["type"], {
   autoFocus,
   size,
   rows,
+  focused,
   ...inputProps
-}: any) =>
+}: any) => (
   type === "checkbox" ? (
     <label>
       <input
@@ -39,13 +47,24 @@ const getInputElement = (type: InputProps["type"], {
       />
       <span>{label}</span>
     </label>
-  ) : type === "textarea" ? (
-    <textarea {...inputProps} rows={rows} value={value} size={size} placeholder={placeholder} />
-  ) : <input {...inputProps} value={value} size={size} placeholder={placeholder} />;
+  ) : (
+    <label className={inputLabelContainer}>
+      {
+        type === "textarea" ?
+          <textarea {...inputProps} rows={rows} value={value} size={size} placeholder={focused ? "" : placeholder} />
+        : <input {...inputProps} value={value} size={size} placeholder={focused ? "" : placeholder} />
+      }
+      <span className={classnames(inputLabel, {[inputLabelFocused]: focused})}>
+        {label || placeholder}
+      </span>
+    </label>
+  )
+);
 
-const Input = ({error, onBlur, onFocus, autoFocus, type, disabled, tabindex, ...props}: InputProps) => {
+const Input = ({error, onBlur, onFocus, autoFocus, type, disabled, ...props}: InputProps) => {
   const inputElement = useRef<HTMLInputElement>();
   const [displayErrorTimer, setDisplayErrorTimer] = useState();
+  const [focused, setFocused] = useState();
 
   const [displayError, setDisplayError] = useState(false);
 
@@ -62,22 +81,31 @@ const Input = ({error, onBlur, onFocus, autoFocus, type, disabled, tabindex, ...
     setDisplayErrorTimer(window.setTimeout(() => {
       setDisplayError(document.activeElement !== inputElement.current);
     }, 300));
+    setFocused(false);
   };
 
   const handleFocus: FocusEventHandler<HTMLInputElement> = (event) => {
     if (typeof onFocus === "function") { onFocus(event); }
     setDisplayError(false);
+    setFocused(true);
+  };
+
+  const handleClick: MouseEventHandler = (event) => {
+    event.preventDefault();
+    if (inputElement.current) {
+      inputElement.current.focus();
+    }
   };
 
   return (
-    <div className={inputContainer}>
+    <div className={inputContainer} onMouseDown={handleClick}>
       {getInputElement(type, {
         className: classnames(input, {[invalid]: error && displayError}),
         disabled,
+        focused,
         onBlur: handleBlur,
         onFocus: handleFocus,
         ref: inputElement,
-        tabIndex: disabled ? -1 : tabindex, // should not be able to tab focus on disabled
         type,
         ...props,
       })}
@@ -92,7 +120,11 @@ Input.defaultProps = {
   error: false,
   required: false,
   rows: 1,
+  size: 10,
   type: "text",
 };
 
-export default memo(Input, (prev, next) => JSON.stringify(prev) === JSON.stringify(next));
+export default memo(Input, (prev, next) => {
+  const props = pick<keyof InputProps>(["error", "value", "disabled", "rows"]);
+  return equals(props(prev), props(next));
+});

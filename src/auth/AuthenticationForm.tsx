@@ -24,27 +24,30 @@ export default () => {
   };
 
   return (
-    <Form
-      error={error}
-      inputs={[
-        {
-          key: "email",
-          props: {type: "email", autoFocus: true, placeholder: t("account.field.email")},
-          validate: {required: true},
-        },
-        {
-          key: "password",
-          props: {type: "password", placeholder: t("account.field.password")},
-          validate: {required: true},
-        },
-      ]}
-      onSubmit={handleSubmit}
-      secondary={
-        <Link className={small} to="/register">
-          {t("account.authentication.createNewAccount")}
-        </Link>
-      }
-      submitText={t("account.authentication.form.submit")}
-    />
+    <>
+      <h1>{t("account.authentication.title")}</h1>
+      <Form
+        error={error}
+        inputs={[
+          {
+            key: "email",
+            props: {type: "email", autoFocus: true, placeholder: t("account.field.email")},
+            validate: {required: true},
+          },
+          {
+            key: "password",
+            props: {type: "password", placeholder: t("account.field.password")},
+            validate: {required: true},
+          },
+        ]}
+        onSubmit={handleSubmit}
+        secondary={
+          <Link className={small} to="/register">
+            {t("account.authentication.createNewAccount")}
+          </Link>
+        }
+        submitText={t("account.authentication.form.submit")}
+      />
+    </>
   );
 };

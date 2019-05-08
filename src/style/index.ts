@@ -43,6 +43,7 @@ injectGlobal`
     flex: 0;
     align-items: center;
     input[type="checkbox"] {
+      flex: 0;
       margin: 0 ${minor};
     }
   }

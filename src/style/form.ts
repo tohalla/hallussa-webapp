@@ -7,7 +7,7 @@ export const form = css`
   display: flex;
   flex: 1;
   flex-direction: column;
-  min-width: 300px;
+  min-width: 350px;
 
   @media (max-width: ${sm}px) {
     max-width: 90vw;
@@ -21,12 +21,10 @@ export const inputRow = css`
   justify-content: flex-start;
   width: 100%;
 
-  & > *:not(input) {
+  & > * {
     flex: 1;
   }
-  input:not(input[type="checkbox"]) {
-    flex: 2;
-  }
+
   & > *:not(style) + * {
     margin-left: ${normal};
   }
@@ -34,6 +32,7 @@ export const inputRow = css`
 
 export const actionsRow = css`
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
   align-items: center;
 `;

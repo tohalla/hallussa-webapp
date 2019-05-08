@@ -8,7 +8,7 @@ import Button from "./Button";
 export default withRouter((props: {history: History}) => {
   const {t} = useTranslation();
   return (
-    <Button plain={true} onClick={props.history.goBack} tabindex={2}>
+    <Button plain={true} onClick={props.history.goBack}>
       {t("cancel")}
     </Button>
   );

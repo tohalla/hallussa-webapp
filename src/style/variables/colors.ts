@@ -22,9 +22,9 @@ export const text: ColorGroup = {
 };
 
 export const primary: ColorGroup = {
-  dark: "#477589",
-  light: "#9FBCC8",
-  neutral: "#6C93A3",
+  dark: "#18305B",
+  light: "#7A8CAE",
+  neutral: "#4F6690",
 };
 
 export const accent: ColorGroup = {

@@ -8,14 +8,12 @@ export interface ButtonProps {
   children?: ReactFragment;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
-  tabindex?: number;
   plain: boolean;
 }
 
 export default class Button extends Component<ButtonProps> {
   public static defaultProps = {
     plain: false,
-    tabIndex: 0,
     type: "button",
   };
 
@@ -33,7 +31,7 @@ export default class Button extends Component<ButtonProps> {
   }
 
   public render() {
-    const { plain, onClick, children, className, disabled, tabindex, ...props } = this.props;
+    const { plain, onClick, children, className, disabled, ...props } = this.props;
 
     return (
       <button
@@ -41,7 +39,6 @@ export default class Button extends Component<ButtonProps> {
         onClick={this.handleClick}
         disabled={disabled}
         {...props}
-        tabIndex={disabled ? -1 : tabindex} // should not be able to tab focus on disabled
       >
         {children}
       </button>

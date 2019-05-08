@@ -38,45 +38,48 @@ export default () => {
   };
 
   return (
-    <Form
-      inputs={[
-        {
-          key: "email",
-          props: {autoFocus: true, placeholder: t("account.field.email")},
-          validate: {required: true},
-        },
-        [
-          {key: "firstName", props: {placeholder: t("account.field.firstName")}, validate: {required: true}},
-          {key: "lastName", props: {placeholder: t("account.field.lastName")}, validate: {required: true}},
-        ],
-        {
-          key: "password",
-          props: {type: "password", placeholder: t("account.field.password")},
-          validate: {required: true, minLength: 6},
-        },
-        {
-          key: "retypePassword",
-          props: {placeholder: t("account.field.retypePassword"), type: "password"},
-          validate: {required: true},
-        },
-        {
-          key: "tos",
-          props: {
-            label: (
-              <Trans i18nKey="account.registration.form.tosLabel">
-                a <a href="/terms-of-service.html" target="_blank">terms</a>
-              </Trans>
-            ),
-            type: "checkbox",
+    <>
+      <h1>{t("account.registration.title")}</h1>
+      <Form
+        inputs={[
+          {
+            key: "email",
+            props: {autoFocus: true, placeholder: t("account.field.email")},
+            validate: {required: true},
           },
-          validate: {required: true},
-        },
-      ] as ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]>}
-      onSubmit={handleSubmit}
-      secondary={<Link className={small} to="/">{t("account.registration.authenticate")}</Link>}
-      submitText={t("account.registration.form.submit")}
-      validate={validate}
-      error={error}
-    />
+          [
+            {key: "firstName", props: {placeholder: t("account.field.firstName")}, validate: {required: true}},
+            {key: "lastName", props: {placeholder: t("account.field.lastName")}, validate: {required: true}},
+          ],
+          {
+            key: "password",
+            props: {type: "password", placeholder: t("account.field.password")},
+            validate: {required: true, minLength: 6},
+          },
+          {
+            key: "retypePassword",
+            props: {placeholder: t("account.field.retypePassword"), type: "password"},
+            validate: {required: true},
+          },
+          {
+            key: "tos",
+            props: {
+              label: (
+                <Trans i18nKey="account.registration.form.tosLabel">
+                  a <a href="/terms-of-service.html" target="_blank">terms</a>
+                </Trans>
+              ),
+              type: "checkbox",
+            },
+            validate: {required: true},
+          },
+        ] as ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]>}
+        onSubmit={handleSubmit}
+        secondary={<Link className={small} to="/">{t("account.registration.authenticate")}</Link>}
+        submitText={t("account.registration.form.submit")}
+        validate={validate}
+        error={error}
+      />
+    </>
   );
 };

@@ -1,9 +1,8 @@
 import "@babel/polyfill";
-import classnames from "classnames";
 import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
-import { appContainer, centerContent, paddedMajor, viewContentContainer } from "style/container";
+import { appContainer, authContainer, centerContent } from "style/container";
 import "whatwg-fetch"; // fetch polyfill, replaces standard fetch
 
 import "style";
@@ -19,8 +18,8 @@ document.body.hidden = false; // hack to disable rendering before loading js
 const render = () =>
   ReactDOM.render(
     (
-      <div className={centerContent}>
-        <div className={classnames(paddedMajor, viewContentContainer)}>
+      <main className={centerContent}>
+        <div className={authContainer}>
           <Router>
             <Switch>
               <Route exact={true} path={"/"} component={AuthenticationForm} />
@@ -29,7 +28,7 @@ const render = () =>
             </Switch>
           </Router>
         </div>
-      </div>
+      </main>
     ),
     document.getElementById("app")
   );
