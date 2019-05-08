@@ -25,10 +25,10 @@ export interface ReduxAPICall<T = any> extends Action {
 /**
  * returns true if action can be interpreted as API call
  */
-const isValid = ({endpoint, successType, method}: {[key: string]: any}) =>
-  typeof endpoint === "string" &&
-  typeof successType === "string" &&
-  typeof method === "string";
+const isValid = (payload: {[key: string]: any}): payload is ReduxAPICall =>
+  typeof payload.endpoint === "string" &&
+  typeof payload.successType === "string" &&
+  typeof payload.method === "string";
 
 const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => {
   if (action.type !== CALL_API) {

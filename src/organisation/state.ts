@@ -47,7 +47,7 @@ export const getEntitiesByOrganisation = <T>(
         prev
       ),
       [],
-      (organisation as OrganisationPayload)[entityType]
+      (organisation as OrganisationPayload)[entityType] || []
     );
 };
 

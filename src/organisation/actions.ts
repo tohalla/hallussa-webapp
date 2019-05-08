@@ -19,13 +19,13 @@ export const SET_ACTIVE_ORGANISATION = "SET_ACTIVE_ORGANISATION";
 export interface OrganisationPayload {
   id: number;
   name: string;
-  organisationIdentifier: string;
-  createdAt: string;
-  updatedAt: string;
-  maintainers: ReadonlyArray<number>;
-  appliances: ReadonlyArray<number>;
-  userRoles: ReadonlyArray<number>;
-  accounts: ReadonlyArray<{id: number, userRole: number}>;
+  organisationIdentifier?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  maintainers?: ReadonlyArray<number>;
+  appliances?: ReadonlyArray<number>;
+  userRoles?: ReadonlyArray<number>;
+  accounts?: ReadonlyArray<{id: number, userRole: number}>;
 }
 
 export interface OrganisationAction {

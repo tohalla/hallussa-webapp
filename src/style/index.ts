@@ -1,5 +1,4 @@
 import { injectGlobal } from "emotion";
-import { plain } from "./button";
 import { link } from "./inline";
 import { md } from "./variables/breakpoints";
 import { greyscale, text } from "./variables/colors";

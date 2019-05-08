@@ -42,7 +42,7 @@ export const fetchRoles = (organisation?: number, {bypassCache = false} = {}): R
   attemptToFetchFromStore: bypassCache || !organisation ? undefined : (state) =>
     state.entities.userRoles && !Boolean(find(// check if store contains all roles defined in organisation
       (userRole) => typeof state.entities.userRoles[userRole] === "undefined",
-      state.entities.organisations[organisation].userRoles
+      state.entities.organisations[organisation].userRoles || []
     )),
   endpoint: typeof organisation === "undefined" ? "/user-roles" : `/organisations/${organisation}/user-roles`,
   method: "get",
@@ -53,7 +53,7 @@ export const fetchRoles = (organisation?: number, {bypassCache = false} = {}): R
 export const updateActiveUserRole: ThunkAction<any, ReduxState, any, AnyAction> = (dispatch, getState) => {
   const {entities: {organisations}, session: {activeAccount, activeOrganisation}} = getState();
   if (activeAccount && activeOrganisation) {
-    const joinRelation = organisations[activeOrganisation].accounts.find(({id}) => id === activeAccount);
+    const joinRelation = find(({id}) => id === activeAccount, organisations[activeOrganisation].accounts || []);
     if (joinRelation) {
       return dispatch({
         payload: joinRelation.userRole,

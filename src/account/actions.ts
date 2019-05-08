@@ -43,7 +43,7 @@ export const fetchAccounts = (organisation: number, {bypassCache = false} = {}):
   attemptToFetchFromStore: bypassCache ? undefined : (state) =>
     state.entities.accounts && !Boolean(find(// check if store contains all appliances defined in organisation
       (account) => typeof state.entities.accounts[account.id] === "undefined",
-      state.entities.organisations[organisation].accounts
+      state.entities.organisations[organisation].accounts || []
     )),
   endpoint: `/organisations/${organisation}/users/accounts`,
   method: "get",

@@ -14,8 +14,8 @@ import {
   union,
   without
 } from "ramda";
-import { Reducer } from "redux";
 
+import { AnyAction } from "redux";
 import { ADD_ACCOUNT_SUCCESS } from "../account/actions";
 import { CREATE_APPLIANCE_SUCCESS, DELETE_APPLIANCE_SUCCESS } from "../appliance/actions";
 import { CREATE_MAINTAINER_SUCCESS, DELETE_MAINTAINER_SUCCESS } from "../maintainer/actions";
@@ -27,7 +27,7 @@ import {
   UPDATE_ORGANISATION_SUCCESS
 } from "./actions";
 
-const getEntityHandlers = <T extends {organisation: number}>(
+export const getEntityHandlers = <T extends {organisation: number}>(
   key: string,
   {createType, deleteType}: {createType?: string, deleteType?: string},
   getId = prop<any>("id")
@@ -77,10 +77,7 @@ const typeHandler = cond<any, any>([
   [alwaysTrue, (type, state, payload) => state],
 ]);
 
-const reducer: Reducer<{[key: number]: any}, OrganisationAction> = (
+export default (
   state = {},
-  {payload, type, extra}: OrganisationAction
-) =>
-  typeHandler(type, state, payload, extra);
-
-export default reducer;
+  {payload, type, extra}: OrganisationAction | AnyAction
+) => typeHandler(type, state, payload, extra);

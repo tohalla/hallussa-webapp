@@ -1,4 +1,5 @@
 import { applyMiddleware, compose, createStore } from "redux";
+import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 
 import { AccountPayload, fetchAccount } from "../account/actions";
@@ -35,9 +36,11 @@ export interface ReduxState {
   views: ViewsState;
 }
 
+const middleware = [thunk, api];
+
 const store = createStore(
   reducer,
-  composeEnhancers(applyMiddleware(thunk, api))
+  composeEnhancers(applyMiddleware(...middleware))
 );
 
 if (module.hot) {
@@ -69,5 +72,7 @@ export const initializeStore = async () => {
   // set selected organisation as active
   return store.dispatch<any>(setActiveOrganisation(organisation.id));
 };
+
+export const mockStore = configureMockStore(middleware);
 
 export default store;
