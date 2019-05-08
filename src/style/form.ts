@@ -18,13 +18,13 @@ export const form = css`
 export const inputRow = css`
   display: flex;
   align-items: center;
-  justify-content: stretch;
+  justify-content: flex-start;
   width: 100%;
 
-  & > * {
+  & > *:not(input) {
     flex: 1;
   }
-  input {
+  input:not(input[type="checkbox"]) {
     flex: 2;
   }
   & > *:not(style) + * {

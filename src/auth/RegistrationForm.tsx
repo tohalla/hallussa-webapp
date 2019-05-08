@@ -1,11 +1,10 @@
 import { dissoc } from "ramda";
-import React, { ChangeEventHandler, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { Trans, useTranslation } from "react-i18next";
 import Form, { FormInput, FormState } from "../component/Form";
 import { baseUrl } from "../config";
-import { inputRow } from "../style/form";
 import { small } from "../style/inline";
 import { isValidEmail } from "../util/validationFunctions";
 import { register } from "./auth";
@@ -13,7 +12,6 @@ import { register } from "./auth";
 type Inputs = "email" | "firstName" | "lastName" | "password" | "retypePassword" | "tos";
 
 export default () => {
-  const [tos, setTOS] = useState(false);
   const [error, setError] = useState();
   const {t} = useTranslation();
 
@@ -39,9 +37,6 @@ export default () => {
     return errors;
   };
 
-  const handleTOSToggle: ChangeEventHandler<HTMLInputElement> = () =>
-    setTOS(!tos);
-
   return (
     <Form
       inputs={[
@@ -64,26 +59,24 @@ export default () => {
           props: {placeholder: t("account.field.retypePassword"), type: "password"},
           validate: {required: true},
         },
+        {
+          key: "tos",
+          props: {
+            label: (
+              <Trans i18nKey="account.registration.form.tosLabel">
+                a <a href="/terms-of-service.html" target="_blank">terms</a>
+              </Trans>
+            ),
+            type: "checkbox",
+          },
+          validate: {required: true},
+        },
       ] as ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]>}
       onSubmit={handleSubmit}
       secondary={<Link className={small} to="/">{t("account.registration.authenticate")}</Link>}
       submitText={t("account.registration.form.submit")}
       validate={validate}
-      isValid={tos}
       error={error}
-    >
-      <div className={inputRow}>
-        <label>
-          <input
-            type="checkbox"
-            checked={tos}
-            onChange={handleTOSToggle}
-          />
-          <Trans i18nKey="account.registration.form.tosLabel">
-            a <a href="/terms-of-service.html" target="_blank">terms</a>
-          </Trans>
-        </label>
-      </div>
-    </Form>
+    />
   );
 };

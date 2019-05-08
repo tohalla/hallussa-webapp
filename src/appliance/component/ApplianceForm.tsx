@@ -55,8 +55,9 @@ class ApplianceForm extends React.Component<Props & DispatchProps & StateProps &
           {
             key: "description",
             props: {
-              getInputElement: (p) => <textarea {...p} rows={3} />,
               placeholder: t("appliance.field.description"),
+              rows: 3,
+              type: "textarea",
             },
           },
           {key: "location", props: {placeholder: t("appliance.field.location")}},

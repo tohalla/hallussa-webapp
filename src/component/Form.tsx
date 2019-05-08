@@ -20,6 +20,7 @@ export interface ValidationProps {
 export interface FormInput<Inputs> {
   validate?: ValidationProps;
   key: Inputs;
+  value?: InputProps["value"]; // initial value for input
   props?: Partial<Omit<InputProps, keyof ValidationProps>>;
 }
 
@@ -49,8 +50,8 @@ const getInputState = <Inputs extends string>(
       if (Array.isArray(input)) {
         return state = {...state, ...(getInputState(input) as object)};
       }
-      const {key} = input as FormInput<Inputs>;
-      state[key] = "";
+      const {key, value, props} = input as FormInput<Inputs>;
+      state[key] = value || (typeof props === "undefined" || props.type === "checkbox" ? false : "");
     },
     inputs
   );
@@ -91,7 +92,11 @@ export default class Form<Inputs extends string> extends Component<FormProps<Inp
   }
 
   public handleInputChange = (key: Inputs) => (event: ChangeEvent<HTMLInputElement>) => {
-    const newState = assoc(key, event.target.value, this.state);
+    const newState = assoc(
+      key,
+      event.target.type === "checkbox" ? !this.state[key] : event.target.value,
+      this.state
+    );
     this.setState(assoc("errors", this.validate(this.props.inputs, newState), newState));
   }
 

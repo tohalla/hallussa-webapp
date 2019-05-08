@@ -39,6 +39,9 @@ injectGlobal`
 
   label {
     user-select: none;
+    display: flex;
+    flex: 0;
+    align-items: center;
     input[type="checkbox"] {
       margin: 0 ${minor};
     }

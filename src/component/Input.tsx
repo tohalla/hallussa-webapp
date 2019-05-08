@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import React, { ChangeEventHandler, FocusEventHandler, memo, useEffect, useRef, useState } from "react";
+import React, { ChangeEventHandler, FocusEventHandler, memo, ReactFragment, useEffect, useRef, useState } from "react";
 
 import input, { inputContainer, inputError, invalid } from "style/input";
 
@@ -13,15 +13,37 @@ export interface InputProps {
   onChange: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
   placeholder?: string;
-  type: "text" | "password" | "number" | "date" | "email";
+  type: "text" | "password" | "number" | "date" | "email" | "checkbox" | "textarea";
   required: boolean;
   tabindex?: number;
-  value: string;
+  rows: number;
+  value: string | boolean;
+  label?: ReactFragment;
   size?: number;
-  getInputElement(props: any): JSX.Element;
 }
 
-const Input = ({error, onBlur, onFocus, autoFocus, getInputElement, ...props}: InputProps) => {
+const getInputElement = (type: InputProps["type"], {
+  label,
+  value,
+  placeholder,
+  autoFocus,
+  size,
+  rows,
+  ...inputProps
+}: any) =>
+  type === "checkbox" ? (
+    <label>
+      <input
+        {...inputProps}
+        type="checkbox"
+      />
+      <span>{label}</span>
+    </label>
+  ) : type === "textarea" ? (
+    <textarea {...inputProps} rows={rows} value={value} size={size} placeholder={placeholder} />
+  ) : <input {...inputProps} value={value} size={size} placeholder={placeholder} />;
+
+const Input = ({error, onBlur, onFocus, autoFocus, type, disabled, tabindex, ...props}: InputProps) => {
   const inputElement = useRef<HTMLInputElement>();
   const [displayErrorTimer, setDisplayErrorTimer] = useState();
 
@@ -49,11 +71,14 @@ const Input = ({error, onBlur, onFocus, autoFocus, getInputElement, ...props}: I
 
   return (
     <div className={inputContainer}>
-      {getInputElement({
+      {getInputElement(type, {
         className: classnames(input, {[invalid]: error && displayError}),
+        disabled,
         onBlur: handleBlur,
         onFocus: handleFocus,
         ref: inputElement,
+        tabIndex: disabled ? -1 : tabindex, // should not be able to tab focus on disabled
+        type,
         ...props,
       })}
       {displayError && typeof error === "string" && <span className={inputError}>{error}</span>}
@@ -65,8 +90,8 @@ Input.defaultProps = {
   autoComplete: "on",
   autoFocus: false,
   error: false,
-  getInputElement: (props: any) => (<input {...props} />),
   required: false,
+  rows: 1,
   type: "text",
 };
 

@@ -41,7 +41,7 @@ export default class Button extends Component<ButtonProps> {
         onClick={this.handleClick}
         disabled={disabled}
         {...props}
-        tabIndex={disabled ? -1 : tabindex} // should not be able to tab focus on disabled tab
+        tabIndex={disabled ? -1 : tabindex} // should not be able to tab focus on disabled
       >
         {children}
       </button>
