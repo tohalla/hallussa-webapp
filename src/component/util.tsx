@@ -17,6 +17,7 @@ export const getFormInput = <Inputs extends string>({state, handleInputChange}: 
       placeholder={changeCase.titleCase(input.key)}
       onChange={handleInputChange(input.key)}
       value={state[input.key]}
+      tabindex={1}
       {...input.validate}
       {...input.props}
     />

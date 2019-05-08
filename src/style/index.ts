@@ -31,7 +31,6 @@ injectGlobal`
 
   * {
     box-sizing: border-box;
-    outline: none;
   }
 
   a {

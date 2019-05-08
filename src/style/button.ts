@@ -1,10 +1,12 @@
 import { css } from "emotion";
+import { link } from "./inline";
 import { indicator, primary, text } from "./variables/colors";
 import { large } from "./variables/fontSizes";
 import { buttonHeight } from "./variables/sizes";
 import { minor, normal } from "./variables/spacing";
 
 const button = css`
+  outline: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,7 +27,7 @@ const button = css`
     font-size: ${large};
   }
 
-  &:hover {
+  &:hover, &:focus {
     color: ${text.light};
     background: ${primary.dark};
   }
@@ -40,11 +42,11 @@ const button = css`
 `;
 
 export const plain = css`
+  ${link}
   background: none;
   border: none;
   white-space: nowrap;
   padding: 0;
-  margin: 0;
   &:hover {
     background: none;
     text-decoration: underline;

@@ -15,6 +15,7 @@ export interface InputProps {
   placeholder?: string;
   type: "text" | "password" | "number" | "date" | "email";
   required: boolean;
+  tabindex?: number;
   value: string;
   size?: number;
   getInputElement(props: any): JSX.Element;

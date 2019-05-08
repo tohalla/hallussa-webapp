@@ -40,6 +40,8 @@ export const spread = css`
   justify-content: space-between;
 `;
 
+export const alignCenter = css`align-items: center;`;
+export const justifyCenter = css`justify-content: center;`;
 export const centerContent = css`
   display: flex;
   align-items: center;

@@ -58,21 +58,21 @@ export const label = css`
 `;
 
 export const link = css`
+  outline: none;
   color: ${greyscale[2]};
   flex: 0;
   white-space: nowrap;
   text-decoration: underline;
 
-  &:hover {
+  &:hover, &:focus {
     color: ${text.dark};
   }
 
   &.white {
     color: ${text.light};
 
-    &:hover {
+    &:hover, &:focus {
       color: ${greyscale[9]}
     }
   }
-
 `;

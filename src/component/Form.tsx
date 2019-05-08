@@ -144,7 +144,7 @@ export default class Form<Inputs extends string> extends Component<FormProps<Inp
         {error && <i className={classnames(inputRow, errorStyle)}>{error}</i>}
         <div className={actionsRow}>
           {secondary}
-          <Button type="submit" disabled={!isValid}>{submitText}</Button>
+          <Button type="submit" tabindex={1} disabled={!isValid}>{submitText}</Button>
         </div>
       </form>
     );

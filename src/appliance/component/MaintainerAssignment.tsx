@@ -12,7 +12,7 @@ import { getEntitiesByOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxAPICall } from "../../store/middleware/api/api";
 import { ReduxState } from "../../store/store";
-import { contentHorizontalSpacing, rowContainer, stacked } from "../../style/container";
+import { alignCenter, contentHorizontalSpacing, rowContainer, stacked } from "../../style/container";
 import { normal } from "../../style/variables/spacing";
 import Loadable from "../../util/hoc/Loadable";
 import { AppliancePayload, assignMaintainerToAppliance, removeMaintainerFromAppliance } from "../actions";
@@ -91,7 +91,7 @@ const MaintainerAssignment = ({
       }
       {assigned && <div style={{marginTop: normal}}>
         {map(({id, firstName, lastName}: MaintainerPayload) => (
-          <div key={id} className={classnames(rowContainer, contentHorizontalSpacing)}>
+          <div key={id} className={classnames(rowContainer, alignCenter, contentHorizontalSpacing)}>
             <Link to={`/maintainers/${id}`}>{firstName} {lastName}</Link>
             <Button
               className={classnames("material-icons")}

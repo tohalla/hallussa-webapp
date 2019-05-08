@@ -1,4 +1,5 @@
 import { css } from "emotion";
+import { light } from "./inline";
 import { sm } from "./variables/breakpoints";
 import { greyscale, text } from "./variables/colors";
 import { base, small } from "./variables/fontSizes";
@@ -66,10 +67,10 @@ export const uppercaseTitle = css`
 
 export const navItem = css`
   ${uppercaseTitle}
+  ${light}
   user-select: none;
 
-  &:hover {
-    color: ${text.light};
+  &:hover, &:focus {
     text-decoration: underline;
   }
 
