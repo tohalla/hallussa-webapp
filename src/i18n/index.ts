@@ -12,7 +12,7 @@ export default async () => {
       interpolation: {escapeValue: false},
     });
 
-  const languages = await fetch(`${apiUrl}/i18n/languages/`)
+  const languages = await fetch(`${apiUrl}/i18n/languages`)
     .then((response) => response.json());
   i18n.languages = languages.map(prop("locale"));
 
