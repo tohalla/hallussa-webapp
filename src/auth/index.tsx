@@ -16,18 +16,7 @@ import RegistrationForm from "./RegistrationForm";
 
 document.body.hidden = false; // hack to disable rendering before loading js
 
-// TODO: nginx jwt check
-const mount = async () => {
-  const token = localStorage.getItem("token");
-  if (token && (await authenticate(token))) {
-    window.location.href = baseUrl;
-    return;
-  }
-
-  await i18n();
-
-  (document.getElementById("app") as HTMLElement).className = appContainer;
-
+const render = () =>
   ReactDOM.render(
     (
       <div className={centerContent}>
@@ -44,6 +33,24 @@ const mount = async () => {
     ),
     document.getElementById("app")
   );
+
+// TODO: nginx jwt check
+const mount = async () => {
+  const token = localStorage.getItem("token");
+  if (token && (await authenticate(token))) {
+    window.location.href = baseUrl;
+    return;
+  }
+
+  await i18n();
+
+  (document.getElementById("app") as HTMLElement).className = appContainer;
+
+  return process.env.NODE_ENV === "production" ? render() : (() => {
+    const axe = require("react-axe");
+    axe(React, ReactDOM, 1000);
+    render();
+  })();
 };
 
 mount();
