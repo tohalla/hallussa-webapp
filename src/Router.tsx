@@ -26,10 +26,12 @@ const RootRouter = ({organisationSelected}: StateProps) => {
     <Router>
       <>
         <Topbar />
-        <Switch>
-          {routes}
-          <Redirect path="*" to="/organisations" />
-        </Switch>
+        <main>
+          <Switch>
+            {routes}
+            <Redirect path="*" to="/organisations" />
+          </Switch>
+        </main>
       </>
     </Router>
   );

@@ -1,5 +1,5 @@
 import { css } from "emotion";
-import { greyscale, indicator, text } from "./variables/colors";
+import { accent, greyscale, indicator, text } from "./variables/colors";
 import fontSize, { large } from "./variables/fontSizes";
 import { minor, normal } from "./variables/spacing";
 
@@ -65,7 +65,7 @@ export const link = css`
   text-decoration: underline;
 
   &:hover, &:focus {
-    color: ${text.dark};
+    color: ${accent.neutral};
   }
 
   &.white {

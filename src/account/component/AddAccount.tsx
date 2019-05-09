@@ -32,7 +32,7 @@ const AddAccount = ({organisation, ...props}: Props & DispatchProps) => {
         type="email"
         onChange={handleChange}
         placeholder={t("organisation.account.field.email")}
-        size={30}
+        wide={true}
       />
       <Button type="button" onClick={handleClick}>
         {t("organisation.account.addAccount")}

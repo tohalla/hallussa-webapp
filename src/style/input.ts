@@ -1,13 +1,12 @@
 import { css } from "emotion";
-import { stacked } from "./container";
-import { error } from "./inline";
+import { centerContent, stacked } from "./container";
 import { greyscale, indicator, primary, text } from "./variables/colors";
 import { inputHeight } from "./variables/sizes";
 import { minor } from "./variables/spacing";
 
 const input = css`
   border: none;
-  outline: none;
+  background: ${greyscale[9]};
   padding: ${minor};
   flex: 1;
 
@@ -22,15 +21,19 @@ const input = css`
   &::placeholder {
     color: ${text.neutral};
   }
-`;
 
-export const invalid = css`
-  border: 1px solid ${indicator.error};
+  &:not([type="checkbox"]) {
+    outline: none;
+  }
 `;
 
 export const inputContainer = css`
   ${stacked}
-  position: relative;
+  width: 12em;
+`;
+
+export const wide = css`
+  width: 22em;
 `;
 
 export const inputLabel = css`
@@ -38,14 +41,14 @@ export const inputLabel = css`
   white-space: nowrap;
   align-items: center;
   font-size: .75rem;
-  color: ${text.light};
-  background: ${primary.neutral};
+  background: ${greyscale[9]};
+  color: ${primary.neutral};;
   overflow: hidden;
   width: 0;
 `;
 
 export const inputLabelFocused = css`
-  padding: ${minor};
+  padding-right: ${minor};
   flex: 0 1 auto;
   width: auto;
 `;
@@ -61,9 +64,16 @@ export const inputLabelContainer = css`
 `;
 
 export const inputError = css`
-  ${error}
-  position: absolute;
-  top: 100%;
+  ${centerContent}
+  background: ${greyscale[9]};
+  padding: 0 ${minor};
+  flex: 0 1 auto;
+  color: ${indicator.error};
+  width: auto;
+
+  .material-icons {
+    font-size: 1.25em;
+  }
 `;
 
 export default input;

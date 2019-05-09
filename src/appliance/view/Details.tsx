@@ -107,7 +107,7 @@ const Details = ({
           }
           <div className={spacer} />
           <MaintenanceEventList
-            header={<h3>{t("appliance.event.list.title")}</h3>}
+            header={<h2>{t("appliance.event.list.title")}</h2>}
             maintenanceEvents={appliance.maintenanceEvents || []}
           />
           <div className={spacer} />

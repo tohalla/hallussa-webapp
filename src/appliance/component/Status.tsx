@@ -15,8 +15,8 @@ const Status = ({status, label}: Props) => {
     <div className={info}>
       {label}
       {status && status.isMalfunctioning ?
-        <span className={error}>{t("appliance.status.malfunctioning")}</span>
-      : <span className={success}>{t("appliance.status.ok")}</span>}
+        <b className={error}>{t("appliance.status.malfunctioning")}</b>
+      : <b className={success}>{t("appliance.status.ok")}</b>}
     </div>
   );
 };

@@ -8,12 +8,14 @@ interface LogoProps {
   type: Type;
 }
 
-export default ({type}: LogoProps) => {
-  if (type === "light") {
-    return <img className={logo} src={require("assets/img/hallussa-light.png")} />;
-  } else if (type === "dark") {
-    return <img className={logo} src={require("assets/img/hallussa-dark.png")} />;
-  } else {
-    return <img className={logo} src={require("assets/img/hallussa-qr.png")} />;
-  }
-};
+export default ({type}: LogoProps) => (
+  <img
+    alt="logo"
+    className={logo}
+    src={
+      type === "dark" ? require("assets/img/hallussa-dark.png")
+      : type === "light" ? require("assets/img/hallussa-light.png")
+      : require("assets/img/hallussa-qr.png")
+    }
+  />
+);

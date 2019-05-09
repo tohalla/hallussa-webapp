@@ -29,7 +29,7 @@ const mount = async () => {
 
     return process.env.NODE_ENV === "production" ? render() : (() => {
       const axe = require("react-axe");
-      axe(React, ReactDOM, 1000);
+      axe(React, ReactDOM, 1000, {runOnly: { type: "tag", values: ["wcag2a"] }});
       render();
     })();
   }

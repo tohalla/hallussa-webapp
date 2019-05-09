@@ -1,6 +1,15 @@
 import classnames from "classnames";
 import { equals, pick } from "ramda";
-import React, { ChangeEventHandler, FocusEventHandler, memo, MouseEventHandler, ReactFragment, useEffect, useRef, useState } from "react";
+import React, {
+  ChangeEventHandler,
+  FocusEventHandler,
+  memo,
+  MouseEventHandler,
+  ReactFragment,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 
 import input, {
   inputContainer,
@@ -8,7 +17,7 @@ import input, {
   inputLabel,
   inputLabelContainer,
   inputLabelFocused,
-  invalid
+  wide as wideStyle
  } from "style/input";
 
 export interface InputProps {
@@ -26,7 +35,7 @@ export interface InputProps {
   rows: number;
   value: string | boolean;
   label?: ReactFragment;
-  size?: number;
+  wide: boolean;
 }
 
 const getInputElement = (type: InputProps["type"], {
@@ -36,6 +45,8 @@ const getInputElement = (type: InputProps["type"], {
   autoFocus,
   size,
   rows,
+  error,
+  displayError,
   focused,
   ...inputProps
 }: any) => (
@@ -57,11 +68,18 @@ const getInputElement = (type: InputProps["type"], {
       <span className={classnames(inputLabel, {[inputLabelFocused]: focused})}>
         {label || placeholder}
       </span>
+      {
+        displayError && error && (
+          <span className={inputError} title={typeof error === "string" ? error : undefined}>
+            <i className="material-icons">error</i>
+          </span>
+        )
+      }
     </label>
   )
 );
 
-const Input = ({error, onBlur, onFocus, autoFocus, type, disabled, ...props}: InputProps) => {
+const Input = ({error, onBlur, onFocus, autoFocus, type, disabled, wide, ...props}: InputProps) => {
   const inputElement = useRef<HTMLInputElement>();
   const [displayErrorTimer, setDisplayErrorTimer] = useState();
   const [focused, setFocused] = useState();
@@ -98,18 +116,20 @@ const Input = ({error, onBlur, onFocus, autoFocus, type, disabled, ...props}: In
   };
 
   return (
-    <div className={inputContainer} onMouseDown={handleClick}>
+    <div className={classnames(inputContainer, {[wideStyle]: wide})} onMouseDown={handleClick}>
       {getInputElement(type, {
-        className: classnames(input, {[invalid]: error && displayError}),
+        className: input,
         disabled,
+        displayError,
+        error,
         focused,
         onBlur: handleBlur,
         onFocus: handleFocus,
         ref: inputElement,
+        size: 1,
         type,
         ...props,
       })}
-      {displayError && typeof error === "string" && <span className={inputError}>{error}</span>}
     </div>
   );
 };
@@ -120,8 +140,8 @@ Input.defaultProps = {
   error: false,
   required: false,
   rows: 1,
-  size: 10,
   type: "text",
+  wide: false,
 };
 
 export default memo(Input, (prev, next) => {

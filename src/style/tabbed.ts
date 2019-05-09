@@ -43,10 +43,10 @@ export const tab = css`
 `;
 
 export const actionTab = css`
-  background: ${primary.neutral};
-  color: ${greyscale[8]};
+  background: ${primary.light};
+  color: ${greyscale[9]};
   .material-icons {
-    color: ${greyscale[8]};
+    color: ${greyscale[9]};
     font-size: ${huge};
     line-height: ${base}
   }

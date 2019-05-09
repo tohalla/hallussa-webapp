@@ -23,7 +23,7 @@ export const text: ColorGroup = {
 
 export const primary: ColorGroup = {
   dark: "#18305B",
-  light: "#7A8CAE",
+  light: "#5B739F",
   neutral: "#4F6690",
 };
 
@@ -36,8 +36,8 @@ export const accent: ColorGroup = {
 export const indicator = {
   alert: "#FF831D",
   disabled: "#a9a9a9",
-  error: "#e74c3c",
-  success: "#16a085",
+  error: "#CC3300",
+  success: "#208844",
 };
 
 export const colors: {

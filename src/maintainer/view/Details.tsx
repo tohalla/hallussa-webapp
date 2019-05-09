@@ -94,7 +94,7 @@ const Maintainer = ({match, history, maintainer, ...props}: Props) => {
           <div className={spacer} />
           <ApplianceList
             appliances={props.appliances}
-            header={<h3>{t("maintainer.appliance.list.title")}</h3>}
+            header={<h2>{t("maintainer.appliance.list.title")}</h2>}
           />
           <div className={spacer} />
           <Timestamps

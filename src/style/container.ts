@@ -46,7 +46,6 @@ export const centerContent = css`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 1;
 `;
 
 export const stacked = css`

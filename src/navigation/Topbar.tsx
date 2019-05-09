@@ -32,7 +32,7 @@ export default class Topbar extends React.Component {
     const {expand, width} = this.state;
     const displayMenu = expand || width > sm;
     return (
-      <div className={topbar}>
+      <nav className={topbar}>
         <div className={navGroup}>
           <div className={logoContainer}>
             <Logo type="light" />
@@ -46,7 +46,7 @@ export default class Topbar extends React.Component {
           {displayMenu && <OrganisationNavigation />}
         </div>
         {displayMenu && <AccountMenu />}
-      </div>
+      </nav>
     );
   }
 }
