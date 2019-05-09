@@ -3,7 +3,7 @@ import { map } from "ramda";
 import React, { ChangeEventHandler, Fragment, ReactFragment } from "react";
 
 import { FormInput } from "./Form";
-import Input from "./Input";
+import Input from "./input/Input";
 
 export const getFormInput = <Inputs extends string>({state, handleInputChange}: {
   state: any,

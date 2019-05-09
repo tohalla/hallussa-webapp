@@ -8,7 +8,7 @@ import { Omit, TranslationProps } from "../../misc";
 import { contentVerticalSpacing } from "../style/container";
 import Button from "./button/Button";
 import CancelButton from "./button/CancelButton";
-import { InputProps } from "./Input";
+import { InputProps } from "./input/Input";
 import { getFormInput } from "./util";
 
 export interface ValidationProps {

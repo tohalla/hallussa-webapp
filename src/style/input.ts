@@ -42,15 +42,23 @@ export const inputLabel = css`
   align-items: center;
   font-size: .75rem;
   background: ${greyscale[9]};
-  color: ${primary.neutral};;
+  color: ${greyscale[2]};
+  flex: 0 1 auto;
   overflow: hidden;
-  width: 0;
+  padding-right: ${minor};
 `;
 
 export const inputLabelFocused = css`
-  padding-right: ${minor};
-  flex: 0 1 auto;
-  width: auto;
+  color: ${primary.light};
+`;
+
+export const inputLabelHidden = css`
+  width: 0;
+  padding: 0;
+`;
+
+export const inputLabelError = css`
+  color: ${indicator.error};
 `;
 
 export const inputLabelContainer = css`
@@ -60,19 +68,6 @@ export const inputLabelContainer = css`
 
   & > input:not([type="checkbox"]), textarea {
     flex: 1;
-  }
-`;
-
-export const inputError = css`
-  ${centerContent}
-  background: ${greyscale[9]};
-  padding: 0 ${minor};
-  flex: 0 1 auto;
-  color: ${indicator.error};
-  width: auto;
-
-  .material-icons {
-    font-size: 1.25em;
   }
 `;
 

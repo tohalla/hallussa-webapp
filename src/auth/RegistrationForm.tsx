@@ -1,85 +1,80 @@
-import { dissoc } from "ramda";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import classnames from "classnames";
+import { ErrorMessage, Field, Form, Formik, FormikConfig } from "formik";
+import React from "react";
+import * as yup from "yup";
 
 import { Trans, useTranslation } from "react-i18next";
-import Form, { FormInput, FormState } from "../component/Form";
+import { Link } from "react-router-dom";
+import Button from "../component/button/Button";
+import Input from "../component/input/Input";
 import { baseUrl } from "../config";
-import { small } from "../style/inline";
-import { isValidEmail } from "../util/validationFunctions";
+import { contentVerticalSpacing } from "../style/container";
+import { actionsRow, form, inputRow } from "../style/form";
+import { error as errorStyle, small } from "../style/inline";
 import { register } from "./auth";
 
-type Inputs = "email" | "firstName" | "lastName" | "password" | "retypePassword" | "tos";
-
 export default () => {
-  const [error, setError] = useState();
   const {t} = useTranslation();
 
-  const handleSubmit = async (state: FormState<Inputs>) => {
-    try {
-      await register(dissoc("errors", state));
-      window.location.href = baseUrl; // refresh page to log in
+  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setSubmitting, setStatus}) => {
+    setSubmitting(true);
+    try {
+      await register(state);
+      window.location.href = baseUrl;
     } catch (error) {
-      setError(error);
+      setStatus({error});
+      setSubmitting(false);
     }
   };
 
-  // custom validation logic
-  const validate = (state: FormState<Inputs>) => {
-    const {email, retypePassword, password} = state;
-    const errors = {...state.errors};
-    if (!isValidEmail(email)) {
-      errors.email = t<string>("account.registration.form.error.invalidEmail");
-    }
-    if (retypePassword !== password) {
-      errors.retypePassword = t<string>("account.registration.form.error.passwordsDontMatch");
-    }
-    return errors;
-  };
+  const validationSchema = yup.object().shape({
+    email: yup.string().email(t("account.registration.form.error.invalidEmail")).required(),
+    firstName: yup.string().required(),
+    lastName: yup.string().required(),
+    password: yup.string().required().min(6),
+    retypePassword: yup
+      .string().required()
+      .oneOf([yup.ref("password")], t("account.registration.form.error.passwordsDontMatch")),
+    tos: yup.bool().oneOf([true]),
+  });
 
   return (
     <>
       <h1>{t("account.registration.title")}</h1>
-      <Form
-        inputs={[
-          {
-            key: "email",
-            props: {autoFocus: true, placeholder: t("account.field.email")},
-            validate: {required: true},
-          },
-          [
-            {key: "firstName", props: {placeholder: t("account.field.firstName")}, validate: {required: true}},
-            {key: "lastName", props: {placeholder: t("account.field.lastName")}, validate: {required: true}},
-          ],
-          {
-            key: "password",
-            props: {type: "password", placeholder: t("account.field.password")},
-            validate: {required: true, minLength: 6},
-          },
-          {
-            key: "retypePassword",
-            props: {placeholder: t("account.field.retypePassword"), type: "password"},
-            validate: {required: true},
-          },
-          {
-            key: "tos",
-            props: {
-              label: (
+      <Formik
+        initialValues={{email: "", firstName: "", lastName: "", password: "", retypePassword: "", tos: false}}
+        onSubmit={handleSubmit}
+        validationSchema={validationSchema}
+        isInitialValid={false}
+      >
+        {({isValid, status: {error} = {}}) => (
+          <Form className={classnames(form, contentVerticalSpacing)}>
+            <Field label={t("account.field.email")} component={Input} type="email" name="email" />
+            <div className={inputRow}>
+              <Field label={t("account.field.firstName")} component={Input} row={false} type="text" name="firstName" />
+              <Field label={t("account.field.lastName")} component={Input} row={false} type="text" name="lastName" />
+            </div>
+            <Field label={t("account.field.password")} component={Input} type="password" name="password" />
+            <Field label={t("account.field.retypePassword")} component={Input} type="password" name="retypePassword" />
+            <ErrorMessage component="div" className={errorStyle} name={"retypePassword"} />
+            <Field
+              label={
                 <Trans i18nKey="account.registration.form.tosLabel">
                   a <a href="/terms-of-service.html" target="_blank">terms</a>
                 </Trans>
-              ),
-              type: "checkbox",
-            },
-            validate: {required: true},
-          },
-        ] as ReadonlyArray<FormInput<Inputs> | [FormInput<Inputs>, FormInput<Inputs>]>}
-        onSubmit={handleSubmit}
-        secondary={<Link className={small} to="/">{t("account.registration.authenticate")}</Link>}
-        submitText={t("account.registration.form.submit")}
-        validate={validate}
-        error={error}
-      />
+              }
+              component={Input}
+              type="checkbox"
+              name="tos"
+            />
+            {error && <div className={errorStyle}>{error}</div>}
+            <div className={actionsRow}>
+              <Button disabled={!isValid} type="submit">{t("account.registration.form.submit")}</Button>
+              <Link className={small} to="/">{t("account.registration.authenticate")}</Link>
+            </div>
+          </Form>
+        )}
+      </Formik>
     </>
   );
 };

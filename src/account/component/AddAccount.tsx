@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { connect, MapDispatchToProps } from "react-redux";
 
 import Button from "../../component/button/Button";
-import Input from "../../component/Input";
+import Input from "../../component/input/Input";
 import { OrganisationPayload } from "../../organisation/actions";
 import { ReduxState } from "../../store/store";
 import { rowContainer } from "../../style/container";

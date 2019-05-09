@@ -31,17 +31,14 @@ export default class Button extends Component<ButtonProps> {
   }
 
   public render() {
-    const { plain, onClick, children, className, disabled, ...props } = this.props;
+    const { plain, onClick, className, ...props } = this.props;
 
     return (
       <button
         className={classnames({[button]: !plain, [plainStyle]: plain}, className)}
         onClick={this.handleClick}
-        disabled={disabled}
         {...props}
-      >
-        {children}
-      </button>
+      />
     );
   }
 }
