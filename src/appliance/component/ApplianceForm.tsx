@@ -4,7 +4,6 @@ import { RouteComponentProps } from "react-router";
 
 import { withTranslation, WithTranslation } from "react-i18next";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
-import Form, { FormProps, FormState } from "../../component/Form";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
@@ -21,51 +20,48 @@ interface DispatchProps {
   updateAppliance: (appliance: AppliancePayload) => any;
 }
 
-type Props = Partial<FormProps<Inputs>> & RouteComponentProps;
-
-type Inputs = "name" | "description" | "location";
-
-class ApplianceForm extends React.Component<Props & DispatchProps & StateProps & WithTranslation> {
-  public handleSubmit = async (state: FormState<Inputs>) => {
-    const {id: organisation} = this.props.organisation as OrganisationPayload;
-    const {state: appliance, onSubmit} = this.props;
-    if (appliance) {
-      await this.props.updateAppliance({...appliance, ...dissoc("errors", state)});
-    } else {
-      const newAppliance = await this.props.createAppliance(organisation, dissoc("errors", state));
-      if (newAppliance) {
-        this.props.history.push(`/appliances/${newAppliance.id}`);
-      }
-    }
-    if (typeof onSubmit === "function") {
-      onSubmit(state);
-    }
-  }
+class ApplianceForm extends React.Component<DispatchProps & StateProps & WithTranslation> {
+  // public handleSubmit = async (state: any) => {
+  //   const {id: organisation} = this.props.organisation as OrganisationPayload;
+  //   const {state: appliance, onSubmit} = this.props;
+  //   if (appliance) {
+  //     await this.props.updateAppliance({...appliance, ...dissoc("errors", state)});
+  //   } else {
+  //     const newAppliance = await this.props.createAppliance(organisation, dissoc("errors", state));
+  //     if (newAppliance) {
+  //       this.props.history.push(`/appliances/${newAppliance.id}`);
+  //     }
+  //   }
+  //   if (typeof onSubmit === "function") {
+  //     onSubmit(state);
+  //   }
+  // }
 
   public render() {
-    const {onSubmit, t, ...props} = this.props;
-    return (
-      <Form
-        inputs={[
-          {
-            key: "name",
-            props: {autoFocus: true, placeholder: t("appliance.field.name")},
-            validate: {required: true, minLength: 2},
-          },
-          {
-            key: "description",
-            props: {
-              placeholder: t("appliance.field.description"),
-              rows: 3,
-              type: "textarea",
-            },
-          },
-          {key: "location", props: {placeholder: t("appliance.field.location")}},
-        ]}
-        onSubmit={this.handleSubmit}
-        {...props}
-      />
-    );
+    // const {onSubmit, t, ...props} = this.props;
+    return false;
+    // return (
+    //   <Form
+    //     inputs={[
+    //       {
+    //         key: "name",
+    //         props: {autoFocus: true, placeholder: t("appliance.field.name")},
+    //         validate: {required: true, minLength: 2},
+    //       },
+    //       {
+    //         key: "description",
+    //         props: {
+    //           placeholder: t("appliance.field.description"),
+    //           rows: 3,
+    //           type: "textarea",
+    //         },
+    //       },
+    //       {key: "location", props: {placeholder: t("appliance.field.location")}},
+    //     ]}
+    //     onSubmit={this.handleSubmit}
+    //     {...props}
+    //   />
+    // );
   }
 }
 

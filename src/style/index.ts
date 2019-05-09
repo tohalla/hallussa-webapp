@@ -79,6 +79,10 @@ injectGlobal`
     resize: vertical;
   }
 
+  button:active, a:active {
+    outline: none;
+  }
+
   footer {
     display: flex;
     color: #fff;
