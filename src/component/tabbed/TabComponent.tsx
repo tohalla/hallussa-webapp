@@ -1,6 +1,7 @@
 import classnames from "classnames";
 import React, { MouseEventHandler } from "react";
 import { useTranslation } from "react-i18next";
+import { link } from "../../style/inline";
 import { TabPayload } from "./actions";
 
 interface Props extends TabPayload {
@@ -22,7 +23,7 @@ export default (props: Props) => {
       <span className={classnames({"material-icons": typeof label === "string" && icons.indexOf(label) > -1})}>
         {typeof label === "function" ? label({t}) : label}
       </span>
-      {!sticky && <i className={classnames("material-icons")} onClick={onClose}>close</i>}
+      {!sticky && <i className={classnames(link, "material-icons")} onClick={onClose}>close</i>}
     </>
   );
 };

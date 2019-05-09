@@ -24,7 +24,9 @@ export const tab = css`
   }
 
   .material-icons {
-    color: ${greyscale[2]};
+    &:hover {
+      color: ${greyscale[0]};
+    }
     font-size: ${large};
     line-height: ${base};
   }

@@ -5,7 +5,7 @@ import { error, info, success } from "../../style/inline";
 import { AppliancePayload } from "../actions";
 
 interface Props extends Pick<AppliancePayload, "status"> {
-  label: ReactFragment;
+  label(props: {status?: {isMalfunctioning: boolean}}): ReactFragment;
 }
 
 const Status = ({status, label}: Props) => {
@@ -13,7 +13,7 @@ const Status = ({status, label}: Props) => {
 
   return (
     <div className={info}>
-      {label}
+      {label({status})}
       {status && status.isMalfunctioning ?
         <b className={error}>{t("appliance.status.malfunctioning")}</b>
       : <b className={success}>{t("appliance.status.ok")}</b>}
@@ -21,8 +21,10 @@ const Status = ({status, label}: Props) => {
   );
 };
 
-Status.defaultProps = {
-  label: <i className="material-icons">info</i>,
+const defaultProps: Props = {
+  label: ({status}) => <i className="material-icons">{status && status.isMalfunctioning ? "error" : "info_outline"}</i>,
 };
+
+Status.defaultProps = defaultProps;
 
 export default Status;

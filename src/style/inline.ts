@@ -19,6 +19,8 @@ export const capitalize = css`
   text-transform: capitalize;
 `;
 
+export const noWrap = css`white-space: nowrap;`;
+
 export const info = css`
   display: flex;
   flex: 1;
@@ -28,7 +30,7 @@ export const info = css`
   font-style: normal;
   .material-icons {
     font-size: ${large};
-    margin-right: ${normal}
+    margin-right: ${minor}
   }
 `;
 

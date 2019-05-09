@@ -79,6 +79,7 @@ class OrganisationSelect extends React.Component<Props & StateProps & DispatchPr
       <div className={rowContainer}>
         {organisations.length > 1 &&
           <Select
+            label={t("organisation.selectOrganisation")}
             onChange={this.handleOrganisationSelect}
             options={map<OrganisationPayload, OrganisationOption>(getOrganisationOption, organisations)}
             value={selectedOrganisationOption}

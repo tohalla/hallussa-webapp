@@ -4,4 +4,5 @@ export default css`
   height: 100%;
   width: auto;
   margin: 0;
+  user-select: none;
 `;
