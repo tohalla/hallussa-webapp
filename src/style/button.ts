@@ -6,7 +6,6 @@ import { buttonHeight } from "./variables/sizes";
 import { minor, normal } from "./variables/spacing";
 
 const button = css`
-  outline: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,7 +26,7 @@ const button = css`
     font-size: ${large};
   }
 
-  &:hover, &:focus {
+  &:hover {
     color: ${text.light};
     background: ${primary.dark};
   }

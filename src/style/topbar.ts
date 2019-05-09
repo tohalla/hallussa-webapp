@@ -70,7 +70,7 @@ export const navItem = css`
   ${light}
   user-select: none;
 
-  &:hover, &:focus {
+  &:hover {
     text-decoration: underline;
   }
 

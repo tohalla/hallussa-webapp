@@ -11,6 +11,9 @@ export const tabsContainer = css`
 `;
 
 export const tab = css`
+  &:focus {
+    outline-offset: -4px;
+  }
   display: flex;
   align-items: center;
   padding: ${minor} ${normal};
@@ -47,6 +50,9 @@ export const tab = css`
 export const actionTab = css`
   background: ${primary.light};
   color: ${greyscale[9]};
+  &:focus {
+    outline-offset: 0;
+  }
   .material-icons {
     color: ${greyscale[9]};
     font-size: ${huge};

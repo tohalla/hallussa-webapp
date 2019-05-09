@@ -60,20 +60,19 @@ export const label = css`
 `;
 
 export const link = css`
-  outline: none;
   color: ${greyscale[2]};
   flex: 0;
   white-space: nowrap;
   text-decoration: underline;
 
-  &:hover, &:focus {
+  &:hover {
     color: ${accent.neutral};
   }
 
   &.white {
     color: ${text.light};
 
-    &:hover, &:focus {
+    &:hover {
       color: ${greyscale[9]}
     }
   }
