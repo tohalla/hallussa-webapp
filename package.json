@@ -21,6 +21,7 @@
     "classnames": "^2.2.6",
     "date-fns": "^1.29.0",
     "emotion": "^10.0.9",
+    "formik": "^1.5.4",
     "i18next": "^15.0.9",
     "normalize.css": "^8.0.1",
     "ramda": "^0.26.1",
@@ -35,7 +36,8 @@
     "redux-thunk": "^2.3.0",
     "style": "^0.0.3",
     "styles": "^0.2.1",
-    "whatwg-fetch": "^3.0.0"
+    "whatwg-fetch": "^3.0.0",
+    "yup": "^0.27.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.5",
@@ -55,6 +57,7 @@
     "@types/redux-mock-store": "^1.0.1",
     "@types/redux-thunk": "^2.1.0",
     "@types/webpack-env": "^1.13.6",
+    "@types/yup": "^0.26.13",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-preset-env": "^1.7.0",
     "enzyme": "^3.6.0",
