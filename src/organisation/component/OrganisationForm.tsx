@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import { Field, Form, Formik, FormikConfig } from "formik";
-import React from "react";
+import React, { ReactFragment } from "react";
 import { RouteComponentProps } from "react-router";
 import * as yup from "yup";
 
@@ -29,6 +29,8 @@ interface DispatchProps {
 interface Props extends RouteComponentProps {
   initialState?: OrganisationPayload;
   onSubmit?: (state: OrganisationPayload) => any;
+  submitText?: string;
+  header?: ReactFragment;
 }
 
 const OrganisationForm = ({
@@ -36,9 +38,12 @@ const OrganisationForm = ({
   history,
   initialState,
   onSubmit,
+  submitText,
+  header,
   ...props
 }: DispatchProps & StateProps & Props) => {
-  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state) => {
+  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setSubmitting}) => {
+    setSubmitting(true);
     if (initialState) {
       await props.updateOrganisation({...initialState, ...state});
     } else {
@@ -53,6 +58,7 @@ const OrganisationForm = ({
     if (typeof onSubmit === "function") {
       onSubmit(state);
     }
+    setSubmitting(false);
   };
 
   const {t} = useTranslation();
@@ -62,28 +68,31 @@ const OrganisationForm = ({
   });
 
   return (
-    <Formik
-      initialValues={{name: "", organisationIdentifier: ""}}
-      onSubmit={handleSubmit}
-      validationSchema={validationSchema}
-      isInitialValid={false}
-    >
-      {({isValid}) => (
-        <Form className={classnames(form, contentVerticalSpacing)}>
-          <Field autoFocus={true} label={t("organisation.field.name")} component={Input} type="text" name="name" />
-          <Field
-            label={t("organisation.field.organisationIdentifier")}
-            component={Input}
-            type="text"
-            name="organisationIdentifier"
-          />
-          <div className={actionsRow}>
-            <Button disabled={!isValid} type="submit">{t("account.authentication.form.submit")}</Button>
-            <CancelButton />
-          </div>
-        </Form>
-      )}
-    </Formik>
+    <>
+      {header}
+      <Formik
+        initialValues={initialState || {name: "", organisationIdentifier: ""}}
+        onSubmit={handleSubmit}
+        validationSchema={validationSchema}
+        isInitialValid={false}
+      >
+        {({isValid}) => (
+          <Form className={classnames(form, contentVerticalSpacing)}>
+            <Field autoFocus={true} label={t("organisation.field.name")} component={Input} type="text" name="name" />
+            <Field
+              label={t("organisation.field.organisationIdentifier")}
+              component={Input}
+              type="text"
+              name="organisationIdentifier"
+            />
+            <div className={actionsRow}>
+              <Button disabled={!isValid} type="submit">{submitText || t("organisation.create.form.submit")}</Button>
+              <CancelButton />
+            </div>
+          </Form>
+        )}
+      </Formik>
+    </>
   );
 };
 

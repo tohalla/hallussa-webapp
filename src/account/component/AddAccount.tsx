@@ -1,6 +1,8 @@
-import React, { ChangeEventHandler, MouseEventHandler, useState } from "react";
+import { Field, Form, Formik, FormikConfig } from "formik";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { connect, MapDispatchToProps } from "react-redux";
+import * as yup from "yup";
 
 import Button from "../../component/button/Button";
 import Input from "../../component/input/Input";
@@ -18,26 +20,29 @@ interface Props {
 }
 
 const AddAccount = ({organisation, ...props}: Props & DispatchProps) => {
-  const [email, setEmail] = useState("");
-  const {t} = useTranslation();
+  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setSubmitting}) => {
+    setSubmitting(true);
+    props.addAccount(organisation.id, state);
+    setSubmitting(false);
+  };
 
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => setEmail(e.target.value);
-  const handleClick: MouseEventHandler = () => props.addAccount(organisation.id, {email});
+  const {t} = useTranslation();
+  const validationSchema = yup.object().shape({
+    email: yup.string().email().required(),
+  });
 
   return (
-    <div className={rowContainer}>
-      <Input
-        value={email}
-        name="email"
-        type="email"
-        onChange={handleChange}
-        placeholder={t("organisation.account.field.email")}
-        wide={true}
-      />
-      <Button type="button" onClick={handleClick}>
-        {t("organisation.account.addAccount")}
-      </Button>
-    </div>
+    <Formik
+      initialValues={{email: ""}}
+      onSubmit={handleSubmit}
+      validationSchema={validationSchema}
+      isInitialValid={false}
+    >
+        <Form className={rowContainer}>
+        <Field component={Input} label={t("organisation.account.field.email")} wide={true} type="email" name="email" />
+        <Button type="submit">{t("organisation.account.addAccount")}</Button>
+      </Form>
+    </Formik>
   );
 };
 

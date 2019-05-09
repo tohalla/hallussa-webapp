@@ -1,5 +1,5 @@
 import { css } from "emotion";
-import { centerContent, stacked } from "./container";
+import { stacked } from "./container";
 import { greyscale, indicator, primary, text } from "./variables/colors";
 import { inputHeight } from "./variables/sizes";
 import { minor } from "./variables/spacing";

@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import { Field, Form, Formik, FormikConfig } from "formik";
-import React from "react";
+import React, { ReactFragment } from "react";
 import { RouteComponentProps } from "react-router";
 import * as yup from "yup";
 
@@ -31,6 +31,8 @@ interface Props extends RouteComponentProps {
   initialState?: AppliancePayload;
   onSubmit?: (state: AppliancePayload) => any;
   organisation?: OrganisationPayload;
+  submitText?: string;
+  header?: ReactFragment;
 }
 
 const ApplianceForm = ({
@@ -38,12 +40,15 @@ const ApplianceForm = ({
   organisation,
   onSubmit,
   history,
+  submitText,
+  header,
   ...props
 }: StateProps & Props & DispatchProps) => {
-  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state) => {
+  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setSubmitting}) => {
     if (!organisation) {
       return;
     }
+    setSubmitting(true);
     if (initialState) {
       await props.updateAppliance({...initialState, ...state});
     } else {
@@ -55,6 +60,7 @@ const ApplianceForm = ({
     if (typeof onSubmit === "function") {
       onSubmit(state);
     }
+    setSubmitting(false);
   };
 
   const {t} = useTranslation();
@@ -65,24 +71,27 @@ const ApplianceForm = ({
   });
 
   return (
-    <Formik
-      initialValues={{name: "", description: "", location: ""}}
-      onSubmit={handleSubmit}
-      validationSchema={validationSchema}
-      isInitialValid={false}
-    >
-      {({isValid}) => (
-        <Form className={classnames(form, contentVerticalSpacing)}>
-          <Field autoFocus={true} label={t("appliance.field.name")} component={Input} type="text" name="name" />
-          <Field label={t("appliance.field.description")} component={Input} type="textarea" name="description" />
-          <Field label={t("appliance.field.location")} component={Input} type="text" name="location" />
-          <div className={actionsRow}>
-            <Button disabled={!isValid} type="submit">{t("account.authentication.form.submit")}</Button>
-            <CancelButton />
-          </div>
-        </Form>
-      )}
-    </Formik>
+    <>
+      {header}
+      <Formik
+        initialValues={initialState || {name: "", description: "", location: ""}}
+        onSubmit={handleSubmit}
+        validationSchema={validationSchema}
+        isInitialValid={false}
+      >
+        {({isValid}) => (
+          <Form className={classnames(form, contentVerticalSpacing)}>
+            <Field autoFocus={true} label={t("appliance.field.name")} component={Input} type="text" name="name" />
+            <Field label={t("appliance.field.description")} component={Input} type="textarea" name="description" />
+            <Field label={t("appliance.field.location")} component={Input} type="text" name="location" />
+            <div className={actionsRow}>
+              <Button disabled={!isValid} type="submit">{submitText || t("appliance.create.form.submit")}</Button>
+              <CancelButton />
+            </div>
+          </Form>
+        )}
+      </Formik>
+    </>
   );
 };
 

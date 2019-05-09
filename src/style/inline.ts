@@ -1,7 +1,7 @@
 import { css } from "emotion";
 import { accent, greyscale, indicator, text } from "./variables/colors";
 import fontSize, { large } from "./variables/fontSizes";
-import { minor, normal } from "./variables/spacing";
+import { minor } from "./variables/spacing";
 
 export const dark = css`
   color: ${text.dark} !important;
