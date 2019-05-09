@@ -1,11 +1,19 @@
+import classnames from "classnames";
+import { Field, Form, Formik, FormikConfig } from "formik";
 import { dissoc } from "ramda";
 import React from "react";
 import { RouteComponentProps } from "react-router";
+import * as yup from "yup";
 
 import { useTranslation } from "react-i18next";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
+import Button from "../../component/button/Button";
+import CancelButton from "../../component/button/CancelButton";
+import Input from "../../component/input/Input";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
+import { contentVerticalSpacing } from "../../style/container";
+import { actionsRow, form } from "../../style/form";
 import { createOrganisation, OrganisationPayload, setActiveOrganisation, updateOrganisation } from "../actions";
 import { getOrganisation } from "../state";
 
@@ -19,31 +27,65 @@ interface DispatchProps {
   updateOrganisation(organisation: OrganisationPayload): any;
 }
 
+interface Props extends RouteComponentProps {
+  initialState?: OrganisationPayload;
+  onSubmit?: (state: OrganisationPayload) => any;
+}
+
 const OrganisationForm = ({
-  // onSubmit,
+  activeOrganisation,
+  history,
+  initialState,
+  onSubmit,
   ...props
-}: DispatchProps & StateProps) => {
-  // const handleSubmit = async (state: FormState<Inputs>) => {
-  //   const {activeOrganisation, history, state: organisation} = props;
-  //   if (organisation) {
-  //     await props.updateOrganisation({...organisation, ...dissoc("errors", state)});
-  //   } else {
-  //     const newOrganisation = await props.createOrganisation(dissoc("errors", state));
-  //     if (newOrganisation) {
-  //       if (!activeOrganisation) {// set newly created organistaion active, if no previous organisations
-  //         props.setActiveOrganisation(newOrganisation.id, false);
-  //       }
-  //     }
-  //     history.push(`/organisations/${newOrganisation.id}`);
-  //   }
-  //   if (typeof onSubmit === "function") {
-  //     onSubmit(state);
-  //   }
-  // };
+}: DispatchProps & StateProps & Props) => {
+  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state) => {
+    if (initialState) {
+      await props.updateOrganisation({...initialState, ...dissoc("errors", state)});
+    } else {
+      const newOrganisation = await props.createOrganisation(dissoc("errors", state));
+      if (newOrganisation) {
+        if (!activeOrganisation) {// set newly created organistaion active, if no previous organisations
+          props.setActiveOrganisation(newOrganisation.id, false);
+        }
+      }
+      history.push(`/organisations/${newOrganisation.id}`);
+    }
+    if (typeof onSubmit === "function") {
+      onSubmit(state);
+    }
+  };
 
   const {t} = useTranslation();
+  const validationSchema = yup.object().shape({
+    name: yup.string().max(64).required(),
+    organisationIdentifier: yup.string().max(64).required(),
+  });
 
-  return false;
+  return (
+    <Formik
+      initialValues={{name: "", organisationIdentifier: ""}}
+      onSubmit={handleSubmit}
+      validationSchema={validationSchema}
+      isInitialValid={false}
+    >
+      {({isValid, status: {error} = {}}) => (
+        <Form className={classnames(form, contentVerticalSpacing)}>
+          <Field autoFocus={true} label={t("organisation.field.name")} component={Input} type="text" name="name" />
+          <Field
+            label={t("organisation.field.organisationIdentifier")}
+            component={Input}
+            type="text"
+            name="organisationIdentifier"
+          />
+          <div className={actionsRow}>
+            <Button disabled={!isValid} type="submit">{t("account.authentication.form.submit")}</Button>
+            <CancelButton />
+          </div>
+        </Form>
+      )}
+    </Formik>
+  );
   //   return (
   //   <Form
   //     inputs={[

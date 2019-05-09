@@ -1,10 +1,10 @@
 import classnames from "classnames";
+import { Field, Form, Formik, FormikConfig } from "formik";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 
-import { Field, Form, Formik, FormikConfig } from "formik";
-import { useTranslation } from "react-i18next";
 import Button from "../component/button/Button";
 import Input from "../component/input/Input";
 import { baseUrl } from "../config";
@@ -42,7 +42,7 @@ export default () => {
       >
         {({isValid, status: {error} = {}}) => (
           <Form className={classnames(form, contentVerticalSpacing)}>
-            <Field label={t("account.field.email")} component={Input} type="email" name="email" />
+            <Field autoFocus={true} label={t("account.field.email")} component={Input} type="email" name="email" />
             <Field label={t("account.field.password")} component={Input} type="password" name="password" />
             {error && <div className={errorStyle}>{error}</div>}
             <div className={actionsRow}>

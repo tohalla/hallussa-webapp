@@ -22,7 +22,7 @@ const Edit = ({organisation, ...props}: Props) => {
   return (
     <div className={classnames(viewContentContainer, padded)}>
       <OrganisationForm
-        state={organisation}
+        initialState={organisation}
         onSubmit={props.history.goBack}
         header={<h1>{t("organisation.edit.title", {organisation: organisation.name})}</h1>}
         submitText={t("organisation.edit.form.submit")}

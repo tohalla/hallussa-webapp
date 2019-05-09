@@ -49,7 +49,7 @@ export default () => {
       >
         {({isValid, status: {error} = {}}) => (
           <Form className={classnames(form, contentVerticalSpacing)}>
-            <Field label={t("account.field.email")} component={Input} type="email" name="email" />
+            <Field autoFocus={true} label={t("account.field.email")} component={Input} type="email" name="email" />
             <div className={inputRow}>
               <Field label={t("account.field.firstName")} component={Input} row={false} type="text" name="firstName" />
               <Field label={t("account.field.lastName")} component={Input} row={false} type="text" name="lastName" />
