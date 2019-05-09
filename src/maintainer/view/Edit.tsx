@@ -21,7 +21,7 @@ const Edit = ({maintainer, ...props}: Props) => {
   return (
     <div className={padded}>
       <MaintainerForm
-        state={maintainer}
+        initialState={maintainer}
         onSubmit={props.history.goBack}
         header={<h1>{t("maintainer.edit.title", {maintainer: `${maintainer.firstName} ${maintainer.lastName}`})}</h1>}
         submitText={t("maintainer.edit.form.submit")}

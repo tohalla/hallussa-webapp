@@ -52,9 +52,9 @@ const ApplianceForm = ({
     if (initialState) {
       await props.updateAppliance({...initialState, ...state});
     } else {
-      const newAppliance = await props.createAppliance(organisation.id, state);
-      if (newAppliance) {
-        history.push(`/appliances/${newAppliance.id}`);
+      const appliance = await props.createAppliance(organisation.id, state);
+      if (appliance) {
+        history.push(`/appliances/${appliance.id}`);
       }
     }
     if (typeof onSubmit === "function") {
