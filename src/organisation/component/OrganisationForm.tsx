@@ -1,6 +1,5 @@
 import classnames from "classnames";
 import { Field, Form, Formik, FormikConfig } from "formik";
-import { dissoc } from "ramda";
 import React from "react";
 import { RouteComponentProps } from "react-router";
 import * as yup from "yup";
@@ -41,9 +40,9 @@ const OrganisationForm = ({
 }: DispatchProps & StateProps & Props) => {
   const handleSubmit: FormikConfig<any>["onSubmit"] = async (state) => {
     if (initialState) {
-      await props.updateOrganisation({...initialState, ...dissoc("errors", state)});
+      await props.updateOrganisation({...initialState, ...state});
     } else {
-      const newOrganisation = await props.createOrganisation(dissoc("errors", state));
+      const newOrganisation = await props.createOrganisation(state);
       if (newOrganisation) {
         if (!activeOrganisation) {// set newly created organistaion active, if no previous organisations
           props.setActiveOrganisation(newOrganisation.id, false);
@@ -69,7 +68,7 @@ const OrganisationForm = ({
       validationSchema={validationSchema}
       isInitialValid={false}
     >
-      {({isValid, status: {error} = {}}) => (
+      {({isValid}) => (
         <Form className={classnames(form, contentVerticalSpacing)}>
           <Field autoFocus={true} label={t("organisation.field.name")} component={Input} type="text" name="name" />
           <Field
@@ -86,24 +85,6 @@ const OrganisationForm = ({
       )}
     </Formik>
   );
-  //   return (
-  //   <Form
-  //     inputs={[
-  //       {
-  //         key: "name",
-  //         props: {autoFocus: true, placeholder: t("organisation.field.name")},
-  //         validate: {required: true, minLength: 3},
-  //       },
-  //       {
-  //         key: "organisationIdentifier",
-  //         props: {placeholder: t("organisation.field.organisationIdentifier")},
-  //         validate: {required: true},
-  //       },
-  //     ]}
-  //     onSubmit={handleSubmit}
-  //     {...props}
-  //   />
-  // );
 };
 
 const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({

@@ -1,13 +1,20 @@
-import { dissoc } from "ramda";
+import classnames from "classnames";
+import { Field, Form, Formik, FormikConfig } from "formik";
 import React from "react";
 import { RouteComponentProps } from "react-router";
+import * as yup from "yup";
 
-import { withTranslation, WithTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
+import Button from "../../component/button/Button";
+import CancelButton from "../../component/button/CancelButton";
+import Input from "../../component/input/Input";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
+import { contentVerticalSpacing } from "../../style/container";
+import { actionsRow, form } from "../../style/form";
 import Loadable from "../../util/hoc/Loadable";
 import { AppliancePayload, createAppliance, updateAppliance } from "../actions";
 
@@ -20,50 +27,64 @@ interface DispatchProps {
   updateAppliance: (appliance: AppliancePayload) => any;
 }
 
-class ApplianceForm extends React.Component<DispatchProps & StateProps & WithTranslation> {
-  // public handleSubmit = async (state: any) => {
-  //   const {id: organisation} = this.props.organisation as OrganisationPayload;
-  //   const {state: appliance, onSubmit} = this.props;
-  //   if (appliance) {
-  //     await this.props.updateAppliance({...appliance, ...dissoc("errors", state)});
-  //   } else {
-  //     const newAppliance = await this.props.createAppliance(organisation, dissoc("errors", state));
-  //     if (newAppliance) {
-  //       this.props.history.push(`/appliances/${newAppliance.id}`);
-  //     }
-  //   }
-  //   if (typeof onSubmit === "function") {
-  //     onSubmit(state);
-  //   }
-  // }
-
-  public render() {
-    // const {onSubmit, t, ...props} = this.props;
-    return false;
-    // return (
-    //   <Form
-    //     inputs={[
-    //       {
-    //         key: "name",
-    //         props: {autoFocus: true, placeholder: t("appliance.field.name")},
-    //         validate: {required: true, minLength: 2},
-    //       },
-    //       {
-    //         key: "description",
-    //         props: {
-    //           placeholder: t("appliance.field.description"),
-    //           rows: 3,
-    //           type: "textarea",
-    //         },
-    //       },
-    //       {key: "location", props: {placeholder: t("appliance.field.location")}},
-    //     ]}
-    //     onSubmit={this.handleSubmit}
-    //     {...props}
-    //   />
-    // );
-  }
+interface Props extends RouteComponentProps {
+  initialState?: AppliancePayload;
+  onSubmit?: (state: AppliancePayload) => any;
+  organisation?: OrganisationPayload;
 }
+
+const ApplianceForm = ({
+  initialState,
+  organisation,
+  onSubmit,
+  history,
+  ...props
+}: StateProps & Props & DispatchProps) => {
+  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state) => {
+    if (!organisation) {
+      return;
+    }
+    if (initialState) {
+      await props.updateAppliance({...initialState, ...state});
+    } else {
+      const newAppliance = await props.createAppliance(organisation.id, state);
+      if (newAppliance) {
+        history.push(`/appliances/${newAppliance.id}`);
+      }
+    }
+    if (typeof onSubmit === "function") {
+      onSubmit(state);
+    }
+  };
+
+  const {t} = useTranslation();
+  const validationSchema = yup.object().shape({
+    description: yup.string(),
+    location: yup.string(),
+    name: yup.string().max(64).required(),
+  });
+
+  return (
+    <Formik
+      initialValues={{name: "", description: "", location: ""}}
+      onSubmit={handleSubmit}
+      validationSchema={validationSchema}
+      isInitialValid={false}
+    >
+      {({isValid}) => (
+        <Form className={classnames(form, contentVerticalSpacing)}>
+          <Field autoFocus={true} label={t("appliance.field.name")} component={Input} type="text" name="name" />
+          <Field label={t("appliance.field.description")} component={Input} type="textarea" name="description" />
+          <Field label={t("appliance.field.location")} component={Input} type="text" name="location" />
+          <div className={actionsRow}>
+            <Button disabled={!isValid} type="submit">{t("account.authentication.form.submit")}</Button>
+            <CancelButton />
+          </div>
+        </Form>
+      )}
+    </Formik>
+  );
+};
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, Props> = {
   createAppliance,
@@ -76,4 +97,4 @@ const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) 
 
 export default connect<StateProps, DispatchProps, Props, ReduxState>(
   mapStateToProps, mapDispatchToProps
-)(Loadable(withTranslation()(ApplianceForm)));
+)(Loadable<StateProps, {organisation: OrganisationPayload}>(ApplianceForm));

@@ -21,7 +21,7 @@ const Edit = ({appliance, ...props}: Props) => {
   return (
     <div className={padded}>
       <ApplianceForm
-        state={appliance}
+        initialState={appliance}
         onSubmit={props.history.goBack}
         header={<h1>{t("appliance.edit.title", {appliance: appliance.name})}</h1>}
         submitText={t("appliance.edit.form.submit")}
