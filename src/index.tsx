@@ -11,11 +11,12 @@ import i18n from "./i18n";
 import Router from "./Router";
 import store, { initializeStore } from "./store/store";
 
-const render = () =>
-  ReactDOM.render(
-    <Provider store={store}><Router /></Provider>,
-    document.getElementById("app")
-  );
+if (process.env.NODE_ENV === "development") {
+  (() => {
+    const axe = require("react-axe");
+    axe(React, ReactDOM, 1000, {runOnly: { type: "tag", values: ["wcag2a"] }});
+  })();
+}
 
 const mount = async () => {
   const token = localStorage.getItem("token");
@@ -27,11 +28,10 @@ const mount = async () => {
       i18n(),
     ]);
 
-    return process.env.NODE_ENV === "production" ? render() : (() => {
-      const axe = require("react-axe");
-      axe(React, ReactDOM, 1000, {runOnly: { type: "tag", values: ["wcag2a"] }});
-      render();
-    })();
+    return ReactDOM.render(
+      <Provider store={store}><Router /></Provider>,
+      document.getElementById("app")
+    );
   }
   // forward to authentication if user not authenticated
   window.location.href = window.location.origin + "/authentication.html";

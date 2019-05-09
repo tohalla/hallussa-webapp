@@ -16,8 +16,26 @@ import RegistrationForm from "./RegistrationForm";
 
 document.body.hidden = false; // hack to disable rendering before loading js
 
-const render = () =>
-  ReactDOM.render(
+if (process.env.NODE_ENV === "development") {
+  (() => {
+    const axe = require("react-axe");
+    axe(React, ReactDOM, 1000, {runOnly: { type: "tag", values: ["wcag2a"] }});
+  })();
+}
+
+// TODO: nginx jwt check
+const mount = async () => {
+  const token = localStorage.getItem("token");
+  if (token && (await authenticate(token))) {
+    window.location.href = baseUrl;
+    return;
+  }
+
+  await i18n();
+
+  (document.getElementById("app") as HTMLElement).className = appContainer;
+
+  return ReactDOM.render(
     (
       <main className={classnames(centerContent, flex1)}>
         <div className={authContainer}>
@@ -33,24 +51,6 @@ const render = () =>
     ),
     document.getElementById("app")
   );
-
-// TODO: nginx jwt check
-const mount = async () => {
-  const token = localStorage.getItem("token");
-  if (token && (await authenticate(token))) {
-    window.location.href = baseUrl;
-    return;
-  }
-
-  await i18n();
-
-  (document.getElementById("app") as HTMLElement).className = appContainer;
-
-  return process.env.NODE_ENV === "production" ? render() : (() => {
-    const axe = require("react-axe");
-    axe(React, ReactDOM, 1000, {runOnly: { type: "tag", values: ["wcag2a"] }});
-    render();
-  })();
 };
 
 mount();
