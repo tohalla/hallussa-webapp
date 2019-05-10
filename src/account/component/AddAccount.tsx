@@ -21,7 +21,6 @@ interface Props {
 
 const AddAccount = ({organisation, ...props}: Props & DispatchProps) => {
   const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setSubmitting}) => {
-    setSubmitting(true);
     props.addAccount(organisation.id, state);
     setSubmitting(false);
   };
@@ -38,10 +37,18 @@ const AddAccount = ({organisation, ...props}: Props & DispatchProps) => {
       validationSchema={validationSchema}
       isInitialValid={false}
     >
+      {({isValid, isSubmitting}) => (
         <Form className={rowContainer}>
-        <Field component={Input} label={t("organisation.account.field.email")} wide={true} type="email" name="email" />
-        <Button type="submit">{t("organisation.account.addAccount")}</Button>
-      </Form>
+          <Field
+            component={Input}
+            label={t("organisation.account.field.email")}
+            wide={true}
+            type="email"
+            name="email"
+          />
+          <Button disabled={isSubmitting || !isValid} type="submit">{t("organisation.account.addAccount")}</Button>
+        </Form>
+      )}
     </Formik>
   );
 };
@@ -52,3 +59,4 @@ export default connect<{}, DispatchProps, Props, ReduxState>(
   undefined,
   mapDispatchToProps
 )(AddAccount);
+

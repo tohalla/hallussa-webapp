@@ -43,7 +43,6 @@ const OrganisationForm = ({
   ...props
 }: DispatchProps & StateProps & Props) => {
   const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setSubmitting}) => {
-    setSubmitting(true);
     if (initialState) {
       await props.updateOrganisation({...initialState, ...state});
     } else {
@@ -76,7 +75,7 @@ const OrganisationForm = ({
         validationSchema={validationSchema}
         isInitialValid={false}
       >
-        {({isValid}) => (
+        {({isValid, isSubmitting}) => (
           <Form className={classnames(form, contentVerticalSpacing)}>
             <Field autoFocus={true} label={t("organisation.field.name")} component={Input} type="text" name="name" />
             <Field
@@ -86,7 +85,9 @@ const OrganisationForm = ({
               name="organisationIdentifier"
             />
             <div className={actionsRow}>
-              <Button disabled={!isValid} type="submit">{submitText || t("organisation.create.form.submit")}</Button>
+              <Button disabled={isSubmitting || !isValid} type="submit">
+                {submitText || t("organisation.create.form.submit")}
+              </Button>
               <CancelButton />
             </div>
           </Form>

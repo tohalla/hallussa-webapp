@@ -48,7 +48,6 @@ const MaintainerForm = ({
     if (!organisation) {
       return;
     }
-    setSubmitting(true);
     if (initialState) {
       await props.updateMaintainer({...initialState, ...state});
     } else {
@@ -80,7 +79,7 @@ const MaintainerForm = ({
         validationSchema={validationSchema}
         isInitialValid={false}
       >
-        {({isValid}) => (
+        {({isValid, isSubmitting}) => (
           <Form className={classnames(form, contentVerticalSpacing)}>
             <Field autoFocus={true} label={t("maintainer.field.email")} component={Input} type="text" name="email" />
             <div className={inputRow}>
@@ -95,7 +94,9 @@ const MaintainerForm = ({
             </div>
             <Field label={t("maintainer.field.phone")} component={Input} type="tel" name="phone" />
             <div className={actionsRow}>
-              <Button disabled={!isValid} type="submit">{submitText || t("maintainer.create.form.submit")}</Button>
+              <Button disabled={isSubmitting || !isValid} type="submit">
+                {submitText || t("maintainer.create.form.submit")}
+              </Button>
               <CancelButton />
             </div>
           </Form>

@@ -40,13 +40,15 @@ export default () => {
         validationSchema={validationSchema}
         isInitialValid={false}
       >
-        {({isValid, status: {error} = {}}) => (
+        {({isValid, isSubmitting, status: {error} = {}}) => (
           <Form className={classnames(form, contentVerticalSpacing)}>
             <Field autoFocus={true} label={t("account.field.email")} component={Input} type="email" name="email" />
             <Field label={t("account.field.password")} component={Input} type="password" name="password" />
             {error && <div className={errorStyle}>{error}</div>}
             <div className={actionsRow}>
-              <Button disabled={!isValid} type="submit">{t("account.authentication.form.submit")}</Button>
+              <Button disabled={isSubmitting || !isValid} type="submit">
+                {t("account.authentication.form.submit")}
+              </Button>
               <Link className={small} to="/register">{t("account.registration.authenticate")}</Link>
             </div>
           </Form>

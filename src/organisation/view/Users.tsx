@@ -11,7 +11,7 @@ import AddAccount from "../../account/component/AddAccount";
 import Restricted from "../../component/Restricted";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
-import { contentVerticalSpacing, rowContainer, spread } from "../../style/container";
+import { contentVerticalSpacing, emptyContainer, rowContainer, spread } from "../../style/container";
 import Loadable from "../../util/hoc/Loadable";
 import { OrganisationPayload } from "../actions";
 import { getEntitiesByOrganisation, getOrganisation } from "../state";
@@ -41,6 +41,7 @@ const Users = ({accounts, organisation}: Props) => {
         </Restricted>
       </div>
       <h2>{t("organisation.logins.title")}</h2>
+      <div className={emptyContainer}>{t("organisation.logins.noLogins")}</div>
     </>
   );
 };

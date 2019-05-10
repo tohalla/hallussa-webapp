@@ -48,7 +48,6 @@ const ApplianceForm = ({
     if (!organisation) {
       return;
     }
-    setSubmitting(true);
     if (initialState) {
       await props.updateAppliance({...initialState, ...state});
     } else {
@@ -79,13 +78,15 @@ const ApplianceForm = ({
         validationSchema={validationSchema}
         isInitialValid={false}
       >
-        {({isValid}) => (
+        {({isValid, isSubmitting}) => (
           <Form className={classnames(form, contentVerticalSpacing)}>
             <Field autoFocus={true} label={t("appliance.field.name")} component={Input} type="text" name="name" />
             <Field label={t("appliance.field.description")} component={Input} type="textarea" name="description" />
             <Field label={t("appliance.field.location")} component={Input} type="text" name="location" />
             <div className={actionsRow}>
-              <Button disabled={!isValid} type="submit">{submitText || t("appliance.create.form.submit")}</Button>
+              <Button disabled={!isValid || isSubmitting} type="submit">
+                {submitText || t("appliance.create.form.submit")}
+              </Button>
               <CancelButton />
             </div>
           </Form>

@@ -17,7 +17,6 @@ export default () => {
   const {t} = useTranslation();
 
   const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setSubmitting, setStatus}) => {
-    setSubmitting(true);
     try {
       await register(state);
       window.location.href = baseUrl;
@@ -47,7 +46,7 @@ export default () => {
         validationSchema={validationSchema}
         isInitialValid={false}
       >
-        {({isValid, status: {error} = {}}) => (
+        {({isValid, isSubmitting, status: {error} = {}}) => (
           <Form className={classnames(form, contentVerticalSpacing)}>
             <Field autoFocus={true} label={t("account.field.email")} component={Input} type="email" name="email" />
             <div className={inputRow}>
@@ -69,7 +68,9 @@ export default () => {
             />
             {error && <div className={errorStyle}>{error}</div>}
             <div className={actionsRow}>
-              <Button disabled={!isValid} type="submit">{t("account.registration.form.submit")}</Button>
+              <Button disabled={isSubmitting || !isValid} type="submit">
+                {t("account.registration.form.submit")}
+              </Button>
               <Link className={small} to="/">{t("account.registration.authenticate")}</Link>
             </div>
           </Form>
