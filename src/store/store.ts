@@ -66,11 +66,11 @@ export const initializeStore = async () => {
   // default organisation will be the first one on account (consider being able to set default organisation)
   const sOrganisation = localStorage.getItem("organisation"); // read organisation from localstorage
   const organisation = sOrganisation ?
-    (account.organisations.find((o) => o.id === Number(sOrganisation)) || account.organisations[0])
+    (account.organisations.find((o) => o.organisation === Number(sOrganisation)) || account.organisations[0])
   : account.organisations[0]; // if not set in storage, use the first one
   if (typeof organisation === "undefined") { return; } // return if no organisations listed under account
   // set selected organisation as active
-  return store.dispatch<any>(setActiveOrganisation(organisation.id));
+  return store.dispatch<any>(setActiveOrganisation(organisation.organisation));
 };
 
 export const mockStore = configureMockStore(middleware);

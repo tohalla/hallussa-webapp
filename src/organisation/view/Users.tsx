@@ -14,7 +14,8 @@ import { ReduxState } from "../../store/store";
 import { contentVerticalSpacing, emptyContainer, rowContainer, spread } from "../../style/container";
 import Loadable from "../../util/hoc/Loadable";
 import { OrganisationPayload } from "../actions";
-import { getEntitiesByOrganisation, getOrganisation } from "../state";
+import { getEntitiesByOrganisationSelector } from "../selectors";
+import { getOrganisation } from "../state";
 
 interface StateProps {
   accounts: Readonly<AccountPayload[]> |  APIResponsePayload;
@@ -47,11 +48,11 @@ const Users = ({accounts, organisation}: Props) => {
 };
 
 const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, ownProps) => {
-  const organisation = Number(path(["match", "params", "organisation"], ownProps));
-  return ({
-    accounts: getEntitiesByOrganisation(state, "accounts", organisation),
+  const organisation = Number(path(["match", "params", "organisation"], ownProps)) || state.session.activeOrganisation;
+  return {
+    accounts: getEntitiesByOrganisationSelector<"accounts">("accounts", organisation, {key: "account"})(state),
     organisation: getOrganisation(state, organisation),
-  });
+  };
 };
 
 export default connect(

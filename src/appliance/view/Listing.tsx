@@ -5,7 +5,7 @@ import { AppliancePayload } from "../actions";
 
 import Drawer from "../../component/drawer/Drawer";
 import WithSidebar from "../../component/layout/WithSidebar";
-import { getEntitiesByOrganisation } from "../../organisation/state";
+import { getEntitiesByOrganisationSelector } from "../../organisation/selectors";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import Loadable from "../../util/hoc/Loadable";
@@ -39,7 +39,7 @@ const Listing = ({appliances}: Props) => {
 };
 
 const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
-  appliances: getEntitiesByOrganisation(state, "appliances"),
+  appliances: getEntitiesByOrganisationSelector<"appliances">("appliances", state.session.activeOrganisation)(state),
 });
 
 export default connect(

@@ -17,28 +17,37 @@ import {
 
 import { AnyAction } from "redux";
 import { ADD_ACCOUNT_SUCCESS } from "../account/actions";
-import { CREATE_APPLIANCE_SUCCESS, DELETE_APPLIANCE_SUCCESS } from "../appliance/actions";
-import { CREATE_MAINTAINER_SUCCESS, DELETE_MAINTAINER_SUCCESS } from "../maintainer/actions";
+import { AppliancePayload, CREATE_APPLIANCE_SUCCESS, DELETE_APPLIANCE_SUCCESS } from "../appliance/actions";
+import { CREATE_MAINTAINER_SUCCESS, DELETE_MAINTAINER_SUCCESS, MaintainerPayload } from "../maintainer/actions";
 import {
   CREATE_ORGANISATION_SUCCESS,
   DELETE_ORGANISATIONS_SUCCESS,
   FETCH_ORGANISATIONS_SUCCESS,
   OrganisationAction,
+  OrganisationPayload,
   UPDATE_ORGANISATION_SUCCESS
 } from "./actions";
 
 export const getEntityHandlers = <T extends {organisation: number}>(
-  key: string,
-  {createType, deleteType}: {createType?: string, deleteType?: string},
-  getId = prop<any>("id")
+  {
+    key,
+    types: {createType, deleteType},
+    getId = prop<any>("id"),
+    parseEntityFromPayload = prop<any>("id"),
+  }: {
+    types: {createType?: string, deleteType?: string},
+    key: string
+    getId?(entity: T): any,
+    parseEntityFromPayload?(entity: T): any,
+  }
 ): ReadonlyArray<[Pred, (...a: any[]) => any]> => {
   const handlers: Array<[Pred, (...a: any[]) => any]> = [];
   if (createType) {
     handlers.push(
       [equals(createType), (type: string, state: {}, payload: T) => {
-        const id = getId(payload);
-        if (id && payload.organisation) {
-          return over(lensPath([String(payload.organisation), key]), append(id), state);
+        const entity = parseEntityFromPayload(payload);
+        if (entity && payload.organisation) {
+          return over(lensPath([String(payload.organisation), key]), append(entity), state);
         }
         return state;
       }]
@@ -71,9 +80,20 @@ const typeHandler = cond<any, any>([
       state
     ) : state,
   ],
-  ...getEntityHandlers("accounts", {createType: ADD_ACCOUNT_SUCCESS}, prop("account")),
-  ...getEntityHandlers("maintainers", {createType: CREATE_MAINTAINER_SUCCESS, deleteType: DELETE_MAINTAINER_SUCCESS}),
-  ...getEntityHandlers("appliances", {createType: CREATE_APPLIANCE_SUCCESS, deleteType: DELETE_APPLIANCE_SUCCESS}),
+  ...getEntityHandlers<any>({
+    getId: prop("account"),
+    key: "accounts",
+    parseEntityFromPayload: (e) => e,
+    types: {createType: ADD_ACCOUNT_SUCCESS},
+  }),
+  ...getEntityHandlers<MaintainerPayload>({
+    key: "maintainers",
+    types: {createType: CREATE_MAINTAINER_SUCCESS, deleteType: DELETE_MAINTAINER_SUCCESS},
+  }),
+  ...getEntityHandlers<AppliancePayload>({
+    key: "appliances",
+    types: {createType: CREATE_APPLIANCE_SUCCESS, deleteType: DELETE_APPLIANCE_SUCCESS},
+  }),
   [alwaysTrue, (type, state, payload) => state],
 ]);
 

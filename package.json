@@ -34,6 +34,7 @@
     "react-table": "6.8.6",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0",
     "style": "^0.0.3",
     "styles": "^0.2.1",
     "whatwg-fetch": "^3.0.0",

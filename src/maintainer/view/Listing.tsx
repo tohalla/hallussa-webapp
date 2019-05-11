@@ -2,7 +2,7 @@ import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
 import { useTranslation } from "react-i18next";
-import { getEntitiesByOrganisation } from "../../organisation/state";
+import { getEntitiesByOrganisationSelector } from "../../organisation/selectors";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import Loadable from "../../util/hoc/Loadable";
@@ -29,7 +29,7 @@ const Listing = ({maintainers}: Props) => {
 };
 
 const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
-  maintainers: getEntitiesByOrganisation(state, "maintainers"),
+  maintainers: getEntitiesByOrganisationSelector<"maintainers">("maintainers", state.session.activeOrganisation)(state),
 });
 
 export default connect(mapStateToProps)(Loadable<StateProps>(Listing));

@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import Button from "../../component/button/Button";
 import Select from "../../component/Select";
 import { MaintainerPayload } from "../../maintainer/actions";
-import { getEntitiesByOrganisation } from "../../organisation/state";
+import { getEntitiesByOrganisationSelector } from "../../organisation/selectors";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxAPICall } from "../../store/middleware/api/api";
 import { ReduxState } from "../../store/store";
@@ -114,7 +114,7 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, Props> = {
 };
 
 const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
-  maintainers: getEntitiesByOrganisation(state, "maintainers"),
+  maintainers: getEntitiesByOrganisationSelector<"maintainers">("maintainers", state.session.activeOrganisation)(state),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(

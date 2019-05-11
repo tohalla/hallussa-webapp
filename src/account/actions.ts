@@ -15,7 +15,7 @@ export interface AccountPayload {
   firstName: string;
   lastName: string;
   email: string;
-  organisations: ReadonlyArray<{id: number, userRole: number}>;
+  organisations: ReadonlyArray<{userRole: number, organisation: number}>;
   userRole?: number;
 }
 
@@ -42,7 +42,7 @@ export const fetchAccount = () => (dispatch: Dispatch) => dispatch<ReduxAPICall>
 export const fetchAccounts = (organisation: number, {bypassCache = false} = {}): ReduxAPICall => ({
   attemptToFetchFromStore: bypassCache ? undefined : (state) =>
     state.entities.accounts && !Boolean(find(// check if store contains all appliances defined in organisation
-      (account) => typeof state.entities.accounts[account.id] === "undefined",
+      (account) => typeof state.entities.accounts[account.account] === "undefined",
       state.entities.organisations[organisation].accounts || []
     )),
   endpoint: `/organisations/${organisation}/users/accounts`,

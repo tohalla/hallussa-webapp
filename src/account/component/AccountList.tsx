@@ -43,7 +43,6 @@ const AccountList = ({accounts, header, userRoles}: Props & StateProps) => {
       id: "userRole",
     },
   ];
-
   return (
     <>
       {header}

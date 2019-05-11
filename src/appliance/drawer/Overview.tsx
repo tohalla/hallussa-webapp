@@ -3,7 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { connect, MapStateToProps } from "react-redux";
 import NumberComponent from "../../component/drawer/subcomponents/NumberComponent";
-import { getEntitiesByOrganisation } from "../../organisation/state";
+import { getEntitiesByOrganisationSelector } from "../../organisation/selectors";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import Loadable from "../../util/hoc/Loadable";
@@ -35,7 +35,7 @@ export const overview = (props: StateProps) => {
 };
 
 const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state: ReduxState) => ({
-  appliances: getEntitiesByOrganisation(state, "appliances"),
+  appliances: getEntitiesByOrganisationSelector<"appliances">("appliances", state.session.activeOrganisation)(state),
 });
 
 export default connect(

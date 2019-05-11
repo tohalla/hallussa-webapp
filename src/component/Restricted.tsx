@@ -1,10 +1,10 @@
-import { whereEq } from "ramda";
+import { path, whereEq } from "ramda";
 import React, { memo, ReactElement } from "react";
 import { connect, MapStateToProps } from "react-redux";
 import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router";
 
 import { UserRolePayload } from "../account/user-role/actions";
-import { getEntitiesByOrganisation } from "../organisation/state";
+import { getEntitiesByOrganisationSelector } from "../organisation/selectors";
 import { ReduxState } from "../store/store";
 import Loadable from "../util/hoc/Loadable";
 
@@ -30,10 +30,13 @@ interface RestrictedRouteProps extends Props {
 const allowAccess = ({requirements, ...props}: Props & StateProps): boolean => !requirements ||
   (!requirements.userRole || props.activeUserRole && whereEq(requirements.userRole, props.activeUserRole));
 
-const mapStateToProps: MapStateToProps<StateProps, any, ReduxState> = (state) => ({
-  activeUserRole: state.session.activeUserRole ? state.entities.userRoles[state.session.activeUserRole] : {},
-  userRoles: getEntitiesByOrganisation(state, "userRoles"),
-});
+const mapStateToProps: MapStateToProps<StateProps, any, ReduxState> = (state, ownProps) => {
+  const organisation = Number(path(["match", "params", "organisation"], ownProps)) || state.session.activeOrganisation;
+  return {
+    activeUserRole: state.session.activeUserRole ? state.entities.userRoles[state.session.activeUserRole] : {},
+    userRoles: getEntitiesByOrganisationSelector<"userRoles">("userRoles", organisation)(state),
+  };
+};
 
 export default connect<StateProps, {}, Props, ReduxState>(mapStateToProps)(
   ({children, ...props}: Props & StateProps) => allowAccess(props) && children ? children : null
@@ -42,7 +45,7 @@ export default connect<StateProps, {}, Props, ReduxState>(mapStateToProps)(
 export const RestrictedRoute = memo(({
   component: Component,
   to,
-  path,
+  path: routePath,
   requirements,
 }: RestrictedRouteProps) => {
   const C = ({activeUserRole, ...props}: StateProps & RouteComponentProps) =>
@@ -51,7 +54,7 @@ export const RestrictedRoute = memo(({
 
   return (
     <Route
-      path={path}
+      path={routePath}
       component={requirements ? connect(mapStateToProps)(Loadable(C)) : C}
     />
   );

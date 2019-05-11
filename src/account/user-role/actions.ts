@@ -53,7 +53,8 @@ export const fetchRoles = (organisation?: number, {bypassCache = false} = {}): R
 export const updateActiveUserRole: ThunkAction<any, ReduxState, any, AnyAction> = (dispatch, getState) => {
   const {entities: {organisations}, session: {activeAccount, activeOrganisation}} = getState();
   if (activeAccount && activeOrganisation) {
-    const joinRelation = find(({id}) => id === activeAccount, organisations[activeOrganisation].accounts || []);
+    const joinRelation = find(({account}) =>
+      account === activeAccount, organisations[activeOrganisation].accounts || []);
     if (joinRelation) {
       return dispatch({
         payload: joinRelation.userRole,

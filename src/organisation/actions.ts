@@ -25,7 +25,7 @@ export interface OrganisationPayload {
   maintainers?: ReadonlyArray<number>;
   appliances?: ReadonlyArray<number>;
   userRoles?: ReadonlyArray<number>;
-  accounts?: ReadonlyArray<{id: number, userRole: number}>;
+  accounts?: ReadonlyArray<{account: number, userRole: number}>;
 }
 
 export interface OrganisationAction {

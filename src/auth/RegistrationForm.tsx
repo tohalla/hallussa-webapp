@@ -27,6 +27,7 @@ export default () => {
   };
 
   const validationSchema = yup.object().shape({
+    acceptTOS: yup.bool().oneOf([true]),
     email: yup.string().email(t("account.registration.form.error.invalidEmail")).required(),
     firstName: yup.string().required(),
     lastName: yup.string().required(),
@@ -34,14 +35,13 @@ export default () => {
     retypePassword: yup
       .string().required()
       .oneOf([yup.ref("password")], t("account.registration.form.error.passwordsDontMatch")),
-    tos: yup.bool().oneOf([true]),
   });
 
   return (
     <>
       <h1>{t("account.registration.title")}</h1>
       <Formik
-        initialValues={{email: "", firstName: "", lastName: "", password: "", retypePassword: "", tos: false}}
+        initialValues={{email: "", firstName: "", lastName: "", password: "", retypePassword: "", acceptTOS: false}}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
         isInitialValid={false}
@@ -64,7 +64,7 @@ export default () => {
               }
               component={Input}
               type="checkbox"
-              name="tos"
+              name="acceptTOS"
             />
             {error && <div className={errorStyle}>{error}</div>}
             <div className={actionsRow}>

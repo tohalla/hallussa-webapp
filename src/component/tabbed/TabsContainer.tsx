@@ -1,12 +1,12 @@
 import classnames from "classnames";
-import { map, sort, values } from "ramda";
+import { map, path, sort, values } from "ramda";
 import React, { MouseEventHandler, ReactNode } from "react";
 import { connect, MapStateToProps } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 import { RouteComponentProps } from "react-router";
 import { UserRolePayload } from "../../account/user-role/actions";
-import { getEntitiesByOrganisation } from "../../organisation/state";
+import { getEntitiesByOrganisationSelector } from "../../organisation/selectors";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import { actionTab, tab as tabStyle, tabActive, tabsContainer } from "../../style/tabbed";
@@ -96,9 +96,12 @@ const TabsContainer = ({
   );
 };
 
-const mapStateToProps: MapStateToProps<StateProps, RouteComponentProps, ReduxState> = (state) => ({
-  userRole: state.session.activeUserRole ? state.entities.userRoles[state.session.activeUserRole] : {},
-  userRoles: getEntitiesByOrganisation(state, "userRoles"),
-});
+const mapStateToProps: MapStateToProps<StateProps, any, ReduxState> = (state, ownProps) => {
+  const organisation = Number(path(["match", "params", "organisation"], ownProps)) || state.session.activeOrganisation;
+  return {
+    userRole: state.session.activeUserRole ? state.entities.userRoles[state.session.activeUserRole] : {},
+    userRoles: getEntitiesByOrganisationSelector<"userRoles">("userRoles", organisation)(state),
+  };
+};
 
 export default connect(mapStateToProps, {closeTab, createTab})(Loadable(TabsContainer));

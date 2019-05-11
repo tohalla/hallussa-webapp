@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { Column } from "react-table";
 import Table from "../../component/Table";
 import { MaintainerPayload } from "../../maintainer/actions";
-import { getEntitiesByOrganisation } from "../../organisation/state";
+import { getEntitiesByOrganisationSelector } from "../../organisation/selectors";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import { emptyContainer } from "../../style/container";
@@ -77,7 +77,7 @@ export const MaintenanceEventList = ({header, maintenanceEvents, maintainers}: S
 };
 
 const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
-  maintainers: getEntitiesByOrganisation(state, "maintainers"),
+  maintainers: getEntitiesByOrganisationSelector<"maintainers">("maintainers", state.session.activeOrganisation)(state),
 });
 
 export default connect<StateProps, {}, Props, ReduxState>(

@@ -1,5 +1,6 @@
 import classnames from "classnames";
-import React from "react";
+import { equals } from "ramda";
+import React, { memo } from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 
 import { useTranslation } from "react-i18next";
