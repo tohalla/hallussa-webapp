@@ -2,7 +2,7 @@ import { applyMiddleware, compose, createStore } from "redux";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 
-import { AccountPayload, fetchAccount } from "../account/actions";
+import { AccountPayload, fetchCurrentAccount } from "../account/actions";
 import { fetchRoles, UserRolePayload } from "../account/user-role/actions";
 import { AppliancePayload } from "../appliance/actions";
 import { ViewsState } from "../component/tabbed/reducer";
@@ -50,7 +50,7 @@ if (module.hot) {
 // fetch initial state to store using API
 export const initializeStore = async () => {
   await Promise.all([
-    store.dispatch<any>(fetchAccount()), // fetch current account information
+    store.dispatch<any>(fetchCurrentAccount()), // fetch current account information
     store.dispatch(fetchOrganisations()), // fetch organisations for current account
   ]);
 

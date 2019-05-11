@@ -38,7 +38,7 @@ export const getEntitiesByOrganisationSelector = <T extends EntityType, Entity e
       ({activeRequests, session}) =>
         getStatus(activeRequests, entityType, organisationId || session.activeOrganisation),
     ],
-    (s, organisation, status) => {
+    (entityGroup, organisation, status) => {
       if (typeof organisation === "undefined") {
         return [];
       }
@@ -49,9 +49,15 @@ export const getEntitiesByOrganisationSelector = <T extends EntityType, Entity e
       for (const relation of ((organisation as OrganisationPayload)[entityType] || []) as Readonly<any[]>) {
         const entity: Partial<Entity> = {};
         if (typeof relation === "object" && key && relation.hasOwnProperty(key)) {
-          Object.assign(entity, relation, s[relation[key]]);
+          if (typeof entityGroup[relation[key]] === "undefined") {
+            continue;
+          }
+          Object.assign(entity, relation, entityGroup[relation[key]]);
         } else {
-          Object.assign(entity, s[relation]);
+          if (typeof entityGroup[relation] === "undefined") {
+            continue;
+          }
+          Object.assign(entity, entityGroup[relation]);
         }
         entities.push(entity as Entity);
       }

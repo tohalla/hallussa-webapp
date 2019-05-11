@@ -50,11 +50,9 @@ const Users = ({accounts, organisation}: Props) => {
 const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, ownProps) => {
   const organisation = Number(path(["match", "params", "organisation"], ownProps)) || state.session.activeOrganisation;
   return {
-    accounts: getEntitiesByOrganisationSelector<"accounts">("accounts", organisation, {key: "account"})(state),
+    accounts: getEntitiesByOrganisationSelector<"accounts">("accounts", organisation, { key: "account" })(state),
     organisation: getOrganisation(state, organisation),
   };
 };
 
-export default connect(
-  mapStateToProps
-)(Loadable<StateProps>(Users));
+export default connect(mapStateToProps)(Loadable<StateProps>(Users));

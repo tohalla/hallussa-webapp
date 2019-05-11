@@ -21,7 +21,7 @@ interface Props {
 
 const AddAccount = ({organisation, ...props}: Props & DispatchProps) => {
   const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setSubmitting}) => {
-    props.addAccount(organisation.id, state);
+    await props.addAccount(organisation.id, state);
     setSubmitting(false);
   };
 
@@ -53,10 +53,9 @@ const AddAccount = ({organisation, ...props}: Props & DispatchProps) => {
   );
 };
 
-const mapDispatchToProps: MapDispatchToProps<DispatchProps, Props> = {addAccount};
+const mapDispatchToProps: MapDispatchToProps<DispatchProps, Props> = { addAccount };
 
 export default connect<{}, DispatchProps, Props, ReduxState>(
   undefined,
   mapDispatchToProps
 )(AddAccount);
-

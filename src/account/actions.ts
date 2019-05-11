@@ -1,4 +1,4 @@
-import { find } from "ramda";
+import { find, prop } from "ramda";
 import { AnyAction, Dispatch } from "redux";
 
 import { CALL_API } from "../store/middleware/api/actions";
@@ -29,7 +29,7 @@ export const setActiveAccount = (payload: any) => ({
   type: SET_ACTIVE_ACCOUNT,
 });
 
-export const fetchAccount = () => (dispatch: Dispatch) => dispatch<ReduxAPICall>({
+export const fetchCurrentAccount = () => (dispatch: Dispatch) => dispatch<ReduxAPICall>({
   endpoint: "/accounts",
   method: "get",
   onSuccess: (payload) => dispatch(setActiveAccount(payload.id)),
@@ -39,22 +39,36 @@ export const fetchAccount = () => (dispatch: Dispatch) => dispatch<ReduxAPICall>
   type: CALL_API,
 });
 
-export const fetchAccounts = (organisation: number, {bypassCache = false} = {}): ReduxAPICall => ({
+export const fetchAccounts = (
+  organisation: number,
+  {bypassCache = false, accounts}: {bypassCache?: boolean, accounts?: number[]} = {}
+): ReduxAPICall => ({
   attemptToFetchFromStore: bypassCache ? undefined : (state) =>
     state.entities.accounts && !Boolean(find(// check if store contains all appliances defined in organisation
       (account) => typeof state.entities.accounts[account.account] === "undefined",
       state.entities.organisations[organisation].accounts || []
     )),
-  endpoint: `/organisations/${organisation}/users/accounts`,
+  endpoint: `/organisations/${organisation}/users/accounts${accounts ? `?accounts=[${
+    accounts.join(",")
+  }]` : ""}`,
   method: "get",
   successType: FETCH_ACCOUNTS_SUCCESS,
   type: CALL_API,
 });
 
-export const addAccount = (organisation: number, payload: {email: string, userRole?: number}): ReduxAPICall => ({
+export const addAccount = (
+  organisation: number,
+  payload: {email: string, userRole?: number}
+) => (dispatch: Dispatch) => dispatch<ReduxAPICall>({
   body: payload,
   endpoint: `/organisations/${organisation}/users/accounts`,
   method: "post",
+  onSuccess: (responsePayload) => {
+    const account = prop("account", responsePayload);
+    if (typeof account === "number") {
+      return dispatch(fetchAccounts(organisation, {accounts: [account]}));
+    }
+  },
   successType: ADD_ACCOUNT_SUCCESS,
   type: CALL_API,
 });

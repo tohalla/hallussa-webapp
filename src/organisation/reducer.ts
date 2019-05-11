@@ -24,7 +24,6 @@ import {
   DELETE_ORGANISATIONS_SUCCESS,
   FETCH_ORGANISATIONS_SUCCESS,
   OrganisationAction,
-  OrganisationPayload,
   UPDATE_ORGANISATION_SUCCESS
 } from "./actions";
 
