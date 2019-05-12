@@ -6,7 +6,7 @@ import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import Button from "../../component/button/Button";
-import Select from "../../component/Select";
+import Select from "../../component/input/Select";
 import { MaintainerPayload } from "../../maintainer/actions";
 import { getEntitiesByOrganisationSelector } from "../../organisation/selectors";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
