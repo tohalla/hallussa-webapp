@@ -1,5 +1,4 @@
 import { FieldProps } from "formik";
-import { prop } from "ramda";
 import React from "react";
 import ReactSelect from "react-select";
 import { Props } from "react-select/lib/Select";
@@ -60,7 +59,7 @@ export default function Select<T = {label: string, value: any}>({
         }),
       }}
       {...props}
-      value={field.value || value}
+      value={field ? field.value : value}
     />
   );
   return props.label ? (

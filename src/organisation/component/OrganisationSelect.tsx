@@ -23,7 +23,6 @@ interface DispatchProps {
 
 interface Props {
   activeOrganisation?: Readonly<OrganisationPayload>;
-  organisations: ReadonlyArray<OrganisationPayload>;
   organisation?: OrganisationPayload;
   history: History;
 }
@@ -44,7 +43,7 @@ const OrganisationSelect = ({
   organisation,
   history,
   ...props
-}: StateProps & DispatchProps & Props) => {
+}: StateProps & DispatchProps & Props & {organisations: ReadonlyArray<OrganisationPayload>}) => {
   const handleOrganisationSelect = (option: any) => history.push(`/organisations/${option.value}`);
   const handleSet: SelectAndSetProps["onSet"] = ({organisation: org}) =>
     org && !Array.isArray(org) && props.setActiveOrganisation(org.value);

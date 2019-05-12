@@ -45,7 +45,13 @@ const initialState: ViewsState = {
   }},
   organisations: {tabs: {
     details: {key: "organisations", label: ({t}) => t("tab.organisation.details"), sticky: true, order: 0},
-    preferences: {key: "preferences", label: ({t}) => t("tab.organisation.preferences"), sticky: true, order: 2},
+    preferences: {
+      key: "preferences",
+      label: ({t}) => t("tab.organisation.preferences"),
+      order: 2,
+      requirements: {userRole: {allowUpdateOrganisation: true}},
+      sticky: true,
+    },
     users: {key: "users", label: ({t}) => t("tab.organisation.users"), sticky: true, order: 1},
   }},
 };

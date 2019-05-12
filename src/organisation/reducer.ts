@@ -3,20 +3,24 @@ import {
   assoc,
   cond,
   dissoc,
+  eqBy,
   equals,
+  findIndex,
   lensPath,
   merge,
   mergeWith,
   over,
+  path,
   Pred,
   prop,
   T as alwaysTrue,
   union,
+  update,
   without
 } from "ramda";
 
 import { AnyAction } from "redux";
-import { ADD_ACCOUNT_SUCCESS } from "../account/actions";
+import { ADD_ACCOUNT_SUCCESS, SET_ACCOUNT_USER_ROLE } from "../account/actions";
 import { AppliancePayload, CREATE_APPLIANCE_SUCCESS, DELETE_APPLIANCE_SUCCESS } from "../appliance/actions";
 import { CREATE_MAINTAINER_SUCCESS, DELETE_MAINTAINER_SUCCESS, MaintainerPayload } from "../maintainer/actions";
 import {
@@ -30,11 +34,11 @@ import {
 export const getEntityHandlers = <T extends {organisation: number}>(
   {
     key,
-    types: {createType, deleteType},
+    types: {createType, deleteType, updateType},
     getId = prop<any>("id"),
     parseEntityFromPayload = prop<any>("id"),
   }: {
-    types: {createType?: string, deleteType?: string},
+    types: {createType?: string, deleteType?: string, updateType?: string},
     key: string
     getId?(entity: T): any,
     parseEntityFromPayload?(entity: T): any,
@@ -55,7 +59,23 @@ export const getEntityHandlers = <T extends {organisation: number}>(
   if (deleteType) {
     handlers.push(
       [equals(deleteType), (type: string, state: any, payload: any, entity: T) => {
-        return over(lensPath([String(entity.organisation), key]), without([getId(entity)]), state);
+        return over(
+          lensPath([String(entity.organisation), key]),
+          without([parseEntityFromPayload(entity)]),
+          state
+        );
+      }]
+    );
+  }
+  if (updateType) {
+    handlers.push(
+      [equals(updateType), (type: string, state: any, payload: T) => {
+        const index = findIndex(eqBy(getId, payload), path([payload.organisation, key], state) || []);
+        return over(
+          lensPath([String(payload.organisation), key]),
+          update(index, parseEntityFromPayload(payload)),
+          state
+        );
       }]
     );
   }
@@ -82,8 +102,8 @@ const typeHandler = cond<any, any>([
   ...getEntityHandlers<any>({
     getId: prop("account"),
     key: "accounts",
-    parseEntityFromPayload: (e) => e,
-    types: {createType: ADD_ACCOUNT_SUCCESS},
+    parseEntityFromPayload: dissoc("organisation"),
+    types: {createType: ADD_ACCOUNT_SUCCESS, updateType: SET_ACCOUNT_USER_ROLE},
   }),
   ...getEntityHandlers<MaintainerPayload>({
     key: "maintainers",

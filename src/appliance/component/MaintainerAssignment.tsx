@@ -1,18 +1,18 @@
 import classnames from "classnames";
 import { groupBy, map } from "ramda";
-import React, { useState } from "react";
+import React from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import Button from "../../component/button/Button";
-import Select from "../../component/input/Select";
+import SelectAndSet, { SelectAndSetProps } from "../../component/input/SelectAndSet";
 import { MaintainerPayload } from "../../maintainer/actions";
 import { getEntitiesByOrganisationSelector } from "../../organisation/selectors";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxAPICall } from "../../store/middleware/api/api";
 import { ReduxState } from "../../store/store";
-import { alignCenter, contentHorizontalSpacing, rowContainer, stacked } from "../../style/container";
+import { alignCenter, contentHorizontalSpacing, flex1, rowContainer, stacked } from "../../style/container";
 import { normal } from "../../style/variables/spacing";
 import Loadable from "../../util/hoc/Loadable";
 import { AppliancePayload, assignMaintainerToAppliance, removeMaintainerFromAppliance } from "../actions";
@@ -47,18 +47,14 @@ const MaintainerAssignment = ({
   maintainers,
   ...props
 }: Props & StateProps & DispatchProps) => {
-  const [maintainer, setMaintainer] = useState();
   const {t} = useTranslation();
 
-  const assignMaintainer = async () => {
-    if (maintainer) {
-      await props.assignMaintainerToAppliance(
-        appliance.organisation,
-        appliance.id,
-        maintainer.value
-      );
-    }
-    setMaintainer(null);
+  const assignMaintainer: SelectAndSetProps["onSet"] = async ({maintainer}) => {
+    await props.assignMaintainerToAppliance(
+      appliance.organisation,
+      appliance.id,
+      maintainer.value
+    );
   };
 
   const removeMaintainer = (maintainerId: number) => () => {
@@ -74,20 +70,17 @@ const MaintainerAssignment = ({
     maintainers as ReadonlyArray<MaintainerPayload>
   );
 
-  const handleSelectMaintainer = (m: MaintainerPayload) => setMaintainer(m);
-
   return (
     <>
       {assignable ?
-      <div className={stacked}>
-        <Select
+        <SelectAndSet
+          formClassName={classnames(flex1, stacked)}
+          name="maintainer"
           options={map(getMaintainerOption, assignable)}
-          onChange={handleSelectMaintainer}
-          value={maintainer}
+          onSet={assignMaintainer}
           placeholder={t("appliance.maintainer.selectMaintainer")}
-        />
-          {maintainer && <Button onClick={assignMaintainer}>{t("appliance.maintainer.addMaintainer")}</Button>}
-        </div> : t("appliance.maintainer.noMaintainers")
+          setLabel={t("appliance.maintainer.addMaintainer")}
+        /> : t("appliance.maintainer.noMaintainers")
       }
       {assigned && <div style={{marginTop: normal}}>
         {map(({id, firstName, lastName}: MaintainerPayload) => (

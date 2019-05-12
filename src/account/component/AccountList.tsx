@@ -27,9 +27,8 @@ const AccountList = ({accounts, header, userRoles, organisation, ...props}: Prop
 
   const handleSetRole: (
     organisationId: number, account: number
-  ) => SelectAndSetProps["onSet"] = (organisationId, account) => ({role}) => {
+  ) => SelectAndSetProps["onSet"] = (organisationId, account) => ({role}) =>
     props.setUserRole(organisationId, account, {userRole: role.value});
-  };
 
   const roleOptions = [
     {value: null, label: t("none")},

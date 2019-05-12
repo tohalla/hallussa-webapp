@@ -1,7 +1,7 @@
 import { eqBy, isNil, prop } from "ramda";
-import React, { ReactFragment, useState } from "react";
+import React, { ReactFragment } from "react";
 
-import { Field, FieldConfig, FieldProps, Form, Formik, FormikConfig } from "formik";
+import { Field, FieldConfig, FieldProps, Form, Formik, FormikConfig, FormikValues } from "formik";
 import { Omit } from "../../../misc";
 import { rowContainer } from "../../style/container";
 import Button from "../button/Button";
@@ -11,11 +11,11 @@ type Value<T> = undefined | T | T[] | null;
 export interface SelectAndSetProps<T = {label: string, value: any}> extends
   Omit<SelectProps<T>, keyof FieldProps>, FieldConfig {
   onChange?: SelectProps<T>["onChange"];
-  initialValue: Value<T>;
+  initialValue?: Value<T>;
   setLabel: string;
   noOptions?: ReactFragment;
   formClassName?: string;
-  onSet: FormikConfig<{[key: string]: any}>["onSubmit"];
+  onSet(values: FormikValues): any;
   equalValue?(stateValue: Value<T>, value: Value<T>): boolean;
 }
 
@@ -36,16 +36,23 @@ const SelectAndSet = <T extends {label: string, value: any}>({
       return <>{noOptions}</>;
     }
 
+    const handleSubmit: FormikConfig<any>["onSubmit"]  = async (state, {setSubmitting}) => {
+      if (typeof onSet === "function") {
+        await onSet(state);
+      }
+      setSubmitting(false);
+    };
+
     return (
-      <Formik initialValues={{[name]: initialValue}} onSubmit={onSet}>
-        {({initialValues, values}) => (
+      <Formik initialValues={{[name]: initialValue}} onSubmit={handleSubmit}>
+        {({initialValues, values, isSubmitting}) => (
           <Form className={formClassName}>
             <Field {...props} component={Select} name={name} onChange={onChange} />
             {
               (typeof equalValue === "function" ?
                 equalValue(initialValues[name], values[name]) : initialValues[name] === values[name]
               ) ||
-              <Button type="submit">
+              <Button disabled={isSubmitting} type="submit">
                 {setLabel}
               </Button>
             }
