@@ -1,30 +1,41 @@
-import { filter, path, prop } from "ramda";
 import React, { ReactFragment } from "react";
+import { useTranslation } from "react-i18next";
+import { connect } from "react-redux";
 import { Column } from "react-table";
 
-import { useTranslation } from "react-i18next";
-import { connect, MapStateToProps } from "react-redux";
+import SelectAndSet, { SelectAndSetProps } from "../../component/input/SelectAndSet";
 import Table from "../../component/Table";
 import { OrganisationPayload } from "../../organisation/actions";
-import { getOrganisation } from "../../organisation/state";
 import { EntityGroup } from "../../store/reducer";
-import { ReduxState } from "../../store/store";
-import Loadable from "../../util/hoc/Loadable";
-import { AccountPayload } from "../actions";
+import { flex1, noPadding } from "../../style/container";
+import { AccountPayload, setUserRole } from "../actions";
 import { UserRolePayload } from "../user-role/actions";
 
-interface StateProps {
-  userRoles: EntityGroup<UserRolePayload>;
+interface DispatchProps {
+  setUserRole: typeof setUserRole;
 }
 
 interface Props {
   accounts: Readonly<AccountPayload[]>;
+  userRoles: EntityGroup<UserRolePayload>;
   organisation?: OrganisationPayload;
   header?: ReactFragment;
 }
 
-const AccountList = ({accounts, header, userRoles}: Props & StateProps) => {
+const AccountList = ({accounts, header, userRoles, organisation, ...props}: Props & DispatchProps) => {
   const {t} = useTranslation();
+
+  const handleSetRole: (
+    organisationId: number, account: number
+  ) => SelectAndSetProps["onSet"] = (organisationId, account) => ({role}) => {
+    props.setUserRole(organisationId, account, {userRole: role.value});
+  };
+
+  const roleOptions = [
+    {value: null, label: t("none")},
+    ...Object.values(userRoles).map((role) => ({label: t(`userRole.name.${role.name}`), value: role.id})),
+  ];
+
   const columns: Column[] = [
     {Header: t("account.field.id"), accessor: "id", id: "id", maxWidth: 50},
     {
@@ -35,11 +46,23 @@ const AccountList = ({accounts, header, userRoles}: Props & StateProps) => {
     },
     {Header: t("account.field.email"), accessor: "email", id: "email", resizable: true},
     {
-      Header: t("account.field.role"),
-      accessor: ({userRole}) => {
-        const roleName = path([userRole, "name"], userRoles);
-        return typeof roleName === "string" ? t(`role.${roleName}`) : t("notSet");
-      },
+      Cell: ({value: userRole, original: account}) => organisation && roleOptions.length > 1 ? (
+        <SelectAndSet
+          className={flex1}
+          options={roleOptions}
+          setLabel={t("userRole.action.setUserRole")}
+          placeholder={t("notSet")}
+          onSet={handleSetRole(organisation.id, account.id)}
+          name="role"
+          initialValue={
+            userRoles[userRole] &&
+            {label: t<string>(`userRole.name.${userRoles[userRole].name}`), value: userRoles[userRole].id}
+          }
+        />
+      ) : <div>{userRoles[userRole] && t(`userRole.name.${userRoles[userRole].name}`)}</div>,
+      Header: t("account.field.userRole"),
+      accessor: "userRole",
+      className: organisation && roleOptions.length > 1 ? noPadding : undefined,
       id: "userRole",
     },
   ];
@@ -54,19 +77,6 @@ const AccountList = ({accounts, header, userRoles}: Props & StateProps) => {
   );
 };
 
-const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (
-  state,
-  {organisation = getOrganisation(state)}
-) => {
-  const organisationId = prop<any, any>("id", organisation);
-  return {
-    userRoles: filter(
-      (userRole) => userRole.isShared || userRole.organisation === organisationId,
-      state.entities.userRoles
-    ),
-  };
-};
-
 export default connect(
-  mapStateToProps
-)(Loadable<StateProps, Props>(AccountList));
+  undefined, {setUserRole}
+)(AccountList);

@@ -10,6 +10,8 @@ export const FETCH_ACCOUNTS_SUCCESS = "FETCH_ACCOUNTS_SUCCESS";
 
 export const ADD_ACCOUNT_SUCCESS = "ADD_ACCOUNT_SUCCESS";
 
+export const SET_ACCOUNT_USER_ROLE = "SET_ACCOUNT_USER_ROLE";
+
 export interface AccountPayload {
   id: number;
   firstName: string;
@@ -70,5 +72,17 @@ export const addAccount = (
     }
   },
   successType: ADD_ACCOUNT_SUCCESS,
+  type: CALL_API,
+});
+
+export const setUserRole = (
+  organisation: number,
+  account: number,
+  payload: {userRole?: number}
+) => ({
+  body: payload,
+  endpoint: `/organisations/${organisation}/users/accounts/${account}`,
+  method: "put",
+  successType: SET_ACCOUNT_USER_ROLE,
   type: CALL_API,
 });

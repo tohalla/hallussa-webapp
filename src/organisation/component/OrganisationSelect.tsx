@@ -46,8 +46,8 @@ const OrganisationSelect = ({
   ...props
 }: StateProps & DispatchProps & Props) => {
   const handleOrganisationSelect = (option: any) => history.push(`/organisations/${option.value}`);
-  const handleSet: SelectAndSetProps["onSet"] = ({option}) =>
-    option && !Array.isArray(option) && props.setActiveOrganisation(option.value);
+  const handleSet: SelectAndSetProps["onSet"] = ({organisation: org}) =>
+    org && !Array.isArray(org) && props.setActiveOrganisation(org.value);
 
   const {t} = useTranslation();
   const eq = equals(getOrganisationOption(activeOrganisation));
@@ -57,11 +57,12 @@ const OrganisationSelect = ({
       <SelectAndSet
         label={t<string>("organisation.selectOrganisation")}
         equalValue={eq}
+        name={"organisation"}
         noOptions={t<string>("organisation.noOrganisations")}
         onChange={handleOrganisationSelect}
         onSet={handleSet}
         options={map(getOrganisationOption, organisations)}
-        value={getOrganisationOption(organisation || activeOrganisation)}
+        initialValue={getOrganisationOption(organisation || activeOrganisation)}
         setLabel={t<string>("organisation.action.activate")}
       />
     </div>

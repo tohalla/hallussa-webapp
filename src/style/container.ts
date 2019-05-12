@@ -76,6 +76,10 @@ export const viewContentContainer = css`
   background-color: ${greyscale[8]};
 `;
 
+export const noPadding = css`
+  padding: 0 !important;
+`;
+
 export const padded = css`
   padding: ${normal} ${major};
 `;
