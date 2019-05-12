@@ -1,5 +1,5 @@
 import { path, whereEq } from "ramda";
-import React, { memo, ReactElement } from "react";
+import React, { memo, ReactElement, ReactFragment } from "react";
 import { connect, MapStateToProps } from "react-redux";
 import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router";
 
@@ -14,7 +14,8 @@ export interface RequirementProps {
 
 interface Props {
   requirements?: RequirementProps;
-  children?: ReactElement | null;
+  children?: ReactFragment;
+  restrictedContent?: ReactFragment;
 }
 
 interface StateProps {
@@ -39,7 +40,8 @@ const mapStateToProps: MapStateToProps<StateProps, any, ReduxState> = (state, ow
 };
 
 export default connect<StateProps, {}, Props, ReduxState>(mapStateToProps)(
-  ({children, ...props}: Props & StateProps) => allowAccess(props) && children ? children : null
+  ({children, restrictedContent: restrictedContent, ...props}: Props & StateProps) =>
+    <>{allowAccess(props) ? children : restrictedContent}</>
 );
 
 export const RestrictedRoute = memo(({

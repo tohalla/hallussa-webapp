@@ -83,6 +83,10 @@ injectGlobal`
     outline: none;
   }
 
+  .rt-th {
+    outline: none;
+  }
+
   footer {
     display: flex;
     color: #fff;
