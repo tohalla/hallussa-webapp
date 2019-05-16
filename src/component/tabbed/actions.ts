@@ -9,6 +9,7 @@ export const RESET_TABS = "RESET_TABS";
 
 export interface TabAction extends AnyAction {
   view: string;
+  payload: Partial<TabPayload> & {key: TabPayload["key"]};
 }
 
 type labelType = ((p: TranslationProps) => string) | string;
@@ -30,7 +31,7 @@ export const createTab = (view: string, payload: TabPayload) => ({
   view,
 });
 
-export const closeTab = (view: string, payload: string) => ({
+export const closeTab = (view: string, payload: {key: string}) => ({
   payload,
   type: CLOSE_TAB,
   view,

@@ -1,7 +1,5 @@
-import { assocPath, cond, dissocPath, equals, T } from "ramda";
-import { Reducer } from "redux";
+import { assocPath, dissocPath } from "ramda";
 
-import { anyEquals } from "../../../util/utilityFunctions";
 import {
   APIResponseAction,
   APIResponsePayload,
@@ -11,22 +9,17 @@ import {
 } from "./actions";
 import { APIMethods } from "./api";
 
-const typeHandler = cond<any, any>([
-  [
-    anyEquals([CALL_API, CALL_API_FAILURE]),
-    (type, state, method, endpoint, payload) => assocPath([method, endpoint], payload, state),
-  ],
-  [equals(CALL_API_SUCCESS), (type, state, method, endpoint) => dissocPath([method, endpoint], state)],
-  [T, (type, state) => state],
-]);
-
 export type RequestsState = {
   [key in APIMethods]: {[key: string]: APIResponsePayload}
 };
 
-const reducer: Reducer<RequestsState, APIResponseAction> = (
-  state = {delete: {}, get: {}, patch: {}, post: {}},
-  {payload, type, method, endpoint}: APIResponseAction
-) => typeHandler(type, state, method, endpoint, payload);
+const entityHandlers: {
+  [k: string]: (state: RequestsState, action: APIResponseAction) => RequestsState
+} = {
+  [CALL_API]: (state, {payload, method, endpoint}) => assocPath([method, endpoint], payload, state),
+  [CALL_API_FAILURE]: (state, {payload, method, endpoint}) => assocPath([method, endpoint], payload, state),
+  [CALL_API_SUCCESS]: (state, {payload, method, endpoint}) => dissocPath([method, endpoint], state),
+};
 
-export default reducer;
+export default (state = {delete: {}, get: {}, patch: {}, post: {}}, action: APIResponseAction) =>
+  action.type in entityHandlers ? entityHandlers[action.type](state, action) : state;

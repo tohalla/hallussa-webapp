@@ -75,10 +75,9 @@ export const deleteOrganisation: (
       type: SET_ACTIVE_ORGANISATION,
     });
   }
-  return dispatch({
+  return dispatch<ReduxAPICall<OrganisationPayload>>({
     body: organisation,
     endpoint: `/organisations/${organisation.id}`,
-    extra: organisation,
     method: "delete",
     successType: DELETE_ORGANISATIONS_SUCCESS,
     type: CALL_API,

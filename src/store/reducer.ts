@@ -1,5 +1,5 @@
-import { assoc, cond, equals, T as True } from "ramda";
-import { combineReducers, Reducer } from "redux";
+import { assoc } from "ramda";
+import { AnyAction, combineReducers, Reducer } from "redux";
 
 import { SET_ACTIVE_ACCOUNT } from "../account/actions";
 import accounts from "../account/reducer";
@@ -12,13 +12,6 @@ import { SET_ACTIVE_ORGANISATION } from "../organisation/actions";
 import organisations from "../organisation/reducer";
 import activeRequests from "./middleware/api/reducer";
 
-const typeHandler = cond<any, SessionState>([
-  [equals(SET_ACTIVE_ACCOUNT), (type, state, payload) => assoc("activeAccount", payload, state)],
-  [equals(SET_ACTIVE_ORGANISATION), (type, state, payload) => assoc("activeOrganisation", payload, state)],
-  [equals(SET_ACTIVE_USER_ROLE), (type, state, payload) => assoc("activeUserRole", payload, state)],
-  [True, (type, state, payload) => state],
-]);
-
 export interface EntityGroup<T> {
   [key: string]: T;
 }
@@ -28,9 +21,14 @@ export interface SessionState {
   activeOrganisation?: number;
 }
 
-const session: Reducer<SessionState> = (
-  state = {}, {payload, type, extra}
-) => typeHandler(type, state, payload, extra);
+const handlers: {[k: string]: (state: SessionState, action: AnyAction) => SessionState} = {
+  [SET_ACTIVE_ACCOUNT]: (state, {payload}) => assoc("activeAccount", payload, state),
+  [SET_ACTIVE_ORGANISATION]: (state, {payload}) => assoc("activeOrganisation", payload, state),
+  [SET_ACTIVE_USER_ROLE]: (state, {payload}) => assoc("activeUserRole", payload, state),
+};
+
+const session: Reducer<SessionState> = (state = {}, action) =>
+  action.type in handlers ? handlers[action.type](state, action) : state;
 
 const entities = combineReducers({
   accounts,

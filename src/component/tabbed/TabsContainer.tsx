@@ -27,8 +27,8 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  closeTab(view: string, payload: string): any;
-  createTab(view: string, payload: TabPayload): any;
+  closeTab: typeof closeTab;
+  createTab: typeof createTab;
 }
 
 const TabsContainer = ({
@@ -47,7 +47,7 @@ const TabsContainer = ({
     if (match.url === destination) {
       history.push(`/${view}`); // move to default tab if tab to be closed is open
     }
-    props.closeTab(view, tab.key);
+    props.closeTab(view, tab);
   };
 
   const getPath = (tab: TabPayload) =>

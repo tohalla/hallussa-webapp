@@ -23,7 +23,6 @@ export interface MaintainerPayload {
 export interface MaintainerAction {
   type: string;
   payload: MaintainerPayload;
-  extra?: object;
 }
 
 export const fetchMaintainers = (organisation: number, {bypassCache = false} = {}): ReduxAPICall => ({
@@ -61,10 +60,10 @@ export const updateMaintainer = (maintainer: MaintainerPayload) => async (dispat
   return response.payload as MaintainerPayload;
 };
 
-export const deleteMaintainer = (maintainer: MaintainerPayload) => ({
+export const deleteMaintainer = (maintainer: MaintainerPayload): ReduxAPICall => ({
+  additionalPayload: maintainer,
   body: maintainer,
   endpoint: `/organisations/${maintainer.organisation}/maintainers/${maintainer.id}`,
-  extra: maintainer,
   method: "delete",
   successType: DELETE_MAINTAINER_SUCCESS,
   type: CALL_API,

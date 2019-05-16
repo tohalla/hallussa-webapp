@@ -1,5 +1,5 @@
 import { path, whereEq } from "ramda";
-import React, { memo, ReactElement, ReactFragment } from "react";
+import React, { memo, ReactFragment } from "react";
 import { connect, MapStateToProps } from "react-redux";
 import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router";
 

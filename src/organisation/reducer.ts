@@ -1,28 +1,10 @@
-import {
-  append,
-  assoc,
-  cond,
-  dissoc,
-  eqBy,
-  equals,
-  findIndex,
-  lensPath,
-  merge,
-  mergeWith,
-  over,
-  path,
-  Pred,
-  prop,
-  T as alwaysTrue,
-  union,
-  update,
-  without
-} from "ramda";
+import { dissoc, prop } from "ramda";
 
-import { AnyAction } from "redux";
 import { ADD_ACCOUNT_SUCCESS, SET_ACCOUNT_USER_ROLE } from "../account/actions";
-import { AppliancePayload, CREATE_APPLIANCE_SUCCESS, DELETE_APPLIANCE_SUCCESS } from "../appliance/actions";
-import { CREATE_MAINTAINER_SUCCESS, DELETE_MAINTAINER_SUCCESS, MaintainerPayload } from "../maintainer/actions";
+import { CREATE_APPLIANCE_SUCCESS, DELETE_APPLIANCE_SUCCESS } from "../appliance/actions";
+import { CREATE_MAINTAINER_SUCCESS, DELETE_MAINTAINER_SUCCESS } from "../maintainer/actions";
+import { getEntityHandlers, getEntityRelationHandlersGenerator } from "../store/entityHandler";
+import { EntitiesState } from "../store/store";
 import {
   CREATE_ORGANISATION_SUCCESS,
   DELETE_ORGANISATIONS_SUCCESS,
@@ -31,92 +13,30 @@ import {
   UPDATE_ORGANISATION_SUCCESS
 } from "./actions";
 
-export const getEntityHandlers = <T extends {organisation: number}>(
-  {
-    key,
-    types: {createType, deleteType, updateType},
-    getId = prop<any>("id"),
-    parseEntityFromPayload = prop<any>("id"),
-  }: {
-    types: {createType?: string, deleteType?: string, updateType?: string},
-    key: string
-    getId?(entity: T): any,
-    parseEntityFromPayload?(entity: T): any,
-  }
-): ReadonlyArray<[Pred, (...a: any[]) => any]> => {
-  const handlers: Array<[Pred, (...a: any[]) => any]> = [];
-  if (createType) {
-    handlers.push(
-      [equals(createType), (type: string, state: {}, payload: T) => {
-        const entity = parseEntityFromPayload(payload);
-        if (entity && payload.organisation) {
-          return over(lensPath([String(payload.organisation), key]), append(entity), state);
-        }
-        return state;
-      }]
-    );
-  }
-  if (deleteType) {
-    handlers.push(
-      [equals(deleteType), (type: string, state: any, payload: any, entity: T) => {
-        return over(
-          lensPath([String(entity.organisation), key]),
-          without([parseEntityFromPayload(entity)]),
-          state
-        );
-      }]
-    );
-  }
-  if (updateType) {
-    handlers.push(
-      [equals(updateType), (type: string, state: any, payload: T) => {
-        const index = findIndex(eqBy(getId, payload), path([payload.organisation, key], state) || []);
-        return over(
-          lensPath([String(payload.organisation), key]),
-          update(index, parseEntityFromPayload(payload)),
-          state
-        );
-      }]
-    );
-  }
-  return handlers;
+const getEntityRelationHandlers = getEntityRelationHandlersGenerator<"organisation">("organisation");
+
+const entityHandlers = {
+  ...getEntityHandlers<EntitiesState["organisations"]>({types: {
+    create: CREATE_ORGANISATION_SUCCESS,
+    delete: DELETE_ORGANISATIONS_SUCCESS,
+    fetch: FETCH_ORGANISATIONS_SUCCESS,
+    update: UPDATE_ORGANISATION_SUCCESS,
+  }}),
+  ...getEntityRelationHandlers({
+    getId: prop("account"),
+    parseRelationFromPayload: dissoc("organisation"),
+    relation: "accounts",
+    types: {add: ADD_ACCOUNT_SUCCESS, update: SET_ACCOUNT_USER_ROLE},
+  }),
+  ...getEntityRelationHandlers({
+    relation: "maintainers",
+    types: {add: CREATE_MAINTAINER_SUCCESS, remove: DELETE_MAINTAINER_SUCCESS},
+  }),
+  ...getEntityRelationHandlers({
+    relation: "appliances",
+    types: {add: CREATE_APPLIANCE_SUCCESS, remove: DELETE_APPLIANCE_SUCCESS},
+  }),
 };
 
-const typeHandler = cond<any, any>([
-  [equals(FETCH_ORGANISATIONS_SUCCESS), (type, state, payload) => merge(state, payload)],
-  [equals(DELETE_ORGANISATIONS_SUCCESS), (type, state, payload, organisation) => dissoc(organisation.id, state)],
-  [equals(CREATE_ORGANISATION_SUCCESS), (type, state, payload) => payload.id ?
-    assoc(String(payload.id), payload, state) : state,
-  ],
-  [equals(UPDATE_ORGANISATION_SUCCESS),(type, state, payload) => payload.id ?
-    assoc(
-      String(payload.id),
-      mergeWith(
-        (as, bs) => Array.isArray(as) ? union(as, bs) : as,
-        payload,
-        state[String(payload.id)]
-      ),
-      state
-    ) : state,
-  ],
-  ...getEntityHandlers<any>({
-    getId: prop("account"),
-    key: "accounts",
-    parseEntityFromPayload: dissoc("organisation"),
-    types: {createType: ADD_ACCOUNT_SUCCESS, updateType: SET_ACCOUNT_USER_ROLE},
-  }),
-  ...getEntityHandlers<MaintainerPayload>({
-    key: "maintainers",
-    types: {createType: CREATE_MAINTAINER_SUCCESS, deleteType: DELETE_MAINTAINER_SUCCESS},
-  }),
-  ...getEntityHandlers<AppliancePayload>({
-    key: "appliances",
-    types: {createType: CREATE_APPLIANCE_SUCCESS, deleteType: DELETE_APPLIANCE_SUCCESS},
-  }),
-  [alwaysTrue, (type, state, payload) => state],
-]);
-
-export default (
-  state = {},
-  {payload, type, extra}: OrganisationAction | AnyAction
-) => typeHandler(type, state, payload, extra);
+export default (state = {}, action: OrganisationAction) =>
+  action.type in entityHandlers ? entityHandlers[action.type](state, action) : state;

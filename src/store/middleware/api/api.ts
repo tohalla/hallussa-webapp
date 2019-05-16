@@ -15,7 +15,7 @@ export interface ReduxAPICall<T = any> extends Action {
   type: "CALL_API";
   parameters?: {[key: string]: string | number};
   body?: {[key: string]: any};
-  extra?: object; // additional data to send on success
+  additionalPayload?: object; // data to send on success, will be merged with actual payload (if any)
   onSuccess?(payload: T, cached: boolean): any; // get triggered on succesfull response
   onFailure?(payload: any): any; // gets triggered if the request fails
   attemptToFetchFromStore?(state: ReduxState): any;
@@ -38,23 +38,23 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
   }
   return (async () => {
     const {
+      additionalPayload,
       attemptToFetchFromStore,
       endpoint,
       method,
-      extra,
       successType,
       body,
       onSuccess,
       onFailure,
       parameters,
-      transformResponse = (originalResopnse: any): any => {
-        if (Array.isArray(originalResopnse)) {
+      transformResponse = (originalResponse: any): any => {
+        if (Array.isArray(originalResponse)) {
           return indexBy(
             ((o: {[key: string]: any}) => o.id || o.hash),
-            originalResopnse
+            originalResponse
           );
         }
-        return originalResopnse;
+        return originalResponse;
       },
     } = action as ReduxAPICall;
 
@@ -95,7 +95,12 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       } catch (e) {
         // no body used...
       }
-      next({payload: transformResponse(payload), type: successType, extra}); // dispatch success for request action
+      payload = typeof payload === "undefined" ? body || {} : transformResponse(payload);
+      payload = {...payload, ...additionalPayload};
+      next({ // dispatch success for request action, body as payload if nothing received from server
+        payload,
+        type: successType,
+      });
       next<APIResponseAction>({ // dispatch api success action
         endpoint,
         method,

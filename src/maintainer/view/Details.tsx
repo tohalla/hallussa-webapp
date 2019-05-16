@@ -32,9 +32,9 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  closeTab(view: string, payload: string): any;
-  createTab(view: string, payload: TabPayload): any;
-  deleteMaintainer(appliance: MaintainerPayload): any;
+  closeTab: typeof closeTab;
+  createTab: typeof createTab;
+  deleteMaintainer: typeof deleteMaintainer;
 }
 
 type Props = RouteComponentProps & DispatchProps & StateProps & {
@@ -48,7 +48,7 @@ const Maintainer = ({match, history, maintainer, ...props}: Props) => {
     if (match.params.maintainer) {
       history.push("/maintainers"); // go back to root
     }
-    props.closeTab("maintainers", String(maintainer.id));
+    props.closeTab("maintainers", {key: String(maintainer.id)});
     await props.deleteMaintainer(maintainer);
   };
 

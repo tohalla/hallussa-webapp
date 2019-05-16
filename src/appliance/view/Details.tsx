@@ -35,9 +35,9 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  createTab(view: string, payload: TabPayload): any;
-  closeTab(view: string, payload: string): any;
-  deleteAppliance(appliance: AppliancePayload): any;
+  createTab: typeof createTab;
+  closeTab: typeof closeTab;
+  deleteAppliance: typeof deleteAppliance;
 }
 
 type Props = RouteComponentProps & DispatchProps & StateProps & {
@@ -65,7 +65,7 @@ const Details = ({
     if (match.params.appliance) {
       history.push("/appliances"); // go back to root
     }
-    props.closeTab("appliances", String(appliance.id));
+    props.closeTab("appliances", {key: String(appliance.id)});
     await props.deleteAppliance(appliance);
   };
 

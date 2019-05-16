@@ -44,7 +44,7 @@ const store = createStore(
 );
 
 if (module.hot) {
-  module.hot.accept("../reducers", () => store.replaceReducer(reducer));
+  module.hot.accept(["./reducer.ts"], () => store.replaceReducer(reducer));
 }
 
 // fetch initial state to store using API

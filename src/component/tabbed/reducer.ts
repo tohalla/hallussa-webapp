@@ -1,4 +1,4 @@
-import { assocPath, cond, dissocPath, equals, T } from "ramda";
+import { assocPath, dissocPath } from "ramda";
 
 import {
   CLOSE_TAB,
@@ -56,19 +56,11 @@ const initialState: ViewsState = {
   }},
 };
 
-const typeHandler = cond<any, any>([
-  [equals(CREATE_TAB), (type, state, view, payload) =>
-    assocPath([view, "tabs", payload.key], payload, state),
-  ],
-  [equals(CLOSE_TAB), (type, state, view, payload) =>
-    dissocPath([view, "tabs", payload], state),
-  ],
-  [equals(RESET_TABS), (type, state) => initialState],
-  [T, (type, state) => state],
-]);
+const entityHandlers: {[k: string]: (state: ViewsState, action: TabAction) => ViewsState} = {
+  [CREATE_TAB]: (state, {view, payload}) => assocPath([view, "tabs", payload.key], payload, state),
+  [CLOSE_TAB]: (state, {view, payload}) => dissocPath([view, "tabs", payload.key], state),
+  [RESET_TABS]: () => initialState,
+};
 
-export default (
-  state = initialState,
-  { view, payload, type }: TabAction
-) =>
-  typeHandler(type, state, view, payload);
+export default (state = initialState, action: TabAction) =>
+  action.type in entityHandlers ? entityHandlers[action.type](state, action) : state;

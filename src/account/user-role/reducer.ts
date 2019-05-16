@@ -1,18 +1,15 @@
-import { cond, equals, merge, T } from "ramda";
-import { Reducer } from "redux";
-
+import { getEntityHandlers } from "../../store/entityHandler";
 import {
   FETCH_USER_ROLES_SUCCESS, UserRoleAction
 } from "./actions";
 
-const typeHandler = cond<any, any>([
-  [equals(FETCH_USER_ROLES_SUCCESS), (type, state, payload) => merge(state, payload)],
-  [T, (type, state, payload) => state],
-]);
+const entityHandlers = {
+  ...getEntityHandlers({
+    types: {
+      fetch: FETCH_USER_ROLES_SUCCESS,
+    },
+  }),
+};
 
-const reducer: Reducer<{[key: number]: any}, UserRoleAction> = (
-  state = {},
-  {payload, type}: UserRoleAction
-) => typeHandler(type, state, payload);
-
-export default reducer;
+export default (state = {}, action: UserRoleAction) =>
+  action.type in entityHandlers ? entityHandlers[action.type](state, action) : state;

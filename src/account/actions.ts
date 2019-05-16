@@ -1,4 +1,4 @@
-import { find, prop } from "ramda";
+import { compose, find, head, prop } from "ramda";
 import { AnyAction, Dispatch } from "redux";
 
 import { CALL_API } from "../store/middleware/api/actions";
@@ -34,7 +34,7 @@ export const setActiveAccount = (payload: any) => ({
 export const fetchCurrentAccount = () => (dispatch: Dispatch) => dispatch<ReduxAPICall>({
   endpoint: "/accounts",
   method: "get",
-  onSuccess: (payload) => dispatch(setActiveAccount(payload.id)),
+  onSuccess: compose(dispatch, setActiveAccount, head, Object.keys as any),
   parameters: {eager: "organisations"},
   successType: FETCH_ACCOUNT_SUCCESS,
   transformResponse: (response) => ({[response.id]: response}),

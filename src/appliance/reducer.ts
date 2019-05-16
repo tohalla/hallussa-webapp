@@ -1,7 +1,7 @@
-import { assoc, assocPath, concat, cond, dissoc, equals, map, merge, mergeWith, path, T, union, without } from "ramda";
-import { Reducer } from "redux";
+import { prop } from "ramda";
 
 import { DELETE_MAINTAINER_SUCCESS } from "../maintainer/actions";
+import { getEntityHandlers, getEntityRelationHandlersGenerator } from "../store/entityHandler";
 import {
   ApplianceAction,
   ASSING_MAINTAINER_TO_APPLIANCE_SUCCESS,
@@ -12,57 +12,28 @@ import {
   UPDATE_APPLIANCE_SUCCESS
 } from "./actions";
 
-const typeHandler = cond<any, any>([
-  [equals(FETCH_APPLIANCES_SUCCESS), (type, state, payload) => merge(state, payload)],
-  [equals(CREATE_APPLIANCE_SUCCESS), (type, state, payload) =>
-    payload.id ? assoc(String(payload.id), payload, state) : state,
-  ],
-  [equals(DELETE_MAINTAINER_SUCCESS), (type, state, payload, maintainer) =>
-    map(
-      (appliance) => assoc("maintainers", without([maintainer.id], appliance.maintainers), appliance),
-      state
-    ),
-  ],
-  [equals(REMOVE_MAINTAINER_FROM_APPLIANCE_SUCCESS), (type, state, payload, {appliance, maintainer}) => {
-    if (appliance && maintainer) {
-      const maintainers = [String(appliance), "maintainers"];
-      return assocPath(
-        maintainers,
-        without([maintainer], path(maintainers, state) || []),
-        state
-      );
-    }
-    return state;
-  }],
-  [equals(UPDATE_APPLIANCE_SUCCESS),(type, state, payload) => payload.id ?
-    assoc(
-      String(payload.id),
-      mergeWith(
-        (as, bs) => Array.isArray(as) ? union(as, bs) : as,
-        payload,
-        state[String(payload.id)]
-      ),
-      state
-    ) : state,
-  ],
-  [equals(DELETE_APPLIANCE_SUCCESS), (type, state, payload, appliance) => dissoc(String(appliance.id), state)],
-  [equals(ASSING_MAINTAINER_TO_APPLIANCE_SUCCESS), (type, state, payload, {appliance, maintainer}) => {
-    if (appliance && maintainer) {
-      const maintainers = [String(appliance), "maintainers"];
-      return assocPath(
-        maintainers,
-        concat([maintainer], path(maintainers, state) || []),
-        state
-      );
-    }
-    return state;
-  }],
-  [T, (type, state, payload) => state],
-]);
+const getEntityRelationHandlers = getEntityRelationHandlersGenerator<"appliance">("appliance");
 
-const reducer: Reducer<{[key: number]: any}, ApplianceAction> = (
-  state = {},
-  {payload, type, extra}: ApplianceAction
-) => typeHandler(type, state, payload, extra);
+const entityHandlers = {
+  ...getEntityHandlers({
+    types: {
+      create: CREATE_APPLIANCE_SUCCESS,
+      delete: DELETE_APPLIANCE_SUCCESS,
+      fetch: FETCH_APPLIANCES_SUCCESS,
+      update: UPDATE_APPLIANCE_SUCCESS,
+    },
+  }),
+  ...getEntityRelationHandlers({
+    getId: prop("maintainer"),
+    parseRelationFromPayload: prop("maintainer"),
+    relation: "maintainers",
+    types: {
+      add: ASSING_MAINTAINER_TO_APPLIANCE_SUCCESS,
+      delete: [DELETE_MAINTAINER_SUCCESS, {getId: prop("id"), parseRelationFromPayload: prop("id")}],
+      remove: REMOVE_MAINTAINER_FROM_APPLIANCE_SUCCESS,
+    },
+  }),
+};
 
-export default reducer;
+export default (state = {}, action: ApplianceAction) =>
+  action.type in entityHandlers ? entityHandlers[action.type](state, action) : state;

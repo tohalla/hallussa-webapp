@@ -37,7 +37,6 @@ export interface MaintenanceEventPayload {
 export interface ApplianceAction {
   type: string;
   payload: AppliancePayload;
-  extra?: object;
 }
 
 export const fetchAppliances = (organisation: number, {bypassCache = false} = {}): ReduxAPICall => ({
@@ -76,9 +75,9 @@ export const updateAppliance = (appliance: AppliancePayload) => async (dispatch:
 };
 
 export const deleteAppliance = (appliance: AppliancePayload): ReduxAPICall => ({
+  additionalPayload: appliance,
   body: appliance,
   endpoint: `/organisations/${appliance.organisation}/appliances/${appliance.id}`,
-  extra: appliance,
   method: "delete",
   successType: DELETE_APPLIANCE_SUCCESS,
   type: CALL_API,
@@ -89,8 +88,8 @@ export const assignMaintainerToAppliance = (
   appliance: number,
   maintainer: number
 ): ReduxAPICall => ({
+  additionalPayload: {appliance, maintainer},
   endpoint: `/organisations/${organisation}/appliances/${appliance}/maintainers/${maintainer}`,
-  extra: {appliance, maintainer},
   method: "post",
   successType: ASSING_MAINTAINER_TO_APPLIANCE_SUCCESS,
   type: CALL_API,
@@ -101,8 +100,8 @@ export const removeMaintainerFromAppliance = (
   appliance: number,
   maintainer: number
 ): ReduxAPICall => ({
+  additionalPayload: {appliance, maintainer},
   endpoint: `/organisations/${organisation}/appliances/${appliance}/maintainers/${maintainer}`,
-  extra: {appliance, maintainer},
   method: "delete",
   successType: REMOVE_MAINTAINER_FROM_APPLIANCE_SUCCESS,
   type: CALL_API,
