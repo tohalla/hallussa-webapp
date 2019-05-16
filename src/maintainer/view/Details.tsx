@@ -46,7 +46,7 @@ interface Props extends RouteComponentProps<{maintainer: string}>, DispatchProps
 const Maintainer = ({match, history, maintainer, organisation, ...props}: Props) => {
   useEffect(() => {
     props.fetchMaintainerTasks(organisation.id, maintainer.id);
-  }, [maintainer, organisation]);
+  }, []);
 
   const {t} = useTranslation();
 

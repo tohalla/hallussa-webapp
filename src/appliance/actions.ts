@@ -23,14 +23,7 @@ export interface AppliancePayload {
   status?: {
     isMalfunctioning: boolean;
   };
-  maintenanceEvents?: ReadonlyArray<MaintenanceEventPayload>;
-}
-
-export interface MaintenanceEventPayload {
-  createdAt: string;
-  description: string;
-  resolvedAt: string;
-  assignedTo: number;
+  maintenanceEvents?: ReadonlyArray<number>;
 }
 
 export interface ApplianceAction {
@@ -41,7 +34,7 @@ export interface ApplianceAction {
 export const fetchAppliances = (organisation: number, {bypassCache = false} = {}): ReduxAPICall => ({
   endpoint: `/organisations/${organisation}/appliances`,
   method: "get",
-  parameters: {eager: "[maintainers, status, maintenanceEvents]"},
+  parameters: {eager: "[maintainers, status]"},
   successType: FETCH_APPLIANCES_SUCCESS,
   type: CALL_API,
 });

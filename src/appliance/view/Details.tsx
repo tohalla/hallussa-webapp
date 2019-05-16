@@ -1,5 +1,6 @@
 import classnames from "classnames";
-import React from "react";
+import { pick } from "ramda";
+import React, { useEffect } from "react";
 import { connect, MapStateToProps } from "react-redux";
 
 import { useTranslation } from "react-i18next";
@@ -13,6 +14,7 @@ import { closeTab, createTab, TabPayload } from "../../component/tabbed/actions"
 import TabRouteIndexLookup from "../../component/tabbed/TabRouteIndexLookup";
 import Timestamps from "../../component/Timestamps";
 import { apiUrl } from "../../config";
+import { fetchApplianceEvents, MaintenanceEventPayload } from "../../maintenance/event/actions";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
@@ -31,6 +33,7 @@ import Edit from "./Edit";
 interface StateProps {
   organisation?: OrganisationPayload | APIResponsePayload;
   appliance: AppliancePayload;
+  maintenanceEvents: Readonly<MaintenanceEventPayload[]>;
   tabs: {[key: string]: TabPayload};
 }
 
@@ -38,11 +41,12 @@ interface DispatchProps {
   createTab: typeof createTab;
   closeTab: typeof closeTab;
   deleteAppliance: typeof deleteAppliance;
+  fetchApplianceEvents: typeof fetchApplianceEvents;
 }
 
-type Props = RouteComponentProps & DispatchProps & StateProps & {
-  match: {params: {appliance: string}}
-};
+interface Props extends RouteComponentProps<{appliance: string}>, DispatchProps, StateProps {
+  organisation: OrganisationPayload;
+}
 
 const Details = ({
   tabs,
@@ -50,8 +54,13 @@ const Details = ({
   history,
   organisation,
   match,
+  maintenanceEvents,
   ...props
 }: Props & {organisation: OrganisationPayload}) => {
+  useEffect(() => {
+    props.fetchApplianceEvents(organisation.id, appliance.id);
+  }, []);
+
   const {t} = useTranslation();
 
   const handleFetchQR = async () => {
@@ -108,7 +117,7 @@ const Details = ({
           <div className={spacer} />
           <MaintenanceEventList
             header={<h2>{t("appliance.event.list.title")}</h2>}
-            maintenanceEvents={appliance.maintenanceEvents || []}
+            maintenanceEvents={maintenanceEvents}
           />
           <div className={spacer} />
           <div className={spread}>
@@ -132,13 +141,19 @@ const Details = ({
   );
 };
 
-const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, ownProps): StateProps => ({
-  appliance: state.entities.appliances[ownProps.match.params.appliance],
-  organisation: getOrganisation(state),
-  tabs: state.views.appliances.tabs,
-});
+const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, ownProps): StateProps => {
+  const appliance = state.entities.appliances[ownProps.match.params.appliance];
+  return ({
+    appliance,
+    maintenanceEvents: appliance && Array.isArray(appliance.maintenanceEvents) ? Object.values(
+      pick(appliance.maintenanceEvents.map(String), state.entities.maintenanceEvents)
+    ) : [],
+    organisation: getOrganisation(state),
+    tabs: state.views.appliances.tabs,
+  });
+};
 
 export default connect(
   mapStateToProps,
-  {createTab, closeTab, deleteAppliance}
-)(Loadable<Props, {organisation?: OrganisationPayload}>(Details));
+  {createTab, closeTab, deleteAppliance, fetchApplianceEvents}
+)(Loadable<StateProps, Props>(Details));

@@ -7,12 +7,12 @@ import { Link } from "react-router-dom";
 import { Column } from "react-table";
 import Table from "../../component/Table";
 import { MaintainerPayload } from "../../maintainer/actions";
+import { MaintenanceEventPayload } from "../../maintenance/event/actions";
 import { getEntitiesByOrganisationSelector } from "../../organisation/selectors";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import { emptyContainer } from "../../style/container";
 import Loadable from "../../util/hoc/Loadable";
-import { MaintenanceEventPayload } from "../actions";
 
 interface StateProps {
   maintainers: ReadonlyArray<MaintainerPayload> | APIResponsePayload;

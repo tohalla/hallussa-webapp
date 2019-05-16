@@ -1,4 +1,4 @@
-import { equals, find } from "ramda";
+import { find } from "ramda";
 import React, { Component, ComponentType } from "react";
 
 const loadingProps = ["loading", "isFetching"];
@@ -35,4 +35,4 @@ export default <A extends {}, B = {}>(
     return <div>{onError(error)}</div>;
   }
   return <C {...props as A & B} />;
-}, equals);
+});

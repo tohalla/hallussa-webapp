@@ -1,6 +1,7 @@
 import { prop } from "ramda";
 
 import { DELETE_MAINTAINER_SUCCESS } from "../maintainer/actions";
+import { FETCH_MAINTENANCE_EVENT_SUCCESS } from "../maintenance/event/actions";
 import { getEntityHandlers, getEntityRelationHandlersGenerator } from "../store/entityHandler";
 import {
   ApplianceAction,
@@ -31,6 +32,12 @@ const entityHandlers = {
       add: ASSING_MAINTAINER_TO_APPLIANCE_SUCCESS,
       delete: [DELETE_MAINTAINER_SUCCESS, {getId: prop("id"), parseRelationFromPayload: prop("id")}],
       remove: REMOVE_MAINTAINER_FROM_APPLIANCE_SUCCESS,
+    },
+  }),
+  ...getEntityRelationHandlers({
+    relation: "maintenanceEvents",
+    types: {
+      add: [FETCH_MAINTENANCE_EVENT_SUCCESS, {preprocessPayload: Object.values}],
     },
   }),
 };

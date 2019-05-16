@@ -1,4 +1,4 @@
-import { pick } from "ramda";
+import { map, pick } from "ramda";
 
 import { CALL_API } from "../../store/middleware/api/actions";
 import { ReduxAPICall } from "../../store/middleware/api/api";
@@ -29,7 +29,7 @@ export const fetchMaintainerTasks = (
   attemptToFetchFromStore: (state) => {
     if (!bypassCache && Array.isArray(state.entities.maintainers[maintainer].maintenanceTasks)) {
       return pick(
-        state.entities.maintainers[maintainer].maintenanceTasks.map(String),
+        map(String, state.entities.maintainers[maintainer].maintenanceTasks || []),
         state.entities.maintenanceTasks
       );
     }

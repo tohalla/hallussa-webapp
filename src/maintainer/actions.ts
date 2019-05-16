@@ -9,7 +9,7 @@ export const DELETE_MAINTAINER_SUCCESS = "DELETE_MAINTAINER_SUCCESS";
 
 export interface MaintainerPayload {
   appliances: ReadonlyArray<number>;
-  maintenanceTasks: ReadonlyArray<number>;
+  maintenanceTasks?: ReadonlyArray<number>;
   createdAt: string;
   email: string;
   firstName: string;

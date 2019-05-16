@@ -7,6 +7,7 @@ import { fetchRoles, UserRolePayload } from "../account/user-role/actions";
 import { AppliancePayload } from "../appliance/actions";
 import { ViewsState } from "../component/tabbed/reducer";
 import { MaintainerPayload } from "../maintainer/actions";
+import { MaintenanceEventPayload } from "../maintenance/event/actions";
 import { MaintenanceTaskPayload } from "../maintenance/task/actions";
 import { fetchOrganisations, OrganisationPayload, setActiveOrganisation } from "../organisation/actions";
 import api from "./middleware/api/api";
@@ -23,6 +24,7 @@ export interface EntitiesState {
   appliances: EntityGroup<AppliancePayload>;
   maintainers: EntityGroup<MaintainerPayload>;
   maintenanceTasks: EntityGroup<MaintenanceTaskPayload>;
+  maintenanceEvents: EntityGroup<MaintenanceEventPayload>;
   organisations: EntityGroup<OrganisationPayload>;
   userRoles: EntityGroup<UserRolePayload>;
 }
