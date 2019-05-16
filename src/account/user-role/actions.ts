@@ -39,11 +39,6 @@ export interface UserRoleAction {
 }
 
 export const fetchRoles = (organisation?: number, {bypassCache = false} = {}): ReduxAPICall => ({
-  attemptToFetchFromStore: bypassCache || !organisation ? undefined : (state) =>
-    state.entities.userRoles && !Boolean(find(// check if store contains all roles defined in organisation
-      (userRole) => typeof state.entities.userRoles[userRole] === "undefined",
-      state.entities.organisations[organisation].userRoles || []
-    )),
   endpoint: typeof organisation === "undefined" ? "/user-roles" : `/organisations/${organisation}/user-roles`,
   method: "get",
   successType: FETCH_USER_ROLES_SUCCESS,

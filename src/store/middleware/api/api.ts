@@ -3,7 +3,7 @@ import { Action, Dispatch, Middleware } from "redux";
 
 import { apiUrl } from "../../../config";
 import { authenticatedFetch } from "../../../util/utilityFunctions";
-import { ReduxState } from "../../store";
+import { EntitiesState, ReduxState } from "../../store";
 import { APIResponseAction, CALL_API, CALL_API_FAILURE, CALL_API_SUCCESS } from "./actions";
 
 export type APIMethods = "post" | "get" | "patch" | "delete";
@@ -18,7 +18,7 @@ export interface ReduxAPICall<T = any> extends Action {
   additionalPayload?: object; // data to send on success, will be merged with actual payload (if any)
   onSuccess?(payload: T, cached: boolean): any; // get triggered on succesfull response
   onFailure?(payload: any): any; // gets triggered if the request fails
-  attemptToFetchFromStore?(state: ReduxState): any;
+  attemptToFetchFromStore?(state: ReduxState): EntitiesState[keyof EntitiesState] | undefined | null;
   transformResponse?(response: any): any; // writes returned object to the store
 }
 

@@ -26,11 +26,6 @@ export interface MaintainerAction {
 }
 
 export const fetchMaintainers = (organisation: number, {bypassCache = false} = {}): ReduxAPICall => ({
-  attemptToFetchFromStore: bypassCache ? undefined : (state) =>
-    state.entities.maintainers && !Boolean(find(// check if store contains all maintainers defined in organisation
-      (maintainer) => typeof state.entities.maintainers[maintainer] === "undefined",
-      state.entities.organisations[organisation].maintainers || []
-    )),
   endpoint: `/organisations/${organisation}/maintainers`,
   method: "get",
   parameters: {eager: "appliances"},

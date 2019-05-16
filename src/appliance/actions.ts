@@ -1,4 +1,4 @@
-import { find } from "ramda";
+import { find, isEmpty } from "ramda";
 import { Dispatch } from "redux";
 import { APIResponseAction, CALL_API } from "../store/middleware/api/actions";
 import { ReduxAPICall } from "../store/middleware/api/api";
@@ -40,11 +40,6 @@ export interface ApplianceAction {
 }
 
 export const fetchAppliances = (organisation: number, {bypassCache = false} = {}): ReduxAPICall => ({
-  attemptToFetchFromStore: bypassCache ? undefined : (state) =>
-    state.entities.appliances && !Boolean(find(// check if store contains all appliances defined in organisation
-      (appliance) => typeof state.entities.appliances[appliance] === "undefined",
-      state.entities.organisations[organisation].appliances || []
-    )),
   endpoint: `/organisations/${organisation}/appliances`,
   method: "get",
   parameters: {eager: "[maintainers, status, maintenanceEvents]"},

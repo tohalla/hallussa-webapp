@@ -45,11 +45,6 @@ export const fetchAccounts = (
   organisation: number,
   {bypassCache = false, accounts}: {bypassCache?: boolean, accounts?: number[]} = {}
 ): ReduxAPICall => ({
-  attemptToFetchFromStore: bypassCache ? undefined : (state) =>
-    state.entities.accounts && !Boolean(find(// check if store contains all appliances defined in organisation
-      (account) => typeof state.entities.accounts[account.account] === "undefined",
-      state.entities.organisations[organisation].accounts || []
-    )),
   endpoint: `/organisations/${organisation}/users/accounts${accounts ? `?accounts=[${
     accounts.join(",")
   }]` : ""}`,
