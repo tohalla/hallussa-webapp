@@ -14,7 +14,7 @@ export const getAndCheckJWT = async (): Promise<string | null | void> => {
     if (Number(expiresAt) - Date.now() / 1000 < 0) {
       // should remove token if its expired
       return signOut();
-    } else if (Number(expiresAt) - Date.now() / 1000 < 10 * 60 * 1000) {
+    } else if (Number(expiresAt) - Date.now() / 1000 < 10 * 60) {
       // should refresh token if it expires in next 10 minutes
       await authenticate(token);
     }
