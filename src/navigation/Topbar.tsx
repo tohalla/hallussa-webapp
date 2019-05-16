@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import React from "react";
+import React, { memo, useEffect, useState } from "react";
 import {
   logoContainer,
   navGroup,
@@ -12,41 +12,31 @@ import { sm } from "../style/variables/breakpoints";
 import AccountMenu from "./AccountMenu";
 import OrganisationNavigation from "./OrganisationNavigation";
 
-export default class Topbar extends React.Component {
-  public state = {
-    expand: false,
-    width: window.innerWidth,
-  };
+export default memo(() => {
+  const [expand, setExpand] = useState(false);
+  const [width, setWidth] = useState(innerWidth);
 
-  // add event listeners for watcihng window resize
-  public updateDimensions = () => this.setState({ width: window.innerWidth });
-  public componentWillMount = () => this.updateDimensions();
-  public componentDidMount = () =>
-    window.addEventListener("resize", this.updateDimensions)
-  public componentWillUnmount = () =>
-    window.removeEventListener("resize", this.updateDimensions)
+  useEffect(() => {
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  });
 
-  public handleToggle = () => this.setState({expand: !this.state.expand});
+  const handleToggle = () => setExpand(!expand);
+  const updateDimensions = () => setWidth(window.innerWidth);
 
-  public render() {
-    const {expand, width} = this.state;
-    const displayMenu = expand || width > sm;
-    return (
-      <nav className={topbar}>
-        <div className={navGroup}>
-          <div className={logoContainer}>
-            <Logo type="light" />
-            <i
-              className={classnames("material-icons", toggleButton)}
-              onClick={this.handleToggle}
-            >
-              menu
-            </i>
-          </div>
-          {displayMenu && <OrganisationNavigation />}
+  const displayMenu = expand || width > sm;
+  return (
+    <nav className={topbar}>
+      <div className={navGroup}>
+        <div className={logoContainer}>
+          <Logo type="light" />
+          <i className={classnames("material-icons", toggleButton)} onClick={handleToggle}>
+            menu
+          </i>
         </div>
-        {displayMenu && <AccountMenu />}
-      </nav>
-    );
-  }
-}
+        {displayMenu && <OrganisationNavigation />}
+      </div>
+      {displayMenu && <AccountMenu />}
+    </nav>
+  );
+});
