@@ -9,7 +9,10 @@ import { OrganisationPayload } from "./actions";
 export const getOrganisations = (state: ReduxState): ReadonlyArray<OrganisationPayload> | APIResponsePayload =>
   state.activeRequests.get["/organisations"] || values(state.entities.organisations);
 
-export type EntityType = Exclude<keyof EntitiesState, "organisations">;
+export type EntityType = Exclude<keyof EntitiesState, Exclude<
+  keyof EntitiesState,
+  keyof OrganisationPayload
+>>;
 
 export const getOrganisation = (
   state: ReduxState,

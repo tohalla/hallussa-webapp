@@ -8,6 +8,7 @@ import userRoles from "../account/user-role/reducer";
 import appliances from "../appliance/reducer";
 import views from "../component/tabbed/reducer";
 import maintainers from "../maintainer/reducer";
+import maintenanceTasks from "../maintenance/task/reducer";
 import { SET_ACTIVE_ORGANISATION } from "../organisation/actions";
 import organisations from "../organisation/reducer";
 import activeRequests from "./middleware/api/reducer";
@@ -34,6 +35,7 @@ const entities = combineReducers({
   accounts,
   appliances,
   maintainers,
+  maintenanceTasks,
   organisations,
   userRoles,
 });

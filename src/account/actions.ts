@@ -1,4 +1,4 @@
-import { compose, find, head, prop } from "ramda";
+import { compose, head, prop } from "ramda";
 import { AnyAction, Dispatch } from "redux";
 
 import { CALL_API } from "../store/middleware/api/actions";

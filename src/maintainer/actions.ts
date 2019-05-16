@@ -1,4 +1,3 @@
-import { find } from "ramda";
 import { Dispatch } from "redux";
 import { APIResponseAction, CALL_API } from "../store/middleware/api/actions";
 import { ReduxAPICall } from "../store/middleware/api/api";
@@ -10,6 +9,7 @@ export const DELETE_MAINTAINER_SUCCESS = "DELETE_MAINTAINER_SUCCESS";
 
 export interface MaintainerPayload {
   appliances: ReadonlyArray<number>;
+  maintenanceTasks: ReadonlyArray<number>;
   createdAt: string;
   email: string;
   firstName: string;

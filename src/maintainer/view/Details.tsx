@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import { map, pick, values } from "ramda";
-import React from "react";
+import React, { useEffect } from "react";
 import { connect, MapStateToProps } from "react-redux";
 
 import { useTranslation } from "react-i18next";
@@ -13,6 +13,7 @@ import Restricted from "../../component/Restricted";
 import { closeTab, createTab, TabPayload } from "../../component/tabbed/actions";
 import TabRouteIndexLookup from "../../component/tabbed/TabRouteIndexLookup";
 import Timestamps from "../../component/Timestamps";
+import { fetchMaintainerTasks } from "../../maintenance/task/actions";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
@@ -35,13 +36,18 @@ interface DispatchProps {
   closeTab: typeof closeTab;
   createTab: typeof createTab;
   deleteMaintainer: typeof deleteMaintainer;
+  fetchMaintainerTasks: typeof fetchMaintainerTasks;
 }
 
-type Props = RouteComponentProps & DispatchProps & StateProps & {
-  match: {params: {maintainer: string}}
-};
+interface Props extends RouteComponentProps<{maintainer: string}>, DispatchProps, StateProps {
+  organisation: OrganisationPayload;
+}
 
-const Maintainer = ({match, history, maintainer, ...props}: Props) => {
+const Maintainer = ({match, history, maintainer, organisation, ...props}: Props) => {
+  useEffect(() => {
+    props.fetchMaintainerTasks(organisation.id, maintainer.id);
+  }, [maintainer, organisation]);
+
   const {t} = useTranslation();
 
   const handeDeleteMaintainer = async () => {
@@ -125,5 +131,5 @@ const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, 
 
 export default connect(
   mapStateToProps,
-  {createTab, closeTab, deleteMaintainer}
-)(Loadable(Maintainer));
+  {createTab, closeTab, deleteMaintainer, fetchMaintainerTasks}
+)(Loadable<StateProps, Props>(Maintainer));
