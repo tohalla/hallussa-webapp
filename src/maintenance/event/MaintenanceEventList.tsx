@@ -1,29 +1,30 @@
-import React, { ReactFragment } from "react";
-import { connect, MapStateToProps } from "react-redux";
-
 import { format } from "date-fns";
+import React, { ReactFragment } from "react";
 import { useTranslation } from "react-i18next";
+import { connect, MapStateToProps } from "react-redux";
 import { Link } from "react-router-dom";
 import { Column } from "react-table";
+
 import Table from "../../component/Table";
 import { MaintainerPayload } from "../../maintainer/actions";
 import { MaintenanceEventPayload } from "../../maintenance/event/actions";
-import { getEntitiesByOrganisationSelector } from "../../organisation/selectors";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
+import { EntityGroup } from "../../store/reducer";
 import { ReduxState } from "../../store/store";
 import { emptyContainer } from "../../style/container";
 import Loadable from "../../util/hoc/Loadable";
 
 interface StateProps {
-  maintainers: ReadonlyArray<MaintainerPayload> | APIResponsePayload;
+  maintainers: EntityGroup<MaintainerPayload> | APIResponsePayload;
 }
 
 interface Props {
+  maintainers: EntityGroup<MaintainerPayload>;
   maintenanceEvents: Readonly<MaintenanceEventPayload[]>;
   header?: ReactFragment;
 }
 
-export const MaintenanceEventList = ({header, maintenanceEvents, maintainers}: StateProps & Props) => {
+const MaintenanceEventList = ({header, maintenanceEvents, maintainers}: Props & StateProps) => {
   const {t} = useTranslation();
 
   const columns: Column[] = [
@@ -49,7 +50,7 @@ export const MaintenanceEventList = ({header, maintenanceEvents, maintainers}: S
       Header: t("maintenanceEvent.field.assignedTo"),
       accessor: (event) => {
         if (!event.assignedTo) { return null; }
-        const maintainer = (maintainers as MaintainerPayload[])[event.assignedTo];
+        const maintainer = maintainers[event.assignedTo];
         return maintainer && (
           <Link to={`/maintainers/${maintainer.id}`}>
             {maintainer.firstName} {maintainer.lastName}
@@ -77,9 +78,9 @@ export const MaintenanceEventList = ({header, maintenanceEvents, maintainers}: S
 };
 
 const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
-  maintainers: getEntitiesByOrganisationSelector<"maintainers">("maintainers", state.session.activeOrganisation)(state),
+  maintainers: state.entities.maintainers,
 });
 
 export default connect<StateProps, {}, Props, ReduxState>(
   mapStateToProps
-)(Loadable(MaintenanceEventList));
+)(Loadable<StateProps, Props>(MaintenanceEventList));

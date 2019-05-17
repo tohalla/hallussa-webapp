@@ -15,6 +15,7 @@ import TabRouteIndexLookup from "../../component/tabbed/TabRouteIndexLookup";
 import Timestamps from "../../component/Timestamps";
 import { apiUrl } from "../../config";
 import { fetchApplianceEvents, MaintenanceEventPayload } from "../../maintenance/event/actions";
+import MaintenanceEventList from "../../maintenance/event/MaintenanceEventList";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
@@ -27,7 +28,6 @@ import { authenticatedFetch } from "../../util/utilityFunctions";
 import { AppliancePayload, deleteAppliance } from "../actions";
 import Status from "../component/Status";
 import ApplianceDrawers from "../drawer/ApplianceDrawers";
-import MaintenanceEventList from "../maintenance-event/MaintenanceEventList";
 import Edit from "./Edit";
 
 interface StateProps {
