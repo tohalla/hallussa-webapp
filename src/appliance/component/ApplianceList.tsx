@@ -1,4 +1,5 @@
-import React, { ReactFragment } from "react";
+import { props as getProps } from "ramda";
+import React, { memo, ReactFragment } from "react";
 
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -9,42 +10,14 @@ import { AppliancePayload } from "../actions";
 import Status from "./Status";
 
 interface Props {
+  additionalColumns: {[key: string]: Column};
   appliances: Readonly<AppliancePayload[]>;
+  columns: ReadonlyArray<"description" | "id" | "name" | "status" | "location" | string>;
   header?: ReactFragment;
 }
 
-export default ({header, appliances}: Props) => {
+const ApplianceList = ({header, appliances, columns, additionalColumns}: Props) => {
   const {t} = useTranslation();
-
-  const columns: Column[] = [
-    {Header: t("appliance.field.id"), accessor: "id", id: "id", maxWidth: 50},
-    {
-      Header: t("appliance.field.name"),
-      accessor: (appliance) => <Link to={`/appliances/${appliance.id}`}>{appliance.name}</Link>,
-      id: "name",
-      resizable: true,
-    },
-    {
-      Header: t("appliance.field.description"),
-      accessor: "description",
-      id: "description",
-      resizable: true,
-    },
-    {
-      Header: t("appliance.field.status"),
-      accessor: ({status}) => <Status status={status} />,
-      id: "status",
-      maxWidth: 100,
-      resizable: true,
-    },
-    {
-      Header: t("appliance.field.location"),
-      accessor: "location",
-      id: "location",
-      resizable: true,
-    },
-  ];
-
   return (
       <div>
         {header}
@@ -52,7 +25,35 @@ export default ({header, appliances}: Props) => {
           <div className={emptyContainer}>{t("appliance.listing.noAppliances")}</div>
         :
           <Table
-            columns={columns}
+            columns={getProps(columns, {
+              description: {
+                Header: t("appliance.field.description"),
+                accessor: "description",
+                id: "description",
+                resizable: true,
+              },
+              id: {Header: t("appliance.field.id"), accessor: "id", id: "id", maxWidth: 50},
+              location: {
+                Header: t("appliance.field.location"),
+                accessor: "location",
+                id: "location",
+                resizable: true,
+              },
+              name: {
+                Header: t("appliance.field.name"),
+                accessor: (appliance) => <Link to={`/appliances/${appliance.id}`}>{appliance.name}</Link>,
+                id: "name",
+                resizable: true,
+              },
+              status: {
+                Header: t("appliance.field.status"),
+                accessor: ({status}) => <Status status={status} />,
+                id: "status",
+                maxWidth: 120,
+                resizable: false,
+              },
+              ...additionalColumns,
+            })}
             pageSize={20}
             data={appliances as AppliancePayload[]}
           />
@@ -60,3 +61,10 @@ export default ({header, appliances}: Props) => {
       </div>
   );
 };
+
+ApplianceList.defaultProps = {
+  additionalColumns: {},
+  columns: ["id", "name", "description", "status", "location"],
+};
+
+export default memo(ApplianceList);

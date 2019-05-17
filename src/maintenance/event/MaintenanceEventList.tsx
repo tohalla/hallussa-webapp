@@ -19,12 +19,15 @@ interface StateProps {
 }
 
 interface Props {
-  maintainers: EntityGroup<MaintainerPayload>;
   maintenanceEvents: Readonly<MaintenanceEventPayload[]>;
   header?: ReactFragment;
 }
 
-const MaintenanceEventList = ({header, maintenanceEvents, maintainers}: Props & StateProps) => {
+const MaintenanceEventList = ({
+  header,
+  maintenanceEvents,
+  maintainers,
+}: Props & StateProps & {maintainers: EntityGroup<MaintainerPayload>}) => {
   const {t} = useTranslation();
 
   const columns: Column[] = [

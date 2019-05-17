@@ -91,7 +91,7 @@ const Maintainer = ({match, history, maintainer, organisation, ...props}: Props)
             </div>
           </div>
           <div className={stacked}>
-            {phone && <div className={info}><i className="material-icons">phone</i> <span>{phone}</span></div>}
+            {phone && <div className={info}><i className="material-icons">phone</i><span>{phone}</span></div>}
             {email && <div className={info}>
               <i className="material-icons">email</i>
               <a href={`mailto:${email}`}>{email}</a>
@@ -99,6 +99,7 @@ const Maintainer = ({match, history, maintainer, organisation, ...props}: Props)
           </div>
           <div className={spacer} />
           <ApplianceList
+            columns={["id", "name", "status", "location"]}
             appliances={props.appliances}
             header={<h2>{t("maintainer.appliance.list.title")}</h2>}
           />
