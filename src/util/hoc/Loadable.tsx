@@ -1,4 +1,4 @@
-import { find } from "ramda";
+import { equals, find } from "ramda";
 import React, { Component, ComponentType } from "react";
 import Spinner from "../../component/Spinner";
 
@@ -36,4 +36,4 @@ export default <A extends {}, B = {}>(
     return <div>{onError(error)}</div>;
   }
   return <C {...props as A & B} />;
-});
+}, equals);

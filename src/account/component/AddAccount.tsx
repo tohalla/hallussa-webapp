@@ -1,7 +1,7 @@
 import { Field, Form, Formik, FormikConfig } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { connect, MapDispatchToProps } from "react-redux";
+import { connect } from "react-redux";
 import * as yup from "yup";
 
 import Button from "../../component/button/Button";
@@ -53,9 +53,6 @@ const AddAccount = ({organisation, ...props}: Props & DispatchProps) => {
   );
 };
 
-const mapDispatchToProps: MapDispatchToProps<DispatchProps, Props> = { addAccount };
-
 export default connect<{}, DispatchProps, Props, ReduxState>(
-  undefined,
-  mapDispatchToProps
+  undefined, {addAccount}
 )(AddAccount);

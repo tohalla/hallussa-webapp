@@ -1,5 +1,5 @@
 import { eqBy, isNil, prop } from "ramda";
-import React, { ReactFragment } from "react";
+import React, { memo, ReactFragment } from "react";
 
 import { Field, FieldConfig, FieldProps, Form, Formik, FormikConfig, FormikValues } from "formik";
 import { Omit } from "../../../misc";
@@ -31,38 +31,36 @@ const SelectAndSet = <T extends {label: string, value: any}>({
   equalValue,
   ...props
 }: SelectAndSetProps<T>) => {
-  const Component = () => {
-    if (!Array.isArray(props.options) && props.options.length <= 1) {
-      return <>{noOptions}</>;
-    }
-
-    const handleSubmit: FormikConfig<any>["onSubmit"]  = async (state, {setSubmitting}) => {
-      if (typeof onSet === "function") {
-        await onSet(state);
-      }
+  const handleSubmit: FormikConfig<any>["onSubmit"]  = async (state, {setSubmitting}) => {
+    if (typeof onSet === "function") {
+      await onSet(state);
       setSubmitting(false);
-    };
-
-    return (
-      <Formik initialValues={{[name]: initialValue}} onSubmit={handleSubmit}>
-        {({initialValues, values, isSubmitting}) => (
-          <Form className={formClassName}>
-            <Field {...props} component={Select} name={name} onChange={onChange} />
-            {
-              (typeof equalValue === "function" ?
-                equalValue(initialValues[name], values[name]) : initialValues[name] === values[name]
-              ) ||
-              <Button disabled={isSubmitting} type="submit">
-                {setLabel}
-              </Button>
-            }
-          </Form>
-        )}
-      </Formik>
-    );
+    }
   };
 
-  return <div className={containerClassName}><Component /></div>;
+  return (
+    <div className={containerClassName}>
+      {
+        Array.isArray(props.options) && props.options.length > 0 ?
+          <Formik initialValues={{[name]: initialValue}} onSubmit={handleSubmit}>
+            {({initialValues, values, isSubmitting}) => (
+              <Form className={formClassName}>
+                <Field {...props} isDisabled={isSubmitting} component={Select} name={name} onChange={onChange} />
+                {
+                  (typeof equalValue === "function" ?
+                    equalValue(initialValues[name], values[name]) : initialValues[name] === values[name]
+                  ) ||
+                  <Button disabled={isSubmitting} type="submit">
+                    {setLabel}
+                  </Button>
+                }
+              </Form>
+            )}
+          </Formik>
+        : <>{noOptions}</>
+      }
+    </div>
+  );
 };
 
 const defaultProps: Partial<SelectAndSetProps> = {
@@ -75,4 +73,4 @@ const defaultProps: Partial<SelectAndSetProps> = {
 
 SelectAndSet.defaultProps = defaultProps;
 
-export default SelectAndSet;
+export default memo(SelectAndSet);

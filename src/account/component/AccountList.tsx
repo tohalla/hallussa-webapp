@@ -9,6 +9,7 @@ import Restricted from "../../component/Restricted";
 import Table from "../../component/Table";
 import { OrganisationPayload } from "../../organisation/actions";
 import { EntityGroup } from "../../store/reducer";
+import { ReduxState } from "../../store/store";
 import { flex1, justifyCenter, noPadding, stacked } from "../../style/container";
 import { AccountPayload, setUserRole } from "../actions";
 import { UserRolePayload } from "../user-role/actions";
@@ -26,7 +27,6 @@ interface Props {
 
 const AccountList = ({accounts, header, userRoles, organisation, ...props}: Props & DispatchProps) => {
   const {t} = useTranslation();
-
   const handleSetRole: (
     organisationId: number, account: number
   ) => SelectAndSetProps["onSet"] = (organisationId, account) => ({role}) =>
@@ -87,6 +87,6 @@ const AccountList = ({accounts, header, userRoles, organisation, ...props}: Prop
   );
 };
 
-export default connect(
+export default connect<{}, DispatchProps, Props, ReduxState>(
   undefined, {setUserRole}
 )(AccountList);
