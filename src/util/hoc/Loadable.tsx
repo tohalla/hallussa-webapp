@@ -1,5 +1,6 @@
 import { find } from "ramda";
 import React, { Component, ComponentType } from "react";
+import Spinner from "../../component/Spinner";
 
 const loadingProps = ["loading", "isFetching"];
 
@@ -29,7 +30,7 @@ export default <A extends {}, B = {}>(
 ) => React.memo((props: A) => {
   try {
     if ((typeof isLoading === "function" && isLoading(props)) || checkLoading(props)) {
-      return <div>loading...</div>; // replace with loading indicator component
+      return <Spinner />; // replace with loading indicator component
     }
   } catch (error) {
     return <div>{onError(error)}</div>;

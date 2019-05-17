@@ -108,3 +108,17 @@ export const authContainer = css`
     color: ${greyscale[2]};
   }
 `;
+
+export const spinner = css`
+  display: flex;
+  align-self: stretch;
+  flex: 1;
+
+  align-items: center;
+  justify-content: center;
+
+  path {
+    fill: ${greyscale[0]};
+    opacity: .3;
+  }
+`;
