@@ -16,6 +16,7 @@ interface Props {
   requirements?: RequirementProps;
   children?: ReactFragment;
   restrictedContent?: ReactFragment;
+  userRole?: Partial<UserRolePayload>;
 }
 
 interface StateProps {
@@ -34,14 +35,17 @@ const allowAccess = ({requirements, ...props}: Props & StateProps): boolean => !
 const mapStateToProps: MapStateToProps<StateProps, any, ReduxState> = (state, ownProps) => {
   const organisation = Number(path(["match", "params", "organisation"], ownProps)) || state.session.activeOrganisation;
   return {
-    activeUserRole: state.session.activeUserRole ? state.entities.userRoles[state.session.activeUserRole] : {},
+    activeUserRole: ownProps.userRole || (
+      state.session.activeUserRole ? state.entities.userRoles[state.session.activeUserRole] : {}
+    ),
     userRoles: getEntitiesByOrganisationSelector<"userRoles">("userRoles", organisation)(state),
   };
 };
 
 export default connect<StateProps, {}, Props, ReduxState>(mapStateToProps)(
-  ({children, restrictedContent: restrictedContent, ...props}: Props & StateProps) =>
-    <>{allowAccess(props) ? children : restrictedContent}</>
+  ({children, restrictedContent: restrictedContent, ...props}: Props & StateProps) => {
+    return <>{allowAccess(props) ? children : restrictedContent}</>;
+  }
 );
 
 export const RestrictedRoute = memo(({

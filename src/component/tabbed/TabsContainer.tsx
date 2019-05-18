@@ -19,11 +19,12 @@ interface Props extends RouteComponentProps {
   tabs: {[key: string]: TabPayload};
   view: string;
   pathPostfix?: string;
+  userRole?: UserRolePayload;
 }
 
 interface StateProps {
   userRoles: Readonly<UserRolePayload[]> | APIResponsePayload;
-  userRole: Partial<UserRolePayload>;
+  activeUserRole: Partial<UserRolePayload>;
 }
 
 interface DispatchProps {
@@ -61,7 +62,7 @@ const TabsContainer = ({
       <div className={classnames(className, tabActive)}>{children}</div> : NavLink;
 
     return (
-      <Restricted requirements={requirements} key={key}>
+      <Restricted requirements={requirements} userRole={userRole} key={key}>
         <TabLink
           className={classnames(tabStyle, {[actionTab]: accent})}
           activeClassName={tabActive}
@@ -99,7 +100,9 @@ const TabsContainer = ({
 const mapStateToProps: MapStateToProps<StateProps, any, ReduxState> = (state, ownProps) => {
   const organisation = Number(path(["match", "params", "organisation"], ownProps)) || state.session.activeOrganisation;
   return {
-    userRole: state.session.activeUserRole ? state.entities.userRoles[state.session.activeUserRole] : {},
+    activeUserRole: ownProps.userRole || (
+      state.session.activeUserRole ? state.entities.userRoles[state.session.activeUserRole] : {}
+    ),
     userRoles: getEntitiesByOrganisationSelector<"userRoles">("userRoles", organisation)(state),
   };
 };

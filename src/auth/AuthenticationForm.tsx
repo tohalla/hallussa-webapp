@@ -49,7 +49,7 @@ export default () => {
               <Button disabled={isSubmitting || !isValid} type="submit">
                 {t("account.authentication.form.submit")}
               </Button>
-              <Link className={small} to="/register">{t("account.registration.authenticate")}</Link>
+              <Link className={small} to="/register">{t("account.authentication.createNewAccount")}</Link>
             </div>
           </Form>
         )}

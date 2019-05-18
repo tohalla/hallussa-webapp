@@ -4,6 +4,7 @@ import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
 import { RouteComponentProps } from "react-router";
+import { UserRolePayload } from "../../account/user-role/actions";
 import { ReduxState } from "../../store/store";
 import { viewContentContainer } from "../../style/container";
 import { TabbedView, ViewsState } from "./reducer";
@@ -12,6 +13,7 @@ import TabsContainer from "./TabsContainer";
 interface Options {
   contentContainerClassName?: string;
   contentComponentProps?: {[key: string]: any};
+  userRole?: UserRolePayload;
 }
 
 type StateProps = TabbedView;
@@ -21,7 +23,7 @@ export default ({view, pathPostfix}: {view: keyof ViewsState, pathPostfix?: stri
     tabs: state.views[view].tabs,
   });
 
-  return (Component: any, {contentContainerClassName, contentComponentProps}: Options = {}) => {
+  return (Component: any, {userRole, contentContainerClassName, contentComponentProps}: Options = {}) => {
     const Tabbed = (props: StateProps & RouteComponentProps) => {
       const routerProps: RouteComponentProps = pick(
         ["history", "match", "location"],
@@ -29,7 +31,13 @@ export default ({view, pathPostfix}: {view: keyof ViewsState, pathPostfix?: stri
       );
       return (
         <>
-          <TabsContainer view={view} pathPostfix={pathPostfix} tabs={props.tabs} {...routerProps} />
+          <TabsContainer
+            view={view}
+            pathPostfix={pathPostfix}
+            tabs={props.tabs}
+            userRole={userRole}
+            {...routerProps}
+          />
           <div className={classnames(viewContentContainer, contentContainerClassName)}>
             {Component && <Component {...contentComponentProps} {...routerProps} />}
           </div>

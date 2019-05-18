@@ -2,7 +2,7 @@ import { css } from "emotion";
 
 import { sm } from "./variables/breakpoints";
 import { greyscale } from "./variables/colors";
-import { major, normal } from "./variables/spacing";
+import { major, minor, normal } from "./variables/spacing";
 
 export const appContainer = css`
   display: flex;
@@ -22,6 +22,11 @@ export const contentVerticalSpacing = css`
     margin-top: ${normal};
   }
 `;
+export const contentVerticalSpacingMinor = css`
+  & > * + * {
+    margin-top: ${minor};
+  }
+`;
 
 export const flex1 = css`flex: 1;`;
 
@@ -30,6 +35,8 @@ export const rowContainer = css`
   flex-direction: row;
 
   @media (max-width: ${sm}px) {
+    ${contentVerticalSpacingMinor}
+
     flex-direction: column;
   }
 `;
@@ -65,7 +72,7 @@ export const viewContainer = css`
   width: 80vw;
 
   @media (max-width: ${sm}px) {
-    margin: 0;
+    margin: ${normal} 0;
     width: 100vw;
   }
 `;
@@ -82,6 +89,10 @@ export const noPadding = css`
 
 export const padded = css`
   padding: ${normal} ${major};
+
+  @media (max-width: ${sm}px) {
+    padding: ${minor} ${minor};
+  }
 `;
 
 export const paddedMajor = css`
@@ -102,11 +113,22 @@ export const authContainer = css`
   ${padded}
   ${viewContentContainer}
 
-  position: absolute;
-
   h1 {
     color: ${greyscale[2]};
   }
+
+  @media (max-width: ${sm}px) {
+    flex: 1;
+    align-self: stretch;
+    padding: ${minor};
+    ${contentVerticalSpacing}
+  }
+`;
+
+export const topbarContainer = css`
+  min-height: ${major};
+  max-height: ${major};
+  position: relative;
 `;
 
 export const spinner = css`

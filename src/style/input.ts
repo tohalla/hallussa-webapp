@@ -6,6 +6,7 @@ import { minor } from "./variables/spacing";
 
 const input = css`
   border: none;
+  border-radius: 0;
   background: ${greyscale[9]};
   padding: ${minor};
   flex: 1;
@@ -29,11 +30,11 @@ const input = css`
 
 export const inputContainer = css`
   ${stacked}
-  width: 12em;
+  min-width: 12em;
 `;
 
 export const wide = css`
-  width: 22em;
+  min-width: 22em;
 `;
 
 export const inputLabel = css`

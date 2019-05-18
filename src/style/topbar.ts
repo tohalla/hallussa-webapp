@@ -84,6 +84,10 @@ export const activeItem = css`
 `;
 
 export const topbar = css`
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 99;
   color: ${text.light};
   font-size: ${small};
   line-height: ${base};

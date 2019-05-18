@@ -2,13 +2,11 @@ import { css } from "emotion";
 import { link } from "./inline";
 import { indicator, primary, text } from "./variables/colors";
 import { large } from "./variables/fontSizes";
-import { buttonHeight } from "./variables/sizes";
 import { minor, normal } from "./variables/spacing";
 
 const button = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
+  text-align: center;
   border: none;
   color: ${text.light};
   background: ${primary.neutral};
@@ -16,10 +14,8 @@ const button = css`
   text-transform: uppercase;
   font-size: 75%;
   white-space: nowrap;
-  line-height: 1.1;
   flex: 0;
   user-select: none;
-  height: ${buttonHeight};
   text-decoration: none;
 
   .material-icons {
