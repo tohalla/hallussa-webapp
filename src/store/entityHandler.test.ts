@@ -42,9 +42,9 @@ describe("entity handler", () => {
   });
 
   it(`should handle update`, () => {
-    const payload = {...entity, name: "renamed", additional: []};
+    const payload = {id: 2, name: "renamed", additional: []};
     expect(reducer(initialState, {type: types.update, payload}))
-      .toEqual({...initialState, [entity.id]: payload});
+      .toEqual({2: {id: 2, name: "renamed", additional: []}});
   });
 });
 

@@ -8,8 +8,10 @@ import {
   groupBy,
   indexBy,
   merge,
+  mergeWith,
   path,
-  prop
+  prop,
+  union
 } from "ramda";
 import { AnyAction } from "redux";
 import { Omit } from "../../misc";
@@ -48,7 +50,11 @@ export const getEntityHandlers = <State extends EntityGroup<{[k: string]: any}>>
   if (types.update) {
     handlers[types.update] = (state, {payload}) => produce(state, (draft) => {
       const id = getId(payload);
-      draft[id] = {...draft[id], ...payload};
+      draft[id] = mergeWith(
+        (as, bs) => Array.isArray(as) ? union(as, bs) : bs,
+        state[id],
+        payload
+      );
     });
   }
 
