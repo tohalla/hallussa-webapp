@@ -8,15 +8,16 @@ export default async () => {
   await i18n
     .use(initReactI18next)
     .init({
-      fallbackLng: "en",
+      fallbackLng: ["fback", "en"],
       interpolation: {escapeValue: false},
     });
 
-  const languages = await fetch(`${apiUrl}/i18n/languages`)
-    .then((response) => response.json());
+  const [languages] = await Promise.all([
+    fetch(`${apiUrl}/i18n/languages`).then((response) => response.json()),
+    fetchAndAddTranslations("fback"),
+    fetchAndAddTranslations(i18n.language || "en"),
+  ]);
   i18n.languages = languages.map(prop("locale"));
-
-  await fetchAndAddTranslations(i18n.language || "en");
 
   return i18n;
 };

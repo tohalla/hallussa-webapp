@@ -14,6 +14,7 @@ export interface MaintainerPayload {
   email: string;
   firstName: string;
   id: number;
+  language?: string;
   lastName: string;
   organisation: number;
   phone: string;

@@ -58,7 +58,7 @@ const Maintainer = ({match, history, maintainer, organisation, ...props}: Props)
     await props.deleteMaintainer(maintainer);
   };
 
-  const {phone, firstName, lastName, email, createdAt, updatedAt} = maintainer;
+  const {phone, firstName, lastName, email, language, createdAt, updatedAt} = maintainer;
 
   const TabRoute = TabRouteIndexLookup<MaintainerPayload>({
     accessor: "maintainer",
@@ -96,6 +96,7 @@ const Maintainer = ({match, history, maintainer, organisation, ...props}: Props)
               <i className="material-icons">email</i>
               <a href={`mailto:${email}`}>{email}</a>
             </div>}
+            {language && <div className={info}><i className="material-icons">language</i>{language}</div>}
           </div>
           <div className={spacer} />
           <ApplianceList

@@ -20,7 +20,7 @@ export const sidebarContainer = css`
   @media (max-width: ${sm}px) {
     background: none;
     align-items: initial;
-    flex-direction: column-reverse;
+    flex-direction: column;
   }
 `;
 
@@ -30,6 +30,7 @@ export const sidebar = css`
   flex: 1;
 
   @media (max-width: ${sm}px) {
+    margin-top: ${normal};
     background: none;
     padding: 0;
   }

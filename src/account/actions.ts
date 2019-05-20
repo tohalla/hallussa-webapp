@@ -1,8 +1,11 @@
+import i18next from "i18next";
 import { compose, head, prop } from "ramda";
 import { AnyAction, Dispatch } from "redux";
+import { ThunkAction } from "redux-thunk";
 
 import { CALL_API } from "../store/middleware/api/actions";
 import { ReduxAPICall } from "../store/middleware/api/api";
+import { ReduxState } from "../store/store";
 
 export const SET_ACTIVE_ACCOUNT = "SET_ACTIVE_ACCOUNT";
 export const FETCH_ACCOUNT_SUCCESS = "FETCH_ACCOUNT_SUCCESS";
@@ -14,6 +17,7 @@ export const SET_ACCOUNT_USER_ROLE = "SET_ACCOUNT_USER_ROLE";
 
 export interface AccountPayload {
   id: number;
+  language?: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -26,12 +30,16 @@ export interface AccountAction extends AnyAction {
   payload?: Partial<AccountPayload>;
 }
 
-export const setActiveAccount = (payload: any) => ({
-  payload,
-  type: SET_ACTIVE_ACCOUNT,
-});
+export const setActiveAccount: (payload: any) =>
+  ThunkAction<any, ReduxState, any, AnyAction> = (payload) => (dispatch, getState) => {
+    dispatch({payload, type: SET_ACTIVE_ACCOUNT});
+    const language = getState().entities.accounts[String(payload)].language;
+    if (language && language !== i18next.language) {
+      i18next.changeLanguage(language || i18next.language);
+    }
+  };
 
-export const fetchCurrentAccount = () => (dispatch: Dispatch) => dispatch<ReduxAPICall>({
+export const fetchCurrentAccount = () => (dispatch: Dispatch<any>) => dispatch<ReduxAPICall>({
   endpoint: "/accounts",
   method: "get",
   onSuccess: compose(dispatch, setActiveAccount, head, Object.keys as any),

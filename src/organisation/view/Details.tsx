@@ -28,6 +28,7 @@ import { deleteOrganisation, OrganisationPayload, setActiveOrganisation } from "
 import OrganisationSelect from "../component/OrganisationSelect";
 import { getOrganisation, getOrganisations } from "../state";
 import Edit from "./Edit";
+import Preferences from "./Preferences";
 import Users from "./Users";
 
 interface StateProps {
@@ -125,7 +126,7 @@ const Organisation = ({
       <RestrictedRoute
         path={`${match.path}/preferences`}
         to={match.url}
-        component={Tabbed(undefined, {contentContainerClassName: padded})}
+        component={Tabbed(Preferences, {contentComponentProps: {organisation}, contentContainerClassName: padded})}
         requirements={{userRole: {allowUpdateOrganisation: true}}}
         userRole={userRole}
       />

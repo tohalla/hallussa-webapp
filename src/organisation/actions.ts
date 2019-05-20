@@ -18,6 +18,7 @@ export const SET_ACTIVE_ORGANISATION = "SET_ACTIVE_ORGANISATION";
 
 export interface OrganisationPayload {
   id: number;
+  language?: string;
   name: string;
   organisationIdentifier?: string;
   createdAt?: string;
@@ -55,7 +56,7 @@ export const createOrganisation = (organisation: OrganisationPayload) => async (
   return response.payload as OrganisationPayload;
 };
 
-export const updateOrganisation = (organisation: OrganisationPayload) => async (dispatch: Dispatch) => {
+export const updateOrganisation = (organisation: Partial<OrganisationPayload>) => async (dispatch: Dispatch) => {
   const response = await dispatch<APIResponseAction<OrganisationPayload>>({
     body: organisation,
     endpoint: `/organisations/${organisation.id}`,

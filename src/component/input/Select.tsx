@@ -10,7 +10,9 @@ import { Omit } from "../../../misc";
 import { contentHorizontalSpacing } from "../../style/container";
 import { noWrap } from "../../style/inline";
 
-export interface SelectProps<T> extends FieldProps, Omit<Props<T>, "className" | "components"> {}
+export interface SelectProps<
+  T = {label: string, value: any}
+> extends Partial<FieldProps>, Omit<Props<T>, "className" | "components"> {}
 
 export default function Select<T = {label: string, value: any}>({
   form,

@@ -15,7 +15,7 @@ interface StateProps {
 type Props = RouteComponentProps<{organisation?: string}>;
 
 const Details = ({
-  account: {firstName, lastName, email},
+  account: {firstName, lastName, email, language},
 }: Props & StateProps) => {
   return (
     <div className={padded}>
