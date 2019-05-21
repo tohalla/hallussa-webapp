@@ -59,10 +59,6 @@ export const stacked = css`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-
-  & > * + * {
-    margin: 0;
-  }
 `;
 
 // default container used for views

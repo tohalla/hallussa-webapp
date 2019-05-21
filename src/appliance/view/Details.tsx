@@ -20,7 +20,13 @@ import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
-import { alignFlexStart, contentHorizontalSpacing, rowContainer, spread } from "../../style/container";
+import {
+  alignFlexStart,
+  contentHorizontalSpacing,
+  contentVerticalSpacingMinor,
+  rowContainer,
+  spread
+} from "../../style/container";
 import { alertIndication, info } from "../../style/inline";
 import { spacer } from "../../style/variables/spacing";
 import Loadable from "../../util/hoc/Loadable";
@@ -110,10 +116,12 @@ const Details = ({
           </div>
           {appliance.description}
           <div className={spacer} />
-          <Status status={appliance.status} />
-          {appliance.location &&
-            <div className={info}><i className="material-icons">location_on</i><span>{appliance.location}</span></div>
-          }
+          <div className={contentVerticalSpacingMinor}>
+            <Status status={appliance.status} />
+            {appliance.location &&
+              <div className={info}><i className="material-icons">location_on</i><span>{appliance.location}</span></div>
+            }
+          </div>
           <div className={spacer} />
           <MaintenanceEventList
             header={<h2>{t("appliance.event.list.title")}</h2>}

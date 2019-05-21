@@ -62,6 +62,9 @@ const OrganisationForm = ({
 
   const {t} = useTranslation();
   const validationSchema = yup.object().shape({
+    language: yup.object().shape({
+      value: yup.string(),
+    }).required(),
     name: yup.string().max(64).required(),
     organisationIdentifier: yup.string().max(64).required(),
   });

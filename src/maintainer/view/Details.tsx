@@ -18,7 +18,15 @@ import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
-import { alignFlexStart, contentHorizontalSpacing, padded, rowContainer, spread, stacked } from "../../style/container";
+import {
+  alignFlexStart,
+  contentHorizontalSpacing,
+  contentVerticalSpacingMinor,
+  padded,
+  rowContainer,
+  spread,
+  stacked
+} from "../../style/container";
 import { alertIndication, info } from "../../style/inline";
 import { spacer } from "../../style/variables/spacing";
 import Loadable from "../../util/hoc/Loadable";
@@ -90,7 +98,7 @@ const Maintainer = ({match, history, maintainer, organisation, ...props}: Props)
               </Restricted>
             </div>
           </div>
-          <div className={stacked}>
+          <div className={classnames(contentVerticalSpacingMinor)}>
             {phone && <div className={info}><i className="material-icons">phone</i><span>{phone}</span></div>}
             {email && <div className={info}>
               <i className="material-icons">email</i>
