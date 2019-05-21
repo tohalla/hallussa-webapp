@@ -96,7 +96,9 @@ const Maintainer = ({match, history, maintainer, organisation, ...props}: Props)
               <i className="material-icons">email</i>
               <a href={`mailto:${email}`}>{email}</a>
             </div>}
-            {language && <div className={info}><i className="material-icons">language</i>{language}</div>}
+            {language && <div className={info}>
+              <i className="material-icons">language</i>{t(`language.${language}`)}
+            </div>}
           </div>
           <div className={spacer} />
           <ApplianceList

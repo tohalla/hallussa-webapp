@@ -9,6 +9,7 @@ import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 import Button from "../../component/button/Button";
 import CancelButton from "../../component/button/CancelButton";
 import Input from "../../component/input/Input";
+import SelectLanguage from "../../component/input/SelectLanguage";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
@@ -30,7 +31,7 @@ interface DispatchProps {
 interface Props extends RouteComponentProps {
   initialState?: MaintainerPayload;
   onSubmit?: (state: MaintainerPayload) => any;
-  organisation?: OrganisationPayload;
+  organisation: OrganisationPayload;
   submitText?: string;
   header?: ReactFragment;
 }
@@ -49,9 +50,9 @@ const MaintainerForm = ({
       return;
     }
     if (initialState) {
-      await props.updateMaintainer({...initialState, ...state});
+      await props.updateMaintainer({...initialState, ...state, language: state.language.value});
     } else {
-      const maintainer = await props.createMaintainer(organisation.id, state);
+      const maintainer = await props.createMaintainer(organisation.id, {...state, language: state.language.value});
       if (maintainer) {
         history.push(`/maintainers/${maintainer.id}`);
       }
@@ -74,7 +75,13 @@ const MaintainerForm = ({
     <>
       {header}
       <Formik
-        initialValues={initialState || {email: "", firstName: "", lastName: "", phone: ""}}
+        initialValues={initialState || {
+          email: "",
+          firstName: "",
+          language: organisation.language,
+          lastName: "",
+          phone: "",
+        }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
         isInitialValid={false}
@@ -93,6 +100,11 @@ const MaintainerForm = ({
               <Field row={false} label={t("maintainer.field.lastName")} component={Input} type="text" name="lastName" />
             </div>
             <Field label={t("maintainer.field.phone")} component={Input} type="tel" name="phone" />
+            <Field
+              label={t("maintainer.field.language")}
+              component={SelectLanguage}
+              name="language"
+            />
             <div className={actionsRow}>
               <Button disabled={isSubmitting || !isValid} type="submit">
                 {submitText || t("maintainer.create.form.submit")}
@@ -117,4 +129,4 @@ const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) 
 
 export default connect<StateProps, DispatchProps, Props, ReduxState>(
   mapStateToProps, mapDispatchToProps
-)(Loadable<StateProps, {organisation?: OrganisationPayload}>(MaintainerForm));
+)(Loadable<StateProps, {organisation: OrganisationPayload}>(MaintainerForm));
