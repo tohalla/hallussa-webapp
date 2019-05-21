@@ -32,12 +32,7 @@ const Preferences = ({organisation, ...props}: Props & DispatchProps) => {
     <>
       <h1>{t("organisation.preferences.title")}</h1>
       <Formik
-        initialValues={{
-          language: organisation.language && {
-            label: t(`language.${organisation.language}`),
-            value: organisation.language,
-          }
-        }}
+        initialValues={{language: organisation.language}}
         onSubmit={handleSubmit}
       >
         {({isSubmitting, initialValues, values, status: {error} = {}}) => (

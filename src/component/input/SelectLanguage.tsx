@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import { FieldProps } from "formik";
@@ -7,6 +7,15 @@ import Select, { SelectProps } from "./Select";
 
 export default (props: Omit<SelectProps, "options"> & Partial<FieldProps>) => {
   const {t, i18n} = useTranslation();
+
+  useEffect(() => {
+    if (props.form && props.field && typeof props.field.value === "string") {
+      props.form.setFieldValue(props.field.name, {
+        label: t(`language.${props.field.value}`),
+        value: props.field.value,
+      });
+    }
+  }, [props.field && props.field.value]);
 
   const languages = [];
   for (const lang of i18n.languages) {

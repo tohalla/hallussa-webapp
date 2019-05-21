@@ -31,7 +31,6 @@ interface DispatchProps {
 interface Props extends RouteComponentProps {
   initialState?: MaintainerPayload;
   onSubmit?: (state: MaintainerPayload) => any;
-  organisation: OrganisationPayload;
   submitText?: string;
   header?: ReactFragment;
 }
@@ -44,7 +43,7 @@ const MaintainerForm = ({
   submitText,
   header,
   ...props
-}: StateProps & Props & DispatchProps) => {
+}: StateProps & Props & DispatchProps & {organisation: OrganisationPayload}) => {
   const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setSubmitting}) => {
     if (!organisation) {
       return;
@@ -67,6 +66,9 @@ const MaintainerForm = ({
   const validationSchema = yup.object().shape({
     email: yup.string().email().required(),
     firstName: yup.string().max(64).required(),
+    language: yup.object().shape({
+      value: yup.string(),
+    }).required(),
     lastName: yup.string().max(64).required(),
     phone: yup.string().matches(/^[+]{0,1}[\d \s\(\)-]{3,16}$/),
   });
