@@ -1,5 +1,6 @@
 import { AnyAction } from "redux";
-import { APIMethods } from "./api";
+import { Omit } from "../../../../misc";
+import { APIMethods, ReduxAPICall } from "./api";
 
 export const CALL_API = "CALL_API";
 export const CALL_API_SUCCESS = "CALL_API_SUCCESS";
@@ -16,3 +17,8 @@ export interface APIResponseAction<T = any> extends AnyAction {
   payload?: Partial<APIResponsePayload> | T;
   method: APIMethods;
 }
+
+export const callAPI = (args: Omit<ReduxAPICall, "type">) => ({
+  ...args,
+  type: CALL_API,
+});

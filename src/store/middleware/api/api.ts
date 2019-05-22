@@ -6,12 +6,12 @@ import { authenticatedFetch } from "../../../util/utilityFunctions";
 import { EntitiesState, ReduxState } from "../../store";
 import { APIResponseAction, CALL_API, CALL_API_FAILURE, CALL_API_SUCCESS } from "./actions";
 
-export type APIMethods = "post" | "get" | "patch" | "delete";
+export type APIMethods = "post" | "put" | "get" | "patch" | "delete";
 
 export interface ReduxAPICall<T = any> extends Action {
   endpoint: string;
   method: APIMethods;
-  successType: string;
+  successType?: string;
   type: "CALL_API";
   parameters?: {[key: string]: string | number};
   body?: {[key: string]: any};
@@ -27,7 +27,6 @@ export interface ReduxAPICall<T = any> extends Action {
  */
 const isValid = (payload: {[key: string]: any}): payload is ReduxAPICall =>
   typeof payload.endpoint === "string" &&
-  typeof payload.successType === "string" &&
   typeof payload.method === "string";
 
 const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => {
@@ -63,10 +62,12 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       if (cached) {
         // trigger onSuccess if defined
         if (typeof onSuccess === "function") { onSuccess(cached, true); }
-        return next({
-          payload: cached,
-          type: successType,
-        }); // dispatch success action
+        if (typeof successType === "string") {
+          return next({
+            payload: cached,
+            type: successType,
+          }); // dispatch success action
+        }
       }
     }
 
@@ -97,10 +98,12 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       }
       payload = typeof payload === "undefined" ? body || {} : transformResponse(payload);
       payload = {...payload, ...additionalPayload};
-      next({ // dispatch success for request action, body as payload if nothing received from server
-        payload,
-        type: successType,
-      });
+      if (typeof successType === "string") {
+        next({ // dispatch success for request action, body as payload if nothing received from server
+          payload,
+          type: successType,
+        });
+      }
       next<APIResponseAction>({ // dispatch api success action
         endpoint,
         method,
@@ -109,11 +112,12 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       if (typeof onSuccess === "function") { await onSuccess(payload, false); }
       return {payload};
     } else {
-      if (typeof onFailure === "function") { onFailure("failed to fetch"); }
+      const error = (await response.text()) || "Failed to fetch";
+      if (typeof onFailure === "function") { onFailure(error); }
       next({
         endpoint,
         method,
-        payload: {isFetching: false, error: "Failed to fetch"},
+        payload: {isFetching: false, error},
         type: CALL_API_FAILURE,
       }); // dispatch failure action
     }
