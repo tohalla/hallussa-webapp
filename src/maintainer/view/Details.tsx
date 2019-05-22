@@ -25,7 +25,6 @@ import {
   padded,
   rowContainer,
   spread,
-  stacked
 } from "../../style/container";
 import { alertIndication, info } from "../../style/inline";
 import { spacer } from "../../style/variables/spacing";
