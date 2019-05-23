@@ -3,7 +3,7 @@ import { compose, head, prop } from "ramda";
 import { AnyAction, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 
-import { CALL_API } from "../store/middleware/api/actions";
+import { APIResponseAction, CALL_API } from "../store/middleware/api/actions";
 import { ReduxAPICall } from "../store/middleware/api/api";
 import { ReduxState } from "../store/store";
 
@@ -12,6 +12,7 @@ export const FETCH_ACCOUNT_SUCCESS = "FETCH_ACCOUNT_SUCCESS";
 export const FETCH_ACCOUNTS_SUCCESS = "FETCH_ACCOUNTS_SUCCESS";
 
 export const ADD_ACCOUNT_SUCCESS = "ADD_ACCOUNT_SUCCESS";
+export const UPDATE_ACCOUNT_SUCCESS = "UPDATE_ACCOUNT_SUCCESS";
 
 export const SET_ACCOUNT_USER_ROLE = "SET_ACCOUNT_USER_ROLE";
 
@@ -77,6 +78,17 @@ export const addAccount = (
   successType: ADD_ACCOUNT_SUCCESS,
   type: CALL_API,
 });
+
+export const updateAccount = (account: Partial<AccountPayload>) => async (dispatch: Dispatch) => {
+  const response = await dispatch<APIResponseAction<AccountPayload>>({
+    body: account,
+    endpoint: `/accounts/${account.id}`,
+    method: "patch",
+    successType: UPDATE_ACCOUNT_SUCCESS,
+    type: CALL_API,
+  });
+  return response.payload as AccountPayload;
+};
 
 export const setUserRole = (
   organisation: number,
