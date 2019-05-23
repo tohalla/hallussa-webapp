@@ -56,7 +56,7 @@ const initialState: ViewsState = {
     users: {key: "users", label: ({t}) => t("tab.organisation.users"), sticky: true, order: 1},
   }},
   profile: {tabs: {
-    account: {key: "account", label: ({t}) => t("tab.profile.account"), sticky: true, order: 1},
+    account: {key: "profile", label: ({t}) => t("tab.profile.account"), sticky: true, order: 1},
     preferences: {key: "preferences", label: ({t}) => t("tab.profile.preferences"), sticky: true, order: 3},
     security: {key: "security", label: ({t}) => t("tab.profile.security"), sticky: true, order: 2},
   }},
