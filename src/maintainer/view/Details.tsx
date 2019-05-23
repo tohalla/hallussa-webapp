@@ -4,14 +4,13 @@ import React, { useEffect } from "react";
 import { connect, MapStateToProps } from "react-redux";
 
 import { useTranslation } from "react-i18next";
-import { Route, RouteComponentProps, Switch } from "react-router";
+import { RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
 import { AppliancePayload } from "../../appliance/actions";
 import ApplianceList from "../../appliance/component/ApplianceList";
 import DoubleClickButton from "../../component/button/DoubleClickButton";
 import Restricted from "../../component/Restricted";
 import { closeTab, createTab, TabPayload } from "../../component/tabbed/actions";
-import TabRouteIndexLookup from "../../component/tabbed/TabRouteIndexLookup";
 import Timestamps from "../../component/Timestamps";
 import { fetchMaintainerTasks } from "../../maintenance/task/actions";
 import { OrganisationPayload } from "../../organisation/actions";
@@ -30,7 +29,6 @@ import { alertIndication, info } from "../../style/inline";
 import { spacer } from "../../style/variables/spacing";
 import Loadable from "../../util/hoc/Loadable";
 import { deleteMaintainer, MaintainerPayload } from "../actions";
-import Edit from "./Edit";
 
 interface StateProps {
   appliances: ReadonlyArray<AppliancePayload>;
@@ -67,66 +65,50 @@ const Maintainer = ({match, history, maintainer, organisation, ...props}: Props)
 
   const {phone, firstName, lastName, email, language, createdAt, updatedAt} = maintainer;
 
-  const TabRoute = TabRouteIndexLookup<MaintainerPayload>({
-    accessor: "maintainer",
-    context: "maintainers",
-    getLabel: (maintainre) => `${maintainer.firstName} ${maintainer.lastName}`,
-    rootPath: `/maintainers/${maintainer.id}`,
-  });
-
   return (
-    <Switch>
-      <Route exact={true} path={match.path}>
-        <div className={padded}>
-          <div className={classnames(spread, alignFlexStart)}>
-            <h1>{firstName} {lastName}</h1>
-            <div className={classnames(rowContainer, contentHorizontalSpacing)}>
-              <Restricted requirements={{userRole: {allowDeleteMaintainer: true}}}>
-                <DoubleClickButton
-                  plain={true}
-                  secondaryClassName={alertIndication}
-                  onClick={handeDeleteMaintainer}
-                >
-                  {t("maintainer.action.delete")}
-                </DoubleClickButton>
-              </Restricted>
-              <Restricted requirements={{userRole: {allowUpdateMaintainer: true}}}>
-                <Link to={`/maintainers/${maintainer.id}/edit`}>
-                  {t("maintainer.action.edit")}
-                </Link>
-              </Restricted>
-            </div>
-          </div>
-          <div className={classnames(contentVerticalSpacingMinor)}>
-            {phone && <div className={info}><i className="material-icons">phone</i><span>{phone}</span></div>}
-            {email && <div className={info}>
-              <i className="material-icons">email</i>
-              <a href={`mailto:${email}`}>{email}</a>
-            </div>}
-            {language && <div className={info}>
-              <i className="material-icons">language</i>{t(`language.${language}`)}
-            </div>}
-          </div>
-          <div className={spacer} />
-          <ApplianceList
-            columns={["id", "name", "status", "location"]}
-            appliances={props.appliances}
-            header={<h2>{t("maintainer.appliance.list.title")}</h2>}
-          />
-          <div className={spacer} />
-          <Timestamps
-            translationKeys={{createdAt: "maintainer.createdAt", updatedAt: "maintainer.updatedAt"}}
-            createdAt={createdAt}
-            updatedAt={updatedAt}
-          />
+    <div className={padded}>
+      <div className={classnames(spread, alignFlexStart)}>
+        <h1>{firstName} {lastName}</h1>
+        <div className={classnames(rowContainer, contentHorizontalSpacing)}>
+          <Restricted requirements={{userRole: {allowDeleteMaintainer: true}}}>
+            <DoubleClickButton
+              plain={true}
+              secondaryClassName={alertIndication}
+              onClick={handeDeleteMaintainer}
+            >
+              {t("maintainer.action.delete")}
+            </DoubleClickButton>
+          </Restricted>
+          <Restricted requirements={{userRole: {allowUpdateMaintainer: true}}}>
+            <Link to={`/maintainers/${maintainer.id}/edit`}>
+              {t("maintainer.action.edit")}
+            </Link>
+          </Restricted>
         </div>
-      </Route>
-      <TabRoute
-        component={Edit}
-        path={`${match.path}/edit`}
-        requirements={{userRole: {allowUpdateMaintainer: true}}}
+      </div>
+      <div className={classnames(contentVerticalSpacingMinor)}>
+        {phone && <div className={info}><i className="material-icons">phone</i><span>{phone}</span></div>}
+        {email && <div className={info}>
+          <i className="material-icons">email</i>
+          <a href={`mailto:${email}`}>{email}</a>
+        </div>}
+        {language && <div className={info}>
+          <i className="material-icons">language</i>{t(`language.${language}`)}
+        </div>}
+      </div>
+      <div className={spacer} />
+      <ApplianceList
+        columns={["id", "name", "status", "location"]}
+        appliances={props.appliances}
+        header={<h2>{t("maintainer.appliance.list.title")}</h2>}
       />
-    </Switch>
+      <div className={spacer} />
+      <Timestamps
+        translationKeys={{createdAt: "maintainer.createdAt", updatedAt: "maintainer.updatedAt"}}
+        createdAt={createdAt}
+        updatedAt={updatedAt}
+      />
+    </div>
   );
 };
 

@@ -2,11 +2,11 @@ import React from "react";
 import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 
 import { connect, MapStateToProps } from "react-redux";
-import AccountRoot from "./account/AccountRoot";
-import ApplianceRoot from "./appliance/ApplianceRoot";
-import MaintainerRoot from "./maintainer/MaintainerRoot";
+import ProfileRouter from "./account/ProfileRouter";
+import ApplianceRouter from "./appliance/ApplianceRouter";
+import MaintainerRouter from "./maintainer/MaintainerRouter";
 import Topbar from "./navigation/Topbar";
-import OrganisationsRoot from "./organisation/OrganisationsRoot";
+import OrganisationsRouter from "./organisation/OrganisationRouter";
 import { ReduxState } from "./store/store";
 
 interface StateProps {
@@ -15,11 +15,11 @@ interface StateProps {
 
 const RootRouter = ({organisationSelected}: StateProps) => {
   const routes = [
-    <Route key="organisations" path="/organisations" component={OrganisationsRoot} />,
-    <Route key="profile" path="/profile" component={AccountRoot} />,
+    <Route key="organisations" path="/organisations" component={OrganisationsRouter} />,
+    <Route key="profile" path="/profile" component={ProfileRouter} />,
     ...organisationSelected ? [
-      <Route key="appliances" path="/appliances" component={ApplianceRoot} />,
-      <Route key="maintainers" path="/maintainers" component={MaintainerRoot} />,
+      <Route key="appliances" path="/appliances" component={ApplianceRouter} />,
+      <Route key="maintainers" path="/maintainers" component={MaintainerRouter} />,
     ] : [],
   ];
   return (

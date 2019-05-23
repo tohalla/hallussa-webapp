@@ -57,7 +57,7 @@ export const signOut = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("expiresAt");
 
-  window.location.href = baseUrl;
+  location.href = `${location.protocol}//${location.host}${location.pathname}`;
 };
 
 export const register = async (

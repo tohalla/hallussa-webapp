@@ -3,6 +3,7 @@ import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
 import { RouteComponentProps } from "react-router-dom";
+import tabbed from "../../component/tabbed/tabbed";
 import { ReduxState } from "../../store/store";
 import { contentVerticalSpacing, padded, stacked } from "../../style/container";
 import { info } from "../../style/inline";
@@ -16,6 +17,8 @@ interface StateProps {
 type Props = RouteComponentProps<{organisation?: string}>;
 
 const Details = ({account}: Props & StateProps) => {
+  const Tabbed = tabbed({view: "profile"});
+
   return (
     <div className={padded}>
       <h1>{account.firstName} {account.lastName}</h1>

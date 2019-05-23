@@ -9,6 +9,7 @@ import { padded } from "../style/container";
 import { MaintainerPayload } from "./actions";
 import Create from "./view/Create";
 import Details from "./view/Details";
+import Edit from "./view/Edit";
 import Listing from "./view/Listing";
 
 const MaintainersTabbed = tabbed({view: "maintainers"});
@@ -34,7 +35,16 @@ export default () => (
         requirements={{userRole: {allowCreateMaintainer: true}}}
         to="/maintainers"
       />
-      <TabRoute path="/maintainers/:maintainer" component={MaintainersTabbed(Details)} />
+      <Route path="/maintainers/:maintainer">
+        <Switch>
+          <TabRoute path={"/maintainers/:maintainer"} component={MaintainersTabbed(Details)} />
+          <TabRoute
+            component={MaintainersTabbed(Edit)}
+            path={"/maintainers/:maintainer/edit"}
+            requirements={{userRole: {allowUpdateMaintainer: true}}}
+          />
+        </Switch>
+      </Route>
       <Redirect path="/maintainers/*" to="/maintainers" />
     </Switch>
   </ViewContainer>
