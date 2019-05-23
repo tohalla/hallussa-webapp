@@ -1,12 +1,12 @@
 import classnames from "classnames";
 import { Field, Form, Formik, FormikConfig } from "formik";
-import { equals } from "ramda";
+import { equals, prop } from "ramda";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
 import { connect } from "react-redux";
 import Button from "../../component/button/Button";
-import SelectLanguage from "../../component/input/SelectLanguage";
+import SelectLanguage, { getLanguageOption } from "../../component/input/SelectLanguage";
 import { ReduxState } from "../../store/store";
 import { contentVerticalSpacing } from "../../style/container";
 import { actionsRow, form } from "../../style/form";
@@ -32,7 +32,7 @@ const Preferences = ({organisation, ...props}: Props & DispatchProps) => {
     <>
       <h1>{t("organisation.preferences.title")}</h1>
       <Formik
-        initialValues={{language: organisation.language}}
+        initialValues={{language: organisation.language && getLanguageOption({t, language: organisation.language})}}
         onSubmit={handleSubmit}
       >
         {({isSubmitting, initialValues, values, status: {error} = {}}) => (
