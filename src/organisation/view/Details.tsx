@@ -4,12 +4,10 @@ import React from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 
 import { useTranslation } from "react-i18next";
-import { Redirect, Route, Switch } from "react-router";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { UserRolePayload } from "../../account/user-role/actions";
 import DoubleClickButton from "../../component/button/DoubleClickButton";
-import Restricted, { RestrictedRoute } from "../../component/Restricted";
-import tabbed from "../../component/tabbed/tabbed";
+import Restricted from "../../component/Restricted";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import button from "../../style/button";
@@ -17,7 +15,6 @@ import {
   alignFlexStart,
   contentHorizontalSpacing,
   flex1,
-  padded,
   rowContainer,
   spread
 } from "../../style/container";
@@ -27,9 +24,6 @@ import Loadable from "../../util/hoc/Loadable";
 import { deleteOrganisation, OrganisationPayload, setActiveOrganisation } from "../actions";
 import OrganisationSelect from "../component/OrganisationSelect";
 import { getOrganisation, getOrganisations } from "../state";
-import Edit from "./Edit";
-import Preferences from "./Preferences";
-import Users from "./Users";
 
 interface StateProps {
   activeOrganisation?: Readonly<OrganisationPayload> | APIResponsePayload;
@@ -57,20 +51,9 @@ const Organisation = ({
   const organisation = props.organisation || activeOrganisation as OrganisationPayload;
   const handleDeleteOrganisation = () => props.deleteOrganisation(organisation);
 
-  if (organisations.length === 0) {
-    return <Redirect to="/organisations" />;
-  }
-  if (typeof organisation === "undefined") {
-    return <Redirect to={`/organisations/${organisations[0].id}`} />;
-  }
-  if (organisation.id !== Number(match.params.organisation)) {
-    return <Redirect to={`/organisations/${organisation.id}`} />;
-  }
-
-  const Tabbed = tabbed({view: "organisations", pathPostfix: String(organisation.id)});
   const {name, organisationIdentifier} = organisation;
 
-  const Content = () => (
+  return (
     <>
       <div>
         <div className={classnames(spread, alignFlexStart)}>
@@ -102,36 +85,6 @@ const Organisation = ({
         </div>
       </div>
     </>
-  );
-
-  return (
-    <Switch>
-      <Route
-        exact={true}
-        path={match.path}
-        component={Tabbed(Content, {userRole, contentContainerClassName: padded})}
-      />
-      <RestrictedRoute
-        path={`${match.path}/edit`}
-        to={match.url}
-        component={Edit}
-        requirements={{userRole: {allowUpdateOrganisation: true}}}
-        userRole={userRole}
-      />
-      <Route
-        exact={true}
-        path={`${match.path}/users`}
-        component={Tabbed(Users, {contentContainerClassName: padded})}
-      />
-      <RestrictedRoute
-        path={`${match.path}/preferences`}
-        to={match.url}
-        component={Tabbed(Preferences, {contentComponentProps: {organisation}, contentContainerClassName: padded})}
-        requirements={{userRole: {allowUpdateOrganisation: true}}}
-        userRole={userRole}
-      />
-      <Redirect to={match.url} />
-    </Switch>
   );
 };
 

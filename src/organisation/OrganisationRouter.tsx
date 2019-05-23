@@ -2,8 +2,8 @@ import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import ViewContainer from "../component/layout/ViewContainer";
+import OrganisationRoot from "./OrganisationRoot";
 import Create from "./view/Create";
-import Details from "./view/Details";
 import NoneCreated from "./view/NoneCreated";
 
 export default () => (
@@ -11,7 +11,7 @@ export default () => (
     <Switch>
       <Route exact={true} path="/organisations" component={NoneCreated} />
       <Route exact={true} path="/organisations/new" component={Create} />
-      <Route path="/organisations/:organisation" component={Details} />
+      <Route path="/organisations/:organisation" component={OrganisationRoot} />
       <Redirect path="/organisations/*" to="/organisations" />
     </Switch>
   </ViewContainer>
