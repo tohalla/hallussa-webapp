@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import { groupBy, map } from "ramda";
 import React from "react";
-import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
+import { connect, MapStateToProps } from "react-redux";
 
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -10,7 +10,6 @@ import SelectAndSet, { SelectAndSetProps } from "../../component/input/SelectAnd
 import { MaintainerPayload } from "../../maintainer/actions";
 import { getEntitiesByOrganisationSelector } from "../../organisation/selectors";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
-import { ReduxAPICall } from "../../store/middleware/api/api";
 import { ReduxState } from "../../store/store";
 import { alignCenter, contentHorizontalSpacing, flex1, rowContainer, stacked } from "../../style/container";
 import { normal } from "../../style/variables/spacing";
@@ -22,16 +21,8 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  assignMaintainerToAppliance(
-    organisation: number,
-    appliance: number,
-    maintainer: number
-  ): ReduxAPICall;
-  removeMaintainerFromAppliance(
-    organisation: number,
-    appliance: number,
-    maintainer: number
-  ): ReduxAPICall;
+  assignMaintainerToAppliance: typeof assignMaintainerToAppliance;
+  removeMaintainerFromAppliance: typeof removeMaintainerFromAppliance;
 }
 
 interface Props {
@@ -101,15 +92,10 @@ const MaintainerAssignment = ({
   );
 };
 
-const mapDispatchToProps: MapDispatchToProps<DispatchProps, Props> = {
-  assignMaintainerToAppliance,
-  removeMaintainerFromAppliance,
-};
-
 const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
   maintainers: getEntitiesByOrganisationSelector<"maintainers">("maintainers", state.session.activeOrganisation)(state),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(
+export default connect(mapStateToProps, {assignMaintainerToAppliance, removeMaintainerFromAppliance})(
   Loadable(MaintainerAssignment)
 );
