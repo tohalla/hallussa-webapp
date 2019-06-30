@@ -30,14 +30,11 @@ export default ({maintainers, header}: Props) => {
   return (
     <>
       {header}
-      {maintainers.length === 0 ?
-        <div className={emptyContainer}>{t("maintainer.listing.noMaintainers")}</div>
-      :
         <Table
+          emptyLabel={t("maintainer.listing.noMaintainers")}
           columns={columns}
           data={maintainers}
         />
-      }
     </>
   );
 };

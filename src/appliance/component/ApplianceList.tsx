@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Column } from "react-table";
 import Table from "../../component/Table";
-import { emptyContainer } from "../../style/container";
 import { AppliancePayload } from "../actions";
 import Status from "./Status";
 
@@ -21,43 +20,40 @@ const ApplianceList = ({header, appliances, columns, additionalColumns}: Props) 
   return (
       <div>
         {header}
-        {(appliances as Readonly<AppliancePayload[]>).length === 0 ?
-          <div className={emptyContainer}>{t("appliance.listing.noAppliances")}</div>
-        :
-          <Table
-            columns={getProps(columns, {
-              description: {
-                Header: t("appliance.field.description"),
-                accessor: "description",
-                id: "description",
-                resizable: true,
-              },
-              id: {Header: t("appliance.field.id"), accessor: "id", id: "id", maxWidth: 50},
-              location: {
-                Header: t("appliance.field.location"),
-                accessor: "location",
-                id: "location",
-                resizable: true,
-              },
-              name: {
-                Header: t("appliance.field.name"),
-                accessor: (appliance) => <Link to={`/appliances/${appliance.id}`}>{appliance.name}</Link>,
-                id: "name",
-                resizable: true,
-              },
-              status: {
-                Header: t("appliance.field.status"),
-                accessor: ({status}) => <Status status={status} />,
-                id: "status",
-                maxWidth: 120,
-                resizable: false,
-              },
-              ...additionalColumns,
-            })}
-            pageSize={20}
-            data={appliances as AppliancePayload[]}
-          />
-        }
+        <Table
+          emptyLabel={t("appliance.listing.noAppliances")}
+          columns={getProps(columns, {
+            description: {
+              Header: t("appliance.field.description"),
+              accessor: "description",
+              id: "description",
+              resizable: true,
+            },
+            id: {Header: t("appliance.field.id"), accessor: "id", id: "id", maxWidth: 50},
+            location: {
+              Header: t("appliance.field.location"),
+              accessor: "location",
+              id: "location",
+              resizable: true,
+            },
+            name: {
+              Header: t("appliance.field.name"),
+              accessor: (appliance) => <Link to={`/appliances/${appliance.id}`}>{appliance.name}</Link>,
+              id: "name",
+              resizable: true,
+            },
+            status: {
+              Header: t("appliance.field.status"),
+              accessor: ({status}) => <Status status={status} />,
+              id: "status",
+              maxWidth: 120,
+              resizable: false,
+            },
+            ...additionalColumns,
+          })}
+          pageSize={20}
+          data={appliances as AppliancePayload[]}
+        />
       </div>
   );
 };

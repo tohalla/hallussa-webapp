@@ -68,14 +68,11 @@ const MaintenanceEventList = ({
   return (
     <div>
       {header}
-      {maintenanceEvents.length === 0 ?
-        <div className={emptyContainer}>No events found</div>
-      :
-        <Table
-          columns={columns}
-          data={maintenanceEvents}
-        />
-      }
+      <Table
+        emptyLabel={t("maintenanceEvent.listing.noEvents")}
+        columns={columns}
+        data={maintenanceEvents}
+      />
     </div>
   );
 };
