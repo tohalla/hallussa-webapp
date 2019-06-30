@@ -31,14 +31,16 @@ const Preferences = ({account, ...props}: Props & StateProps & DispatchProps) =>
     setSubmitting(false);
   };
 
+  const initialValues = {language: account.language && getLanguageOption({t, language: account.language})};
+
   return (
     <>
       <h1>{t("tab.profile.preferences")}</h1>
       <Formik
-        initialValues={{language: account.language && getLanguageOption({t, language: account.language})}}
+        initialValues={initialValues}
         onSubmit={handleSubmit}
       >
-        {({isSubmitting, initialValues, values, status: {error} = {}}) => (
+        {({isSubmitting, values, status: {error} = {}}) => (
           <Form className={classnames(form, contentVerticalSpacing)}>
             <Field
               label={t("organisation.preferences.field.language")}

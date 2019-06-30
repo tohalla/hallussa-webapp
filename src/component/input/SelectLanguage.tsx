@@ -6,12 +6,10 @@ import { FieldProps } from "formik";
 import { Omit } from "../../../misc";
 import Select, { SelectProps } from "./Select";
 
-export const getLanguageOption = ({t, language}: {t: i18next.TFunction, language: string}) => {
-  return {
-    label: t(`language.${language}`),
-    value: language,
-  };
-};
+export const getLanguageOption = ({t, language}: {t: i18next.TFunction, language: string}) => ({
+  label: t(`language.${language}`),
+  value: language,
+});
 
 export default (props: Omit<SelectProps, "options"> & Partial<FieldProps>) => {
   const {t, i18n} = useTranslation();

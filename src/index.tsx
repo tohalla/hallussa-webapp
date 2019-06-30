@@ -20,13 +20,14 @@ if (process.env.NODE_ENV === "development") {
 
 const mount = async () => {
   const token = localStorage.getItem("token");
-  if (token && (await authenticate(token))) {
-    (document.getElementById("app") as HTMLElement).className = appContainer;
-
+  if (token) {
     await Promise.all([
+      authenticate(token),
       initializeStore(),
       i18n(),
     ]);
+
+    (document.getElementById("app") as HTMLElement).className = appContainer;
 
     return ReactDOM.render(
       <Provider store={store}><Router /></Provider>,
