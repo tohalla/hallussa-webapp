@@ -68,20 +68,13 @@ const getInputElement = ({
 
 const Input = ({
   wide,
-  form: {errors, touched, ...form},
+  form: {errors, touched},
   row,
   field: {name, onBlur, onChange, value},
   ...props
 }: FieldProps & InputProps) => {
   const inputElement = useRef<HTMLInputElement>();
   const [focused, setFocused] = useState();
-
-  const handleClick: MouseEventHandler = (event) => {
-    event.preventDefault();
-    if (inputElement.current) {
-      inputElement.current.focus();
-    }
-  };
 
   const handleBlur: FocusEventHandler<HTMLInputElement> = (event) => {
     onBlur(event);
@@ -93,7 +86,7 @@ const Input = ({
   };
 
   const renderInput = () => (
-    <div className={classnames(inputContainer, {[wideStyle]: wide})} onMouseDown={handleClick}>
+    <div className={classnames(inputContainer, {[wideStyle]: wide})}>
       {getInputElement({
         className: input,
         error: touched[name] && errors[name],

@@ -10,6 +10,7 @@ const input = css`
   background: ${greyscale[9]};
   padding: ${minor};
   flex: 1;
+  box-shadow: none;
 
   &:-webkit-autofill {
     box-shadow: 0 0 0 30px ${greyscale[9]} inset !important;
