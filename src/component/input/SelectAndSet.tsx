@@ -31,10 +31,9 @@ const SelectAndSet = <T extends {label: string, value: any}>({
   equalValue,
   ...props
 }: SelectAndSetProps<T>) => {
-  const handleSubmit: FormikConfig<any>["onSubmit"]  = async (state, {setSubmitting}) => {
+  const handleSubmit: FormikConfig<any>["onSubmit"]  = async (state) => {
     if (typeof onSet === "function") {
       await onSet(state);
-      setSubmitting(false);
     }
   };
 
@@ -43,7 +42,7 @@ const SelectAndSet = <T extends {label: string, value: any}>({
       {
         Array.isArray(props.options) && props.options.length > 0 ?
           <Formik initialValues={{[name]: initialValue}} onSubmit={handleSubmit}>
-            {({initialValues, values, isSubmitting}) => (
+            {({initialValues, values, isSubmitting, setFieldValue}) => (
               <Form className={formClassName}>
                 <Field
                   {...props}
@@ -51,6 +50,7 @@ const SelectAndSet = <T extends {label: string, value: any}>({
                   as={Select}
                   name={name}
                   onChange={onChange}
+                  setFieldValue={setFieldValue}
                 />
                 {
                   (typeof equalValue === "function" ?

@@ -25,13 +25,22 @@ interface DispatchProps {
 const Preferences = ({organisation, ...props}: Props & DispatchProps) => {
   const {t} = useTranslation();
 
-  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setSubmitting}) => {
-    await props.updateOrganisation({...state, language: state.language.value, id: organisation.id});
-    setSubmitting(false);
+  const handleSubmit: FormikConfig<any>["onSubmit"] = async (
+    {allowResolvingEvents, qrCodes, language}
+  ) => {
+    await props.updateOrganisation({
+      id: organisation.id,
+      language: language.value,
+      preferences: {
+        allowResolvingEvents,
+        qrCodes,
+      },
+    });
   };
 
   const validationSchema = yup.object().shape({
     allowResolvingEvents: yup.bool(),
+    language: yup.object(),
     qrCodes: yup.bool(),
   });
 
@@ -48,13 +57,14 @@ const Preferences = ({organisation, ...props}: Props & DispatchProps) => {
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({isSubmitting, values, errors, touched}) => (
+        {({isSubmitting, values, errors, touched, setFieldValue}) => (
           <Form className={classnames(form, contentVerticalSpacing)}>
             <Field
               label={t("organisation.preferences.field.language")}
               as={SelectLanguage}
               error={errors.language}
               touched={touched.language}
+              setFieldValue={setFieldValue}
               name="language"
             />
             <Field

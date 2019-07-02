@@ -15,18 +15,18 @@ export interface SelectProps<
 > extends Partial<FieldProps>, Omit<Props<T>, "className" | "components"> {}
 
 export default function Select<T = {label: string, value: any}>({
-  form,
-  field,
+  name,
   onChange,
   value,
+  setFieldValue,
+  onBlur,
   ...props
 }: SelectProps<T>) {
   const handleChange: Props<T>["onChange"] = (option) => {
     // handle formik field updates
-    if (form && typeof form.setFieldValue === "function" && field) {
-      form.setFieldValue(field.name, option);
-    }
-    if (typeof onChange === "function") {
+    if (typeof setFieldValue === "function") {
+      setFieldValue(name, option);
+    } else if (typeof onChange === "function") {
       onChange(option);
     }
   };
@@ -61,7 +61,7 @@ export default function Select<T = {label: string, value: any}>({
         }),
       }}
       {...props}
-      value={field ? field.value : value}
+      value={value}
     />
   );
   return props.label ? (

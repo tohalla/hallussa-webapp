@@ -26,9 +26,8 @@ type Props = RouteComponentProps<{organisation?: string}>;
 const Preferences = ({account, ...props}: Props & StateProps & DispatchProps) => {
   const {t} = useTranslation();
 
-  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setSubmitting}) => {
+  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state) => {
     await props.updateAccount({...state, language: state.language.value, id: account.id});
-    setSubmitting(false);
   };
 
   const initialValues = {language: account.language && getLanguageOption({t, language: account.language})};
@@ -40,11 +39,12 @@ const Preferences = ({account, ...props}: Props & StateProps & DispatchProps) =>
         initialValues={initialValues}
         onSubmit={handleSubmit}
       >
-        {({isSubmitting, values}) => (
+        {({setFieldValue, isSubmitting, values}) => (
           <Form className={classnames(form, contentVerticalSpacing)}>
             <Field
               label={t("organisation.preferences.field.language")}
               as={SelectLanguage}
+              setFieldValue={setFieldValue}
               name="language"
             />
             {!equals(values, initialValues) && <div className={actionsRow}>

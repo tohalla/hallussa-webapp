@@ -16,13 +16,12 @@ import { register } from "./auth";
 export default () => {
   const {t} = useTranslation();
 
-  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setSubmitting, setStatus}) => {
+  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setStatus}) => {
     try {
       await register(state);
       window.location.href = baseUrl;
     } catch (error) {
       setStatus({error});
-      setSubmitting(false);
     }
   };
 

@@ -44,7 +44,7 @@ const ApplianceForm = ({
   header,
   ...props
 }: StateProps & Props & DispatchProps) => {
-  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setSubmitting}) => {
+  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state) => {
     if (!organisation) {
       return;
     }
@@ -59,7 +59,6 @@ const ApplianceForm = ({
     if (typeof onSubmit === "function") {
       onSubmit(state);
     }
-    setSubmitting(false);
   };
 
   const {t} = useTranslation();

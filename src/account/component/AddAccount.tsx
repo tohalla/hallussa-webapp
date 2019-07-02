@@ -20,9 +20,8 @@ interface Props {
 }
 
 const AddAccount = ({organisation, ...props}: Props & DispatchProps) => {
-  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setSubmitting}) => {
+  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state) => {
     await props.addAccount(organisation.id, state);
-    setSubmitting(false);
   };
 
   const {t} = useTranslation();

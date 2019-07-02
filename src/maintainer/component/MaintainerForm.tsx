@@ -44,7 +44,7 @@ const MaintainerForm = ({
   header,
   ...props
 }: StateProps & Props & DispatchProps & {organisation: OrganisationPayload}) => {
-  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setSubmitting}) => {
+  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state) => {
     if (!organisation) {
       return;
     }
@@ -59,7 +59,6 @@ const MaintainerForm = ({
     if (typeof onSubmit === "function") {
       onSubmit(state);
     }
-    setSubmitting(false);
   };
 
   const {t} = useTranslation();
@@ -87,7 +86,7 @@ const MaintainerForm = ({
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({isValid, isSubmitting, dirty, errors, touched}) => (
+        {({isValid, isSubmitting, dirty, errors, touched, setFieldValue}) => (
           <Form className={classnames(form, contentVerticalSpacing)}>
             <Field
               autoFocus={true}
@@ -129,6 +128,7 @@ const MaintainerForm = ({
             <Field
               label={t("maintainer.field.language")}
               as={SelectLanguage}
+              setFieldValue={setFieldValue}
               error={errors.language}
               touched={touched.language}
               name="language"

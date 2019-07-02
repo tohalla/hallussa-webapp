@@ -26,7 +26,7 @@ const changePassword =  ({account, ...props}: Props & DispatchProps) => {
   const [visible, toggleVisible] = useToggle();
   const {t} = useTranslation();
 
-  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setStatus, setSubmitting, resetForm}) => {
+  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setStatus, resetForm}) => {
     await props.callAPI({
       body: state,
       endpoint: `/accounts/${account.id}/password`,
@@ -39,7 +39,6 @@ const changePassword =  ({account, ...props}: Props & DispatchProps) => {
         toggleVisible();
       },
     });
-    setSubmitting(false);
   };
 
   const validationSchema = yup.object().shape({

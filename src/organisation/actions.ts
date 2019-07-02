@@ -17,8 +17,8 @@ export const DELETE_ORGANISATIONS_SUCCESS = "DELETE_ORGANISATIONS_SUCCESS";
 export const SET_ACTIVE_ORGANISATION = "SET_ACTIVE_ORGANISATION";
 
 export interface OrganisationPreferences {
-  allowResolvingEvents: boolean;
-  qrCodes: boolean;
+  allowResolvingEvents?: boolean;
+  qrCodes?: boolean;
 }
 
 export interface OrganisationPayload {

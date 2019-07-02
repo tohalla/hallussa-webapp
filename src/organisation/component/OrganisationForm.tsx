@@ -42,7 +42,7 @@ const OrganisationForm = ({
   header,
   ...props
 }: DispatchProps & StateProps & Props) => {
-  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setSubmitting}) => {
+  const handleSubmit: FormikConfig<any>["onSubmit"] = async (state) => {
     if (initialState) {
       await props.updateOrganisation({...initialState, ...state});
     } else {
@@ -57,7 +57,6 @@ const OrganisationForm = ({
     if (typeof onSubmit === "function") {
       onSubmit(state);
     }
-    setSubmitting(false);
   };
 
   const {t} = useTranslation();
