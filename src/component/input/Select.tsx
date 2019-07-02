@@ -16,7 +16,7 @@ export interface SelectProps<
 
 export default function Select<T = {label: string, value: any}>({
   name,
-  onChange,
+  onValueSelected,
   value,
   setFieldValue,
   onBlur,
@@ -26,15 +26,15 @@ export default function Select<T = {label: string, value: any}>({
     // handle formik field updates
     if (typeof setFieldValue === "function") {
       setFieldValue(name, option);
-    } else if (typeof onChange === "function") {
-      onChange(option);
+    }
+    if (typeof onValueSelected === "function") {
+      onValueSelected(option);
     }
   };
 
   const element = (
     <ReactSelect
       menuPortalTarget={document.querySelector("body")}
-      onChange={handleChange}
       styles={{
         control: (base) => ({
           ...base,
@@ -61,6 +61,7 @@ export default function Select<T = {label: string, value: any}>({
         }),
       }}
       {...props}
+      onChange={handleChange}
       value={value}
     />
   );

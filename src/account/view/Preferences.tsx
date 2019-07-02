@@ -47,11 +47,11 @@ const Preferences = ({account, ...props}: Props & StateProps & DispatchProps) =>
               setFieldValue={setFieldValue}
               name="language"
             />
-            {!equals(values, initialValues) && <div className={actionsRow}>
-              <Button disabled={isSubmitting} type="submit">
+            <div className={actionsRow}>
+              <Button disabled={equals(values, initialValues) || isSubmitting} type="submit">
                 {t("account.preferences.submit")}
               </Button>
-            </div>}
+            </div>
           </Form>
         )}
       </Formik>

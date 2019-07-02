@@ -10,7 +10,7 @@ import Select, { SelectProps } from "./Select";
 type Value<T> = undefined | T | T[] | null;
 export interface SelectAndSetProps<T = {label: string, value: any}> extends
   Omit<SelectProps<T>, keyof FieldProps>, FieldConfig {
-  onChange?: SelectProps<T>["onChange"];
+  onValueSelected?: SelectProps<T>["onChange"];
   initialValue?: Value<T>;
   setLabel: string;
   noOptions?: ReactFragment;
@@ -22,7 +22,7 @@ export interface SelectAndSetProps<T = {label: string, value: any}> extends
 const SelectAndSet = <T extends {label: string, value: any}>({
   initialValue,
   onSet,
-  onChange,
+  onValueSelected: onChange,
   setLabel,
   name,
   noOptions,
@@ -49,7 +49,7 @@ const SelectAndSet = <T extends {label: string, value: any}>({
                   isDisabled={isSubmitting}
                   as={Select}
                   name={name}
-                  onChange={onChange}
+                  onValueSelected={onChange}
                   setFieldValue={setFieldValue}
                 />
                 {

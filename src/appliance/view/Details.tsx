@@ -123,9 +123,11 @@ const Details = ({
           createdAt={appliance.createdAt}
           updatedAt={appliance.updatedAt}
         />
-        <Button onClick={handleFetchQR}>
-          {t("appliance.action.downloadQR")}
-        </Button>
+        <Restricted requirements={{organisationPreferences: {qrCodes: true}}}>
+          <Button onClick={handleFetchQR}>
+            {t("appliance.action.downloadQR")}
+          </Button>
+        </Restricted>
       </div>
     </WithSidebar>
   );

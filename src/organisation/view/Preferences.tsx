@@ -79,11 +79,11 @@ const Preferences = ({organisation, ...props}: Props & DispatchProps) => {
               type="checkbox"
               name="allowResolvingEvents"
             />
-            {!equals(values, initialValues) && <div className={actionsRow}>
-              <Button disabled={isSubmitting} type="submit">
+            <div className={actionsRow}>
+              <Button disabled={equals(values, initialValues) || isSubmitting} type="submit">
                 {t("organisation.preferences.submit")}
               </Button>
-            </div>}
+            </div>
           </Form>
         )}
       </Formik>
