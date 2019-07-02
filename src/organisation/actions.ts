@@ -16,6 +16,11 @@ export const FETCH_ORGANISATIONS_SUCCESS = "FETCH_ORGANISATIONS_SUCCESS";
 export const DELETE_ORGANISATIONS_SUCCESS = "DELETE_ORGANISATIONS_SUCCESS";
 export const SET_ACTIVE_ORGANISATION = "SET_ACTIVE_ORGANISATION";
 
+export interface OrganisationPreferences {
+  allowResolvingEvents: boolean;
+  qrCodes: boolean;
+}
+
 export interface OrganisationPayload {
   id: number;
   language?: string;
@@ -27,6 +32,7 @@ export interface OrganisationPayload {
   appliances?: ReadonlyArray<number>;
   userRoles?: ReadonlyArray<number>;
   accounts?: ReadonlyArray<{account: number, userRole: number}>;
+  preferences?: OrganisationPreferences;
 }
 
 export interface OrganisationAction {

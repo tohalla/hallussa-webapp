@@ -86,29 +86,55 @@ const MaintainerForm = ({
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
-        isInitialValid={false}
       >
-        {({isValid, isSubmitting}) => (
+        {({isValid, isSubmitting, dirty, errors, touched}) => (
           <Form className={classnames(form, contentVerticalSpacing)}>
-            <Field autoFocus={true} label={t("maintainer.field.email")} component={Input} type="text" name="email" />
+            <Field
+              autoFocus={true}
+              label={t("maintainer.field.email")}
+              as={Input}
+              error={errors.email}
+              touched={touched.email}
+              type="text"
+              name="email"
+            />
             <div className={inputRow}>
               <Field
                 row={false}
                 label={t("maintainer.field.firstName")}
-                component={Input}
+                as={Input}
+                error={errors.firstName}
+                touched={touched.firstName}
                 type="text"
                 name="firstName"
               />
-              <Field row={false} label={t("maintainer.field.lastName")} component={Input} type="text" name="lastName" />
+              <Field
+                row={false}
+                label={t("maintainer.field.lastName")}
+                as={Input}
+                error={errors.lastName}
+                touched={touched.lastName}
+                type="text"
+                name="lastName"
+              />
             </div>
-            <Field label={t("maintainer.field.phone")} component={Input} type="tel" name="phone" />
+            <Field
+              label={t("maintainer.field.phone")}
+              as={Input}
+              error={errors.phone}
+              touched={touched.phone}
+              type="tel"
+              name="phone"
+            />
             <Field
               label={t("maintainer.field.language")}
-              component={SelectLanguage}
+              as={SelectLanguage}
+              error={errors.language}
+              touched={touched.language}
               name="language"
             />
             <div className={actionsRow}>
-              <Button disabled={isSubmitting || !isValid} type="submit">
+              <Button disabled={!dirty || isSubmitting || !isValid} type="submit">
                 {submitText || t("maintainer.create.form.submit")}
               </Button>
               <CancelButton />

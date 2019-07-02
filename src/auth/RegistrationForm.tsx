@@ -37,24 +37,63 @@ export default () => {
       .oneOf([yup.ref("password")], t("account.registration.form.error.passwordsDontMatch")),
   });
 
+  const initialValues = {email: "", firstName: "", lastName: "", password: "", retypePassword: "", acceptTOS: false};
+
   return (
     <>
       <h1>{t("account.registration.title")}</h1>
       <Formik
-        initialValues={{email: "", firstName: "", lastName: "", password: "", retypePassword: "", acceptTOS: false}}
+        initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
-        isInitialValid={false}
       >
-        {({isValid, isSubmitting, status: {error} = {}}) => (
+        {({isValid, touched, errors, isSubmitting, dirty, status: {error} = {}}) => (
           <Form className={classnames(form, contentVerticalSpacing)}>
-            <Field autoFocus={true} label={t("account.field.email")} component={Input} type="email" name="email" />
+            <Field
+              autoFocus={true}
+              label={t("account.field.email")}
+              as={Input}
+              error={errors.email}
+              touched={touched.email}
+              type="email"
+              name="email"
+            />
             <div className={inputRow}>
-              <Field label={t("account.field.firstName")} component={Input} row={false} type="text" name="firstName" />
-              <Field label={t("account.field.lastName")} component={Input} row={false} type="text" name="lastName" />
+              <Field
+                label={t("account.field.firstName")}
+                as={Input}
+                row={false}
+                error={errors.firstName}
+                touched={touched.firstName}
+                type="text"
+                name="firstName"
+              />
+              <Field
+                label={t("account.field.lastName")}
+                as={Input}
+                row={false}
+                error={errors.lastName}
+                touched={touched.lastName}
+                type="text"
+                name="lastName"
+              />
             </div>
-            <Field label={t("account.field.password")} component={Input} type="password" name="password" />
-            <Field label={t("account.field.retypePassword")} component={Input} type="password" name="retypePassword" />
+            <Field
+              label={t("account.field.password")}
+              as={Input}
+              error={errors.password}
+              touched={touched.password}
+              type="password"
+              name="password"
+            />
+            <Field
+              label={t("account.field.retypePassword")}
+              as={Input}
+              error={errors.retypePassword}
+              touched={touched.retypePassword}
+              type="password"
+              name="retypePassword"
+            />
             <ErrorMessage component="div" className={errorStyle} name={"retypePassword"} />
             <Field
               label={
@@ -62,13 +101,15 @@ export default () => {
                   a <a href="/terms-of-service.html" target="_blank">terms</a>
                 </Trans>
               }
-              component={Input}
+              as={Input}
+              error={errors.acceptTOS}
+              touched={touched.acceptTOS}
               type="checkbox"
               name="acceptTOS"
             />
             {error && <div className={errorStyle}>{error}</div>}
             <div className={actionsRow}>
-              <Button disabled={isSubmitting || !isValid} type="submit">
+              <Button disabled={!dirty || isSubmitting || !isValid} type="submit">
                 {t("account.registration.form.submit")}
               </Button>
               <Link className={small} to="/">{t("account.registration.authenticate")}</Link>

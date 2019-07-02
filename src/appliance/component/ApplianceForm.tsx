@@ -76,15 +76,36 @@ const ApplianceForm = ({
         initialValues={initialState || {name: "", description: "", location: ""}}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
-        isInitialValid={false}
       >
-        {({isValid, isSubmitting}) => (
+        {({isValid, isSubmitting, dirty, errors, touched}) => (
           <Form className={classnames(form, contentVerticalSpacing)}>
-            <Field autoFocus={true} label={t("appliance.field.name")} component={Input} type="text" name="name" />
-            <Field label={t("appliance.field.description")} component={Input} type="textarea" name="description" />
-            <Field label={t("appliance.field.location")} component={Input} type="text" name="location" />
+            <Field
+              autoFocus={true}
+              label={t("appliance.field.name")}
+              as={Input}
+              error={errors.name}
+              touched={touched.name}
+              type="text"
+              name="name"
+            />
+            <Field
+              label={t("appliance.field.description")}
+              as={Input}
+              error={errors.description}
+              touched={touched.description}
+              type="textarea"
+              name="description"
+            />
+            <Field
+              label={t("appliance.field.location")}
+              as={Input}
+              error={errors.location}
+              touched={touched.location}
+              type="text"
+              name="location"
+            />
             <div className={actionsRow}>
-              <Button disabled={!isValid || isSubmitting} type="submit">
+              <Button disabled={!dirty || !isValid || isSubmitting} type="submit">
                 {submitText || t("appliance.create.form.submit")}
               </Button>
               <CancelButton />

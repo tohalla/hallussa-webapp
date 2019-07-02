@@ -1,10 +1,6 @@
 import classnames from "classnames";
-import { contains, equals, path, pick } from "ramda";
 import React, {
   FocusEventHandler,
-  memo,
-  MouseEventHandler,
-  useRef,
   useState
 } from "react";
 
@@ -24,6 +20,8 @@ export interface InputProps {
   autoComplete: "off" | "on";
   disabled?: boolean;
   autoFocus: boolean;
+  error: string;
+  touched: boolean;
   label: string;
   required: boolean;
   row: boolean;
@@ -68,12 +66,15 @@ const getInputElement = ({
 
 const Input = ({
   wide,
-  form: {errors, touched},
   row,
-  field: {name, onBlur, onChange, value},
+  name,
+  onBlur,
+  onChange,
+  value,
+  error,
+  touched,
   ...props
-}: FieldProps & InputProps) => {
-  const inputElement = useRef<HTMLInputElement>();
+}: FieldProps["field"] & InputProps) => {
   const [focused, setFocused] = useState();
 
   const handleBlur: FocusEventHandler<HTMLInputElement> = (event) => {
@@ -89,14 +90,13 @@ const Input = ({
     <div className={classnames(inputContainer, {[wideStyle]: wide})}>
       {getInputElement({
         className: input,
-        error: touched[name] && errors[name],
+        error: touched && error,
         focused,
         name,
         onBlur: handleBlur,
         onChange,
         onFocus: handleFocus,
         placeholder: props.label,
-        ref: inputElement,
         size: 1,
         value,
         ...props,
@@ -115,9 +115,4 @@ Input.defaultProps = {
   wide: false,
 };
 
-export default memo(Input, (prev, next) => !contains(false, [
-  path(["field", "value"]),
-  path(["form", "errors", prev.field.name]),
-  path(["form", "touched", next.field.name]),
-  pick(["wide", "disabled"]),
-].map((p) => equals(p(prev), p(next)))));
+export default Input;

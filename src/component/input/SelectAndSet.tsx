@@ -45,7 +45,13 @@ const SelectAndSet = <T extends {label: string, value: any}>({
           <Formik initialValues={{[name]: initialValue}} onSubmit={handleSubmit}>
             {({initialValues, values, isSubmitting}) => (
               <Form className={formClassName}>
-                <Field {...props} isDisabled={isSubmitting} component={Select} name={name} onChange={onChange} />
+                <Field
+                  {...props}
+                  isDisabled={isSubmitting}
+                  as={Select}
+                  name={name}
+                  onChange={onChange}
+                />
                 {
                   (typeof equalValue === "function" ?
                     equalValue(initialValues[name], values[name]) : initialValues[name] === values[name]

@@ -40,11 +40,11 @@ const Preferences = ({account, ...props}: Props & StateProps & DispatchProps) =>
         initialValues={initialValues}
         onSubmit={handleSubmit}
       >
-        {({isSubmitting, values, status: {error} = {}}) => (
+        {({isSubmitting, values}) => (
           <Form className={classnames(form, contentVerticalSpacing)}>
             <Field
               label={t("organisation.preferences.field.language")}
-              component={SelectLanguage}
+              as={SelectLanguage}
               name="language"
             />
             {!equals(values, initialValues) && <div className={actionsRow}>

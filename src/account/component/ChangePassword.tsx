@@ -55,21 +55,36 @@ const changePassword =  ({account, ...props}: Props & DispatchProps) => {
       initialValues={{currentPassword: "", password: "", retypePassword: ""}}
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
-      isInitialValid={false}
     >
-      {({isValid, isSubmitting, status: {error} = {}}) => (
+      {({isValid, errors, touched, isSubmitting, dirty, status: {error} = {}}) => (
         <Form className={classnames(form, contentVerticalSpacing)}>
           <Field
             label={t("account.field.currentPassword")}
-            component={Input}
+            as={Input}
+            error={errors.currentPassword}
+            touched={touched.currentPassword}
             type="password"
             name="currentPassword"
           />
-          <Field label={t("account.field.password")} component={Input} type="password" name="password" />
-          <Field label={t("account.field.retypePassword")} component={Input} type="password" name="retypePassword" />
+          <Field
+            label={t("account.field.password")}
+            as={Input}
+            error={errors.password}
+            touched={touched.password}
+            type="password"
+            name="password"
+          />
+          <Field
+            label={t("account.field.retypePassword")}
+            as={Input}
+            error={errors.retypePassword}
+            touched={touched.retypePassword}
+            type="password"
+            name="retypePassword"
+          />
           {error && <div className={errorStyle}>{error}</div>}
           <div className={actionsRow}>
-            <Button disabled={isSubmitting || !isValid} type="submit">
+            <Button disabled={!dirty || isSubmitting || !isValid} type="submit">
               {t("account.action.changePassword")}
             </Button>
             <Button plain={true} onClick={toggleVisible}>

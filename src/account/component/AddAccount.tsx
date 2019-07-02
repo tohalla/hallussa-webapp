@@ -35,18 +35,21 @@ const AddAccount = ({organisation, ...props}: Props & DispatchProps) => {
       initialValues={{email: ""}}
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
-      isInitialValid={false}
     >
-      {({isValid, isSubmitting}) => (
+      {({isValid, dirty, isSubmitting, errors, touched}) => (
         <Form className={rowContainer}>
           <Field
-            component={Input}
+            as={Input}
             label={t("organisation.account.field.email")}
+            error={errors.email}
+            touched={touched.email}
             wide={true}
             type="email"
             name="email"
           />
-          <Button disabled={isSubmitting || !isValid} type="submit">{t("organisation.account.addAccount")}</Button>
+          <Button disabled={!dirty || isSubmitting || !isValid} type="submit">
+            {t("organisation.account.addAccount")}
+          </Button>
         </Form>
       )}
     </Formik>

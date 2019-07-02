@@ -21,7 +21,7 @@
     "classnames": "^2.2.6",
     "date-fns": "^1.29.0",
     "emotion": "^10.0.9",
-    "formik": "^1.5.4",
+    "formik": "^2.0.1-rc.8",
     "i18next": "^15.0.9",
     "immer": "^3.1.1",
     "normalize.css": "^8.0.1",

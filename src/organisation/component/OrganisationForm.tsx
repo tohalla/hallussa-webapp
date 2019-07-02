@@ -76,19 +76,28 @@ const OrganisationForm = ({
         initialValues={initialState || {name: "", organisationIdentifier: ""}}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
-        isInitialValid={false}
       >
-        {({isValid, isSubmitting}) => (
+        {({isValid, isSubmitting, dirty, errors, touched}) => (
           <Form className={classnames(form, contentVerticalSpacing)}>
-            <Field autoFocus={true} label={t("organisation.field.name")} component={Input} type="text" name="name" />
+            <Field
+              autoFocus={true}
+              label={t("organisation.field.name")}
+              as={Input}
+              error={errors.name}
+              touched={touched.name}
+              type="text"
+              name="name"
+            />
             <Field
               label={t("organisation.field.organisationIdentifier")}
-              component={Input}
+              as={Input}
+              error={errors.organisationIdentifier}
+              touched={touched.organisationIdentifier}
               type="text"
               name="organisationIdentifier"
             />
             <div className={actionsRow}>
-              <Button disabled={isSubmitting || !isValid} type="submit">
+              <Button disabled={!dirty || isSubmitting || !isValid} type="submit">
                 {submitText || t("organisation.create.form.submit")}
               </Button>
               <CancelButton />

@@ -3,9 +3,11 @@ import { Field, Form, Formik, FormikConfig } from "formik";
 import { equals, prop } from "ramda";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import * as yup from "yup";
 
 import { connect } from "react-redux";
 import Button from "../../component/button/Button";
+import Input from "../../component/input/Input";
 import SelectLanguage, { getLanguageOption } from "../../component/input/SelectLanguage";
 import { ReduxState } from "../../store/store";
 import { contentVerticalSpacing } from "../../style/container";
@@ -28,7 +30,15 @@ const Preferences = ({organisation, ...props}: Props & DispatchProps) => {
     setSubmitting(false);
   };
 
-  const initialValues = {language: organisation.language && getLanguageOption({t, language: organisation.language})}
+  const validationSchema = yup.object().shape({
+    allowResolvingEvents: yup.bool(),
+    qrCodes: yup.bool(),
+  });
+
+  const initialValues = {
+    language: organisation.language && getLanguageOption({t, language: organisation.language}),
+    ...(organisation.preferences || {}),
+  };
 
   return (
     <>
@@ -36,13 +46,28 @@ const Preferences = ({organisation, ...props}: Props & DispatchProps) => {
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
+        validationSchema={validationSchema}
       >
-        {({isSubmitting, values, status: {error} = {}}) => (
+        {({isSubmitting, values, errors, touched}) => (
           <Form className={classnames(form, contentVerticalSpacing)}>
             <Field
               label={t("organisation.preferences.field.language")}
-              component={SelectLanguage}
+              as={SelectLanguage}
+              error={errors.language}
+              touched={touched.language}
               name="language"
+            />
+            <Field
+              label={t("organisation.preferences.field.qrCodes")}
+              as={Input}
+              type="checkbox"
+              name="qrCodes"
+            />
+            <Field
+              label={t("organisation.preferences.field.allowResolvingEvents")}
+              as={Input}
+              type="checkbox"
+              name="allowResolvingEvents"
             />
             {!equals(values, initialValues) && <div className={actionsRow}>
               <Button disabled={isSubmitting} type="submit">
