@@ -10,7 +10,7 @@ import {
 import { APIMethods } from "./api";
 
 export type RequestsState = {
-  [key in APIMethods]: {[key: string]: APIResponsePayload}
+  [key in APIMethods]: {[key: string]: APIResponsePayload};
 };
 
 const entityHandlers: {
@@ -21,5 +21,5 @@ const entityHandlers: {
   [CALL_API_SUCCESS]: (state, {payload, method, endpoint}) => dissocPath([method, endpoint], state),
 };
 
-export default (state = {delete: {}, get: {}, patch: {}, post: {}}, action: APIResponseAction) =>
+export default (state = {delete: {}, get: {}, patch: {}, post: {}, put: {}}, action: APIResponseAction) =>
   action.type in entityHandlers ? entityHandlers[action.type](state, action) : state;

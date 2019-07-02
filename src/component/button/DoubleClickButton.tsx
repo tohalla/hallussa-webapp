@@ -8,7 +8,7 @@ interface Props extends Partial<ButtonProps> {
   delayInSeconds?: number;
   onClick: MouseEventHandler;
   secondaryClassName?: string;
-  DeletionConfirmation: FC<{time: number}>;
+  DeletionConfirmation: FC<{time?: number}>;
 }
 
 export default class DoubleClickButton extends React.Component<Props> {
@@ -69,7 +69,7 @@ export default class DoubleClickButton extends React.Component<Props> {
         className={timer ? secondaryClassName : className}
         onClick={this.handleClick}
       >
-        {timer ? <DeletionConfirmation time={timer} /> : children}
+        {typeof timer === "undefined" ? children : <DeletionConfirmation time={timer} />}
       </Button>
     );
   }

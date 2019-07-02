@@ -4,7 +4,6 @@ import { Column } from "react-table";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import Table from "../../component/Table";
-import { emptyContainer } from "../../style/container";
 import { MaintainerPayload } from "../actions";
 
 interface Props {

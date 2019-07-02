@@ -34,7 +34,7 @@ export interface ApplianceAction {
 export const fetchAppliances = (organisation: number, {bypassCache = false} = {}): ReduxAPICall => ({
   endpoint: `/organisations/${organisation}/appliances`,
   method: "get",
-  parameters: {eager: "[maintainers, status]"},
+  parameters: {eager: "[maintainers,status]"},
   successType: FETCH_APPLIANCES_SUCCESS,
   type: CALL_API,
 });

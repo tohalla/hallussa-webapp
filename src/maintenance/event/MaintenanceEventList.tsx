@@ -11,7 +11,6 @@ import { MaintenanceEventPayload } from "../../maintenance/event/actions";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { EntityGroup } from "../../store/reducer";
 import { ReduxState } from "../../store/store";
-import { emptyContainer } from "../../style/container";
 import Loadable from "../../util/hoc/Loadable";
 
 interface StateProps {

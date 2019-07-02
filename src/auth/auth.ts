@@ -1,5 +1,5 @@
 import { AccountPayload } from "../account/actions";
-import { apiUrl, baseUrl } from "../config";
+import { apiUrl } from "../config";
 
 let refreshTokenTimeout: number | undefined;
 

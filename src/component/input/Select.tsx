@@ -1,8 +1,8 @@
 import { FieldProps } from "formik";
 import React from "react";
 import ReactSelect from "react-select";
-import { Props } from "react-select/lib/Select";
 
+import { Props } from "react-select/src/Select";
 import { greyscale } from "style/variables/colors";
 import { inputHeight } from "style/variables/sizes";
 import { minimal } from "style/variables/spacing";

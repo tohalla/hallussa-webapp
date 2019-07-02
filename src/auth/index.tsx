@@ -1,10 +1,12 @@
-import "@babel/polyfill";
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+import "whatwg-fetch"; // fetch polyfill, replaces standard fetch
+
 import classnames from "classnames";
 import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import { appContainer, authContainer, centerContent, flex1 } from "style/container";
-import "whatwg-fetch"; // fetch polyfill, replaces standard fetch
 
 import "style";
 
