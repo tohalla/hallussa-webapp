@@ -1,16 +1,12 @@
 import classnames from "classnames";
 import { map, pick, values } from "ramda";
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { connect, MapStateToProps } from "react-redux";
 
-import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router";
-import { Link } from "react-router-dom";
 import { AppliancePayload } from "../../appliance/actions";
 import ApplianceList from "../../appliance/component/ApplianceList";
-import DoubleClickButton from "../../component/button/DoubleClickButton";
-import Restricted from "../../component/Restricted";
-import { closeTab, createTab, TabPayload } from "../../component/tabbed/actions";
 import Timestamps from "../../component/Timestamps";
 import { fetchMaintainerTasks } from "../../maintenance/task/actions";
 import { OrganisationPayload } from "../../organisation/actions";
@@ -19,28 +15,23 @@ import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import {
   alignFlexStart,
-  contentHorizontalSpacing,
   contentVerticalSpacingMinor,
   padded,
-  rowContainer,
   spread,
 } from "../../style/container";
-import { alertIndication, info } from "../../style/inline";
+import { info } from "../../style/inline";
 import { spacer } from "../../style/variables/spacing";
 import Loadable from "../../util/hoc/Loadable";
-import { deleteMaintainer, MaintainerPayload } from "../actions";
+import { MaintainerPayload } from "../actions";
+import Actions from "../component/Actions";
 
 interface StateProps {
   appliances: ReadonlyArray<AppliancePayload>;
   organisation?: OrganisationPayload | APIResponsePayload;
   maintainer: MaintainerPayload;
-  tabs: {[key: string]: TabPayload};
 }
 
 interface DispatchProps {
-  closeTab: typeof closeTab;
-  createTab: typeof createTab;
-  deleteMaintainer: typeof deleteMaintainer;
   fetchMaintainerTasks: typeof fetchMaintainerTasks;
 }
 
@@ -55,36 +46,13 @@ const Maintainer = ({match, history, maintainer, organisation, ...props}: Props)
 
   const {t} = useTranslation();
 
-  const handeDeleteMaintainer = async () => {
-    if (match.params.maintainer) {
-      history.push("/maintainers"); // go back to root
-    }
-    props.closeTab("maintainers", {key: String(maintainer.id)});
-    await props.deleteMaintainer(maintainer);
-  };
-
   const {phone, firstName, lastName, email, language, createdAt, updatedAt} = maintainer;
 
   return (
     <div className={padded}>
       <div className={classnames(spread, alignFlexStart)}>
         <h1>{firstName} {lastName}</h1>
-        <div className={classnames(rowContainer, contentHorizontalSpacing)}>
-          <Restricted requirements={{userRole: {allowDeleteMaintainer: true}}}>
-            <DoubleClickButton
-              plain={true}
-              secondaryClassName={alertIndication}
-              onClick={handeDeleteMaintainer}
-            >
-              {t("maintainer.action.delete")}
-            </DoubleClickButton>
-          </Restricted>
-          <Restricted requirements={{userRole: {allowUpdateMaintainer: true}}}>
-            <Link to={`/maintainers/${maintainer.id}/edit`}>
-              {t("maintainer.action.edit")}
-            </Link>
-          </Restricted>
-        </div>
+        <Actions maintainer={maintainer} match={match} history={history} />
       </div>
       <div className={classnames(contentVerticalSpacingMinor)}>
         {phone && <div className={info}><i className="material-icons">phone</i><span>{phone}</span></div>}
@@ -118,11 +86,10 @@ const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, 
     appliances: maintainer ? values(pick(map(String, maintainer.appliances), state.entities.appliances)) : [],
     maintainer,
     organisation: getOrganisation(state),
-    tabs: state.views.maintainers.tabs,
   };
 };
 
 export default connect(
   mapStateToProps,
-  {createTab, closeTab, deleteMaintainer, fetchMaintainerTasks}
+  {fetchMaintainerTasks}
 )(Loadable<StateProps, Props>(Maintainer));
