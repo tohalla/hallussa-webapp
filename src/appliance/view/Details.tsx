@@ -10,7 +10,7 @@ import Button from "../../component/button/Button";
 import DoubleClickButton from "../../component/button/DoubleClickButton";
 import WithSidebar from "../../component/layout/WithSidebar";
 import Restricted from "../../component/Restricted";
-import { closeTab, createTab, TabPayload } from "../../component/tabbed/actions";
+import { closeTab, TabPayload } from "../../component/tabbed/actions";
 import Timestamps from "../../component/Timestamps";
 import { apiUrl } from "../../config";
 import { fetchApplianceEvents, MaintenanceEventPayload } from "../../maintenance/event/actions";
@@ -21,16 +21,15 @@ import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import {
   alignFlexStart,
-  contentHorizontalSpacing,
   contentVerticalSpacingMinor,
-  rowContainer,
   spread
 } from "../../style/container";
-import { alertIndication, info } from "../../style/inline";
+import { info } from "../../style/inline";
 import { spacer } from "../../style/variables/spacing";
 import Loadable from "../../util/hoc/Loadable";
 import { authenticatedFetch } from "../../util/utilityFunctions";
 import { AppliancePayload, deleteAppliance } from "../actions";
+import Actions from "../component/Actions";
 import Status from "../component/Status";
 import ApplianceDrawers from "../drawer/ApplianceDrawers";
 
@@ -38,13 +37,9 @@ interface StateProps {
   organisation?: OrganisationPayload | APIResponsePayload;
   appliance: AppliancePayload;
   maintenanceEvents: Readonly<MaintenanceEventPayload[]>;
-  tabs: {[key: string]: TabPayload};
 }
 
 interface DispatchProps {
-  createTab: typeof createTab;
-  closeTab: typeof closeTab;
-  deleteAppliance: typeof deleteAppliance;
   fetchApplianceEvents: typeof fetchApplianceEvents;
 }
 
@@ -53,7 +48,6 @@ interface Props extends RouteComponentProps<{appliance: string}>, DispatchProps,
 }
 
 const Details = ({
-  tabs,
   appliance,
   history,
   organisation,
@@ -74,34 +68,11 @@ const Details = ({
     (window.open("", "_blank") as Window).document.body.innerHTML = await response.text();
   };
 
-  const handleDeleteAppliance = async () => {
-    if (match.params.appliance) {
-      history.push("/appliances"); // go back to root
-    }
-    props.closeTab("appliances", {key: String(appliance.id)});
-    await props.deleteAppliance(appliance);
-  };
-
   return (
     <WithSidebar sidebarContent={<ApplianceDrawers appliance={appliance} />}>
       <div className={classnames(spread, alignFlexStart)}>
         <h1>{appliance.name}</h1>
-        <div className={classnames(rowContainer, contentHorizontalSpacing)}>
-          <Restricted requirements={{userRole: {allowDeleteAppliance: true}}}>
-            <DoubleClickButton
-              plain={true}
-              secondaryClassName={alertIndication}
-              onClick={handleDeleteAppliance}
-            >
-              {t("appliance.action.delete")}
-            </DoubleClickButton>
-          </Restricted>
-          <Restricted requirements={{userRole: {allowUpdateAppliance: true}}}>
-            <Link to={`/appliances/${appliance.id}/edit`}>
-              {t("appliance.action.edit")}
-            </Link>
-          </Restricted>
-        </div>
+        <Actions appliance={appliance} match={match} history={history} />
       </div>
       {appliance.description}
       <div className={spacer} />
@@ -141,11 +112,10 @@ const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state, 
       pick(appliance.maintenanceEvents.map(String), state.entities.maintenanceEvents)
     ) : [],
     organisation: getOrganisation(state),
-    tabs: state.views.appliances.tabs,
   });
 };
 
 export default connect(
   mapStateToProps,
-  {createTab, closeTab, deleteAppliance, fetchApplianceEvents}
+  {fetchApplianceEvents}
 )(Loadable<StateProps, Props>(Details));
