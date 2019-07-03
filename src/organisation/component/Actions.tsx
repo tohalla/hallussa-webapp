@@ -1,4 +1,3 @@
-import classnames from "classnames";
 import { compose, findIndex, not, path, whereEq } from "ramda";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -9,9 +8,10 @@ import { AccountPayload, removeAccount } from "../../account/actions";
 import { UserRolePayload } from "../../account/user-role/actions";
 import Button from "../../component/button/Button";
 import DoubleClickButton from "../../component/button/DoubleClickButton";
+import Dropdown from "../../component/Dropdown";
 import Restricted from "../../component/Restricted";
 import { ReduxState } from "../../store/store";
-import { contentHorizontalSpacing, rowContainer } from "../../style/container";
+import { dropdownMenuItem } from "../../style/dropdown";
 import { alertIndication } from "../../style/inline";
 import { deleteOrganisation, OrganisationPayload, setActiveOrganisation } from "../actions";
 
@@ -39,9 +39,10 @@ const Actions = (props: Props & StateProps & DispatchProps) => {
   const {t} = useTranslation();
 
   return (
-    <div className={classnames(rowContainer, contentHorizontalSpacing)}>
+    <Dropdown>
       <Restricted userRole={props.userRole} requirements={{userRole: {allowDeleteOrganisation: true}}}>
         <DoubleClickButton
+          className={dropdownMenuItem}
           plain={true}
           secondaryClassName={alertIndication}
           onClick={handleDeleteOrganisation}
@@ -50,16 +51,16 @@ const Actions = (props: Props & StateProps & DispatchProps) => {
         </DoubleClickButton>
       </Restricted>
       <Restricted userRole={props.userRole} requirements={{userRole: {allowUpdateOrganisation: true}}}>
-        <Link to={`/organisations/${props.organisation.id}/edit`}>
+        <Link className={dropdownMenuItem} to={`/organisations/${props.organisation.id}/edit`}>
           {t("organisation.action.edit")}
         </Link>
       </Restricted>
       <Restricted comparator={compose(not, whereEq)} userRole={props.userRole} requirements={{userRole: {id: 1}}}>
-        <Button plain={true} onClick={handleRemoveAccount}>
+        <Button className={dropdownMenuItem} plain={true} onClick={handleRemoveAccount}>
           {t("organisation.action.leaveOrganisation")}
         </Button>
       </Restricted>
-    </div>
+    </Dropdown>
   );
 };
 

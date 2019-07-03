@@ -1,13 +1,15 @@
+import classnames from "classnames";
 import React, { FC, MouseEventHandler, ReactFragment } from "react";
-
 import { useTranslation } from "react-i18next";
+
+import { alertIndication } from "../../style/inline";
 import Button, { ButtonProps } from "./Button";
 
 interface Props extends Partial<ButtonProps> {
   children?: ReactFragment;
   delayInSeconds?: number;
   onClick: MouseEventHandler;
-  secondaryClassName?: string;
+  secondaryClassName: string;
   DeletionConfirmation: FC<{time?: number}>;
 }
 
@@ -18,6 +20,7 @@ export default class DoubleClickButton extends React.Component<Props> {
       return <>{t<string>("general.misc.confirmTimed", {time})}</>;
     },
     delayInSeconds: 3,
+    secondaryClassName: alertIndication,
   };
 
   public state = {
@@ -66,7 +69,7 @@ export default class DoubleClickButton extends React.Component<Props> {
     return (
       <Button
         {...props}
-        className={timer ? secondaryClassName : className}
+        className={classnames(className, {[secondaryClassName]: typeof timer !== "undefined"})}
         onClick={this.handleClick}
       >
         {typeof timer === "undefined" ? children : <DeletionConfirmation time={timer} />}

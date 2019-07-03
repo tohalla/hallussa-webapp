@@ -1,4 +1,7 @@
 import React, { ReactNode, useEffect, useRef, useState } from "react";
+import { MouseEventHandler } from "react-select/src/types";
+import { dropdownContainer, dropdownMenuContainer, dropdownMenuItem } from "../style/dropdown";
+import Button from "./button/Button";
 
 interface Props {
   children: ReactNode;
@@ -21,14 +24,19 @@ export default ({children}: Props) => {
     setOpen(false);
   };
 
+  const toggle: MouseEventHandler = (e) => {
+    e.stopPropagation();
+    setOpen(!isOpen);
+  };
+
   return (
-    <>
-      <i className="material-icons">more_vert</i>
+    <div className={dropdownContainer}>
+      <Button onClick={toggle} plain={true} className="material-icons">more_vert</Button>
       {isOpen && (
-        <div ref={contentEl}>
+        <div className={dropdownMenuContainer} ref={contentEl}>
           {children}
         </div>
       )}
-    </>
+    </div>
   );
 };

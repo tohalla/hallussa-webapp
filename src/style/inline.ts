@@ -66,7 +66,7 @@ export const link = css`
   text-decoration: underline;
 
   &:hover {
-    color: ${accent.neutral};
+    color: ${greyscale[0]};
   }
 
   &.white {
