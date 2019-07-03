@@ -2,15 +2,12 @@ import classnames from "classnames";
 import { pick } from "ramda";
 import React, { useEffect } from "react";
 import { connect, MapStateToProps } from "react-redux";
-
 import { useTranslation } from "react-i18next";
+
 import { RouteComponentProps } from "react-router";
-import { Link } from "react-router-dom";
 import Button from "../../component/button/Button";
-import DoubleClickButton from "../../component/button/DoubleClickButton";
 import WithSidebar from "../../component/layout/WithSidebar";
 import Restricted from "../../component/Restricted";
-import { closeTab, TabPayload } from "../../component/tabbed/actions";
 import Timestamps from "../../component/Timestamps";
 import { apiUrl } from "../../config";
 import { fetchApplianceEvents, MaintenanceEventPayload } from "../../maintenance/event/actions";
@@ -28,7 +25,7 @@ import { info } from "../../style/inline";
 import { spacer } from "../../style/variables/spacing";
 import Loadable from "../../util/hoc/Loadable";
 import { authenticatedFetch } from "../../util/utilityFunctions";
-import { AppliancePayload, deleteAppliance } from "../actions";
+import { AppliancePayload } from "../actions";
 import Actions from "../component/Actions";
 import Status from "../component/Status";
 import ApplianceDrawers from "../drawer/ApplianceDrawers";

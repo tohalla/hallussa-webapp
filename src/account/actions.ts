@@ -3,6 +3,7 @@ import { compose, head, prop } from "ramda";
 import { AnyAction, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 
+import { OrganisationPayload, removeOrganisation } from "../organisation/actions";
 import { APIResponseAction, CALL_API } from "../store/middleware/api/actions";
 import { ReduxAPICall } from "../store/middleware/api/api";
 import { ReduxState } from "../store/store";
@@ -13,6 +14,7 @@ export const FETCH_ACCOUNTS_SUCCESS = "FETCH_ACCOUNTS_SUCCESS";
 
 export const ADD_ACCOUNT_SUCCESS = "ADD_ACCOUNT_SUCCESS";
 export const UPDATE_ACCOUNT_SUCCESS = "UPDATE_ACCOUNT_SUCCESS";
+export const REMOVE_ACCOUNT_SUCCESS = "REMOVE_ACCOUNT_SUCCESS";
 
 export const SET_ACCOUNT_USER_ROLE = "SET_ACCOUNT_USER_ROLE";
 
@@ -31,19 +33,22 @@ export interface AccountAction extends AnyAction {
   payload?: Partial<AccountPayload>;
 }
 
-export const setActiveAccount: (payload: any) =>
-  ThunkAction<any, ReduxState, any, AnyAction> = (payload) => (dispatch, getState) => {
-    dispatch({payload, type: SET_ACTIVE_ACCOUNT});
-    const language = getState().entities.accounts[String(payload)].language;
-    if (language && language !== i18next.language) {
-      i18next.changeLanguage(language || i18next.language);
-    }
-  };
+export const setActiveAccount: (
+  account: number
+) => ThunkAction<any, ReduxState, any, AnyAction> = (
+  account
+) => (dispatch, getState) => {
+  dispatch({payload: account, type: SET_ACTIVE_ACCOUNT});
+  const language = getState().entities.accounts[String(account)].language;
+  if (language && language !== i18next.language) {
+    i18next.changeLanguage(language || i18next.language);
+  }
+};
 
 export const fetchCurrentAccount = () => (dispatch: Dispatch<any>) => dispatch<ReduxAPICall>({
   endpoint: "/accounts",
   method: "get",
-  onSuccess: compose(dispatch, setActiveAccount, head, Object.keys as any),
+  onSuccess: compose(dispatch, setActiveAccount, Number, head, Object.keys as any),
   parameters: {eager: "organisations"},
   successType: FETCH_ACCOUNT_SUCCESS,
   transformResponse: (response) => ({[response.id]: response}),
@@ -52,7 +57,7 @@ export const fetchCurrentAccount = () => (dispatch: Dispatch<any>) => dispatch<R
 
 export const fetchAccounts = (
   organisation: number,
-  {bypassCache = false, accounts}: {bypassCache?: boolean, accounts?: number[]} = {}
+  {accounts}: {bypassCache?: boolean, accounts?: number[]} = {}
 ): ReduxAPICall => ({
   endpoint: `/organisations/${organisation}/users/accounts${accounts ? `?accounts=[${
     accounts.join(",")
@@ -76,6 +81,21 @@ export const addAccount = (
     }
   },
   successType: ADD_ACCOUNT_SUCCESS,
+  type: CALL_API,
+});
+
+export const removeAccount: (
+  organisation: OrganisationPayload,
+  account: Partial<AccountPayload>
+) => ThunkAction<any, ReduxState, any, AnyAction> = (organisation, account) => (dispatch, getState) => dispatch({
+  endpoint: `/organisations/${organisation.id}/users/accounts/${account.id}`,
+  method: "delete",
+  onSuccess: () => {
+    if (getState().session.activeAccount === account.id) {
+      dispatch(removeOrganisation(organisation));
+    }
+  },
+  successType: REMOVE_ACCOUNT_SUCCESS,
   type: CALL_API,
 });
 

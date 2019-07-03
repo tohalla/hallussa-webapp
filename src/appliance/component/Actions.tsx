@@ -8,11 +8,12 @@ import { Link } from "react-router-dom";
 import DoubleClickButton from "../../component/button/DoubleClickButton";
 import Restricted from "../../component/Restricted";
 import { closeTab } from "../../component/tabbed/actions";
+import { ReduxState } from "../../store/store";
 import { contentHorizontalSpacing, rowContainer } from "../../style/container";
 import { alertIndication } from "../../style/inline";
 import { AppliancePayload, deleteAppliance } from "../actions";
 
-interface Props extends Pick<RouteComponentProps<{appliance: string}>, "match" | "history">, DispatchProps {
+interface Props extends Pick<RouteComponentProps<{appliance: string}>, "match" | "history"> {
   appliance: AppliancePayload;
 }
 
@@ -21,7 +22,7 @@ interface DispatchProps {
   closeTab: typeof closeTab;
 }
 
-const Actions = (props: Props) => {
+const Actions = (props: Props & DispatchProps) => {
   const {t} = useTranslation();
 
   const handleDeleteAppliance = async () => {
@@ -52,7 +53,7 @@ const Actions = (props: Props) => {
   );
 };
 
-export default connect(
+export default connect<{}, DispatchProps, Props, ReduxState>(
   undefined,
   {deleteAppliance, closeTab}
 )(Actions);

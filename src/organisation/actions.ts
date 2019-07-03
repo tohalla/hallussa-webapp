@@ -13,7 +13,7 @@ import { ReduxState } from "../store/store";
 export const CREATE_ORGANISATION_SUCCESS = "CREATE_ORGANISATION_SUCCESS";
 export const UPDATE_ORGANISATION_SUCCESS = "UPDATE_ORGANISATION_SUCCESS";
 export const FETCH_ORGANISATIONS_SUCCESS = "FETCH_ORGANISATIONS_SUCCESS";
-export const DELETE_ORGANISATIONS_SUCCESS = "DELETE_ORGANISATIONS_SUCCESS";
+export const REMOVE_ORGANISATION_SUCCESS = "REMOVE_ORGANISATION_SUCCESS";
 export const SET_ACTIVE_ORGANISATION = "SET_ACTIVE_ORGANISATION";
 
 export interface OrganisationPreferences {
@@ -73,23 +73,29 @@ export const updateOrganisation = (organisation: Partial<OrganisationPayload>) =
   return response.payload as OrganisationPayload;
 };
 
-export const deleteOrganisation: (
+export const removeOrganisation: (
   organisation: OrganisationPayload
 ) => ThunkAction<any, ReduxState, any, AnyAction> = (organisation) => (dispatch, getState) => {
+  dispatch({payload: organisation, type: REMOVE_ORGANISATION_SUCCESS});
   if (getState().session.activeOrganisation === organisation.id) {
     dispatch({
       payload: undefined,
       type: SET_ACTIVE_ORGANISATION,
     });
   }
-  return dispatch<ReduxAPICall<OrganisationPayload>>({
+};
+
+// Calls API requesting removal of given organisation, will use removeOrganisation to drop it from redux state
+export const deleteOrganisation: (
+  organisation: OrganisationPayload
+) => ThunkAction<any, ReduxState, any, AnyAction> = (organisation) => (dispatch) =>
+  dispatch<ReduxAPICall<OrganisationPayload>>({
     body: organisation,
     endpoint: `/organisations/${organisation.id}`,
     method: "delete",
-    successType: DELETE_ORGANISATIONS_SUCCESS,
+    onSuccess: () => dispatch(removeOrganisation(organisation)),
     type: CALL_API,
   });
-};
 
 export const setActiveOrganisation = (organisation?: number, fetchRelated = true) =>
   async (dispatch: Dispatch<any>) => {
