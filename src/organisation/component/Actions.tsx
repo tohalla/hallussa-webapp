@@ -12,7 +12,6 @@ import Dropdown from "../../component/Dropdown";
 import Restricted from "../../component/Restricted";
 import { ReduxState } from "../../store/store";
 import { dropdownMenuItem } from "../../style/dropdown";
-import { alertIndication } from "../../style/inline";
 import { deleteOrganisation, OrganisationPayload, setActiveOrganisation } from "../actions";
 
 interface DispatchProps {
@@ -44,7 +43,6 @@ const Actions = (props: Props & StateProps & DispatchProps) => {
         <DoubleClickButton
           className={dropdownMenuItem}
           plain={true}
-          secondaryClassName={alertIndication}
           onClick={handleDeleteOrganisation}
         >
           {t("organisation.action.delete")}

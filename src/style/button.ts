@@ -37,7 +37,6 @@ const button = css`
 `;
 
 export const plain = css`
-  ${link}
   background: none;
   border: none;
   white-space: nowrap;
@@ -46,6 +45,7 @@ export const plain = css`
     background: none;
     text-decoration: underline;
   }
+  ${link}
 `;
 
 export default button;

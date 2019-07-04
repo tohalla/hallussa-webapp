@@ -5,10 +5,10 @@ import ViewContainer from "../component/layout/ViewContainer";
 import { RestrictedRoute } from "../component/Restricted";
 import tabbed from "../component/tabbed/tabbed";
 import TabRouteIndexLookup from "../component/tabbed/TabRouteIndexLookup";
-import Edit from "../maintainer/view/Edit";
 import { AppliancePayload } from "./actions";
 import Create from "./view/Create";
 import Details from "./view/Details";
+import Edit from "./view/Edit";
 import Listing from "./view/Listing";
 
 export const AppliancesTabbed = tabbed({view: "appliances"});
@@ -35,7 +35,7 @@ export default () => (
           <TabRoute exact={true} path={"/appliances/:appliance"} component={AppliancesTabbed(Details)} />
           <TabRoute
             path={"/appliances/:appliance/edit"}
-            component={Edit}
+            component={AppliancesTabbed(Edit)}
             requirements={{userRole: {allowUpdateAppliance: true}}}
           />
         </Switch>

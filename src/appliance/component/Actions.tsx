@@ -1,4 +1,3 @@
-import classnames from "classnames";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
@@ -6,11 +5,13 @@ import { RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
 
 import DoubleClickButton from "../../component/button/DoubleClickButton";
+import Dropdown from "../../component/Dropdown";
 import Restricted from "../../component/Restricted";
 import { closeTab } from "../../component/tabbed/actions";
 import { ReduxState } from "../../store/store";
-import { contentHorizontalSpacing, rowContainer } from "../../style/container";
+import { dropdownMenuItem } from "../../style/dropdown";
 import { alertIndication } from "../../style/inline";
+import { anyPropEquals } from "../../util/utilityFunctions";
 import { AppliancePayload, deleteAppliance } from "../actions";
 
 interface Props extends Pick<RouteComponentProps<{appliance: string}>, "match" | "history"> {
@@ -34,22 +35,28 @@ const Actions = (props: Props & DispatchProps) => {
   };
 
   return (
-    <div className={classnames(rowContainer, contentHorizontalSpacing)}>
-      <Restricted requirements={{userRole: {allowDeleteAppliance: true}}}>
-        <DoubleClickButton
-          plain={true}
-          secondaryClassName={alertIndication}
-          onClick={handleDeleteAppliance}
-        >
-          {t("appliance.action.delete")}
-        </DoubleClickButton>
-      </Restricted>
-      <Restricted requirements={{userRole: {allowUpdateAppliance: true}}}>
-        <Link to={`/appliances/${props.appliance.id}/edit`}>
-          {t("appliance.action.edit")}
-        </Link>
-      </Restricted>
-    </div>
+    <Restricted
+      comparator={anyPropEquals}
+      requirements={{userRole: {allowDeleteAppliance: true, allowUpdateAppliance: true}}}
+    >
+      <Dropdown>
+        <Restricted requirements={{userRole: {allowDeleteAppliance: true}}}>
+          <DoubleClickButton
+            className={dropdownMenuItem}
+            plain={true}
+            secondaryClassName={alertIndication}
+            onClick={handleDeleteAppliance}
+          >
+            {t("appliance.action.delete")}
+          </DoubleClickButton>
+        </Restricted>
+        <Restricted requirements={{userRole: {allowUpdateAppliance: true}}}>
+          <Link className={dropdownMenuItem} to={`/appliances/${props.appliance.id}/edit`}>
+            {t("appliance.action.edit")}
+          </Link>
+        </Restricted>
+      </Dropdown>
+    </Restricted>
   );
 };
 

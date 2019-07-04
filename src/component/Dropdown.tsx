@@ -1,6 +1,8 @@
+import classnames from "classnames";
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { MouseEventHandler } from "react-select/src/types";
-import { dropdownContainer, dropdownMenuContainer, dropdownMenuItem } from "../style/dropdown";
+
+import { dropdownButton, dropdownContainer, dropdownMenuContainer } from "../style/dropdown";
 import Button from "./button/Button";
 
 interface Props {
@@ -31,7 +33,13 @@ export default ({children}: Props) => {
 
   return (
     <div className={dropdownContainer}>
-      <Button onClick={toggle} plain={true} className="material-icons">more_vert</Button>
+      <Button
+        onClick={toggle}
+        plain={true}
+        className={classnames("material-icons", dropdownButton)}
+      >
+        more_vert
+      </Button>
       {isOpen && (
         <div className={dropdownMenuContainer} ref={contentEl}>
           {children}

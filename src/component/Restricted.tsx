@@ -20,7 +20,7 @@ interface Props {
   restrictedContent?: ReactFragment;
   userRole?: Partial<UserRolePayload>;
   organisationPreferences?: Partial<OrganisationPreferences>;
-  comparator?(o1: object, o2: object): boolean;
+  comparator?(requirements: {[key: string]: any}, state: {[key: string]: any}): boolean;
 }
 
 interface StateProps {
@@ -34,7 +34,11 @@ interface RestrictedRouteProps extends Props {
   to: string;
 }
 
-const allowAccess = ({requirements, comparator = whereEq, ...props}: Props & StateProps): boolean => !requirements || (
+const allowAccess = ({
+  requirements,
+  comparator = whereEq,
+  ...props
+}: Props & StateProps): boolean => !requirements || (
   (!requirements.userRole || props.activeUserRole && comparator(requirements.userRole, props.activeUserRole))
   && (
     !requirements.organisationPreferences

@@ -6,6 +6,14 @@ export const dropdownContainer = css`
   position: relative;
 `;
 
+export const dropdownButton = css`
+  color: ${greyscale[3]};
+
+  &:hover {
+    color: ${greyscale[0]};
+  }
+`;
+
 export const dropdownMenuContainer = css`
   position: absolute;
   display: flex;
@@ -23,8 +31,10 @@ export const dropdownMenuItem = css`
   background: ${greyscale[9]};
   display: flex;
   text-decoration: none;
+  color: ${greyscale[2]};
 
   &:hover {
+    color: ${greyscale[0]};
     background: ${greyscale[7]};
     cursor: default;
     text-decoration: none;

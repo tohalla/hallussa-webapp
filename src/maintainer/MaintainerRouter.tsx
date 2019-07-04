@@ -37,7 +37,7 @@ export default () => (
       />
       <Route path="/maintainers/:maintainer">
         <Switch>
-          <TabRoute path={"/maintainers/:maintainer"} component={MaintainersTabbed(Details)} />
+          <TabRoute exact={true} path={"/maintainers/:maintainer"} component={MaintainersTabbed(Details)} />
           <TabRoute
             component={MaintainersTabbed(Edit)}
             path={"/maintainers/:maintainer/edit"}
