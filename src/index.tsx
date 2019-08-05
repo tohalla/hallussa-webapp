@@ -5,6 +5,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 
+import "react-day-picker/lib/style";
 import "style";
 
 import { appContainer } from "style/container";

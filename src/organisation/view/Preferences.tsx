@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import { Field, Form, Formik, FormikConfig } from "formik";
-import { equals, prop } from "ramda";
+import { equals } from "ramda";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import * as yup from "yup";
