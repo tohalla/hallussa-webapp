@@ -64,7 +64,6 @@ const Maintainer = ({match, history, maintainer, organisation, ...props}: Props)
           <i className="material-icons">language</i>{t(`language.${language}`)}
         </div>}
       </div>
-      <div className={spacer} />
       <ApplianceList
         columns={["id", "name", "status", "location"]}
         appliances={props.appliances}

@@ -49,28 +49,31 @@ injectGlobal`
   }
 
   h1, h2, h3, h4, h5 {
-    margin-top: 0;
-    margin-top: ${minor};
     margin-bottom: ${normal};
   }
 
   h1 {
+    margin-top: 0;
     font-size: 1.5rem;
     font-weight: 300;
   }
   h2 {
     font-size: 1.2rem;
     font-weight: 300;
+    margin-top: ${major};
   }
   h3 {
+    margin-top: ${minor};
     font-size: 1rem;
     font-weight: 300;
   }
   h4 {
+    margin-top: ${minor};
     font-size: 1rem;
     font-weight: 500;
   }
   h5 {
+    margin-top: ${minor};
     font-size: 1rem;
     font-weight: 500;
   }

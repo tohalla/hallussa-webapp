@@ -73,14 +73,12 @@ const Details = ({
         <Actions appliance={appliance} match={match} history={history} />
       </div>
       {appliance.description}
-      <div className={spacer} />
       <div className={contentVerticalSpacingMinor}>
         <Status status={appliance.status} />
         {appliance.location &&
           <div className={info}><i className="material-icons">location_on</i><span>{appliance.location}</span></div>
         }
       </div>
-      <div className={spacer} />
       <div className={contentVerticalSpacingMinor}>
         <EventList
           header={<h2>{t("appliance.event.list.title")}</h2>}
