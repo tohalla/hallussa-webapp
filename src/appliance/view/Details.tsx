@@ -1,8 +1,8 @@
 import classnames from "classnames";
 import { pick } from "ramda";
 import React, { useEffect } from "react";
-import { connect, MapStateToProps } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { connect, MapStateToProps } from "react-redux";
 
 import { RouteComponentProps } from "react-router";
 import Button from "../../component/button/Button";
@@ -11,7 +11,8 @@ import Restricted from "../../component/Restricted";
 import Timestamps from "../../component/Timestamps";
 import { apiUrl } from "../../config";
 import { fetchApplianceEvents, MaintenanceEventPayload } from "../../maintenance/event/actions";
-import MaintenanceEventList from "../../maintenance/event/MaintenanceEventList";
+import EventCreation from "../../maintenance/event/component/EventCreation";
+import EventList from "../../maintenance/event/component/EventList";
 import { OrganisationPayload } from "../../organisation/actions";
 import { getOrganisation } from "../../organisation/state";
 import { APIResponsePayload } from "../../store/middleware/api/actions";
@@ -80,10 +81,13 @@ const Details = ({
         }
       </div>
       <div className={spacer} />
-      <MaintenanceEventList
-        header={<h2>{t("appliance.event.list.title")}</h2>}
-        maintenanceEvents={maintenanceEvents}
-      />
+      <div className={contentVerticalSpacingMinor}>
+        <EventList
+          header={<h2>{t("appliance.event.list.title")}</h2>}
+          maintenanceEvents={maintenanceEvents}
+        />
+        {appliance && <EventCreation appliance={appliance} />}
+      </div>
       <div className={spacer} />
       <div className={spread}>
         <Timestamps

@@ -2,10 +2,10 @@ import React from "react";
 import { connect, MapStateToProps } from "react-redux";
 
 import { useTranslation } from "react-i18next";
-import DateInput from "../../component/input/DateInput";
-import { ReduxState } from "../../store/store";
-import Loadable from "../../util/hoc/Loadable";
-import { AppliancePayload } from "../actions";
+import { AppliancePayload } from "../../../appliance/actions";
+import DateInput from "../../../component/input/DateInput";
+import { ReduxState } from "../../../store/store";
+import Loadable from "../../../util/hoc/Loadable";
 
 interface StateProps {
   //

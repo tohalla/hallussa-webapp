@@ -38,8 +38,6 @@
     "redux-thunk": "^2.3.0",
     "regenerator-runtime": "^0.13.3",
     "reselect": "^4.0.0",
-    "style": "^0.0.3",
-    "styles": "^0.2.1",
     "whatwg-fetch": "^3.0.0",
     "yup": "^0.27.0"
   },

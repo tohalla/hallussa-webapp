@@ -5,13 +5,13 @@ import { connect, MapStateToProps } from "react-redux";
 import { Link } from "react-router-dom";
 import { Column } from "react-table";
 
-import Table from "../../component/Table";
-import { MaintainerPayload } from "../../maintainer/actions";
-import { MaintenanceEventPayload } from "../../maintenance/event/actions";
-import { APIResponsePayload } from "../../store/middleware/api/actions";
-import { EntityGroup } from "../../store/reducer";
-import { ReduxState } from "../../store/store";
-import Loadable from "../../util/hoc/Loadable";
+import Table from "../../../component/Table";
+import { MaintainerPayload } from "../../../maintainer/actions";
+import { APIResponsePayload } from "../../../store/middleware/api/actions";
+import { EntityGroup } from "../../../store/reducer";
+import { ReduxState } from "../../../store/store";
+import Loadable from "../../../util/hoc/Loadable";
+import { MaintenanceEventPayload } from "../actions";
 
 interface StateProps {
   maintainers: EntityGroup<MaintainerPayload> | APIResponsePayload;
