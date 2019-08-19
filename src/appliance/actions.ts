@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { APIResponseAction, CALL_API } from "../store/middleware/api/actions";
+import { CALL_API } from "../store/middleware/api/actions";
 import { ReduxAPICall } from "../store/middleware/api/api";
 
 export const FETCH_APPLIANCES_SUCCESS = "FETCH_APPLIANCES_SUCCESS";
@@ -31,7 +31,7 @@ export interface ApplianceAction {
   payload: AppliancePayload;
 }
 
-export const fetchAppliances = (organisation: number, {bypassCache = false} = {}): ReduxAPICall => ({
+export const fetchAppliances = (organisation: number): ReduxAPICall => ({
   endpoint: `/organisations/${organisation}/appliances`,
   method: "get",
   parameters: {eager: "[maintainers,status]"},
@@ -39,31 +39,28 @@ export const fetchAppliances = (organisation: number, {bypassCache = false} = {}
   type: CALL_API,
 });
 
-export const createAppliance = (organisation: number, appliance: AppliancePayload) => async (dispatch: Dispatch) => {
-  const response = await dispatch<APIResponseAction<AppliancePayload>>({
-    body: appliance,
-    endpoint: `/organisations/${organisation}/appliances`,
-    method: "post",
-    successType: CREATE_APPLIANCE_SUCCESS,
-    type: CALL_API,
-  });
-  return response.payload as AppliancePayload;
-};
+export const createAppliance = (
+  organisation: number,
+  appliance: AppliancePayload
+) => (dispatch: Dispatch<ReduxAPICall>) => dispatch({
+  data: appliance,
+  endpoint: `/organisations/${organisation}/appliances`,
+  method: "post",
+  successType: CREATE_APPLIANCE_SUCCESS,
+  type: CALL_API,
+});
 
-export const updateAppliance = (appliance: AppliancePayload) => async (dispatch: Dispatch) => {
-  const response = await dispatch<APIResponseAction<AppliancePayload>>({
-    body: appliance,
-    endpoint: `/organisations/${appliance.organisation}/appliances/${appliance.id}`,
-    method: "patch",
-    successType: UPDATE_APPLIANCE_SUCCESS,
-    type: CALL_API,
-  });
-  return response.payload as AppliancePayload;
-};
+export const updateAppliance = (appliance: AppliancePayload) => (dispatch: Dispatch<ReduxAPICall>) => dispatch({
+  data: appliance,
+  endpoint: `/organisations/${appliance.organisation}/appliances/${appliance.id}`,
+  method: "patch",
+  successType: UPDATE_APPLIANCE_SUCCESS,
+  type: CALL_API,
+});
 
 export const deleteAppliance = (appliance: AppliancePayload): ReduxAPICall => ({
   additionalPayload: appliance,
-  body: appliance,
+  data: appliance,
   endpoint: `/organisations/${appliance.organisation}/appliances/${appliance.id}`,
   method: "delete",
   successType: DELETE_APPLIANCE_SUCCESS,

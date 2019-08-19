@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { AppliancePayload } from "../../../appliance/actions";
 import Button from "../../../component/button/Button";
 import Restricted from "../../../component/Restricted";
-import { contentHorizontalSpacing, rowContainer, spread } from "../../../style/container";
+import { contentHorizontalSpacing, rowContainer } from "../../../style/container";
 import ScheduledMaintenanceForm from "./ScheduledMaintenanceForm";
 
 interface Props {

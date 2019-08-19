@@ -6,7 +6,7 @@ import { updateActiveUserRole } from "../account/user-role/actions";
 import { fetchAppliances } from "../appliance/actions";
 import { resetTabs } from "../component/tabbed/actions";
 import { fetchMaintainers } from "../maintainer/actions";
-import { APIResponseAction, CALL_API } from "../store/middleware/api/actions";
+import { CALL_API } from "../store/middleware/api/actions";
 import { ReduxAPICall } from "../store/middleware/api/api";
 import { ReduxState } from "../store/store";
 
@@ -51,27 +51,23 @@ export const fetchOrganisations = ({bypassCache = false} = {}): ReduxAPICall => 
   type: CALL_API,
 });
 
-export const createOrganisation = (organisation: OrganisationPayload) => async (dispatch: Dispatch) => {
-  const response = await dispatch<APIResponseAction<OrganisationPayload>>({
-    body: organisation,
+export const createOrganisation = (organisation: OrganisationPayload) => (dispatch: Dispatch<ReduxAPICall>) =>
+  dispatch({
+    data: organisation,
     endpoint: "/organisations",
     method: "post",
     successType: CREATE_ORGANISATION_SUCCESS,
     type: CALL_API,
   });
-  return response.payload as OrganisationPayload;
-};
 
-export const updateOrganisation = (organisation: Partial<OrganisationPayload>) => async (dispatch: Dispatch) => {
-  const response = await dispatch<APIResponseAction<OrganisationPayload>>({
-    body: organisation,
+export const updateOrganisation = (organisation: Partial<OrganisationPayload>) => (dispatch: Dispatch<ReduxAPICall>) =>
+  dispatch({
+    data: organisation,
     endpoint: `/organisations/${organisation.id}`,
     method: "patch",
     successType: UPDATE_ORGANISATION_SUCCESS,
     type: CALL_API,
   });
-  return response.payload as OrganisationPayload;
-};
 
 export const removeOrganisation: (
   organisation: OrganisationPayload
@@ -90,7 +86,7 @@ export const deleteOrganisation: (
   organisation: OrganisationPayload
 ) => ThunkAction<any, ReduxState, any, AnyAction> = (organisation) => (dispatch) =>
   dispatch<ReduxAPICall<OrganisationPayload>>({
-    body: organisation,
+    data: organisation,
     endpoint: `/organisations/${organisation.id}`,
     method: "delete",
     onSuccess: () => dispatch(removeOrganisation(organisation)),

@@ -21,7 +21,7 @@ export default () => {
       await authenticate(state);
       window.location.href = baseUrl;
     } catch (error) {
-      setStatus({error});
+      setStatus({error: String(error)});
     }
   };
 

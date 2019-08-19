@@ -1,3 +1,4 @@
+import axios from "axios";
 import i18n from "i18next";
 import { prop } from "ramda";
 import { initReactI18next } from "react-i18next";
@@ -13,7 +14,7 @@ export default async () => {
     });
 
   const [languages] = await Promise.all([
-    fetch(`${apiUrl}/i18n/languages`).then((response) => response.json()),
+    axios(`${apiUrl}/i18n/languages`).then(prop("data")),
     fetchAndAddTranslations("fback"),
     fetchAndAddTranslations(i18n.language || "en"),
   ]);
@@ -23,6 +24,6 @@ export default async () => {
 };
 
 const fetchAndAddTranslations = (locale: string, namespace = "translation") =>
-  fetch(`${apiUrl}/i18n/languages/${locale}`)
-    .then((response) => response.json())
-    .then((body) => i18n.addResourceBundle(locale, namespace, body));
+  axios(`${apiUrl}/i18n/languages/${locale}`)
+    .then(prop("data"))
+    .then((translations) => i18n.addResourceBundle(locale, namespace, translations));

@@ -1,3 +1,4 @@
+import { Method } from "axios";
 import { indexBy, map } from "ramda";
 import { Action, Dispatch, Middleware } from "redux";
 
@@ -6,15 +7,14 @@ import { authenticatedFetch } from "../../../util/utilityFunctions";
 import { EntitiesState, ReduxState } from "../../store";
 import { APIResponseAction, CALL_API, CALL_API_FAILURE, CALL_API_SUCCESS } from "./actions";
 
-export type APIMethods = "post" | "put" | "get" | "patch" | "delete";
-
 export interface ReduxAPICall<T = any> extends Action {
   endpoint: string;
-  method: APIMethods;
+  method: Method;
+  body?: never; // should use data instead of body
   successType?: string;
   type: "CALL_API";
   parameters?: {[key: string]: string | number};
-  body?: {[key: string]: any};
+  data?: {[key: string]: any};
   additionalPayload?: object; // data to send on success, will be merged with actual payload (if any)
   onSuccess?(payload: T, cached: boolean): any; // get triggered on succesfull response
   onFailure?(payload: any): any; // gets triggered if the request fails
@@ -42,7 +42,7 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       endpoint,
       method,
       successType,
-      body,
+      data,
       onSuccess,
       onFailure,
       parameters,
@@ -82,22 +82,16 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       type: CALL_API,
     });
 
-    const response = await authenticatedFetch(`${apiUrl}${endpoint}${parameters ?
-      "?" + map(
-        (key) => `${key}=${String(parameters[key])}`,
-        Object.keys(parameters)
-      ).join("+") : ""
-    }`, {body: body && JSON.stringify(body), headers, method: method.toUpperCase()});
-    if (response.ok) {
+    try {
+      const response = await authenticatedFetch(`${apiUrl}${endpoint}${parameters ?
+        "?" + map(
+          (key) => `${key}=${String(parameters[key])}`,
+          Object.keys(parameters)
+        ).join("+") : ""
+      }`, {data: data && JSON.stringify(data), headers, method});
+      const payload = {...transformResponse(response.data), ...additionalPayload};
+
       // trigger onSuccess if defined
-      let payload;
-      try {
-        payload = await response.json();
-      } catch (e) {
-        // no body used...
-      }
-      payload = typeof payload === "undefined" ? body || {} : transformResponse(payload);
-      payload = {...payload, ...additionalPayload};
       if (typeof successType === "string") {
         next({ // dispatch success for request action, body as payload if nothing received from server
           payload,
@@ -110,16 +104,18 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
         type: CALL_API_SUCCESS,
       });
       if (typeof onSuccess === "function") { await onSuccess(payload, false); }
-      return {payload};
-    } else {
-      const error = (await response.text()) || "Failed to fetch";
-      if (typeof onFailure === "function") { onFailure(error); }
-      next({
+
+      return payload;
+    } catch (error) {
+      const errorText = error && error.data && typeof error.data.text === "function" ? await error.data.text() : error;
+      if (typeof onFailure === "function") { onFailure(errorText); }
+
+      next({ // dispatch failure action
         endpoint,
         method,
-        payload: {isFetching: false, error},
+        payload: {isFetching: false, errorText},
         type: CALL_API_FAILURE,
-      }); // dispatch failure action
+      });
     }
   })();
 };

@@ -1,10 +1,12 @@
+import axios, { AxiosRequestConfig } from "axios";
 import { assocPath } from "ramda";
+
 import { getAndCheckJWT } from "../auth/auth";
 
 // wrapper to inject authentication headers to fetch request
-export const authenticatedFetch = async (input: RequestInfo, init?: RequestInit) => {
+export const authenticatedFetch = async (url: string, config?: AxiosRequestConfig) => {
   const token = await getAndCheckJWT();
-  return fetch(input, assocPath(["headers", "authorization"], `Bearer ${token}`, init));
+  return axios(url, assocPath(["headers", "authorization"], `Bearer ${token}`, config));
 };
 
 export const anyPropEquals = (o1: {[key: string]: any}, o2: {[key: string]: any}) => {

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { AccountPayload } from "../account/actions";
 import { apiUrl } from "../config";
 
@@ -24,33 +25,30 @@ export const getAndCheckJWT = async (): Promise<string | null | void> => {
 
 export const authenticate = async (
   credentials: string | { email: string; password: string }
-): Promise<boolean> => {
-  const response = await fetch(
+): Promise<string | boolean> =>
+  axios(
     `${apiUrl}/auth`,
     typeof credentials === "string" // attach authorization header if token provided as credentials
       ? { headers: { authorization: `Bearer ${credentials}` } }
       : {
-        body: JSON.stringify(credentials),
+        data: JSON.stringify(credentials),
         headers: { ["Content-Type"]: "application/json" },
         method: "post",
       } // otherwise should use email and password
-  );
-  if (response.ok) {
-    const { token, expiresAt } = await response.json();
+  ).then((response) => {
+    const { token, expiresAt } = response.data;
     localStorage.setItem("token", token);
     localStorage.setItem("expiresAt", expiresAt);
     window.clearTimeout(refreshTokenTimeout);
     // should attempt to refresh the token a minute before expiring
     refreshTokenTimeout = window.setTimeout(getAndCheckJWT, (Number(expiresAt) - 60) * 1000 - Date.now());
     return true;
-  }
-  if (response.status === 401) {
-    if (typeof credentials === "string") {
+  }).catch((error) => {
+    if (error.response.status === 401 && typeof credentials === "string") {
       signOut(); // should logout if attempting to use invalid jwt for authentication
     }
-  }
-  throw await response.text();
-};
+    throw error.response.data;
+  });
 
 export const signOut = () => {
   window.clearTimeout(refreshTokenTimeout);
@@ -64,18 +62,14 @@ export const register = async (
   account: Pick<AccountPayload, Exclude<keyof AccountPayload, "id" | "organisations">>
     & {retypePassword: string, password: string},
   authenticateAfter = true
-) => {
-  const response = await fetch(// send request to create account
+) =>
+  // send request to create account
+  axios.post(
     `${apiUrl}/accounts`,
-    {
-      body: JSON.stringify(account),
-      headers: { ["Content-Type"]: "application/json" },
-      method: "post",
-    }
-  );
-  if (authenticateAfter && response.ok) {
-    return authenticate({email: account.email, password: account.password});
-  } else {
-    throw await response.text();
-  }
-};
+    JSON.stringify(account),
+    {headers: { ["Content-Type"]: "application/json" }}
+  ).then((response) =>
+    authenticateAfter && authenticate({email: account.email, password: account.password})
+  ).catch((error) => {
+    throw error.response.data;
+  });

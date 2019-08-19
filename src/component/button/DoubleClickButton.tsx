@@ -27,7 +27,7 @@ export default class DoubleClickButton extends React.Component<Props> {
     timer: undefined,
   };
 
-  public counter?: NodeJS.Timer;
+  public counter?: number;
 
   public componentWillUnmount() {
     if (this.counter) {

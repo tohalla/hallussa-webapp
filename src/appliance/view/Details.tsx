@@ -62,8 +62,8 @@ const Details = ({
   const handleFetchQR = async () => {
     const response = await authenticatedFetch(
       `${apiUrl}/organisations/${organisation.id}/appliances/qr?appliances=[${appliance.id}]`
-      );
-    (window.open("", "_blank") as Window).document.body.innerHTML = await response.text();
+    );
+    (window.open("", "_blank") as Window).document.body.innerHTML = await response.data.text();
   };
 
   return (

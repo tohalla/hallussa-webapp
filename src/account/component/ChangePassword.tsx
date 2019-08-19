@@ -28,7 +28,7 @@ const changePassword =  ({account, ...props}: Props & DispatchProps) => {
 
   const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setStatus, resetForm}) => {
     await props.callAPI({
-      body: state,
+      data: state,
       endpoint: `/accounts/${account.id}/password`,
       method: "put",
       onFailure: (error) => {

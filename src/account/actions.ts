@@ -4,7 +4,7 @@ import { AnyAction, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 
 import { OrganisationPayload, removeOrganisation } from "../organisation/actions";
-import { APIResponseAction, CALL_API } from "../store/middleware/api/actions";
+import { CALL_API } from "../store/middleware/api/actions";
 import { ReduxAPICall } from "../store/middleware/api/api";
 import { ReduxState } from "../store/store";
 
@@ -71,7 +71,7 @@ export const addAccount = (
   organisation: number,
   payload: {email: string, userRole?: number}
 ) => (dispatch: Dispatch) => dispatch<ReduxAPICall>({
-  body: payload,
+  data: payload,
   endpoint: `/organisations/${organisation}/users/accounts`,
   method: "post",
   onSuccess: (responsePayload) => {
@@ -99,23 +99,20 @@ export const removeAccount: (
   type: CALL_API,
 });
 
-export const updateAccount = (account: Partial<AccountPayload>) => async (dispatch: Dispatch) => {
-  const response = await dispatch<APIResponseAction<AccountPayload>>({
-    body: account,
-    endpoint: `/accounts/${account.id}`,
-    method: "patch",
-    successType: UPDATE_ACCOUNT_SUCCESS,
-    type: CALL_API,
-  });
-  return response.payload as AccountPayload;
-};
+export const updateAccount = (account: Partial<AccountPayload>) => (dispatch: Dispatch<ReduxAPICall>) => dispatch({
+  data: account,
+  endpoint: `/accounts/${account.id}`,
+  method: "patch",
+  successType: UPDATE_ACCOUNT_SUCCESS,
+  type: CALL_API,
+});
 
 export const setUserRole = (
   organisation: number,
   account: number,
   payload: {userRole?: number}
-) => ({
-  body: payload,
+): ReduxAPICall => ({
+  data: payload,
   endpoint: `/organisations/${organisation}/users/accounts/${account}`,
   method: "put",
   successType: SET_ACCOUNT_USER_ROLE,

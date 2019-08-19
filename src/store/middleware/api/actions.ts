@@ -1,6 +1,8 @@
+import { Method } from "axios";
 import { AnyAction } from "redux";
+
 import { Omit } from "../../../../misc";
-import { APIMethods, ReduxAPICall } from "./api";
+import { ReduxAPICall } from "./api";
 
 export const CALL_API = "CALL_API";
 export const CALL_API_SUCCESS = "CALL_API_SUCCESS";
@@ -15,7 +17,7 @@ export interface APIResponsePayload {
 export interface APIResponseAction<T = any> extends AnyAction {
   endpoint: string;
   payload?: Partial<APIResponsePayload> | T;
-  method: APIMethods;
+  method: Method;
 }
 
 export const callAPI = (args: Omit<ReduxAPICall, "type">) => ({

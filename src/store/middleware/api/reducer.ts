@@ -7,10 +7,9 @@ import {
   CALL_API_FAILURE,
   CALL_API_SUCCESS
 } from "./actions";
-import { APIMethods } from "./api";
 
 export type RequestsState = {
-  [key in APIMethods]: {[key: string]: APIResponsePayload};
+  [key in "delete" | "get" | "patch" | "post" | "put"]: {[key: string]: APIResponsePayload};
 };
 
 const entityHandlers: {

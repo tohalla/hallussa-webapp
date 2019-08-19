@@ -14,12 +14,12 @@ import i18n from "./i18n";
 import Router from "./Router";
 import store, { initializeStore } from "./store/store";
 
-if (process.env.NODE_ENV === "development") {
-  (() => {
-    const axe = require("react-axe");
-    axe(React, ReactDOM, 1000, {runOnly: { type: "tag", values: ["wcag2a"] }});
-  })();
-}
+// if (process.env.NODE_ENV === "development") {
+//   (() => {
+//     const axe = require("react-axe");
+//     axe(React, ReactDOM, 1000, {runOnly: { type: "tag", values: ["wcag2a"] }});
+//   })();
+// }
 
 const mount = async () => {
   const token = localStorage.getItem("token");
