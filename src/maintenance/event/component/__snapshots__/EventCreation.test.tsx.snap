@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Maintenance EventCreation component should render the component 1`] = `
+<div>
+  <h3>
+    maintenanceEvent.create.title
+  </h3>
+  <div
+    class="css-1fxb6ti css-1o5xcg5"
+  >
+    <button
+      class="css-bmo2k2"
+      type="button"
+    >
+      maintenanceEvent.create.scheduled.title
+    </button>
+    <button
+      class="css-bmo2k2"
+      type="button"
+    >
+      maintenanceEvent.create.repetitive.title
+    </button>
+  </div>
+</div>
+`;

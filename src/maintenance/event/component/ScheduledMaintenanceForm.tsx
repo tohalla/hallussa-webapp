@@ -1,19 +1,7 @@
 import React from "react";
-import { connect, MapStateToProps } from "react-redux";
 
-import { useTranslation } from "react-i18next";
 import { AppliancePayload } from "../../../appliance/actions";
 import DateInput from "../../../component/input/DateInput";
-import { ReduxState } from "../../../store/store";
-import Loadable from "../../../util/hoc/Loadable";
-
-interface StateProps {
-  //
-}
-
-interface DispatchProps {
-  //
-}
 
 interface Props {
   appliance: AppliancePayload;
@@ -21,10 +9,7 @@ interface Props {
 
 const ScheduledMaintenanceForm = ({
   appliance,
-  ...props
-}: Props & StateProps & DispatchProps) => {
-  const {t} = useTranslation();
-
+}: Props) => {
   return (
     <>
       <DateInput onDayChange={console.log}/>
@@ -32,9 +17,4 @@ const ScheduledMaintenanceForm = ({
   );
 };
 
-const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
-});
-
-export default connect(mapStateToProps, {})(
-  Loadable(ScheduledMaintenanceForm)
-);
+export default ScheduledMaintenanceForm;

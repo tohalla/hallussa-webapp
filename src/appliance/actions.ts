@@ -19,7 +19,7 @@ export interface AppliancePayload {
   location?: string;
   description: string;
   organisation: number;
-  updatedAt: string;
+  updatedAt?: string;
   status?: {
     isMalfunctioning: boolean;
   };

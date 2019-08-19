@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import React, { memo, MouseEventHandler, ReactFragment } from "react";
-import button, { plain as plainStyle } from "style/button";
+import button, { plain as plainStyle } from "../../style/button";
 
 export interface ButtonProps {
   onClick?: MouseEventHandler;

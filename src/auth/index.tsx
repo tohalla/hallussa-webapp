@@ -6,12 +6,12 @@ import classnames from "classnames";
 import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
-import { appContainer, authContainer, centerContent, flex1 } from "style/container";
 
 import "style";
 
 import { baseUrl } from "../config";
 import i18n from "../i18n";
+import { appContainer, authContainer, centerContent, flex1 } from "../style/container";
 import { authenticate } from "./auth";
 import AuthenticationForm from "./AuthenticationForm";
 import RegistrationForm from "./RegistrationForm";

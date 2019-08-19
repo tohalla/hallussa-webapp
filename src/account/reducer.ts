@@ -2,7 +2,13 @@ import { merge } from "ramda";
 
 import { getEntityHandlers } from "../store/entityHandler";
 import { EntitiesState } from "../store/store";
-import { AccountAction, FETCH_ACCOUNT_SUCCESS, FETCH_ACCOUNTS_SUCCESS, UPDATE_ACCOUNT_SUCCESS } from "./actions";
+import {
+  AccountAction,
+  AccountPayload,
+  FETCH_ACCOUNT_SUCCESS,
+  FETCH_ACCOUNTS_SUCCESS,
+  UPDATE_ACCOUNT_SUCCESS
+} from "./actions";
 
 const entityHandlers: {
   [k: string]: (state: EntitiesState["accounts"], action: AccountAction) => EntitiesState["accounts"]
@@ -14,5 +20,5 @@ const entityHandlers: {
   [FETCH_ACCOUNTS_SUCCESS]: (state, {payload}) => merge(state, payload),
 };
 
-export default (state = {}, action: AccountAction) =>
+export default (state: {[k: string]: AccountPayload} = {}, action: AccountAction) =>
   action.type in entityHandlers ? entityHandlers[action.type](state, action) : state;

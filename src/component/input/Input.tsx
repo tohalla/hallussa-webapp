@@ -5,6 +5,7 @@ import React, {
 } from "react";
 
 import { FieldProps } from "formik";
+import { inputRow } from "../../style/form";
 import input, {
   inputContainer,
   inputLabel,
@@ -13,8 +14,7 @@ import input, {
   inputLabelFocused,
   inputLabelHidden,
   wide as wideStyle
- } from "style/input";
-import { inputRow } from "../../style/form";
+ } from "../../style/input";
 
 export interface InputProps {
   autoComplete: "off" | "on";

@@ -5,7 +5,7 @@ import {
   navGroup,
   toggleButton,
   topbar
-} from "style/topbar";
+} from "../style/topbar";
 
 import { RouteComponentProps, withRouter } from "react-router";
 import Logo from "../component/Logo";
