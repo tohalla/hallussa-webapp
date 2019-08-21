@@ -24,12 +24,12 @@ export default ({appliance}: Props) => {
           <ScheduledMaintenanceForm appliance={appliance}/>
         :
           <div className={classnames(rowContainer, contentHorizontalSpacing)}>
-            <Button onClick={setForm.bind(undefined, "scheduled")} plain={true}>
+            <Button onClick={() => setForm("scheduled")} plain={true}>
               {t("maintenanceEvent.create.scheduled.title")}
             </Button>
-            <Button onClick={setForm.bind(undefined, "repetitive")} plain={true}>
+            {/* <Button onClick={setForm.bind(undefined, "repetitive")} plain={true}>
               {t("maintenanceEvent.create.repetitive.title")}
-            </Button>
+            </Button> */}
           </div>
       }
     </Restricted>

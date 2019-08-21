@@ -20,7 +20,7 @@
     "change-case": "^3.0.2",
     "classnames": "^2.2.6",
     "core-js": "^3.1.4",
-    "date-fns": "^1.29.0",
+    "date-fns": "^2.0.0",
     "emotion": "^10.0.9",
     "formik": "2.0.1-rc.12",
     "i18next": "^17.0.8",

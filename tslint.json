@@ -5,6 +5,7 @@
   },
   "rules": {
     "jsx-no-multiline-js": false,
+    "jsx-no-lambda": false,
     "semicolon": [true, "always"],
     "indent": [true, "spaces", 2],
     "ter-indent": [true, 2],

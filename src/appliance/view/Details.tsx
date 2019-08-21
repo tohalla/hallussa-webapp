@@ -1,4 +1,5 @@
 import classnames from "classnames";
+import { parseISO } from "date-fns";
 import { pick } from "ramda";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -19,6 +20,7 @@ import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import {
   alignFlexStart,
+  contentVerticalSpacing,
   contentVerticalSpacingMinor,
   spread
 } from "../../style/container";
@@ -72,14 +74,14 @@ const Details = ({
         <h1>{appliance.name}</h1>
         <Actions appliance={appliance} match={match} history={history} />
       </div>
-      {appliance.description}
-      <div className={contentVerticalSpacingMinor}>
-        <Status status={appliance.status} />
-        {appliance.location &&
-          <div className={info}><i className="material-icons">location_on</i><span>{appliance.location}</span></div>
-        }
-      </div>
-      <div className={contentVerticalSpacingMinor}>
+      <div className={contentVerticalSpacing}>
+        <span>{appliance.description}</span>
+        <div className={contentVerticalSpacingMinor}>
+          <Status status={appliance.status} />
+          {appliance.location &&
+            <div className={info}><i className="material-icons">location_on</i><span>{appliance.location}</span></div>
+          }
+        </div>
         <EventList
           header={<h2>{t("appliance.event.list.title")}</h2>}
           maintenanceEvents={maintenanceEvents}
@@ -90,8 +92,8 @@ const Details = ({
       <div className={spread}>
         <Timestamps
           translationKeys={{createdAt: "appliance.createdAt", updatedAt: "appliance.updatedAt"}}
-          createdAt={appliance.createdAt}
-          updatedAt={appliance.updatedAt}
+          createdAt={parseISO(appliance.createdAt)}
+          updatedAt={parseISO(appliance.updatedAt || "")}
         />
         <Restricted requirements={{organisationPreferences: {qrCodes: true}}}>
           <Button onClick={handleFetchQR}>

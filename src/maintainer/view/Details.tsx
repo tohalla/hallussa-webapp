@@ -1,4 +1,5 @@
 import classnames from "classnames";
+import { parseISO } from "date-fns";
 import { map, pick, values } from "ramda";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -72,8 +73,8 @@ const Maintainer = ({match, history, maintainer, organisation, ...props}: Props)
       <div className={spacer} />
       <Timestamps
         translationKeys={{createdAt: "maintainer.createdAt", updatedAt: "maintainer.updatedAt"}}
-        createdAt={createdAt}
-        updatedAt={updatedAt}
+        createdAt={parseISO(createdAt)}
+        updatedAt={parseISO(updatedAt || "")}
       />
     </div>
   );

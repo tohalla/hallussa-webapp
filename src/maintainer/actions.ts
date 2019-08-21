@@ -18,7 +18,7 @@ export interface MaintainerPayload {
   lastName: string;
   organisation: number;
   phone: string;
-  updatedAt: string;
+  updatedAt?: string;
 }
 
 export interface MaintainerAction {

@@ -15,11 +15,16 @@ describe("Maintenance EventCreation component", () => {
     organisation: 0,
   };
 
-  it("should render the component", () => {
-    const {container} = render(
-      <EventCreation appliance={mockAppliance}/>
-    );
+  const {container, getByText} = render(
+    <EventCreation appliance={mockAppliance}/>
+  );
 
+  it("should render the component correctly", () => {
     expect(container).toMatchSnapshot();
   });
+
+  it("should activate scheduled maintenance creation when respective button clicked", () => {
+    getByText("maintenanceEvent.create.scheduled.title").click();
+  });
+
 });

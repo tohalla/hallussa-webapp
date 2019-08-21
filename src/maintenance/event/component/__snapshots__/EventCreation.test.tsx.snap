@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Maintenance EventCreation component should render the component 1`] = `
+exports[`Maintenance EventCreation component should render the component correctly 1`] = `
 <div>
   <h3>
     maintenanceEvent.create.title
@@ -13,12 +13,6 @@ exports[`Maintenance EventCreation component should render the component 1`] = `
       type="button"
     >
       maintenanceEvent.create.scheduled.title
-    </button>
-    <button
-      class="css-bmo2k2"
-      type="button"
-    >
-      maintenanceEvent.create.repetitive.title
     </button>
   </div>
 </div>
