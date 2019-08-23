@@ -1,3 +1,4 @@
+import { fireEvent } from "@testing-library/dom";
 import React from "react";
 
 import { render } from "../../../__mocks__/runtime";
@@ -24,7 +25,7 @@ describe("Maintenance EventCreation component", () => {
   });
 
   it("should activate scheduled maintenance creation when respective button clicked", () => {
-    getByText("maintenanceEvent.create.scheduled.title").click();
+    fireEvent.click(getByText("maintenanceEvent.create.scheduled.title"));
   });
 
 });

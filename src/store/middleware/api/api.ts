@@ -9,6 +9,7 @@ import { APIResponseAction, CALL_API, CALL_API_FAILURE, CALL_API_SUCCESS } from 
 
 export interface ReduxAPICall<T = any> extends Action {
   endpoint: string;
+  url?: string;
   method: Method;
   body?: never; // should use data instead of body
   successType?: string;
@@ -25,7 +26,7 @@ export interface ReduxAPICall<T = any> extends Action {
 /**
  * returns true if action can be interpreted as API call
  */
-const isValid = (payload: {[key: string]: any}): payload is ReduxAPICall =>
+export const isValid = (payload: {[key: string]: any}): payload is ReduxAPICall =>
   typeof payload.endpoint === "string" &&
   typeof payload.method === "string";
 
@@ -46,10 +47,11 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       onSuccess,
       onFailure,
       parameters,
+      url = apiUrl,
       transformResponse = (originalResponse: any): any => {
         if (Array.isArray(originalResponse)) {
           return indexBy(
-            ((o: {[key: string]: any}) => o.id || o.hash),
+            ((o: {[key: string]: any}) => String(o.id || o.hash)),
             originalResponse
           );
         }
@@ -61,13 +63,13 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       const cached = attemptToFetchFromStore(getState());
       if (cached) {
         // trigger onSuccess if defined
-        if (typeof onSuccess === "function") { onSuccess(cached, true); }
         if (typeof successType === "string") {
           return next({
             payload: cached,
             type: successType,
           }); // dispatch success action
         }
+        if (typeof onSuccess === "function") { onSuccess(cached, true); }
       }
     }
 
@@ -83,14 +85,19 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
     });
 
     try {
-      const response = await authenticatedFetch(`${apiUrl}${endpoint}${parameters ?
+      const response = await authenticatedFetch(`${url}${endpoint}${parameters ?
         "?" + map(
           (key) => `${key}=${String(parameters[key])}`,
           Object.keys(parameters)
-        ).join("+") : ""
+        ).join("&") : ""
       }`, {data: data && JSON.stringify(data), headers, method});
       const payload = {...transformResponse(response.data), ...additionalPayload};
 
+      next<APIResponseAction>({ // dispatch api success action
+        endpoint,
+        method,
+        type: CALL_API_SUCCESS,
+      });
       // trigger onSuccess if defined
       if (typeof successType === "string") {
         next({ // dispatch success for request action, body as payload if nothing received from server
@@ -98,22 +105,18 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
           type: successType,
         });
       }
-      next<APIResponseAction>({ // dispatch api success action
-        endpoint,
-        method,
-        type: CALL_API_SUCCESS,
-      });
       if (typeof onSuccess === "function") { await onSuccess(payload, false); }
 
       return payload;
     } catch (error) {
-      const errorText = error && error.data && typeof error.data.text === "function" ? await error.data.text() : error;
-      if (typeof onFailure === "function") { onFailure(errorText); }
+      const responseError = error && error.data && typeof error.data.text === "function" ?
+        await error.data.text() : String(error);
+      if (typeof onFailure === "function") { onFailure(responseError); }
 
       next({ // dispatch failure action
         endpoint,
         method,
-        payload: {isFetching: false, errorText},
+        payload: {isFetching: false, error: responseError},
         type: CALL_API_FAILURE,
       });
     }
