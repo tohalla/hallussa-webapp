@@ -9,7 +9,6 @@ import Button from "../../component/button/Button";
 import SelectAndSet, { SelectAndSetProps } from "../../component/input/SelectAndSet";
 import { MaintainerPayload } from "../../maintainer/actions";
 import { getEntitiesByOrganisationSelector } from "../../organisation/selectors";
-import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import { alignCenter, contentHorizontalSpacing, flex1, rowContainer, stacked } from "../../style/container";
 import { normal } from "../../style/variables/spacing";
@@ -17,7 +16,7 @@ import Loadable from "../../util/hoc/Loadable";
 import { AppliancePayload, assignMaintainerToAppliance, removeMaintainerFromAppliance } from "../actions";
 
 interface StateProps {
-  maintainers?: ReadonlyArray<MaintainerPayload> | APIResponsePayload;
+  maintainers: Readonly<{[k: string]: MaintainerPayload}>;
 }
 
 interface DispatchProps {
@@ -58,7 +57,7 @@ const MaintainerAssignment = ({
 
   const {assigned, assignable} = groupBy(
     ({id}) => appliance.maintainers.indexOf(id) === -1 ? "assignable" : "assigned",
-    maintainers as ReadonlyArray<MaintainerPayload>
+    Object.values(maintainers)
   );
 
   return (

@@ -29,7 +29,7 @@ export const getEntitiesByOrganisationSelector = <T extends EntityType, Entity e
   const selector = createSelector<
     ReduxState,
     any,
-    Readonly<Entity[]> | APIResponsePayload
+    Readonly<{[k: string]: Entity}>
   >(
     [
       ({entities}) => entities[entityType],
@@ -39,29 +39,28 @@ export const getEntitiesByOrganisationSelector = <T extends EntityType, Entity e
         getStatus(activeRequests, entityType, organisationId || session.activeOrganisation),
     ],
     (entityGroup, organisation, status) => {
+      const entities: {[k: string]: Entity} = {};
+
       if (typeof organisation === "undefined") {
-        return [];
+        return entities;
       }
       if (status) { // if entity fetching still hanging, return request status
         return status;
       }
-      const entities: Entity[] = [];
       for (const relation of ((organisation as OrganisationPayload)[entityType] || []) as Readonly<any[]>) {
-        const entity: Partial<Entity> = {};
+        // if an relation (not direct id), given value should be present in respective entity group
         if (typeof relation === "object" && key && relation.hasOwnProperty(key)) {
-          if (typeof entityGroup[relation[key]] === "undefined") {
-            continue;
+          if (typeof entityGroup[relation[key]] !== "undefined") {
+            entities[relation[key]] = {...entityGroup[relation[key]], ...relation};
           }
-          Object.assign(entity, relation, entityGroup[relation[key]]);
-        } else {
-          if (typeof entityGroup[relation] === "undefined") {
-            continue;
-          }
-          Object.assign(entity, entityGroup[relation]);
+          continue;
         }
-        entities.push(entity as Entity);
+        if (typeof entityGroup[relation] === "undefined") {
+          continue;
+        }
+        entities[relation] = entityGroup[relation];
       }
-      return entities as Readonly<Entity[]>;
+      return entities as Readonly<typeof entities>;
     }
   );
   selectors = assoc(entityType, {_org: organisationId, selector}, selectors);

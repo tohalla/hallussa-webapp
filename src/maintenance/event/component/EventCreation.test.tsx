@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/dom";
+// import { fireEvent } from "@testing-library/dom";
 import React from "react";
 
 import { render } from "../../../__mocks__/runtime";
@@ -16,7 +16,7 @@ describe("Maintenance EventCreation component", () => {
     organisation: 0,
   };
 
-  const {container, getByText} = render(
+  const {container} = render(
     <EventCreation appliance={mockAppliance}/>
   );
 
@@ -24,8 +24,8 @@ describe("Maintenance EventCreation component", () => {
     expect(container).toMatchSnapshot();
   });
 
-  it("should activate scheduled maintenance creation when respective button clicked", () => {
-    fireEvent.click(getByText("maintenanceEvent.create.scheduled.title"));
-  });
+  // it("should activate scheduled maintenance creation when respective button clicked", () => {
+  //   fireEvent.click(getByText("maintenanceEvent.create.scheduled.title"));
+  // });
 
 });

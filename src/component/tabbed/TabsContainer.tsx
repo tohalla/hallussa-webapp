@@ -7,12 +7,11 @@ import { NavLink } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
 import { UserRolePayload } from "../../account/user-role/actions";
 import { getEntitiesByOrganisationSelector } from "../../organisation/selectors";
-import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import { actionTab, tab as tabStyle, tabActive, tabsContainer } from "../../style/tabbed";
 import Loadable from "../../util/hoc/Loadable";
 import Restricted from "../Restricted";
-import { closeTab, createTab, TabPayload } from "./actions";
+import { closeTab, TabPayload } from "./actions";
 import TabComponent from "./TabComponent";
 
 interface Props extends RouteComponentProps {
@@ -23,13 +22,12 @@ interface Props extends RouteComponentProps {
 }
 
 interface StateProps {
-  userRoles: Readonly<UserRolePayload[]> | APIResponsePayload;
+  userRoles: Readonly<{[k: string]: UserRolePayload}>;
   activeUserRole: Partial<UserRolePayload>;
 }
 
 interface DispatchProps {
   closeTab: typeof closeTab;
-  createTab: typeof createTab;
 }
 
 const TabsContainer = ({
@@ -107,4 +105,4 @@ const mapStateToProps: MapStateToProps<StateProps, any, ReduxState> = (state, ow
   };
 };
 
-export default connect(mapStateToProps, {closeTab, createTab})(Loadable(TabsContainer));
+export default connect(mapStateToProps, {closeTab})(Loadable(TabsContainer));

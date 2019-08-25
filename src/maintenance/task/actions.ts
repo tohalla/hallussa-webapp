@@ -1,5 +1,3 @@
-import { map, pick } from "ramda";
-
 import { MaintainerPayload } from "../../maintainer/actions";
 import { CALL_API } from "../../store/middleware/api/actions";
 import { ReduxAPICall } from "../../store/middleware/api/api";
@@ -23,18 +21,8 @@ export interface MaintenanceTaskAction {
 }
 
 export const fetchMaintainerTasks = (
-  maintainer: MaintainerPayload,
-  {bypassCache = false} = {}
+  maintainer: MaintainerPayload
 ): ReduxAPICall => ({
-  attemptToFetchFromStore: (state) => {
-    if (!bypassCache && Array.isArray(state.entities.maintainers[maintainer.id].maintenanceTasks)) {
-      return pick(
-        map(String, state.entities.maintainers[maintainer.id].maintenanceTasks || []),
-        state.entities.maintenanceTasks
-      );
-    }
-    return undefined;
-  },
   endpoint: `/organisations/${maintainer.organisation}/maintainers/${maintainer.id}/maintenance-tasks`,
   method: "get",
   successType: FETCH_MAINTENANCE_TASK_SUCCESS,

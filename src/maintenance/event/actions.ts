@@ -1,5 +1,3 @@
-import { map, pick } from "ramda";
-
 import { AppliancePayload } from "../../appliance/actions";
 import { CALL_API } from "../../store/middleware/api/actions";
 import { ReduxAPICall } from "../../store/middleware/api/api";
@@ -20,19 +18,7 @@ export interface MaintenanceEventAction {
   payload: MaintenanceEventPayload;
 }
 
-export const fetchApplianceEvents = (
-  appliance: AppliancePayload,
-  {bypassCache = false} = {}
-): ReduxAPICall => ({
-  attemptToFetchFromStore: (state) => {
-    if (!bypassCache && Array.isArray(state.entities.appliances[appliance.id].maintenanceEvents)) {
-      return pick(
-        map(String, state.entities.appliances[appliance.id].maintenanceEvents || []),
-        state.entities.maintenanceEvents
-      );
-    }
-    return undefined;
-  },
+export const fetchApplianceEvents = (appliance: AppliancePayload): ReduxAPICall => ({
   endpoint: `/organisations/${appliance.organisation}/appliances/${appliance.id}/maintenance-events`,
   method: "get",
   successType: FETCH_MAINTENANCE_EVENT_SUCCESS,

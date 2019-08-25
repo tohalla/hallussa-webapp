@@ -1,21 +1,20 @@
 import { filter, path } from "ramda";
-import React from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { connect, MapStateToProps } from "react-redux";
 import NumberComponent from "../../component/drawer/subcomponents/NumberComponent";
 import { getEntitiesByOrganisationSelector } from "../../organisation/selectors";
-import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import Loadable from "../../util/hoc/Loadable";
 import { AppliancePayload } from "../actions";
 
-interface StateProps {
-  appliances: ReadonlyArray<AppliancePayload> | APIResponsePayload;
+interface Props {
+  appliances: Readonly<{[k: string]: AppliancePayload}>;
 }
 
-export const overview = (props: StateProps) => {
-  const appliances = props.appliances as ReadonlyArray<AppliancePayload>;
+export const overview = (props: Props) => {
   const {t} = useTranslation();
+  const appliances = useMemo(() => Object.values(props.appliances), [props.appliances]);
   return (
     <>
       <NumberComponent
@@ -34,7 +33,7 @@ export const overview = (props: StateProps) => {
   );
 };
 
-const mapStateToProps: MapStateToProps<StateProps, {}, ReduxState> = (state: ReduxState) => ({
+const mapStateToProps: MapStateToProps<Props, {}, ReduxState> = (state: ReduxState) => ({
   appliances: getEntitiesByOrganisationSelector<"appliances">("appliances", state.session.activeOrganisation)(state),
 });
 

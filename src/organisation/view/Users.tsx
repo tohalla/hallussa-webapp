@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import { filter, path } from "ramda";
-import React from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { connect, MapStateToProps } from "react-redux";
 
@@ -20,27 +20,28 @@ import { getEntitiesByOrganisationSelector } from "../selectors";
 import { getOrganisation } from "../state";
 
 interface StateProps {
-  accounts: Readonly<AccountPayload[]> |  APIResponsePayload;
+  accounts: Readonly<{[k: string]: AccountPayload}>;
   userRoles: EntityGroup<UserRolePayload>;
   organisation?: OrganisationPayload | APIResponsePayload;
 }
 
 type Props = StateProps & RouteComponentProps<{organisation: string}> & {
-  accounts: Readonly<AccountPayload[]>;
   organisation: OrganisationPayload;
 };
 
-const Users = ({accounts, organisation, userRoles}: Props) => {
+const Users = (props: Props) => {
   const {t} = useTranslation();
+  const accounts = useMemo(() => Object.values(props.accounts), [props.accounts]);
+
   return (
     <>
       <h1>{t("organisation.users.title")}</h1>
       <div className={contentVerticalSpacing}>
-        <AccountList accounts={accounts} userRoles={userRoles} organisation={organisation} />
+        <AccountList accounts={accounts} userRoles={props.userRoles} organisation={props.organisation} />
         <Restricted requirements={{userRole: {allowManageUsers: true}}}>
           <div className={classnames(rowContainer, spread)}>
             <div />
-            <AddAccount organisation={organisation}/>
+            <AddAccount organisation={props.organisation}/>
           </div>
         </Restricted>
       </div>

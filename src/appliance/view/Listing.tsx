@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { connect, MapStateToProps } from "react-redux";
 import { AppliancePayload } from "../actions";
@@ -6,22 +6,18 @@ import { AppliancePayload } from "../actions";
 import Drawer from "../../component/drawer/Drawer";
 import WithSidebar from "../../component/layout/WithSidebar";
 import { getEntitiesByOrganisationSelector } from "../../organisation/selectors";
-import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import Loadable from "../../util/hoc/Loadable";
 import ApplianceList from "../component/ApplianceList";
 import Overview from "../drawer/Overview";
 
-interface StateProps {
-  appliances: Readonly<AppliancePayload[]> | APIResponsePayload;
+interface Props {
+  appliances: Readonly<{[k: string]: AppliancePayload}>;
 }
 
-type Props = StateProps & {
-  appliances: Readonly<AppliancePayload[]>;
-};
-
-const Listing = ({appliances}: Props) => {
+const Listing = (props: Props) => {
   const {t} = useTranslation();
+  const appliances = useMemo(() => Object.values(props.appliances), [props.appliances]);
   return (
     <WithSidebar
       sidebarContent={
@@ -38,10 +34,10 @@ const Listing = ({appliances}: Props) => {
   );
 };
 
-const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
+const mapStateToProps: MapStateToProps<{}, Props, ReduxState> = (state) => ({
   appliances: getEntitiesByOrganisationSelector<"appliances">("appliances", state.session.activeOrganisation)(state),
 });
 
 export default connect(
   mapStateToProps
-)(Loadable<StateProps>(Listing));
+)(Loadable(Listing));

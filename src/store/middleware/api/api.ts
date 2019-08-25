@@ -63,13 +63,13 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       const cached = attemptToFetchFromStore(getState());
       if (cached) {
         // trigger onSuccess if defined
+        if (typeof onSuccess === "function") { onSuccess(cached, true); }
         if (typeof successType === "string") {
           return next({
             payload: cached,
             type: successType,
           }); // dispatch success action
         }
-        if (typeof onSuccess === "function") { onSuccess(cached, true); }
       }
     }
 
@@ -93,11 +93,6 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       }`, {data: data && JSON.stringify(data), headers, method});
       const payload = {...transformResponse(response.data), ...additionalPayload};
 
-      next<APIResponseAction>({ // dispatch api success action
-        endpoint,
-        method,
-        type: CALL_API_SUCCESS,
-      });
       // trigger onSuccess if defined
       if (typeof successType === "string") {
         next({ // dispatch success for request action, body as payload if nothing received from server
@@ -105,6 +100,11 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
           type: successType,
         });
       }
+      next<APIResponseAction>({ // dispatch api success action
+        endpoint,
+        method,
+        type: CALL_API_SUCCESS,
+      });
       if (typeof onSuccess === "function") { await onSuccess(payload, false); }
 
       return payload;

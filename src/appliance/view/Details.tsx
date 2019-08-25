@@ -56,7 +56,7 @@ const Details = ({
   ...props
 }: Props & {organisation: OrganisationPayload}) => {
   useEffect(() => {
-    props.fetchApplianceEvents(organisation.id, appliance.id);
+    props.fetchApplianceEvents(appliance);
   }, [appliance]);
 
   const {t} = useTranslation();

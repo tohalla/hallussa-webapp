@@ -4,7 +4,7 @@ import { connect, MapStateToProps } from "react-redux";
 import { RouteProps } from "react-router";
 import { Redirect } from "react-router-dom";
 
-import { getStatus } from "../../organisation/state";
+import { getEntitiesByOrganisationSelector } from "../../organisation/selectors";
 import { EntityGroup } from "../../store/reducer";
 import { ReduxState } from "../../store/store";
 import Loadable from "../../util/hoc/Loadable";
@@ -66,8 +66,7 @@ const TabRouteIndexLookup = <T extends {}>({context, getLabel, rootPath, accesso
   });
 
   const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
-    entities: state.session.activeOrganisation ?
-      getStatus(state.activeRequests, context, state.session.activeOrganisation) || state.entities[context] : {},
+    entities: getEntitiesByOrganisationSelector(context, state.session.activeOrganisation)(state),
     tabs: state.views[context].tabs,
   });
 

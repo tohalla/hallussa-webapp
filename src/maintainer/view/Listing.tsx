@@ -1,24 +1,20 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { connect, MapStateToProps } from "react-redux";
 
 import { useTranslation } from "react-i18next";
 import { getEntitiesByOrganisationSelector } from "../../organisation/selectors";
-import { APIResponsePayload } from "../../store/middleware/api/actions";
 import { ReduxState } from "../../store/store";
 import Loadable from "../../util/hoc/Loadable";
 import { MaintainerPayload } from "../actions";
 import MaintainerList from "../component/MaintainerList";
 
-interface StateProps {
-  maintainers: Readonly<MaintainerPayload[]> | APIResponsePayload;
+interface Props {
+  maintainers: Readonly<{[k: string]: MaintainerPayload}>;
 }
 
-type Props = StateProps & {
-  maintainers: Readonly<MaintainerPayload[]>;
-};
-
-const Listing = ({maintainers}: Props) => {
+const Listing = (props: Props) => {
   const {t} = useTranslation();
+  const maintainers = useMemo(() => Object.values(props.maintainers), [props.maintainers]);
 
   return (
     <>
@@ -28,8 +24,8 @@ const Listing = ({maintainers}: Props) => {
   );
 };
 
-const mapStateToProps: MapStateToProps<StateProps, Props, ReduxState> = (state) => ({
+const mapStateToProps: MapStateToProps<{}, Props, ReduxState> = (state) => ({
   maintainers: getEntitiesByOrganisationSelector<"maintainers">("maintainers", state.session.activeOrganisation)(state),
 });
 
-export default connect(mapStateToProps)(Loadable<StateProps>(Listing));
+export default connect(mapStateToProps)(Loadable(Listing));
