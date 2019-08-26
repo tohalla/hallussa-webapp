@@ -18,6 +18,8 @@ export default async () => {
     fetchAndAddTranslations("fback"),
     fetchAndAddTranslations(i18n.language || "en"),
   ]);
+
+  i18n.language = "en"; // will be passed in Accept-Language header
   i18n.languages = languages.map(prop("locale"));
 
   return i18n;

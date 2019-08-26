@@ -1,4 +1,5 @@
 import axios from "axios";
+import i18n from "i18next";
 import { AccountPayload } from "../account/actions";
 import { apiUrl } from "../config";
 
@@ -32,7 +33,10 @@ export const authenticate = async (
       ? { headers: { authorization: `Bearer ${credentials}` } }
       : {
         data: JSON.stringify(credentials),
-        headers: { ["Content-Type"]: "application/json" },
+        headers: {
+          ["Accept-Language"]: i18n.language,
+          ["Content-Type"]: "application/json",
+        },
         method: "post",
       } // otherwise should use email and password
   ).then((response) => {
@@ -67,7 +71,10 @@ export const register = async (
   axios.post(
     `${apiUrl}/accounts`,
     JSON.stringify(account),
-    {headers: { ["Content-Type"]: "application/json" }}
+    {headers: {
+      ["Accept-Language"]: i18n.language,
+      ["Content-Type"]: "application/json",
+    }}
   ).then((response) =>
     authenticateAfter && authenticate({email: account.email, password: account.password})
   ).catch((error) => {
