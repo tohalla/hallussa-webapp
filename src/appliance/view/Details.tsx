@@ -57,7 +57,7 @@ const Details = ({
 }: Props & {organisation: OrganisationPayload}) => {
   useEffect(() => {
     props.fetchApplianceEvents(appliance);
-  }, [appliance]);
+  }, [appliance.id]);
 
   const {t} = useTranslation();
 
@@ -65,7 +65,7 @@ const Details = ({
     const response = await authenticatedFetch(
       `${apiUrl}/organisations/${organisation.id}/appliances/qr?appliances=[${appliance.id}]`
     );
-    (window.open("", "_blank") as Window).document.body.innerHTML = await response.data.text();
+    (window.open("", "_blank") as Window).document.body.innerHTML = await response.data;
   };
 
   return (

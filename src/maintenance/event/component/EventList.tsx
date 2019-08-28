@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import React, { ReactFragment } from "react";
 import { useTranslation } from "react-i18next";
 import { connect, MapStateToProps } from "react-redux";
@@ -32,13 +32,13 @@ const MaintenanceEventList = ({
   const columns: Column[] = [
     {
       Header: t("maintenanceEvent.field.createdAt"),
-      accessor: (event) => format(event.createdAt, "D.M.YYYY - HH:mm"),
+      accessor: (event) => format(parseISO(event.createdAt), "d.M.yyyy - HH:mm"),
       id: "createdAt",
       width: 150,
     },
     {
       Header: t("maintenanceEvent.field.resolvedAt"),
-      accessor: (event) => event.resolvedAt && format(event.resolvedAt, "D.M.YYYY - HH:mm"),
+      accessor: (event) => event.resolvedAt && format(parseISO(event.resolvedAt), "d.M.yyyy - HH:mm"),
       id: "resolvedAt",
       width: 150,
     },
