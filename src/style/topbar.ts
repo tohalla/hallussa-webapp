@@ -87,7 +87,7 @@ export const topbar = css`
   position: absolute;
   left: 0;
   right: 0;
-  z-index: 99;
+  z-index: 8;
   color: ${text.light};
   font-size: ${small};
   line-height: ${base};

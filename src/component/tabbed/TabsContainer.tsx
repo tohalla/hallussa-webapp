@@ -43,7 +43,7 @@ const TabsContainer = ({
     const destination = getPath(tab);
     event.stopPropagation();
     event.preventDefault();
-    if (match.url === destination) {
+    if (match.url.startsWith(destination)) {
       history.push(`/${view}`); // move to default tab if tab to be closed is open
     }
     props.closeTab(view, tab);

@@ -23,7 +23,7 @@ export const dropdownMenuContainer = css`
   right: ${normal};
   background: ${greyscale[9]};
   border: 1px solid ${greyscale[5]};
-  z-index: 99;
+  z-index: 9;
 `;
 
 export const dropdownMenuItem = css`

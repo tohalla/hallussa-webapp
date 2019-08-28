@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { AppliancePayload } from "../../../appliance/actions";
-import DateInput from "../../../component/input/DateInput";
+import DateTimeInput from "../../../component/input/DateTimeInput";
 
 interface Props {
   appliance: AppliancePayload;
@@ -10,9 +10,10 @@ interface Props {
 const ScheduledMaintenanceForm = ({
   appliance,
 }: Props) => {
+  const [triggerAt, setTriggerAt] = useState();
   return (
     <>
-      <DateInput onDayChange={console.log}/>
+      <DateTimeInput onChange={setTriggerAt} value={triggerAt}/>
     </>
   );
 };
