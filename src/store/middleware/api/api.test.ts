@@ -47,8 +47,8 @@ describe("API middleware", () => {
         payload: {isFetching: true, requestedAt: path([0, "payload", "requestedAt"], store.getActions())},
         type: CALL_API,
       },
-      { type: CALL_API_SUCCESS, method: action.method, endpoint: action.endpoint },
       { type: SUCCESS_TYPE, payload: indexBy(compose(String, prop("id")), response)},
+      { type: CALL_API_SUCCESS, method: action.method, endpoint: action.endpoint },
     ]);
   });
 
@@ -62,8 +62,8 @@ describe("API middleware", () => {
         payload: {isFetching: true, requestedAt: path([0, "payload", "requestedAt"], store.getActions())},
         type: CALL_API,
       },
-      { type: CALL_API_SUCCESS, method: action.method, endpoint: action.endpoint },
       { type: SUCCESS_TYPE, payload: {...indexBy(compose(String, prop("id")), response), ...additionalPayload}},
+      { type: CALL_API_SUCCESS, method: action.method, endpoint: action.endpoint },
     ]);
   });
 
