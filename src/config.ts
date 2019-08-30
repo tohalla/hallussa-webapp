@@ -1,14 +1,18 @@
-const {PROTOCOL, API_PREFIX, WS_PREFIX, BASE_URL, API_PORT, WS_PORT} = process.env;
+const protocol = "http";
+const url = "192.168.1.82";
+const apiPort: string = "8080";
+const apiPrefix = "/api/v1";
+const wsPrefix = "/ws";
 
 export const baseUrl =
   process.env.NODE_ENV === "development"
     ? `${window.location.origin}/index.html`
     : window.location.origin;
 
-if (!(BASE_URL)) {
-  throw Error("API URL cannot be constructed.");
-}
+export const apiURL = `${protocol}://${url}${
+  apiPort === "443" || apiPort === "80" ? "" : `:${apiPort}`
+}${apiPrefix}`;
 
-export const apiURL = `${PROTOCOL}://${BASE_URL}${
-  API_PORT === "443" || API_PORT === "80" ? "" : `:${API_PORT}`
-}${API_PREFIX}`;
+export const wsURL = `${protocol === "http" ? "ws" : "wss"}://${url}${
+  apiPort === "443" || apiPort === "80" ? "" : `:${apiPort}`
+}${wsPrefix}`;
