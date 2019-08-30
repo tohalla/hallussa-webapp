@@ -18,7 +18,7 @@ import { actionsRow, form } from "../../style/form";
 import Loadable from "../../util/hoc/Loadable";
 import { AppliancePayload, createAppliance, updateAppliance } from "../actions";
 
-interface StateProps {
+interface StateProps {
   organisation?: OrganisationPayload | APIResponsePayload;
 }
 
@@ -43,7 +43,7 @@ const ApplianceForm = ({
   submitText,
   header,
   ...props
-}: StateProps & Props & DispatchProps) => {
+}: StateProps & Props & DispatchProps) => {
   const handleSubmit: FormikConfig<any>["onSubmit"] = async (state) => {
     if (!organisation) {
       return;

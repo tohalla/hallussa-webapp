@@ -13,11 +13,11 @@ interface StateProps {
 }
 
 type Props = StateProps & RouteComponentProps & {
-  match: {params: {appliance: string}}
+  match: {params: {appliance: string}}
 };
 
 const Edit = ({appliance, ...props}: Props) => {
-  const {t} = useTranslation();
+  const {t} = useTranslation();
   return (
     <div className={padded}>
       <ApplianceForm

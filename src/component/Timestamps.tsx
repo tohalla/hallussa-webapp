@@ -27,7 +27,7 @@ const Timestamps = ({createdAt, updatedAt, translationKeys}: Props) => {
       </span>
       {
         isValid(updatedAt) && updatedAt &&
-        <span>{t(translationKeys.updatedAt, {updatedAt: format(updatedAt, "d.M.yyyy – HH:mm")})}</span>
+        <span>{t(translationKeys.updatedAt, {updatedAt: format(updatedAt, "d.M.yyyy – HH:mm")})}</span>
       }
     </div>
   );

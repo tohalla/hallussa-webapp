@@ -6,7 +6,7 @@ import { EntitiesState, ReduxState } from "../store/store";
 import { OrganisationPayload } from "./actions";
 
 // return all organisations as readonly array
-export const getOrganisations = (state: ReduxState): ReadonlyArray<OrganisationPayload> | APIResponsePayload =>
+export const getOrganisations = (state: ReduxState): ReadonlyArray<OrganisationPayload> | APIResponsePayload =>
   state.activeRequests.get["/organisations"] || values(state.entities.organisations);
 
 export type EntityType = Exclude<keyof EntitiesState, Exclude<
@@ -17,7 +17,7 @@ export type EntityType = Exclude<keyof EntitiesState, Exclude<
 export const getOrganisation = (
   state: ReduxState,
   organisationId?: number
-): Readonly<OrganisationPayload> | APIResponsePayload | undefined => {
+): Readonly<OrganisationPayload> | APIResponsePayload | undefined => {
   const request = state.activeRequests.get["/organisations"];
   if (typeof request !== "undefined") {
     return request; // if organisations fetching still hanging, return request status
@@ -41,7 +41,7 @@ export const getStatus = (
   activeRequests: ReduxState["activeRequests"],
   entityType: EntityType,
   organisation?: number
-): APIResponsePayload | undefined => {
+): APIResponsePayload | undefined => {
   if (typeof organisation === "undefined") { // ... if still missing, wrong organisation was requested
     throw new Error("organisation not defined");
   }

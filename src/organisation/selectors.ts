@@ -13,12 +13,12 @@ let selectors: {
   }
 } = {};
 
-export const getEntitiesByOrganisationSelector = <T extends EntityType, Entity extends {} = any>(
+export const getEntitiesByOrganisationSelector = <T extends EntityType, Entity extends {} = any>(
   entityType: T,
   organisationId?: number,
   {key}: {
     key?: keyof Required<OrganisationPayload>[T][0]
-  } = {}
+  } = {}
 ) => {
   if (typeof organisationId === "undefined") {
     return () => []; // when organisation is not defined, should just return empty array

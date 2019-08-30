@@ -16,7 +16,7 @@ interface StateProps {
 type Props = RouteComponentProps<{organisation?: string}>;
 
 const Security = ({account}: Props & StateProps) => {
-  const {t} = useTranslation();
+  const {t} = useTranslation();
 
   return (
     <>

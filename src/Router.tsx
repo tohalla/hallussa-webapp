@@ -14,7 +14,7 @@ interface StateProps {
 }
 
 const RootRouter = ({organisationSelected}: StateProps) => {
-  const routes = [
+  const routes = [
     <Route key="organisations" path="/organisations" component={OrganisationsRouter} />,
     <Route key="profile" path="/profile" component={ProfileRouter} />,
     ...organisationSelected ? [

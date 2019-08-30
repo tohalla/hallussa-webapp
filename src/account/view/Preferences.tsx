@@ -24,7 +24,7 @@ interface DispatchProps {
 type Props = RouteComponentProps<{organisation?: string}>;
 
 const Preferences = ({account, ...props}: Props & StateProps & DispatchProps) => {
-  const {t} = useTranslation();
+  const {t} = useTranslation();
 
   const handleSubmit: FormikConfig<any>["onSubmit"] = async (state) => {
     await props.updateAccount({...state, language: state.language.value, id: account.id});

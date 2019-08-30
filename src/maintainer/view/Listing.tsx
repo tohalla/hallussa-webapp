@@ -13,7 +13,7 @@ interface Props {
 }
 
 const Listing = (props: Props) => {
-  const {t} = useTranslation();
+  const {t} = useTranslation();
   const maintainers = useMemo(() => Object.values(props.maintainers), [props.maintainers]);
 
   return (

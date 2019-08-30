@@ -12,7 +12,7 @@ interface StateProps {
 }
 
 const OrganisationNavigation = ({organisationSelected}: StateProps & RouteComponentProps) => {
-  const {t} = useTranslation();
+  const {t} = useTranslation();
 
   return (
     <div className={navGroup}>

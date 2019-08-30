@@ -21,7 +21,7 @@ export interface OrganisationPreferences {
   qrCodes?: boolean;
 }
 
-export interface OrganisationPayload {
+export interface OrganisationPayload {
   id: number;
   language?: string;
   name: string;

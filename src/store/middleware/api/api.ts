@@ -2,7 +2,7 @@ import { Method } from "axios";
 import { indexBy, map } from "ramda";
 import { Action, Dispatch, Middleware } from "redux";
 
-import { apiUrl } from "../../../config";
+import { apiURL } from "../../../config";
 import { authenticatedFetch } from "../../../util/utilityFunctions";
 import { EntitiesState, ReduxState } from "../../store";
 import { APIResponseAction, CALL_API, CALL_API_FAILURE, CALL_API_SUCCESS } from "./actions";
@@ -47,7 +47,7 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       onSuccess,
       onFailure,
       parameters,
-      url = apiUrl,
+      url = apiURL,
       transformResponse = (originalResponse: any): any => {
         if (Array.isArray(originalResponse)) {
           return indexBy(

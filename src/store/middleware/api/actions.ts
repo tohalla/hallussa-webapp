@@ -16,7 +16,7 @@ export interface APIResponsePayload {
 
 export interface APIResponseAction<T = any> extends AnyAction {
   endpoint: string;
-  payload?: Partial<APIResponsePayload> | T;
+  payload?: Partial<APIResponsePayload> | T;
   method: Method;
 }
 

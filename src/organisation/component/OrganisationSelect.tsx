@@ -14,7 +14,7 @@ import { getOrganisation, getOrganisations } from "../state";
 
 interface StateProps {
   activeOrganisation?: Readonly<OrganisationPayload> | APIResponsePayload;
-  organisations: ReadonlyArray<OrganisationPayload> | APIResponsePayload;
+  organisations: ReadonlyArray<OrganisationPayload> | APIResponsePayload;
 }
 
 interface DispatchProps {

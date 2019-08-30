@@ -14,7 +14,7 @@ interface StateProps {
   account?: AccountPayload;
 }
 
-const AccountMenu = (props: StateProps) => {
+const AccountMenu = (props: StateProps) => {
   const {t} = useTranslation();
   return (
     <div className={classnames(navGroup)}>

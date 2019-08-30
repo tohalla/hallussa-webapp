@@ -63,7 +63,7 @@ const mapStateToProps: MapStateToProps<StateProps, any, ReduxState> = (state, ow
 };
 
 export default connect<StateProps, {}, Props, ReduxState>(mapStateToProps)(
-  ({children, restrictedContent: restrictedContent, ...props}: Props & StateProps) => {
+  ({children, restrictedContent: restrictedContent, ...props}: Props & StateProps) => {
     return <>{allowAccess(props) ? children : restrictedContent}</>;
   }
 );

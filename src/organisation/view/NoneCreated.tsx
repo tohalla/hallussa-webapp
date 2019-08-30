@@ -16,7 +16,7 @@ interface StateProps {
   activeOrganisation?: Readonly<OrganisationPayload> | APIResponsePayload;
 }
 
-const NoneCreated = ({activeOrganisation}: {activeOrganisation: Readonly<OrganisationPayload>}) => {
+const NoneCreated = ({activeOrganisation}: {activeOrganisation: Readonly<OrganisationPayload>}) => {
   const {t} = useTranslation();
 
   if (activeOrganisation) {

@@ -21,7 +21,7 @@ export default function Select<T = {label: string, value: any}>({
   setFieldValue,
   onBlur,
   ...props
-}: SelectProps<T>) {
+}: SelectProps<T>) {
   const handleChange: Props<T>["onChange"] = (option) => {
     // handle formik field updates
     if (typeof setFieldValue === "function") {

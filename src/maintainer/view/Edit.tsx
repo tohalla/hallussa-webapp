@@ -13,11 +13,11 @@ interface StateProps {
 }
 
 type Props = StateProps & RouteComponentProps & {
-  match: {params: {maintainer: string}}
+  match: {params: {maintainer: string}}
 };
 
 const Edit = ({maintainer, ...props}: Props) => {
-  const {t} = useTranslation();
+  const {t} = useTranslation();
   return (
     <div className={padded}>
       <MaintainerForm

@@ -10,7 +10,7 @@ import { ReduxState } from "../../store/store";
 export const FETCH_USER_ROLES_SUCCESS = "FETCH_USER_ROLES_SUCCESS";
 export const SET_ACTIVE_USER_ROLE = "SET_ACTIVE_USER_ROLE";
 
-export interface UserRolePayload {
+export interface UserRolePayload {
   id: number;
   name: string;
   organisation: number;

@@ -41,7 +41,7 @@ const OrganisationForm = ({
   submitText,
   header,
   ...props
-}: DispatchProps & StateProps & Props) => {
+}: DispatchProps & StateProps & Props) => {
   const handleSubmit: FormikConfig<any>["onSubmit"] = async (state) => {
     if (initialState) {
       await props.updateOrganisation({...initialState, ...state});

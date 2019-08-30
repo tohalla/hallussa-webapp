@@ -10,7 +10,7 @@ import Button from "../../component/button/Button";
 import WithSidebar from "../../component/layout/WithSidebar";
 import Restricted from "../../component/Restricted";
 import Timestamps from "../../component/Timestamps";
-import { apiUrl } from "../../config";
+import { apiURL } from "../../config";
 import { fetchApplianceEvents, MaintenanceEventPayload } from "../../maintenance/event/actions";
 import EventCreation from "../../maintenance/event/component/EventCreation";
 import EventList from "../../maintenance/event/component/EventList";
@@ -34,7 +34,7 @@ import Status from "../component/Status";
 import ApplianceDrawers from "../drawer/ApplianceDrawers";
 
 interface StateProps {
-  organisation?: OrganisationPayload | APIResponsePayload;
+  organisation?: OrganisationPayload | APIResponsePayload;
   appliance: AppliancePayload;
   maintenanceEvents: Readonly<MaintenanceEventPayload[]>;
 }
@@ -63,7 +63,7 @@ const Details = ({
 
   const handleFetchQR = async () => {
     const response = await authenticatedFetch(
-      `${apiUrl}/organisations/${organisation.id}/appliances/qr?appliances=[${appliance.id}]`
+      `${apiURL}/organisations/${organisation.id}/appliances/qr?appliances=[${appliance.id}]`
     );
     (window.open("", "_blank") as Window).document.body.innerHTML = await response.data;
   };

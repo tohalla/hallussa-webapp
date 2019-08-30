@@ -43,6 +43,6 @@ const mount = async () => {
 
 mount();
 
-if (module.hot) {
+if (module.hot) {
   module.hot.accept(mount);
 }

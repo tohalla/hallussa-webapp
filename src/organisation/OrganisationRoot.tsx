@@ -72,7 +72,7 @@ const OrganisationRoot = ({
         requirements={{userRole: {allowUpdateOrganisation: true}}}
         userRole={userRole}
       />
-      <Redirect to={match.url} />
+      <Redirect to={match.url} />
     </Switch>
   );
 };

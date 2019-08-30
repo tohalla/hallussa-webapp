@@ -3,7 +3,7 @@ import i18n from "i18next";
 import { prop } from "ramda";
 import { initReactI18next } from "react-i18next";
 
-import { apiUrl } from "../config";
+import { apiURL } from "../config";
 
 export default async () => {
   await i18n
@@ -14,9 +14,9 @@ export default async () => {
     });
 
   const [languages] = await Promise.all([
-    axios(`${apiUrl}/i18n/languages`).then(prop("data")),
+    axios(`${apiURL}/i18n/languages`).then(prop("data")),
     fetchAndAddTranslations("fback"),
-    fetchAndAddTranslations(i18n.language || "en"),
+    fetchAndAddTranslations(i18n.language || "en"),
   ]);
 
   i18n.language = "en"; // will be passed in Accept-Language header
@@ -26,6 +26,6 @@ export default async () => {
 };
 
 const fetchAndAddTranslations = (locale: string, namespace = "translation") =>
-  axios(`${apiUrl}/i18n/languages/${locale}`)
+  axios(`${apiURL}/i18n/languages/${locale}`)
     .then(prop("data"))
     .then((translations) => i18n.addResourceBundle(locale, namespace, translations));

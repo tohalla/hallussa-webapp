@@ -10,7 +10,7 @@ export const DELETE_APPLIANCE_SUCCESS = "DELETE_APPLIANCE_SUCCESS";
 export const REMOVE_MAINTAINER_FROM_APPLIANCE_SUCCESS = "REMOVE_MAINTAINER_FROM_APPLIANCE_SUCCESS";
 export const ASSING_MAINTAINER_TO_APPLIANCE_SUCCESS = "ASSING_MAINTAINER_TO_APPLIANCE_SUCCESS";
 
-export interface AppliancePayload {
+export interface AppliancePayload {
   createdAt: string;
   hash: string;
   id: number;

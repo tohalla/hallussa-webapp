@@ -14,7 +14,7 @@ import Loadable from "../../../util/hoc/Loadable";
 import { MaintenanceEventPayload } from "../actions";
 
 interface StateProps {
-  maintainers: EntityGroup<MaintainerPayload> | APIResponsePayload;
+  maintainers: EntityGroup<MaintainerPayload> | APIResponsePayload;
 }
 
 interface Props {

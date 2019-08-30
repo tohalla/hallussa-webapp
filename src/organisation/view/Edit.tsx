@@ -14,11 +14,11 @@ interface StateProps {
 }
 
 type Props = StateProps & RouteComponentProps & {
-  match: {params: {organisation: string}}
+  match: {params: {organisation: string}}
 };
 
 const Edit = ({organisation, ...props}: Props) => {
-  const {t} = useTranslation();
+  const {t} = useTranslation();
   return (
     <div className={classnames(viewContentContainer, padded)}>
       <OrganisationForm

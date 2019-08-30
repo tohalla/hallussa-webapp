@@ -25,7 +25,7 @@ interface Props extends RouteProps {
 }
 
 interface HProps<T> {
-  context: "appliances" | "maintainers";
+  context: "appliances" | "maintainers";
   getLabel: (target: T) => string;
   rootPath: string;
   accessor: string;

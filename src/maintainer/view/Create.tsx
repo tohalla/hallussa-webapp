@@ -6,7 +6,7 @@ import { padded } from "../../style/container";
 import MaintainerForm from "../component/MaintainerForm";
 
 export default (props: RouteComponentProps) => {
-  const {t} = useTranslation();
+  const {t} = useTranslation();
   return (
     <div className={padded}>
       <MaintainerForm

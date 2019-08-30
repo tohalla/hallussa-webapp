@@ -7,7 +7,7 @@ export const CREATE_MAINTAINER_SUCCESS = "CREATE_MAINTAINER_SUCCESS";
 export const UPDATE_MAINTAINER_SUCCESS = "UPDATE_MAINTAINER_SUCCESS";
 export const DELETE_MAINTAINER_SUCCESS = "DELETE_MAINTAINER_SUCCESS";
 
-export interface MaintainerPayload {
+export interface MaintainerPayload {
   appliances: ReadonlyArray<number>;
   maintenanceTasks?: ReadonlyArray<number>;
   createdAt: string;

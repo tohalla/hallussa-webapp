@@ -6,7 +6,7 @@ export const FETCH_MAINTENANCE_TASK_SUCCESS = "FETCH_MAINTENANCE_TASK_SUCCESS";
 // export const UPDATE_MAINTENANCE_TASK_SUCCESS = "UPDATE_MAINTENANCE_TASK_SUCCESS";
 // export const DELETE_MAINTENANCE_TASK_SUCCESS = "DELETE_MAINTENANCE_TASK_SUCCESS";
 
-export interface MaintenanceTaskPayload {
+export interface MaintenanceTaskPayload {
   updatedAt?: string;
   createdAt?: string;
   hash?: string;

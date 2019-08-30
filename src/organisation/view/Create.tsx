@@ -7,7 +7,7 @@ import { padded, viewContentContainer } from "../../style/container";
 import OrganisationForm from "../component/OrganisationForm";
 
 export default (props: RouteComponentProps) => {
-  const {t} = useTranslation();
+  const {t} = useTranslation();
   return (
     <div className={classnames(viewContentContainer, padded)}>
       <OrganisationForm

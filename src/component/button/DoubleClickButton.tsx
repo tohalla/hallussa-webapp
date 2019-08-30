@@ -55,7 +55,7 @@ export default class DoubleClickButton extends React.Component<Props> {
     }
   }
 
-  public render() {
+  public render() {
     const {
       DeletionConfirmation,
       className,

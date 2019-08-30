@@ -24,7 +24,7 @@ interface DispatchProps {
 
 const changePassword =  ({account, ...props}: Props & DispatchProps) => {
   const [visible, toggleVisible] = useToggle();
-  const {t} = useTranslation();
+  const {t} = useTranslation();
 
   const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setStatus, resetForm}) => {
     await props.callAPI({
@@ -34,7 +34,7 @@ const changePassword =  ({account, ...props}: Props & DispatchProps) => {
       onFailure: (error) => {
         setStatus({error});
       },
-      onSuccess: () => {
+      onSuccess: () => {
         resetForm();
         toggleVisible();
       },

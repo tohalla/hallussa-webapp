@@ -10,10 +10,10 @@ import { ReduxState } from "../store/store";
 import Loadable from "../util/hoc/Loadable";
 
 interface StateProps {
-  organisation?: OrganisationPayload | APIResponsePayload;
+  organisation?: OrganisationPayload | APIResponsePayload;
 }
 
-const OrganisationNavItem = ({organisation}: {organisation?: OrganisationPayload}) => {
+const OrganisationNavItem = ({organisation}: {organisation?: OrganisationPayload}) => {
   if (!organisation) {
     return <div />;
   }

@@ -12,7 +12,7 @@ export const getLanguageOption = ({t, language}: {t: i18next.TFunction, language
 });
 
 export default (props: Omit<SelectProps, "options"> & Partial<FieldProps>) => {
-  const {t, i18n} = useTranslation();
+  const {t, i18n} = useTranslation();
 
   useEffect(() => {
     if (props.form && props.field && typeof props.field.value === "string") {

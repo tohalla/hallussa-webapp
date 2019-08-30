@@ -30,7 +30,7 @@ const SelectAndSet = <T extends {label: string, value: any}>({
   formClassName,
   equalValue,
   ...props
-}: SelectAndSetProps<T>) => {
+}: SelectAndSetProps<T>) => {
   const handleSubmit: FormikConfig<any>["onSubmit"]  = async (state) => {
     if (typeof onSet === "function") {
       await onSet(state);

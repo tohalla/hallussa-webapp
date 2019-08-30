@@ -28,7 +28,7 @@ import Actions from "../component/Actions";
 
 interface StateProps {
   appliances: ReadonlyArray<AppliancePayload>;
-  organisation?: OrganisationPayload | APIResponsePayload;
+  organisation?: OrganisationPayload | APIResponsePayload;
   maintainer: MaintainerPayload;
 }
 
@@ -45,7 +45,7 @@ const Maintainer = ({match, history, maintainer, organisation, ...props}: Props)
     props.fetchMaintainerTasks(maintainer);
   }, []);
 
-  const {t} = useTranslation();
+  const {t} = useTranslation();
 
   const {phone, firstName, lastName, email, language, createdAt, updatedAt} = maintainer;
 

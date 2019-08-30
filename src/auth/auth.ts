@@ -1,7 +1,7 @@
 import axios from "axios";
 import i18n from "i18next";
 import { AccountPayload } from "../account/actions";
-import { apiUrl } from "../config";
+import { apiURL } from "../config";
 
 let refreshTokenTimeout: number | undefined;
 
@@ -28,7 +28,7 @@ export const authenticate = async (
   credentials: string | { email: string; password: string }
 ): Promise<string | boolean> =>
   axios(
-    `${apiUrl}/auth`,
+    `${apiURL}/auth`,
     typeof credentials === "string" // attach authorization header if token provided as credentials
       ? { headers: { authorization: `Bearer ${credentials}` } }
       : {
@@ -69,7 +69,7 @@ export const register = async (
 ) =>
   // send request to create account
   axios.post(
-    `${apiUrl}/accounts`,
+    `${apiURL}/accounts`,
     JSON.stringify(account),
     {headers: {
       ["Accept-Language"]: i18n.language,

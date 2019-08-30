@@ -50,7 +50,7 @@ export const tab = css`
 export const actionTab = css`
   background: ${primary.light};
   color: ${greyscale[9]};
-  &:focus {
+  &:focus {
     outline-offset: 0;
   }
   .material-icons {

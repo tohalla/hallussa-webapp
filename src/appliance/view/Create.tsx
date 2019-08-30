@@ -6,7 +6,7 @@ import { padded } from "../../style/container";
 import ApplianceForm from "../component/ApplianceForm";
 
 export default (props: RouteComponentProps) => {
-  const {t} = useTranslation();
+  const {t} = useTranslation();
   return (
     <div className={padded}>
       <ApplianceForm

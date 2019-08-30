@@ -1,15 +1,14 @@
+const {PROTOCOL, API_PREFIX, WS_PREFIX, BASE_URL, API_PORT, WS_PORT} = process.env;
+
 export const baseUrl =
   process.env.NODE_ENV === "development"
     ? `${window.location.origin}/index.html`
     : window.location.origin;
 
-if (!(process.env.API_URI)) {
+if (!(BASE_URL)) {
   throw Error("API URL cannot be constructed.");
 }
 
-export const apiUrl = `${process.env.API_URI}${
-  process.env.API_PORT ? `:${process.env.API_PORT}` : ""
-}/` + [
-  process.env.API_PREFIX,
-  process.env.API_VERSION,
-].filter(Boolean).join("/");
+export const apiURL = `${PROTOCOL}://${BASE_URL}${
+  API_PORT === "443" || API_PORT === "80" ? "" : `:${API_PORT}`
+}${API_PREFIX}`;

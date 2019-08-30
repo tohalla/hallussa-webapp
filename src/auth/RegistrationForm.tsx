@@ -14,10 +14,10 @@ import { error as errorStyle, small } from "../style/inline";
 import { register } from "./auth";
 
 export default () => {
-  const {t} = useTranslation();
+  const {t} = useTranslation();
 
   const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setStatus}) => {
-    try {
+    try {
       await register(state);
       window.location.href = baseUrl;
     } catch (error) {

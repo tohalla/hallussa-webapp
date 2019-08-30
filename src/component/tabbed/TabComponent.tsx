@@ -17,7 +17,7 @@ const icons = ["add"]; // labels that should be displayed as material icon
  */
 export default (props: Props) => {
   const {label, sticky, onClose} = props;
-  const {t} = useTranslation();
+  const {t} = useTranslation();
   return (
     <>
       <span className={classnames({"material-icons": typeof label === "string" && icons.indexOf(label) > -1})}>

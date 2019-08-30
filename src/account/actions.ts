@@ -18,7 +18,7 @@ export const REMOVE_ACCOUNT_SUCCESS = "REMOVE_ACCOUNT_SUCCESS";
 
 export const SET_ACCOUNT_USER_ROLE = "SET_ACCOUNT_USER_ROLE";
 
-export interface AccountPayload {
+export interface AccountPayload {
   id: number;
   language?: string;
   firstName: string;
@@ -74,7 +74,7 @@ export const addAccount = (
   data: payload,
   endpoint: `/organisations/${organisation}/users/accounts`,
   method: "post",
-  onSuccess: (responsePayload) => {
+  onSuccess: (responsePayload) => {
     const account = prop("account", responsePayload);
     if (typeof account === "number") {
       return dispatch(fetchAccounts(organisation, {accounts: [account]}));

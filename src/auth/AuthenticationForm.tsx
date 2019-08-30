@@ -17,7 +17,7 @@ export default () => {
   const {t} = useTranslation();
 
   const handleSubmit: FormikConfig<any>["onSubmit"] = async (state, {setStatus}) => {
-    try {
+    try {
       await authenticate(state);
       window.location.href = baseUrl;
     } catch (error) {

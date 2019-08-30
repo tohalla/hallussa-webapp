@@ -72,22 +72,22 @@ describe("entity relation handler", () => {
       action.type in entityRelationHandlers ? entityRelationHandlers[action.type](state, action) : state;
 
     it("should handle creating relations with only one relation in payload", () =>
-      expect(reducer(initialState, {type: types.add, payload: {test: 1, id: 3}}))
+      expect(reducer(initialState, {type: types.add, payload: {test: 1, id: 3}}))
         .toStrictEqual(assocPath([1, "relationKey"], [1, 2, 7, 6, 5, 3], initialState))
     );
 
     it("should handle creating relations with multiple relations in payload", () =>
-      expect(reducer(initialState, {type: types.add, payload: [{test: 1, id: 3}, {test: 1, id: 10}]}))
+      expect(reducer(initialState, {type: types.add, payload: [{test: 1, id: 3}, {test: 1, id: 10}]}))
         .toStrictEqual(assocPath([1, "relationKey"], [1, 2, 7, 6, 5, 3, 10], initialState))
     );
 
     it("should handle removing relations with only one relation in payload", () =>
-      expect(reducer(initialState, {type: types.remove, payload: {test: 1, id: 1}}))
+      expect(reducer(initialState, {type: types.remove, payload: {test: 1, id: 1}}))
         .toStrictEqual(assocPath([1, "relationKey"], [2, 7, 6, 5], initialState))
     );
 
     it("should handle removing relations with only multiple relations in payload", () =>
-      expect(reducer(initialState, {type: types.remove, payload: [{test: 1, id: 1}, {test: 1, id: 7}]}))
+      expect(reducer(initialState, {type: types.remove, payload: [{test: 1, id: 1}, {test: 1, id: 7}]}))
         .toStrictEqual(assocPath([1, "relationKey"], [2, 6, 5], initialState))
     );
   });
@@ -115,14 +115,14 @@ describe("entity relation handler", () => {
 
     const relationL = lensPath([1, "relationKey"]);
 
-    it("should handle creating relations", () => {
+    it("should handle creating relations", () => {
       const payload = {test: 1, extra: 5, relationName: 3};
       expect(reducer(initialState, {type: types.add, payload})).toStrictEqual(
         over(relationL, append(parseRelationFromPayload(payload)), initialState)
       );
     });
 
-    it("should handle creating multiple relations with different keys", () => {
+    it("should handle creating multiple relations with different keys", () => {
       const payload = [
         {test: 1, relationName: 3}, {test: 1, relationName: 15},
         {test: 2, extra: 5, relationName: 3},
@@ -143,7 +143,7 @@ describe("entity relation handler", () => {
       });
     });
 
-    it("should remove relations when related entity has been deleted", () => {
+    it("should remove relations when related entity has been deleted", () => {
       const payload = {relationName: 1};
       expect(reducer(initialState, {type: types.delete, payload})).toStrictEqual({
         ...initialState,

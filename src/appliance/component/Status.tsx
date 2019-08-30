@@ -9,7 +9,7 @@ interface Props extends Pick<AppliancePayload, "status"> {
 }
 
 const Status = ({status, label}: Props) => {
-  const {t} = useTranslation();
+  const {t} = useTranslation();
 
   return (
     <div className={info}>
