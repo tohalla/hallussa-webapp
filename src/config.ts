@@ -2,7 +2,8 @@ const protocol = "http";
 const url = "192.168.1.82";
 const apiPort: string = "8080";
 const apiPrefix = "/api/v1";
-const wsPrefix = "/ws";
+
+export const wsPrefix = "/ws";
 
 export const baseUrl =
   process.env.NODE_ENV === "development"
