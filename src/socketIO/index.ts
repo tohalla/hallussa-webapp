@@ -22,4 +22,5 @@ export let socketIO: SocketIOClient.Socket;
   );
 
   socketIO.on("maintenanceEvent", entityUpdateHandler("maintenanceEvents"));
+  socketIO.on("applianceStatus", entityUpdateHandler("applianceStatus"));
 })();

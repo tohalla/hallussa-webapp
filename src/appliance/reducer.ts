@@ -1,4 +1,5 @@
-import { prop } from "ramda";
+import { assocPath, path, prop } from "ramda";
+import { Reducer } from "redux";
 
 import { DELETE_MAINTAINER_SUCCESS } from "../maintainer/actions";
 import { FETCH_MAINTENANCE_EVENT_SUCCESS } from "../maintenance/event/actions";
@@ -10,12 +11,13 @@ import {
   DELETE_APPLIANCE_SUCCESS,
   FETCH_APPLIANCES_SUCCESS,
   REMOVE_MAINTAINER_FROM_APPLIANCE_SUCCESS,
+  UPDATE_APPLIANCE_STATUS,
   UPDATE_APPLIANCE_SUCCESS
 } from "./actions";
 
 const getEntityRelationHandlers = getEntityRelationHandlersGenerator<"appliance">("appliance");
 
-const entityHandlers = {
+const entityHandlers: {[t: string]: Reducer} = {
   ...getEntityHandlers({
     types: {
       create: CREATE_APPLIANCE_SUCCESS,
@@ -40,6 +42,10 @@ const entityHandlers = {
       add: [FETCH_MAINTENANCE_EVENT_SUCCESS, {preprocessPayload: Object.values}],
     },
   }),
+  [UPDATE_APPLIANCE_STATUS]: (state, action) => {
+    const appliance = path(["payload", "appliance"], action);
+    return appliance ? assocPath([String(appliance), "status"], action.payload, state) : state;
+  },
 };
 
 export default (state = {}, action: ApplianceAction) =>

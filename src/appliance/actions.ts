@@ -10,6 +10,15 @@ export const DELETE_APPLIANCE_SUCCESS = "DELETE_APPLIANCE_SUCCESS";
 export const REMOVE_MAINTAINER_FROM_APPLIANCE_SUCCESS = "REMOVE_MAINTAINER_FROM_APPLIANCE_SUCCESS";
 export const ASSING_MAINTAINER_TO_APPLIANCE_SUCCESS = "ASSING_MAINTAINER_TO_APPLIANCE_SUCCESS";
 
+export const UPDATE_APPLIANCE_STATUS = "UPDATE_APPLIANCE_STATUS";
+
+export interface ApplianceStatus {
+  appliance: number;
+  averageMaintenanceTime: number;
+  maintenanceEventCount: number;
+  isMalfunctioning: boolean;
+}
+
 export interface AppliancePayload {
   createdAt: string;
   hash: string;
@@ -20,9 +29,7 @@ export interface AppliancePayload {
   description: string;
   organisation: number;
   updatedAt?: string;
-  status?: {
-    isMalfunctioning: boolean;
-  };
+  status?: ApplianceStatus;
   maintenanceEvents?: ReadonlyArray<number>;
 }
 
