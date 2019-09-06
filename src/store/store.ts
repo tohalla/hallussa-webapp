@@ -12,6 +12,7 @@ import { MaintenanceTaskPayload } from "../maintenance/task/actions";
 import { fetchOrganisations, OrganisationPayload, setActiveOrganisation } from "../organisation/actions";
 import api from "./middleware/api/api";
 import { RequestsState } from "./middleware/api/reducer";
+import organisationUpdates from "./middleware/organisationUpdates";
 import reducer, { EntityGroup } from "./reducer";
 
 const composeEnhancers =  process.env.NODE_ENV === "development"
@@ -40,7 +41,7 @@ export interface ReduxState {
   views: ViewsState;
 }
 
-const middleware = [thunk, api];
+const middleware = [thunk, api, organisationUpdates];
 
 const store = createStore(
   reducer,
