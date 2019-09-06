@@ -2,21 +2,24 @@ import io from "socket.io-client";
 
 import { getAndCheckJWT } from "../auth/auth";
 import { wsPrefix, wsURL } from "../config";
+import entityUpdateHandler from "./entityUpdateHandler";
 
 export let socketIO: SocketIOClient.Socket;
 
 (async () => {
   socketIO = io(
-    `${wsURL}/updates`,
+    `${wsURL}`,
     {
       path: wsPrefix,
       transportOptions: {
         polling: {
           extraHeaders: {
-            Authorization: (await getAndCheckJWT()),
+            Authorization: await getAndCheckJWT(),
           },
         },
       },
     }
   );
+
+  socketIO.on("maintenanceEvent", entityUpdateHandler("maintenanceEvents"));
 })();
