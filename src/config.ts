@@ -16,4 +16,4 @@ export const apiURL = `${protocol}://${url}${
 
 export const wsURL = `${protocol === "http" ? "ws" : "wss"}://${url}${
   apiPort === "443" || apiPort === "80" ? "" : `:${apiPort}`
-}${wsPrefix}`;
+}`;

@@ -1,9 +1,9 @@
 import { Method } from "axios";
-import { indexBy, map } from "ramda";
-import { Action, Dispatch, Middleware } from "redux";
+import { map } from "ramda";
+import { Action, Middleware } from "redux";
 
 import { apiURL } from "../../../config";
-import { authenticatedFetch } from "../../../util/utilityFunctions";
+import { authenticatedFetch, indexByKeys } from "../../../util/utilityFunctions";
 import { EntitiesState, ReduxState } from "../../store";
 import { APIResponseAction, CALL_API, CALL_API_FAILURE, CALL_API_SUCCESS } from "./actions";
 
@@ -30,7 +30,7 @@ export const isValid = (payload: {[key: string]: any}): payload is ReduxAPICall 
   typeof payload.endpoint === "string" &&
   typeof payload.method === "string";
 
-const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => {
+const api: Middleware = ({getState}) => (next) => (action) => {
   if (action.type !== CALL_API) {
     return next(action); // should continue if not api call
   } else if (!isValid(action)) {
@@ -48,15 +48,7 @@ const api: Middleware = ({getState}) => (next: Dispatch) => (action: Action) => 
       onFailure,
       parameters,
       url = apiURL,
-      transformResponse = (originalResponse: any): any => {
-        if (Array.isArray(originalResponse)) {
-          return indexBy(
-            ((o: {[key: string]: any}) => String(o.id || o.hash)),
-            originalResponse
-          );
-        }
-        return originalResponse;
-      },
+      transformResponse = indexByKeys(["id", "hash"]),
     } = action as ReduxAPICall;
 
     if (typeof attemptToFetchFromStore === "function") {
