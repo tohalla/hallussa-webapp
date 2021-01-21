@@ -24,7 +24,7 @@
     "emotion": "^10.0.9",
     "formik": "2.0.1-rc.12",
     "i18next": "^17.0.8",
-    "immer": "^3.2.0",
+    "immer": "^8.0.1",
     "normalize.css": "^8.0.1",
     "ramda": "^0.26.1",
     "react": "^15.x.x || ^16.x.x",
